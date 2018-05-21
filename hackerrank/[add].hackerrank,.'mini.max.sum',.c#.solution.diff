@@ -1,0 +1,25 @@
+From c49efaca41383ffd705ac9a9c3b541da6da331f3 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 21 May 2018 21:47:41 +0100
+Subject: [add] hackerrank, 'mini max sum', c# solution
+
+---
+ .../algorithms.-.warmup.-.easy.-.mini.max.sum/mini.max.sum.cs  | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.warmup.-.easy.-.mini.max.sum/mini.max.sum.cs b/hackerrank/algorithms.-.warmup.-.easy.-.mini.max.sum/mini.max.sum.cs
+index bdd65ec..04968c8 100644
+--- a/hackerrank/algorithms.-.warmup.-.easy.-.mini.max.sum/mini.max.sum.cs
++++ b/hackerrank/algorithms.-.warmup.-.easy.-.mini.max.sum/mini.max.sum.cs
+@@ -5,5 +5,8 @@ using System.Linq;
+ class Solution {
+ 
+     static void Main(String[] args) {
++        string[] arr_temp = Console.ReadLine().Split(' ');
++        var ns = Array.ConvertAll(arr_temp,Int32.Parse).OrderBy(x => x);
++        Console.WriteLine("{0} {1}", ns.Take(4).Sum(), ns.Skip(1).Sum());
+     }
+ }
+-- 
+2.23.0
+
