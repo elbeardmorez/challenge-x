@@ -1,0 +1,31 @@
+From da070e1aacad3fb41a5d32bdde0642f898916f1e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 21 May 2018 21:41:17 +0100
+Subject: [add] hackerrank, 'plus minus', c# solution
+
+---
+ .../plus.minus.cs                                        | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.warmup.-.easy.-.plus.minus/plus.minus.cs b/hackerrank/algorithms.-.warmup.-.easy.-.plus.minus/plus.minus.cs
+index bdd65ec..58d75ca 100644
+--- a/hackerrank/algorithms.-.warmup.-.easy.-.plus.minus/plus.minus.cs
++++ b/hackerrank/algorithms.-.warmup.-.easy.-.plus.minus/plus.minus.cs
+@@ -5,5 +5,14 @@ using System.Linq;
+ class Solution {
+ 
+     static void Main(String[] args) {
++        decimal n = Convert.ToInt32(Console.ReadLine());
++        string[] arr_temp = Console.ReadLine().Split(' ');
++        var ns = Array.ConvertAll(arr_temp,Int32.Parse).ToList<int>();
++        int zeros = ns.RemoveAll(x => x == 0);
++        int pos = ns.Where(x => x > 0).Count();
++        Console.Write("{0}\n{1}\n{2}\n",
++                      (pos/n).ToString("F6"),
++                      ((n - pos - zeros)/n).ToString("F6"),
++                      (zeros/n).ToString("F6"));
+     }
+ }
+-- 
+2.23.0
+
