@@ -1,0 +1,24 @@
+From df27f69d268b3d6cd09e1cf093138444882176e9 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 21 May 2018 13:46:09 +0100
+Subject: [add] hackerrank, 'solve me first', c# solution
+
+---
+ .../solve.me.first.cs                                            | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hackerrank/algorithms.-.warmup.-.easy.-.solve.me.first/solve.me.first.cs b/hackerrank/algorithms.-.warmup.-.easy.-.solve.me.first/solve.me.first.cs
+index 9e9ed0a..814c3b4 100644
+--- a/hackerrank/algorithms.-.warmup.-.easy.-.solve.me.first/solve.me.first.cs
++++ b/hackerrank/algorithms.-.warmup.-.easy.-.solve.me.first/solve.me.first.cs
+@@ -4,6 +4,7 @@ using System.IO;
+ class Solution {
+     static int solveMeFirst(int a, int b) {
+       // Hint: Type return a+b; below
++      return a+b;
+     }
+     static void Main(String[] args) {
+         int val1 = Convert.ToInt32(Console.ReadLine());
+-- 
+2.23.0
+
