@@ -1,0 +1,26 @@
+From 49845adb8fa0f1c40af036f24886eb2438f03924 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 21 May 2018 21:44:47 +0100
+Subject: [add] hackerrank, 'staircase', c# solution
+
+---
+ .../algorithms.-.warmup.-.easy.-.staircase/staircase.cs       | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.warmup.-.easy.-.staircase/staircase.cs b/hackerrank/algorithms.-.warmup.-.easy.-.staircase/staircase.cs
+index bdd65ec..fddf0f7 100644
+--- a/hackerrank/algorithms.-.warmup.-.easy.-.staircase/staircase.cs
++++ b/hackerrank/algorithms.-.warmup.-.easy.-.staircase/staircase.cs
+@@ -5,5 +5,9 @@ using System.Linq;
+ class Solution {
+ 
+     static void Main(String[] args) {
++        int n = Convert.ToInt32(Console.ReadLine());
++        for (int i = 1; i <= n; i++) {
++            Console.WriteLine("{0}{1}", new String(' ', n-i), new String('#', i));
++        }
+     }
+ }
+-- 
+2.23.0
+
