@@ -1,0 +1,32 @@
+From e48d537340238c4944096cc5996392e3876376d6 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 21 May 2018 14:19:22 +0100
+Subject: [add] hackerrank, 'diagonal difference', c# solution
+
+---
+ .../diagonal.difference.cs                             | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.warmup.-.easy.-.diagonal.difference/diagonal.difference.cs b/hackerrank/algorithms.-.warmup.-.easy.-.diagonal.difference/diagonal.difference.cs
+index bdd65ec..d1cc719 100644
+--- a/hackerrank/algorithms.-.warmup.-.easy.-.diagonal.difference/diagonal.difference.cs
++++ b/hackerrank/algorithms.-.warmup.-.easy.-.diagonal.difference/diagonal.difference.cs
+@@ -5,5 +5,15 @@ using System.Linq;
+ class Solution {
+ 
+     static void Main(String[] args) {
++        int n = Convert.ToInt32(Console.ReadLine());
++        int[][] a = new int[n][];
++        int ld1 = 0, ld2 = 0;
++        for(int a_i = 0; a_i < n; a_i++){
++           string[] a_temp = Console.ReadLine().Split(' ');
++           a[a_i] = Array.ConvertAll(a_temp,Int32.Parse);
++           ld1 += a[a_i][a_i];
++           ld2 += a[a_i][n-a_i-1];
++        }
++        Console.WriteLine(Math.Abs(ld1-ld2));
+     }
+ }
+-- 
+2.23.0
+
