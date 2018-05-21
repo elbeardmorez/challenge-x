@@ -1,0 +1,24 @@
+From bb84739239a228a9de6a15e65c372d81de4f31ff Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 21 May 2018 13:54:33 +0100
+Subject: [add] hackerrank, 'a very big sum', c# solution
+
+---
+ .../a.very.big.sum.cs                                            | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hackerrank/algorithms.-.warmup.-.easy.-.a.very.big.sum/a.very.big.sum.cs b/hackerrank/algorithms.-.warmup.-.easy.-.a.very.big.sum/a.very.big.sum.cs
+index 0383766..2c0d0b7 100644
+--- a/hackerrank/algorithms.-.warmup.-.easy.-.a.very.big.sum/a.very.big.sum.cs
++++ b/hackerrank/algorithms.-.warmup.-.easy.-.a.very.big.sum/a.very.big.sum.cs
+@@ -6,6 +6,7 @@ class Solution {
+ 
+     static long aVeryBigSum(int n, long[] ar) {
+         // Complete this function
++        return ar.AsEnumerable<long>().Sum();
+     }
+ 
+     static void Main(String[] args) {
+-- 
+2.23.0
+
