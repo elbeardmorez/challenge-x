@@ -1,0 +1,24 @@
+From 4fbd71732c5d4510e846c59901bdaa3f927653ee Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 21 May 2018 13:44:53 +0100
+Subject: [add] hackerrank, 'solve me first', javascript solution
+
+---
+ .../solve.me.first.js                                            | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hackerrank/algorithms.-.warmup.-.easy.-.solve.me.first/solve.me.first.js b/hackerrank/algorithms.-.warmup.-.easy.-.solve.me.first/solve.me.first.js
+index b043802..35e1965 100644
+--- a/hackerrank/algorithms.-.warmup.-.easy.-.solve.me.first/solve.me.first.js
++++ b/hackerrank/algorithms.-.warmup.-.easy.-.solve.me.first/solve.me.first.js
+@@ -22,6 +22,7 @@ function readLine() {
+ 
+ function solveMeFirst(a, b) {
+   // Hint: Type return a+b below
++  return a + b;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
