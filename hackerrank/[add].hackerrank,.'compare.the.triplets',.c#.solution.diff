@@ -1,0 +1,29 @@
+From 4318a24bbeaf54372173cadb89b1a2595f2824a9 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 21 May 2018 13:52:46 +0100
+Subject: [add] hackerrank, 'compare the triplets', c# solution
+
+---
+ .../compare.the.triplets.cs                                 | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.warmup.-.easy.-.compare.the.triplets/compare.the.triplets.cs b/hackerrank/algorithms.-.warmup.-.easy.-.compare.the.triplets/compare.the.triplets.cs
+index 22bef8b..d2075ac 100644
+--- a/hackerrank/algorithms.-.warmup.-.easy.-.compare.the.triplets/compare.the.triplets.cs
++++ b/hackerrank/algorithms.-.warmup.-.easy.-.compare.the.triplets/compare.the.triplets.cs
+@@ -8,6 +8,12 @@ class Solution {
+ 
+     static int[] solve(int a0, int a1, int a2, int b0, int b1, int b2){
+         // Complete this function
++        var a_con = new List<int> {a0, a1, a2}
++            .Select(x => Min(100, Max(x, 0)));
++        var b_con = new List<int> {b0, b1, b2}
++            .Select(x => Min(100, Max(x, 0)));
++        var scores = a_con.Zip(b_con, (a, b) => a.CompareTo(b));
++        return new int[] { scores.Where(x => x > 0).Sum(), Abs(scores.Where(x => x < 0).Sum()) };
+     }
+ 
+     static void Main(String[] args) {
+-- 
+2.23.0
+
