@@ -1,0 +1,26 @@
+From 5ca249cfc4c2f6c6602a45b795f449122c4d4047 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 21 May 2018 21:49:02 +0100
+Subject: [fix] hackerrank, 'mini max sum', c# solution
+
+-switch to 64 bit ints
+---
+ .../algorithms.-.warmup.-.easy.-.mini.max.sum/mini.max.sum.cs   | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.warmup.-.easy.-.mini.max.sum/mini.max.sum.cs b/hackerrank/algorithms.-.warmup.-.easy.-.mini.max.sum/mini.max.sum.cs
+index 04968c8..6328104 100644
+--- a/hackerrank/algorithms.-.warmup.-.easy.-.mini.max.sum/mini.max.sum.cs
++++ b/hackerrank/algorithms.-.warmup.-.easy.-.mini.max.sum/mini.max.sum.cs
+@@ -6,7 +6,7 @@ class Solution {
+ 
+     static void Main(String[] args) {
+         string[] arr_temp = Console.ReadLine().Split(' ');
+-        var ns = Array.ConvertAll(arr_temp,Int32.Parse).OrderBy(x => x);
++        var ns = Array.ConvertAll(arr_temp,Int64.Parse).OrderBy(x => x);
+         Console.WriteLine("{0} {1}", ns.Take(4).Sum(), ns.Skip(1).Sum());
+     }
+ }
+-- 
+2.23.0
+
