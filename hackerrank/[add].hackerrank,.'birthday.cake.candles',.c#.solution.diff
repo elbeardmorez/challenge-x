@@ -1,0 +1,26 @@
+From 146be23b4834737e76deeb36ce4cebe60ce22e97 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 21 May 2018 21:53:10 +0100
+Subject: [add] hackerrank, 'birthday cake candles', c# solution
+
+---
+ .../birthday.cake.candles.cs                                   | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.warmup.-.easy.-.birthday.cake.candles/birthday.cake.candles.cs b/hackerrank/algorithms.-.warmup.-.easy.-.birthday.cake.candles/birthday.cake.candles.cs
+index 8740491..64d4c40 100644
+--- a/hackerrank/algorithms.-.warmup.-.easy.-.birthday.cake.candles/birthday.cake.candles.cs
++++ b/hackerrank/algorithms.-.warmup.-.easy.-.birthday.cake.candles/birthday.cake.candles.cs
+@@ -6,6 +6,9 @@ class Solution {
+ 
+     static int birthdayCakeCandles(int n, int[] ar) {
+         // Complete this function
++        var ns = ar.ToList<int>();
++        var max = ns.Max();
++        return ns.Count(x => x == max);
+     }
+ 
+     static void Main(String[] args) {
+-- 
+2.23.0
+
