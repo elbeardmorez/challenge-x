@@ -1,0 +1,24 @@
+From 0fbb4942ca71cbc8ca6827db8612d2f04fe23717 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 21 May 2018 13:48:29 +0100
+Subject: [add] hackerrank, 'simple array sum', c# solution
+
+---
+ .../simple.array.sum.cs                                          | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hackerrank/algorithms.-.warmup.-.easy.-.simple.array.sum/simple.array.sum.cs b/hackerrank/algorithms.-.warmup.-.easy.-.simple.array.sum/simple.array.sum.cs
+index 05df998..5e66a91 100644
+--- a/hackerrank/algorithms.-.warmup.-.easy.-.simple.array.sum/simple.array.sum.cs
++++ b/hackerrank/algorithms.-.warmup.-.easy.-.simple.array.sum/simple.array.sum.cs
+@@ -6,6 +6,7 @@ class Solution {
+ 
+     static int simpleArraySum(int n, int[] ar) {
+         // Complete this function
++        return ar.Sum();
+     }
+ 
+     static void Main(String[] args) {
+-- 
+2.23.0
+
