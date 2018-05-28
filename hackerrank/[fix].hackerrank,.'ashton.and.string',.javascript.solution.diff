@@ -1,0 +1,30 @@
+From a40fac18ce806625d9e27ec910180593ad12ad8d Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 28 May 2018 21:05:20 +0100
+Subject: [fix] hackerrank, 'ashton and string', javascript solution
+
+-correct line indexing
+---
+ .../ashton.and.string.js                                    | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.advanced.-.ashton.and.string/ashton.and.string.js b/hackerrank/algorithms.-.strings.-.advanced.-.ashton.and.string/ashton.and.string.js
+index ff54b73..de6edfb 100644
+--- a/hackerrank/algorithms.-.strings.-.advanced.-.ashton.and.string/ashton.and.string.js
++++ b/hackerrank/algorithms.-.strings.-.advanced.-.ashton.and.string/ashton.and.string.js
+@@ -5,9 +5,9 @@ function processData(input) {
+ 
+     //split.map(function(s) { console.log("x" + s); });
+     for (t = 1; t <= tests; t++) {
+-        word = lines[2 * (t - 1) * 2 + 1]
+-        cidx = parseInt(lines[2 * (t - 1) * 2 + 2])
+-        //console.log("test: " + t + ", word: '" + word + "', idx req: '" + cidx + "'")
++        word = lines[2 * (t - 1) + 1]
++        cidx = parseInt(lines[2 * (t - 1) + 2])
++        console.log("test: " + t + ", word: '" + word + "', idx req: '" + cidx + "'")
+         ss = [];
+         for (l = 1; l <= word.length; l++) {
+             offset = 0
+-- 
+2.23.0
+
