@@ -1,0 +1,43 @@
+From f7756350709d63a0dbc1f67be1c1c7e4a3c2a980 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 28 May 2018 21:03:07 +0100
+Subject: [add] hackerrank, 'ashton and string', javascript solution
+
+---
+ .../ashton.and.string.js                      | 21 ++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.advanced.-.ashton.and.string/ashton.and.string.js b/hackerrank/algorithms.-.strings.-.advanced.-.ashton.and.string/ashton.and.string.js
+index 6d6acc8..ff54b73 100644
+--- a/hackerrank/algorithms.-.strings.-.advanced.-.ashton.and.string/ashton.and.string.js
++++ b/hackerrank/algorithms.-.strings.-.advanced.-.ashton.and.string/ashton.and.string.js
+@@ -1,6 +1,25 @@
+ function processData(input) {
+     //Enter your code here
+-} 
++    lines = input.split('\n')
++    tests = parseInt(lines[0])
++
++    //split.map(function(s) { console.log("x" + s); });
++    for (t = 1; t <= tests; t++) {
++        word = lines[2 * (t - 1) * 2 + 1]
++        cidx = parseInt(lines[2 * (t - 1) * 2 + 2])
++        //console.log("test: " + t + ", word: '" + word + "', idx req: '" + cidx + "'")
++        ss = [];
++        for (l = 1; l <= word.length; l++) {
++            offset = 0
++            while (offset + l <= word.length) {
++                ss.push(word.substring(offset, offset + l))
++                offset += 1
++            }
++        }
++        kth = ss.sort().join("").substring((cidx - 1), (cidx - 1) + 1)
++        console.log(kth)
++    }
++}
+ 
+ process.stdin.resume();
+ process.stdin.setEncoding("ascii");
+-- 
+2.23.0
+
