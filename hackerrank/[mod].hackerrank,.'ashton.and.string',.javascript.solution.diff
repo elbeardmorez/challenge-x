@@ -1,0 +1,36 @@
+From 1571a2a493a1dfaea3713a01b7e304e569a35928 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 28 May 2018 21:07:15 +0100
+Subject: [mod] hackerrank, 'ashton and string', javascript solution
+
+-log once
+---
+ .../ashton.and.string.js                                      | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.advanced.-.ashton.and.string/ashton.and.string.js b/hackerrank/algorithms.-.strings.-.advanced.-.ashton.and.string/ashton.and.string.js
+index 90c9167..0128ce5 100644
+--- a/hackerrank/algorithms.-.strings.-.advanced.-.ashton.and.string/ashton.and.string.js
++++ b/hackerrank/algorithms.-.strings.-.advanced.-.ashton.and.string/ashton.and.string.js
+@@ -4,6 +4,7 @@ function processData(input) {
+     tests = parseInt(lines[0])
+ 
+     //split.map(function(s) { console.log("x" + s); });
++    kths = ""
+     for (t = 1; t <= tests; t++) {
+         word = lines[2 * (t - 1) + 1]
+         cidx = parseInt(lines[2 * (t - 1) + 2])
+@@ -17,8 +18,9 @@ function processData(input) {
+             }
+         }
+         kth = ss.sort().join("").substring((cidx - 1), (cidx - 1) + 1)
+-        console.log(kth)
++        kths += kth
+     }
++    console.log(kths)
+ }
+ 
+ process.stdin.resume();
+-- 
+2.23.0
+
