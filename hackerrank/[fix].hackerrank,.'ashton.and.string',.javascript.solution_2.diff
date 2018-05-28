@@ -1,0 +1,26 @@
+From daa979a115dd89bd8b70626e855f6415d29dfc41 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 28 May 2018 21:06:22 +0100
+Subject: [fix] hackerrank, 'ashton and string', javascript solution
+
+-disable debug logging for submission
+---
+ .../ashton.and.string.js                                        | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.advanced.-.ashton.and.string/ashton.and.string.js b/hackerrank/algorithms.-.strings.-.advanced.-.ashton.and.string/ashton.and.string.js
+index de6edfb..90c9167 100644
+--- a/hackerrank/algorithms.-.strings.-.advanced.-.ashton.and.string/ashton.and.string.js
++++ b/hackerrank/algorithms.-.strings.-.advanced.-.ashton.and.string/ashton.and.string.js
+@@ -7,7 +7,7 @@ function processData(input) {
+     for (t = 1; t <= tests; t++) {
+         word = lines[2 * (t - 1) + 1]
+         cidx = parseInt(lines[2 * (t - 1) + 2])
+-        console.log("test: " + t + ", word: '" + word + "', idx req: '" + cidx + "'")
++        //console.log("test: " + t + ", word: '" + word + "', idx req: '" + cidx + "'")
+         ss = [];
+         for (l = 1; l <= word.length; l++) {
+             offset = 0
+-- 
+2.23.0
+
