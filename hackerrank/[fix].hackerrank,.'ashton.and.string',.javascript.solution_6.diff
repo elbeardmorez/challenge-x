@@ -1,0 +1,42 @@
+From a54a1e1abfefbec0e46b7c66e281c098cef25176 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 28 May 2018 21:15:58 +0100
+Subject: [fix] hackerrank, 'ashton and string', javascript solution
+
+-work around heap size issue, don't allocate huge joined substrings
+string to access target substring
+---
+ .../ashton.and.string.js                         | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.advanced.-.ashton.and.string/ashton.and.string.js b/hackerrank/algorithms.-.strings.-.advanced.-.ashton.and.string/ashton.and.string.js
+index 9a6c940..9e3d513 100644
+--- a/hackerrank/algorithms.-.strings.-.advanced.-.ashton.and.string/ashton.and.string.js
++++ b/hackerrank/algorithms.-.strings.-.advanced.-.ashton.and.string/ashton.and.string.js
+@@ -21,15 +21,15 @@ function processData(input) {
+         //console.log(ss)
+         //console.log(Object.keys(sss).sort().join(","))
+         // breaks on large data sets
+-        var kth = Object.keys(sss).sort().join("").substring((cidx - 1), (cidx - 1) + 1)
++        //var kth = Object.keys(sss).sort().join("").substring((cidx - 1), (cidx - 1) + 1)
+         // work around heap size issue, don't allocate huge string
+-        //var sorted = Object.keys(sss).sort()
+-        //var idx = 0
+-        //var l = 0
+-        //while (sorted[l].length < cidx) {
+-        //    cidx -= sorted[l].length
+-        //}
+-        //var kth = sorted[l].substring((cidx - 1), (cidx - 1) + 1)
++        var sorted = Object.keys(sss).sort()
++        var l = 0
++        while (sorted[l].length < cidx) {
++            cidx -= sorted[l].length
++            l += 1
++        }
++        var kth = sorted[l].substring((cidx - 1), (cidx - 1) + 1)
+ 
+         //kths += kth
+         console.log(kth)
+-- 
+2.23.0
+
