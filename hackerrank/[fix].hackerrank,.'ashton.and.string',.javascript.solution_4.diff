@@ -1,0 +1,52 @@
+From a7ab4859b893880d636ae15464693b28ff46e894 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 28 May 2018 21:11:08 +0100
+Subject: [fix] hackerrank, 'ashton and string', javascript solution
+
+-use object to remove duplicate substrings
+-improve code style
+---
+ .../ashton.and.string.js                        | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.advanced.-.ashton.and.string/ashton.and.string.js b/hackerrank/algorithms.-.strings.-.advanced.-.ashton.and.string/ashton.and.string.js
+index a51ba5d..48aa183 100644
+--- a/hackerrank/algorithms.-.strings.-.advanced.-.ashton.and.string/ashton.and.string.js
++++ b/hackerrank/algorithms.-.strings.-.advanced.-.ashton.and.string/ashton.and.string.js
+@@ -1,24 +1,25 @@
+ function processData(input) {
+     //Enter your code here
+-    lines = input.split('\n')
+-    tests = parseInt(lines[0])
++    var lines = input.split('\n')
++    var tests = parseInt(lines[0])
+ 
+     //split.map(function(s) { console.log("x" + s); });
+     //kths = ""
+     for (t = 1; t <= tests; t++) {
+-        word = lines[2 * (t - 1) + 1]
+-        cidx = parseInt(lines[2 * (t - 1) + 2])
++        var word = lines[2 * (t - 1) + 1]
++        var cidx = parseInt(lines[2 * (t - 1) + 2])
+         //console.log("test: " + t + ", word: '" + word + "', idx req: '" + cidx + "'")
+-        ss = [];
++        var sss = {};
+         for (l = 1; l <= word.length; l++) {
+-            offset = 0
++            var offset = 0
+             while (offset + l <= word.length) {
+-                ss.push(word.substring(offset, offset + l))
++                ss = word.substring(offset, offset + l)
++                sss[ss] = ss
+                 offset += 1
+             }
+         }
+         //console.log(ss)
+-        kth = ss.sort().join("").substring((cidx - 1), (cidx - 1) + 1)
++        var kth = Object.keys(sss).sort().join("").substring((cidx - 1), (cidx - 1) + 1)
+         //kths += kth
+         console.log(kth)
+     }
+-- 
+2.23.0
+
