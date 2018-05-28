@@ -1,0 +1,41 @@
+From 9812639ca122669ab4c598a676d6db8df269da6f Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 28 May 2018 21:08:00 +0100
+Subject: [fix] hackerrank, 'ashton and string', javascript solution
+
+-revert to multiple log calls
+---
+ .../ashton.and.string.js                                  | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.advanced.-.ashton.and.string/ashton.and.string.js b/hackerrank/algorithms.-.strings.-.advanced.-.ashton.and.string/ashton.and.string.js
+index 0128ce5..a51ba5d 100644
+--- a/hackerrank/algorithms.-.strings.-.advanced.-.ashton.and.string/ashton.and.string.js
++++ b/hackerrank/algorithms.-.strings.-.advanced.-.ashton.and.string/ashton.and.string.js
+@@ -4,7 +4,7 @@ function processData(input) {
+     tests = parseInt(lines[0])
+ 
+     //split.map(function(s) { console.log("x" + s); });
+-    kths = ""
++    //kths = ""
+     for (t = 1; t <= tests; t++) {
+         word = lines[2 * (t - 1) + 1]
+         cidx = parseInt(lines[2 * (t - 1) + 2])
+@@ -17,10 +17,12 @@ function processData(input) {
+                 offset += 1
+             }
+         }
++        //console.log(ss)
+         kth = ss.sort().join("").substring((cidx - 1), (cidx - 1) + 1)
+-        kths += kth
++        //kths += kth
++        console.log(kth)
+     }
+-    console.log(kths)
++    //console.log(kths)
+ }
+ 
+ process.stdin.resume();
+-- 
+2.23.0
+
