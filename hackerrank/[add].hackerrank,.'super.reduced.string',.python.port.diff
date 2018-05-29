@@ -1,0 +1,41 @@
+From 2cdbfaf7777d37fd435b2ecc003d881feaf8a879 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 29 May 2018 19:22:54 +0100
+Subject: [add] hackerrank, 'super reduced string', python port
+
+---
+ .../super.reduced.string.py                    | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.super.reduced.string/super.reduced.string.py b/hackerrank/algorithms.-.strings.-.easy.-.super.reduced.string/super.reduced.string.py
+index eaf2dee..cddf76a 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.super.reduced.string/super.reduced.string.py
++++ b/hackerrank/algorithms.-.strings.-.easy.-.super.reduced.string/super.reduced.string.py
+@@ -9,6 +9,24 @@ import sys
+ # Complete the super_reduced_string function below.
+ def super_reduced_string(s):
+ 
++    buf = []
++    last = None
++    for c in s:
++        if not len(buf):
++            buf.append(c)
++            last = c
++            continue
++        # compare
++        if c == last:
++            buf.pop()
++            last = buf[-1] if len(buf) else None
++            continue
++        buf.append(c)
++        last = c
++
++    return "".join(buf) if len(buf) else "Empty String"
++
++
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+ 
+-- 
+2.23.0
+
