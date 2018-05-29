@@ -1,0 +1,25 @@
+From f813e755aed961672ba07a11eef7a90ffb4f9626 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 29 May 2018 18:19:01 +0100
+Subject: [add] hackerrank, 'super reduced string', c# solution
+
+---
+ .../super.reduced.string.cs                                     | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.super.reduced.string/super.reduced.string.cs b/hackerrank/algorithms.-.strings.-.easy.-.super.reduced.string/super.reduced.string.cs
+index 2bcdeb5..f149457 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.super.reduced.string/super.reduced.string.cs
++++ b/hackerrank/algorithms.-.strings.-.easy.-.super.reduced.string/super.reduced.string.cs
+@@ -16,6 +16,8 @@ class Solution {
+ 
+     // Complete the super_reduced_string function below.
+     static string super_reduced_string(string s) {
++        string res = new String(s.ToCharArray().OrderBy(x => x).GroupBy(x => x).Where(g => g.Count() % 2 == 1).Select(g => g.First()).ToArray());
++        return res != "" ? res : "Empty String";
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
