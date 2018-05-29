@@ -1,0 +1,42 @@
+From 5faeb5946cb32374333eed212a572a856c435aa8 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 29 May 2018 18:58:02 +0100
+Subject: [fix] hackerrank, 'super reduced string', c# solution
+
+-revert to more complex regexp match
+---
+ .../super.reduced.string.cs                    | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.super.reduced.string/super.reduced.string.cs b/hackerrank/algorithms.-.strings.-.easy.-.super.reduced.string/super.reduced.string.cs
+index f149457..b512ada 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.super.reduced.string/super.reduced.string.cs
++++ b/hackerrank/algorithms.-.strings.-.easy.-.super.reduced.string/super.reduced.string.cs
+@@ -16,8 +16,22 @@ class Solution {
+ 
+     // Complete the super_reduced_string function below.
+     static string super_reduced_string(string s) {
+-        string res = new String(s.ToCharArray().OrderBy(x => x).GroupBy(x => x).Where(g => g.Count() % 2 == 1).Select(g => g.First()).ToArray());
+-        return res != "" ? res : "Empty String";
++        //string res = new String(s.ToCharArray().OrderBy(x => x).GroupBy(x => x).Where(g => g.Count() % 2 == 1).Select(g => g.First()).ToArray());
++        bool repeat = true;
++        while (repeat) {
++            bool match = false;
++            for (int c = (int)'a'; c <= (int)'z'; c++) {
++                var r = ((char)c).ToString();
++                var rx = new Regex(r + "{2}");
++                while (rx.IsMatch(s)) {
++                    match = true;
++                    s = rx.Replace(s, "");
++                }
++            }
++            if (!match)
++                repeat = false;
++        }
++        return s != "" ? s : "Empty String";
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
