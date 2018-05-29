@@ -1,0 +1,24 @@
+From 320b6a06c3efa9dacf894b52361f9002cc2c7513 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 29 May 2018 20:34:01 +0100
+Subject: [add] hackerrank, 'camelcase', python solution
+
+---
+ hackerrank/algorithms.-.strings.-.easy.-.camelcase/camelcase.py | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.camelcase/camelcase.py b/hackerrank/algorithms.-.strings.-.easy.-.camelcase/camelcase.py
+index b052560..7cfce94 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.camelcase/camelcase.py
++++ b/hackerrank/algorithms.-.strings.-.easy.-.camelcase/camelcase.py
+@@ -8,6 +8,7 @@ import sys
+ 
+ # Complete the camelcase function below.
+ def camelcase(s):
++    return len(re.findall('[A-Z]', s)) + 1;
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
