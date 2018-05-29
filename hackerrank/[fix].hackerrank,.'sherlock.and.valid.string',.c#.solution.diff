@@ -1,0 +1,40 @@
+From 0a6416867dcd54ca0f5d39f047b79eb949cb4ca1 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 30 May 2018 00:01:58 +0100
+Subject: [fix] hackerrank, 'sherlock and valid string', c# solution
+
+-account for cornercases
+-add commentary
+---
+ .../sherlock.and.valid.string.cs                  | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.the.valid.string/sherlock.and.valid.string.cs b/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.the.valid.string/sherlock.and.valid.string.cs
+index d7ce188..e5680c0 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.the.valid.string/sherlock.and.valid.string.cs
++++ b/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.the.valid.string/sherlock.and.valid.string.cs
+@@ -17,10 +17,17 @@ class Solution {
+     static string isValid(string s) {
+         string res = "YES";
+         var counts = s.ToCharArray().GroupBy(x => x).Select(g => g.Count()).OrderBy(x => x);
+-        if (counts.Distinct().Count() > 2)
+-            res = "NO";
+-        else if (counts.GroupBy(x => x).Where(g => g.Count() > 1).Count() > 1)
+-            res = "NO";
++        if (counts.Distinct().Count() >= 2) {
++            if (counts.Distinct().Count() > 2)
++                // 3+ groups of totals can't be corrected eg. abbccc
++                res = "NO";
++            else if (counts.GroupBy(x => x).Where(g => g.Count() > 1).Count() > 1)
++                // 2 groups of totals, both have more than one element with that total though which can't be corrected eg. abccdd
++                res = "NO";
++            else if (Math.Abs(counts.GroupBy(x => x).Select(g => g.Count()).Aggregate(0, (a, x) => x - a)) > 1)
++                // 2 groups of totals, only one has multiple elements with the given total. however, the group with only one element having that count, has a count > +/- 1 of all the others which can't be corrected eg. aaaabbccdd
++                res = "NO";
++        }
+         return res;
+     }
+ 
+-- 
+2.23.0
+
