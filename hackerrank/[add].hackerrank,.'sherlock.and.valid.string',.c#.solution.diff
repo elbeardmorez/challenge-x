@@ -1,0 +1,30 @@
+From 39738795d03cf6a855b30c9f356268a192939802 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 29 May 2018 23:42:49 +0100
+Subject: [add] hackerrank, 'sherlock and valid string', c# solution
+
+---
+ .../sherlock.and.valid.string.cs                           | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.the.valid.string/sherlock.and.valid.string.cs b/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.the.valid.string/sherlock.and.valid.string.cs
+index 115c345..d7ce188 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.the.valid.string/sherlock.and.valid.string.cs
++++ b/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.the.valid.string/sherlock.and.valid.string.cs
+@@ -15,6 +15,13 @@ using System;
+ class Solution {
+     // Complete the isValid function below.
+     static string isValid(string s) {
++        string res = "YES";
++        var counts = s.ToCharArray().GroupBy(x => x).Select(g => g.Count()).OrderBy(x => x);
++        if (counts.Distinct().Count() > 2)
++            res = "NO";
++        else if (counts.GroupBy(x => x).Where(g => g.Count() > 1).Count() > 1)
++            res = "NO";
++        return res;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
