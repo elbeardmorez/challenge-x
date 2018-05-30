@@ -1,0 +1,37 @@
+From cf348cc5fe985e6931d5d22ad7073c8074a1d8bd Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 30 May 2018 08:41:23 +0100
+Subject: [fix] hackerrank, 'sherlock and valid string', c# solution
+
+-group on key not value
+---
+ .../sherlock.and.valid.string.cs                            | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.the.valid.string/sherlock.and.valid.string.cs b/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.the.valid.string/sherlock.and.valid.string.cs
+index 40ba3ee..4bf27aa 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.the.valid.string/sherlock.and.valid.string.cs
++++ b/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.the.valid.string/sherlock.and.valid.string.cs
+@@ -13,6 +13,10 @@ using System.Text;
+ using System;
+ 
+ class Solution {
++     //aaaaabc
++     //5 1 1
++     //5 1
++     //
+     // Complete the isValid function below.
+     static string isValid(string s) {
+         string res = "YES";
+@@ -24,7 +28,7 @@ class Solution {
+             else if (counts.GroupBy(x => x).Where(g => g.Count() > 1).Count() > 1)
+                 // 2 groups of totals, both have more than one element with that total though which can't be corrected eg. abccdd
+                 res = "NO";
+-            else if (Math.Abs(counts.GroupBy(x => x).Select(g => g.Count()).Aggregate(0, (a, x) => x - a)) > 1 && counts.GroupBy(x => x).Select(g => g.Count()).Where(x => x == 1).Count() != 1)
++            else if (Math.Abs(counts.GroupBy(x => x).Select(g => g.Key).Aggregate(0, (a, x) => x - a)) > 1 && counts.GroupBy(x => x).Where(g => g.Count() == 1).Select(g => g.Key).ToArray()[0] != 1)
+                 // 2 groups of totals, only one has multiple elements with the given total. however, the group with only one element has a total > +/- 1 of all the others, and is not a single character itself, which can't be corrected eg. aaaabbccdd
+                 res = "NO";
+         }
+-- 
+2.23.0
+
