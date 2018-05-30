@@ -1,0 +1,31 @@
+From 12a8ae3c571ae228c289a1ed5050f51309783441 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 30 May 2018 09:27:37 +0100
+Subject: [fix] hackerrank, 'sherlock and valid string', python port
+
+-test distance of single instance groups only
+---
+ .../sherlock.and.valid.string.py                             | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.the.valid.string/sherlock.and.valid.string.py b/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.the.valid.string/sherlock.and.valid.string.py
+index 35b135b..3f07f13 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.the.valid.string/sherlock.and.valid.string.py
++++ b/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.the.valid.string/sherlock.and.valid.string.py
+@@ -37,10 +37,11 @@ def isValid(s):
+             res = "NO"
+         else:
+             # two value groups, one has a single element, great, but if it's > +/- 1
+-            # of the other, then..
++            # of the other, then, no.. unless it's only a single instance..
++            # eg. aaaabbbbc
+             k1, v1 = freq[0]
+             k2, v2 = freq[1]
+-            if abs(int(k2) - int(k1)) > 1:
++            if int(k1) > 1 and int(k2) > 1 and abs(v2 - v1) > 1:
+                  res = "NO"
+ 
+     return res
+-- 
+2.23.0
+
