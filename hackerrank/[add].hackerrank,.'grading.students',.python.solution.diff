@@ -1,0 +1,32 @@
+From e8432e952c1929cbeff933c1cbc00eb08b3ee96c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 30 May 2018 10:20:01 +0100
+Subject: [add] hackerrank, 'grading students', python solution
+
+---
+ .../grading.students.py                                  | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.grading.students/grading.students.py b/hackerrank/algorithms.-.implementation.-.easy.-.grading.students/grading.students.py
+index 0dc5ef9..b76ab10 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.grading.students/grading.students.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.grading.students/grading.students.py
+@@ -9,6 +9,15 @@ import sys
+ def gradingStudents(grades):
+     #
+     # Write your code here.
++    res = []
++    for g in grades:
++        gx = g
++        mod = gx % 5
++        if gx > 37 and mod >=3:
++            gx += (5 - mod)
++        res.append(gx)
++
++    return res
+ 
+ if __name__ == '__main__':
+     f = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
