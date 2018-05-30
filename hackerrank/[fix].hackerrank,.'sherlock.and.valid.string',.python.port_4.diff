@@ -1,0 +1,26 @@
+From 6c8dd595054984ea34128aa6ce560d9f2abcc4dc Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 30 May 2018 09:51:23 +0100
+Subject: [fix] hackerrank, 'sherlock and valid string', python port
+
+-group size 1 limiting
+---
+ .../sherlock.and.valid.string.py                                | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.the.valid.string/sherlock.and.valid.string.py b/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.the.valid.string/sherlock.and.valid.string.py
+index 15e7fd8..ea7ac9c 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.the.valid.string/sherlock.and.valid.string.py
++++ b/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.the.valid.string/sherlock.and.valid.string.py
+@@ -45,7 +45,7 @@ def isValid(s):
+             k1, v1 = keys[0], values[0]
+             k2, v2 = keys[1], values[1]
+             #print("k1: %s, v1: %d, k2: %s, v2: %d" % (k1, v1, k2, v2))
+-            if abs(int(k2) - int(k1)) > 1:
++            if abs(int(k2) - int(k1)) > 1 and freq_2[1] != 1:
+                  res = "NO"
+ 
+     return res
+-- 
+2.23.0
+
