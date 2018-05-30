@@ -1,0 +1,28 @@
+From 65e9a9f8ae9e068e9516feee5dcee04bbe19a034 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 30 May 2018 08:43:53 +0100
+Subject: [mod] hackerrank, 'sherlock and valid string', c# solution
+
+-remove commented example
+---
+ .../sherlock.and.valid.string.cs                              | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.the.valid.string/sherlock.and.valid.string.cs b/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.the.valid.string/sherlock.and.valid.string.cs
+index 4bf27aa..635753c 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.the.valid.string/sherlock.and.valid.string.cs
++++ b/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.the.valid.string/sherlock.and.valid.string.cs
+@@ -13,10 +13,6 @@ using System.Text;
+ using System;
+ 
+ class Solution {
+-     //aaaaabc
+-     //5 1 1
+-     //5 1
+-     //
+     // Complete the isValid function below.
+     static string isValid(string s) {
+         string res = "YES";
+-- 
+2.23.0
+
