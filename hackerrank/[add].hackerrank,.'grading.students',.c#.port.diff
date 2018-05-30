@@ -1,0 +1,29 @@
+From 01406c03440f969d757d8b070333a961a60b5e13 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 30 May 2018 10:28:16 +0100
+Subject: [add] hackerrank, 'grading students', c# port
+
+---
+ .../grading.students.cs                                     | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.grading.students/grading.students.cs b/hackerrank/algorithms.-.implementation.-.easy.-.grading.students/grading.students.cs
+index 529a333..b5a8ac8 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.grading.students/grading.students.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.grading.students/grading.students.cs
+@@ -12,6 +12,12 @@ class Solution {
+         /*
+          * Write your code here.
+          */
++        return grades.Select(x => {
++            int mod = x % 5;
++            if (x > 37 && mod >= 3)
++                x += (5 - mod);
++            return x;
++        }).ToArray();
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
