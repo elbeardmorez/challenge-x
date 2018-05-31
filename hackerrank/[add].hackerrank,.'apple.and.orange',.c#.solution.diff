@@ -1,0 +1,25 @@
+From e601ff277e80ce38c7d7b1c403b394315b9e6e01 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 31 May 2018 21:25:04 +0100
+Subject: [add] hackerrank, 'apple and orange', c# solution
+
+---
+ .../apple.and.orange.cs                                         | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.apple.and.orange/apple.and.orange.cs b/hackerrank/algorithms.-.implementation.-.easy.-.apple.and.orange/apple.and.orange.cs
+index 7bfa878..1c120ab 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.apple.and.orange/apple.and.orange.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.apple.and.orange/apple.and.orange.cs
+@@ -16,6 +16,8 @@ class Solution {
+ 
+     // Complete the countApplesAndOranges function below.
+     static void countApplesAndOranges(int s, int t, int a, int b, int[] apples, int[] oranges) {
++        Console.WriteLine(apples.Where(x => a + x >= s && a + x <= t).Count());
++        Console.WriteLine(oranges.Where(x => b + x >= s && b + x <= t).Count());
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
