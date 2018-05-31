@@ -1,0 +1,61 @@
+From ff867a4adf123634078dd7a72e0ea6d1e1c82b3c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 31 May 2018 23:54:20 +0100
+Subject: [add] hackerrank, 'between two sets', python port
+
+---
+ .../between.two.sets.py                       | 38 +++++++++++++++++++
+ 1 file changed, 38 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.between.two.sets/between.two.sets.py b/hackerrank/algorithms.-.implementation.-.easy.-.between.two.sets/between.two.sets.py
+index a93bb76..efe1e85 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.between.two.sets/between.two.sets.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.between.two.sets/between.two.sets.py
+@@ -10,6 +10,44 @@ def getTotalX(a, b):
+     #
+     # Write your code here.
+     #
++    possible_set = []
++    valid = None
++
++    # generate multiples list
++    hightest_pos = max(b)
++    first = a[0]
++    last = a[-1]
++
++    possible = last
++    if possible % first != 0:
++        possible = possible + last
++
++    # remainding factor to test for viability of n*first*last possibility
++    others = a[:-1]
++    while possible <= hightest_pos:
++        valid = True
++        for f in others:
++            if possible % f != 0:
++                valid = False
++                break
++        if valid:
++            possible_set.append(possible)
++
++        possible = possible + last
++
++    # remove multiples wich aren't factors of all b
++    res = 0
++    for f in possible_set:
++        #print("possible: %d" % f)
++        valid = True
++        for m in b:
++            if (m % f != 0):
++                valid = False
++                break
++        if valid:
++            res += 1
++
++    return res
+ 
+ if __name__ == '__main__':
+     f = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
