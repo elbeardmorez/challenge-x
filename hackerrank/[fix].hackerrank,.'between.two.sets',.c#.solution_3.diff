@@ -1,0 +1,35 @@
+From cf261bfa279c4eb5740d204093fc308cd0019bfa Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 31 May 2018 23:16:33 +0100
+Subject: [fix] hackerrank, 'between two sets', c# solution
+
+-typos
+---
+ .../between.two.sets.cs                                       | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.between.two.sets/between.two.sets.cs b/hackerrank/algorithms.-.implementation.-.easy.-.between.two.sets/between.two.sets.cs
+index c0f8fed..daf1351 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.between.two.sets/between.two.sets.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.between.two.sets/between.two.sets.cs
+@@ -26,7 +26,7 @@ class Solution {
+         if (possible % first != 0)
+             possible = possible + last;
+ 
+-        // remainding factor to test for viability of n*first*last possibility
++        // remaining factor to test for viability of n*first*last possibility
+         var others = new List<int>(a).Take(a.Length - 1);
+         while (possible <= hightest_pos) {
+             valid = true;
+@@ -42,7 +42,7 @@ class Solution {
+             possible = possible + last;
+         }
+ 
+-        // remove multiples wich aren't factors of all b
++        // remove multiples which aren't factors of all b
+         int res = 0;
+         foreach(int f in possible_set) {
+             //Console.WriteLine("possible: {0}", f);
+-- 
+2.23.0
+
