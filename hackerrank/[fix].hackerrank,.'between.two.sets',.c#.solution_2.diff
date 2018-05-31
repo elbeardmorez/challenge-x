@@ -1,0 +1,76 @@
+From c2ab1b9c0f64b19847a66f8fb56b9705dea5c187 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 31 May 2018 23:14:51 +0100
+Subject: [fix] hackerrank, 'between two sets', c# solution
+
+-order initial set
+-no need for bespoke single element case
+---
+ .../between.two.sets.cs                       | 40 +++++++++----------
+ 1 file changed, 19 insertions(+), 21 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.between.two.sets/between.two.sets.cs b/hackerrank/algorithms.-.implementation.-.easy.-.between.two.sets/between.two.sets.cs
+index e6c8e20..c0f8fed 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.between.two.sets/between.two.sets.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.between.two.sets/between.two.sets.cs
+@@ -16,38 +16,36 @@ class Solution {
+         bool valid;
+ 
+         // generate multiples list
+-        var hightest_pos = b[b.Length - 1];
++        var b_ordered = new List<int>(b).OrderBy(x => x);
++
++        var hightest_pos = b_ordered.Last();
+         var first = a[0];
+         var last = a[a.Length - 1];
+ 
+         var possible = last;
+-        if (a.Length == 1)
+-            possible_set.Add(possible);
+-        else {
+-            if (possible % first != 0)
+-                possible = possible + last;
+-
+-            // remainding factor to test for viability of n*first*last possibility
+-            var others = new List<int>(a).Take(a.Length - 1);
+-            while (possible <= hightest_pos) {
+-                valid = true;
+-                foreach(int f in others) {
+-                    if (possible % f != 0) {
+-                        valid = false;
+-                        break;
+-                    }
+-                }
+-                if (valid)
+-                    possible_set.Add(possible);
++        if (possible % first != 0)
++            possible = possible + last;
+ 
+-                possible = possible + last;
++        // remainding factor to test for viability of n*first*last possibility
++        var others = new List<int>(a).Take(a.Length - 1);
++        while (possible <= hightest_pos) {
++            valid = true;
++            foreach(int f in others) {
++                if (possible % f != 0) {
++                    valid = false;
++                    break;
++                }
+             }
++            if (valid)
++                possible_set.Add(possible);
++
++            possible = possible + last;
+         }
+ 
+         // remove multiples wich aren't factors of all b
+         int res = 0;
+         foreach(int f in possible_set) {
+-            Console.WriteLine("possible: {0}", f);
++            //Console.WriteLine("possible: {0}", f);
+             valid = true;
+             foreach(int m in b) {
+                 if (m % f != 0) {
+-- 
+2.23.0
+
