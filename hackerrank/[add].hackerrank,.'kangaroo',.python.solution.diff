@@ -1,0 +1,50 @@
+From e2577805945bb9fc661ac3e4b6f45cdafba1cc35 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 31 May 2018 22:03:03 +0100
+Subject: [add] hackerrank, 'kangaroo', python solution
+
+---
+ .../kangaroo.py                               | 27 +++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.kangaroo/kangaroo.py b/hackerrank/algorithms.-.implementation.-.easy.-.kangaroo/kangaroo.py
+index 1477868..31db355 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.kangaroo/kangaroo.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.kangaroo/kangaroo.py
+@@ -8,6 +8,33 @@ import sys
+ 
+ # Complete the kangaroo function below.
+ def kangaroo(x1, v1, x2, v2):
++    res = "NO"
++    if x1 == x2:
++        res = "YES"
++    elif (x2 > x1 and v1 > v2) or \
++         (x1 > x2 and v2 > v1):
++        # could catch!
++        xa = None
++        vf = None
++        xb = None
++        vs = None
++        if x1 < x2:
++            xa = x1
++            vf = v1
++            xb = x2
++            vs = v2
++        else:
++            xa = x2
++            vf = v2
++            xb = x1
++            vs = v1
++        while xa <= xb:
++            xa += vf
++            xb += vs
++            if xa == xb:
++                res = "YES"
++                break
++    return res
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
