@@ -1,0 +1,73 @@
+From f8549ba593687b2c2d8659ffc53cf4a72c0a55ba Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 31 May 2018 22:30:30 +0100
+Subject: [add] hackerrank, 'between two sets', c# solution
+
+---
+ .../between.two.sets.cs                       | 50 +++++++++++++++++++
+ 1 file changed, 50 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.between.two.sets/between.two.sets.cs b/hackerrank/algorithms.-.implementation.-.easy.-.between.two.sets/between.two.sets.cs
+index a79378d..e9a3dde 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.between.two.sets/between.two.sets.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.between.two.sets/between.two.sets.cs
+@@ -12,6 +12,56 @@ class Solution {
+         /*
+          * Write your code here.
+          */
++        var possible_set = new List<int>();
++        bool valid;
++
++        // generate multiples list
++        var hightest_pos = b[b.Length - 1];
++        var first = a[0];
++        var last = a[a.Length - 1];
++
++        if (a.Length == 1)
++            possible_set.AddRange(a);
++        else {
++            if (last % first != 0)
++                last = first * last;
++
++            // remainding factor to test for viability of n*first*last possibility
++            var mid = new int[] {};
++            if (a.Length > 2)
++                mid = new List<int>(a).Skip(1).Take(a.Length - 2).ToArray();
++
++            while (last <= hightest_pos) {
++                valid = true;
++                foreach(int f in mid) {
++                    if (last % f != 0) {
++                        valid = false;
++                        break;
++                    }
++                }
++                if (valid)
++                    possible_set.Add(last);
++
++                last = last * first;
++            }
++        }
++
++        // remove multiples wich aren't factors of all b
++        int res = 0;
++        foreach(int f in possible_set) {
++            //Console.WriteLine("possible: {0}", f);
++            valid = true;
++            foreach(int m in b) {
++                if (m % f != 0) {
++                    valid = false;
++                    break;
++                }
++            }
++            if (valid)
++                res += 1;
++        }
++
++        return res;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
