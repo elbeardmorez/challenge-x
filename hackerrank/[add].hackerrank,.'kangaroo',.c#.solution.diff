@@ -1,0 +1,54 @@
+From 73013b349b027d4e4c3398e86f1ef68626328521 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 31 May 2018 22:08:32 +0100
+Subject: [add] hackerrank, 'kangaroo', c# solution
+
+---
+ .../kangaroo.cs                               | 31 +++++++++++++++++++
+ 1 file changed, 31 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.kangaroo/kangaroo.cs b/hackerrank/algorithms.-.implementation.-.easy.-.kangaroo/kangaroo.cs
+index 5fd7192..2ebe4b1 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.kangaroo/kangaroo.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.kangaroo/kangaroo.cs
+@@ -16,6 +16,37 @@ class Solution {
+ 
+     // Complete the kangaroo function below.
+     static string kangaroo(int x1, int v1, int x2, int v2) {
++        string res = "NO";
++        if (x1 == x2)
++            res = "YES";
++        else if ((x2 > x1 && v1 > v2) ||
++                 (x1 > x2 && v2 > v1)) {
++            // could catch!
++            int xa = -1;
++            int vf = -1;
++            int xb = -1;
++            int vs = -1;
++            if (x1 < x2) {
++                xa = x1;
++                vf = v1;
++                xb = x2;
++                vs = v2;
++            } else {
++                xa = x2;
++                vf = v2;
++                xb = x1;
++                vs = v1;
++            }
++            while (xa <= xb) {
++                xa += vf;
++                xb += vs;
++                if (xa == xb) {
++                    res = "YES";
++                    break;
++                }
++            }
++        }
++        return res;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
