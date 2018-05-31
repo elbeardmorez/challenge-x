@@ -1,0 +1,65 @@
+From 01fff37225b365a098f3378f3fc561171a2b9967 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 31 May 2018 23:01:04 +0100
+Subject: [fix] hackerrank, 'between two sets', c# solution
+
+-redux algorithm, need to test all intermediate factors too
+---
+ .../between.two.sets.cs                       | 24 +++++++++----------
+ 1 file changed, 11 insertions(+), 13 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.between.two.sets/between.two.sets.cs b/hackerrank/algorithms.-.implementation.-.easy.-.between.two.sets/between.two.sets.cs
+index e9a3dde..e6c8e20 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.between.two.sets/between.two.sets.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.between.two.sets/between.two.sets.cs
+@@ -20,36 +20,34 @@ class Solution {
+         var first = a[0];
+         var last = a[a.Length - 1];
+ 
++        var possible = last;
+         if (a.Length == 1)
+-            possible_set.AddRange(a);
++            possible_set.Add(possible);
+         else {
+-            if (last % first != 0)
+-                last = first * last;
++            if (possible % first != 0)
++                possible = possible + last;
+ 
+             // remainding factor to test for viability of n*first*last possibility
+-            var mid = new int[] {};
+-            if (a.Length > 2)
+-                mid = new List<int>(a).Skip(1).Take(a.Length - 2).ToArray();
+-
+-            while (last <= hightest_pos) {
++            var others = new List<int>(a).Take(a.Length - 1);
++            while (possible <= hightest_pos) {
+                 valid = true;
+-                foreach(int f in mid) {
+-                    if (last % f != 0) {
++                foreach(int f in others) {
++                    if (possible % f != 0) {
+                         valid = false;
+                         break;
+                     }
+                 }
+                 if (valid)
+-                    possible_set.Add(last);
++                    possible_set.Add(possible);
+ 
+-                last = last * first;
++                possible = possible + last;
+             }
+         }
+ 
+         // remove multiples wich aren't factors of all b
+         int res = 0;
+         foreach(int f in possible_set) {
+-            //Console.WriteLine("possible: {0}", f);
++            Console.WriteLine("possible: {0}", f);
+             valid = true;
+             foreach(int m in b) {
+                 if (m % f != 0) {
+-- 
+2.23.0
+
