@@ -1,0 +1,38 @@
+From 9b2d8d27743a2e26594cd8b33f260ae9b6aea6ff Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 2 Jun 2018 19:19:17 +0100
+Subject: [add] hackerrank, 'breaking the records', c# solution
+
+---
+ .../breaking.the.records.cs                       | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.breaking.the.records/breaking.the.records.cs b/hackerrank/algorithms.-.implementation.-.easy.-.breaking.the.records/breaking.the.records.cs
+index cd0de1d..0159b25 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.breaking.the.records/breaking.the.records.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.breaking.the.records/breaking.the.records.cs
+@@ -16,6 +16,21 @@ class Solution {
+ 
+     // Complete the breakingRecords function below.
+     static int[] breakingRecords(int[] scores) {
++        int[] records = new int[] { 0, 0 };
++        int[] state = new int[] { scores[0], scores[0] };
++
++        int score;
++        for(int idx = 1; idx < scores.Length; idx++) {
++            score = scores[idx];
++            if (score > state[0]) {
++                records[0] += 1;
++                state[0] = score;
++            } else if (score < state[1]) {
++                records[1] += 1;
++                state[1] = score;
++            }
++        }
++        return records;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
