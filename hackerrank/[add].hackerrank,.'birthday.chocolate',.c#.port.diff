@@ -1,0 +1,29 @@
+From 038054f765f210ac8b26ebf1ebed78eeed76bcd5 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 2 Jun 2018 23:31:33 +0100
+Subject: [add] hackerrank, 'birthday chocolate', c# port
+
+---
+ .../birthday.chocolate.cs                                   | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.birthday.chocolate/birthday.chocolate.cs b/hackerrank/algorithms.-.implementation.-.easy.-.birthday.chocolate/birthday.chocolate.cs
+index 99eac8f..81239d5 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.birthday.chocolate/birthday.chocolate.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.birthday.chocolate/birthday.chocolate.cs
+@@ -16,6 +16,12 @@ class Solution {
+ 
+     // Complete the solve function below.
+     static int solve(int[] s, int d, int m) {
++        int res = 0;
++        for (int idx = 0; idx < s.Length - m + 1; idx++) {
++            if (s.Skip(idx).Take(m).Sum() == d)
++                res += 1;
++        }
++        return res;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
