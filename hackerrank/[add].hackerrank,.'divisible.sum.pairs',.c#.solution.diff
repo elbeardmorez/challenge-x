@@ -1,0 +1,31 @@
+From 9f907d0136d70df44f4d305adaaaf41cd8d68203 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 3 Jun 2018 00:05:02 +0100
+Subject: [add] hackerrank, 'divisible sum pairs', c# solution
+
+---
+ .../divisible.sum.pairs.cs                                | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.divisible.sum.pairs/divisible.sum.pairs.cs b/hackerrank/algorithms.-.implementation.-.easy.-.divisible.sum.pairs/divisible.sum.pairs.cs
+index 7aa21b1..90a1583 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.divisible.sum.pairs/divisible.sum.pairs.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.divisible.sum.pairs/divisible.sum.pairs.cs
+@@ -16,6 +16,14 @@ class Solution {
+ 
+     // Complete the divisibleSumPairs function below.
+     static int divisibleSumPairs(int n, int k, int[] ar) {
++        int res = 0;
++        for (int i = 0; i < ar.Length; i++) {
++            for (int j = i + 1; j < ar.Length; j++) {
++                if ((ar[i] + ar[j]) % k == 0)
++                    res += 1;
++            }
++        }
++        return res;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
