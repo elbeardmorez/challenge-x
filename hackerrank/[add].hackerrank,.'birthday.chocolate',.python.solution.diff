@@ -1,0 +1,28 @@
+From 21b968c10bea30ff63e96d8db40eacd14b0083cc Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 2 Jun 2018 19:39:00 +0100
+Subject: [add] hackerrank, 'birthday chocolate', python solution
+
+---
+ .../birthday.chocolate.py                                    | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.birthday.chocolate/birthday.chocolate.py b/hackerrank/algorithms.-.implementation.-.easy.-.birthday.chocolate/birthday.chocolate.py
+index eaa3452..5760b47 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.birthday.chocolate/birthday.chocolate.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.birthday.chocolate/birthday.chocolate.py
+@@ -8,6 +8,11 @@ import sys
+ 
+ # Complete the solve function below.
+ def solve(s, d, m):
++    res = 0
++    for idx in range(0, len(s) - m + 1):
++        if sum(s[idx:idx + m]) == d:
++            res += 1
++    return res
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
