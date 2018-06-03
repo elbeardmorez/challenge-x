@@ -1,0 +1,25 @@
+From 543e66fdee661b76209d76193bfdf9172b62d9a2 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 3 Jun 2018 08:41:19 +0100
+Subject: [add] hackerrank, 'migratory birds', c# port
+
+---
+ .../migratory.birds.cs                                          | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.migratory.birds/migratory.birds.cs b/hackerrank/algorithms.-.implementation.-.easy.-.migratory.birds/migratory.birds.cs
+index 689db88..d97880d 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.migratory.birds/migratory.birds.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.migratory.birds/migratory.birds.cs
+@@ -16,6 +16,8 @@ class Solution {
+ 
+     // Complete the migratoryBirds function below.
+     static int migratoryBirds(int[] ar) {
++        // sort by key asc, then count desc so e.g. 222 will be above 444
++        return ar.GroupBy(x => x).OrderByDescending(g => g.Sum()).ThenBy(g => g.Key).Select(g => g.Key).First();
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
