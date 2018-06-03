@@ -1,0 +1,26 @@
+From b750e434dcae464251106260e24d687f7e403b36 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 3 Jun 2018 19:30:02 +0100
+Subject: [fix] hackerrank, 'day of the programmer', c# solution
+
+-off by one bug
+---
+ .../day.of.the.programmer.cs                                    | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.day.of.the.programmer/day.of.the.programmer.cs b/hackerrank/algorithms.-.implementation.-.easy.-.day.of.the.programmer/day.of.the.programmer.cs
+index bea2a2c..cc06b30 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.day.of.the.programmer/day.of.the.programmer.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.day.of.the.programmer/day.of.the.programmer.cs
+@@ -32,7 +32,7 @@ class Solution {
+             if (julian_leap && !gregorian_leap)
+                dt = dt.AddDays(-1);
+         } else if (year == calendar_switch) {
+-               dt = dt.AddDays(+14);
++               dt = dt.AddDays(+13);
+         }
+         return dt.ToString("dd.MM.yyyy");
+     }
+-- 
+2.23.0
+
