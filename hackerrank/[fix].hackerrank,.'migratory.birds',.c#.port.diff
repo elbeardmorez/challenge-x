@@ -1,0 +1,31 @@
+From 5d4deb4cff43b53fafd3471def31451dae6f48e7 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 3 Jun 2018 13:50:02 +0100
+Subject: [fix] hackerrank, 'migratory birds', c# port
+
+-index on count not sum
+---
+ .../migratory.birds.cs                                     | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.migratory.birds/migratory.birds.cs b/hackerrank/algorithms.-.implementation.-.easy.-.migratory.birds/migratory.birds.cs
+index d97880d..76a04ef 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.migratory.birds/migratory.birds.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.migratory.birds/migratory.birds.cs
+@@ -17,7 +17,12 @@ class Solution {
+     // Complete the migratoryBirds function below.
+     static int migratoryBirds(int[] ar) {
+         // sort by key asc, then count desc so e.g. 222 will be above 444
+-        return ar.GroupBy(x => x).OrderByDescending(g => g.Sum()).ThenBy(g => g.Key).Select(g => g.Key).First();
++        // verbose, full iteration
++        //var all = ar.GroupBy(x => x).OrderByDescending(g => g.Count()).ThenBy(g => { Console.WriteLine("[desc count] sum: {0}, key: {0}", g.Count(), g.Key); return g.Key; }).Select(g => { Console.WriteLine("[asc key]: key {0}", g.Key); return g.Key; }).ToList();
++        //return all.First();
++
++        // lean
++        return ar.GroupBy(x => x).OrderByDescending(g => g.Count()).ThenBy(g => g.Key).Select(g => g.Key).First();
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
