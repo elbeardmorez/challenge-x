@@ -1,0 +1,26 @@
+From ff2c8d06b06b08e11f198fbd88e1b124c103d375 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 3 Jun 2018 19:26:01 +0100
+Subject: [fix] hackerrank, 'day of the programmer', c# solution
+
+-consider gregorian leap years
+---
+ .../day.of.the.programmer.cs                                    | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.day.of.the.programmer/day.of.the.programmer.cs b/hackerrank/algorithms.-.implementation.-.easy.-.day.of.the.programmer/day.of.the.programmer.cs
+index ecac6cc..bea2a2c 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.day.of.the.programmer/day.of.the.programmer.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.day.of.the.programmer/day.of.the.programmer.cs
+@@ -29,7 +29,7 @@ class Solution {
+         var dt = new DateTime(year, 1, 1).AddDays(day - 1);
+         // calendar corrections
+         if (year >= julian_start && year <= julian_end) {
+-            if (julian_leap)
++            if (julian_leap && !gregorian_leap)
+                dt = dt.AddDays(-1);
+         } else if (year == calendar_switch) {
+                dt = dt.AddDays(+14);
+-- 
+2.23.0
+
