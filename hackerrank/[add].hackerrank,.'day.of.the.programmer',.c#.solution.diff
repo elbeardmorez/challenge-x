@@ -1,0 +1,42 @@
+From a45f60ffcf42a00b398f3afceb2c4fb990c8c17b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 3 Jun 2018 19:21:35 +0100
+Subject: [add] hackerrank, 'day of the programmer', c# solution
+
+---
+ .../day.of.the.programmer.cs                  | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.day.of.the.programmer/day.of.the.programmer.cs b/hackerrank/algorithms.-.implementation.-.easy.-.day.of.the.programmer/day.of.the.programmer.cs
+index e639bf7..ecac6cc 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.day.of.the.programmer/day.of.the.programmer.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.day.of.the.programmer/day.of.the.programmer.cs
+@@ -16,6 +16,25 @@ class Solution {
+ 
+     // Complete the solve function below.
+     static string solve(int year) {
++        int day = 256;
++        int julian_start = 1700;
++        int julian_end = 1917;
++        int calendar_switch = 1918;
++        int gregorian_start = 1919;
++        int gregorian_end = 2700;
++
++        bool julian_leap =  (year % 4 == 0) ? true : false;
++        bool gregorian_leap = (year % 400 == 0 || (year % 4 == 0 && year % 100 != 0)) ? true : false;
++
++        var dt = new DateTime(year, 1, 1).AddDays(day - 1);
++        // calendar corrections
++        if (year >= julian_start && year <= julian_end) {
++            if (julian_leap)
++               dt = dt.AddDays(-1);
++        } else if (year == calendar_switch) {
++               dt = dt.AddDays(+14);
++        }
++        return dt.ToString("dd.MM.yyyy");
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
