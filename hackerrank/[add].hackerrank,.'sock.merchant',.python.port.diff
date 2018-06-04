@@ -1,0 +1,32 @@
+From 33e65644dc44b77d9b3ad477f78e9a994cc2cea4 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 4 Jun 2018 21:58:51 +0100
+Subject: [add] hackerrank, 'sock merchant', python port
+
+---
+ .../sock.merchant.py                                     | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.sock.merchant/sock.merchant.py b/hackerrank/algorithms.-.implementation.-.easy.-.sock.merchant/sock.merchant.py
+index 0c4b102..4b68b50 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.sock.merchant/sock.merchant.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.sock.merchant/sock.merchant.py
+@@ -8,6 +8,15 @@ import sys
+ 
+ # Complete the sockMerchant function below.
+ def sockMerchant(n, ar):
++    types = {}
++    for t in ar:
++        if not t in types:
++            types[t] = 0
++        types[t] += 1
++    for t, count in types.items():
++        if count % 2 == 1:
++            types[t] -= 1
++    return int(sum(types.values()) / 2)
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
