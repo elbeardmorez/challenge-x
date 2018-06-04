@@ -1,0 +1,34 @@
+From 51fa5c94c6ec1df15dd4dc6d2a679cead213c077 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 4 Jun 2018 21:18:09 +0100
+Subject: [add] hackerrank, 'bon appetit', python port
+
+---
+ .../bon.appetit.py                               | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.bon.appetit/bon.appetit.py b/hackerrank/algorithms.-.implementation.-.easy.-.bon.appetit/bon.appetit.py
+index 7c60a68..575ccce 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.bon.appetit/bon.appetit.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.bon.appetit/bon.appetit.py
+@@ -1 +1,17 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++
++import os
++import sys
++
++lines = sys.stdin.readlines()
++#for s in lines:
++#    print("line: %s" % s)
++n, k = list(map(lambda x: int(x), lines[0].split(' ')))
++bill = list(map(lambda x: int(x), lines[1].split(' ')))
++charged = int(lines[2])
++#print(str(n) + " items in the bill, item " + str(int(k) + 1) + \
++#          " @ cost " + str(bill[k]) + " shouldn't have been" + \
++#          " included in the split. " + str(charged) + " was charged")
++split = (sum(bill) - bill[k]) / 2
++res = "Bon Appetit" if split == charged else int(charged - split)
++print(res)
+-- 
+2.23.0
+
