@@ -1,0 +1,24 @@
+From c3812f3db55d6b0f65055a4c3efaa4af1f7323c2 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 4 Jun 2018 21:54:27 +0100
+Subject: [add] hackerrank, 'sock merchant', c# solution
+
+---
+ .../sock.merchant.cs                                             | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.sock.merchant/sock.merchant.cs b/hackerrank/algorithms.-.implementation.-.easy.-.sock.merchant/sock.merchant.cs
+index 27a4208..52da32c 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.sock.merchant/sock.merchant.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.sock.merchant/sock.merchant.cs
+@@ -16,6 +16,7 @@ class Solution {
+ 
+     // Complete the sockMerchant function below.
+     static int sockMerchant(int n, int[] ar) {
++        return ar.GroupBy(x => x).Where(g => g.Count() > 1).Select(g => (g.Count() - g.Count() % 2) / 2).Sum();
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
