@@ -1,0 +1,36 @@
+From 60b5dcd6f6b60c3fda13788707dd84c81c36be21 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 4 Jun 2018 22:23:10 +0100
+Subject: [add] hackerrank, 'sock merchant', javascript port
+
+---
+ .../sock.merchant.js                                | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.sock.merchant/sock.merchant.js b/hackerrank/algorithms.-.implementation.-.easy.-.sock.merchant/sock.merchant.js
+index 26c8cfa..d5dd9db 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.sock.merchant/sock.merchant.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.sock.merchant/sock.merchant.js
+@@ -26,6 +26,19 @@ function readLine() {
+ 
+ // Complete the sockMerchant function below.
+ function sockMerchant(n, ar) {
++    var types = {};
++    ar.forEach(t => {
++        if (!(t in types))
++            types[t] = 0;
++        types[t] += 1;
++    });
++    //console.log("%j", types)
++    Object.keys(types).forEach(t => {
++        if (types[t] % 2 == 1)
++            types[t] -= 1;
++    });
++    //console.log("%j", types)
++    return parseInt(Object.values(types).reduce((a, x) => a + x) / 2);
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
