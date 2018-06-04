@@ -1,0 +1,35 @@
+From e6d574f4ea019939517c2d2874864560fc7f7a74 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 4 Jun 2018 20:57:24 +0100
+Subject: [add] hackerrank, 'bon appetit', javascript solution
+
+---
+ .../bon.appetit.js                                 | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.bon.appetit/bon.appetit.js b/hackerrank/algorithms.-.implementation.-.easy.-.bon.appetit/bon.appetit.js
+index 348a7b7..8bdc14c 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.bon.appetit/bon.appetit.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.bon.appetit/bon.appetit.js
+@@ -6,4 +6,18 @@ process.stdin.on("data", function (chunk) {
+ });
+ process.stdin.on("end", function () {
+     // now we can read/parse input
++    //console.log(`input: ${input}`);
++    var lines = input.split('\n');
++    //lines.forEach(s => {
++    //    console.log(`line: ${s}`);
++    //});
++    var [n, k] = lines[0].split(' ');
++    var bill = lines[1].split(' ').map(x => parseInt(x));
++    var charged = lines[2];
++    //console.log(`${n} items in the bill, item ` + (parseInt(k) + 1) +
++    //            ` @ cost ${bill[k]} shouldn't have been` +
++    //            ` included in the split. ${charged} was charged`);
++    var split = (bill.reduce((a, x) => a + x) - bill[k]) / 2;
++    var res = split == charged ? "Bon Appetit" : charged - split;
++    console.log(res);
+ });
+-- 
+2.23.0
+
