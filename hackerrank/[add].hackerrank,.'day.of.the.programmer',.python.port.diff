@@ -1,0 +1,41 @@
+From 2df30b084aaea6b3ad2a4ef94543ce2c0b0eeaff Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 4 Jun 2018 09:17:02 +0100
+Subject: [add] hackerrank, 'day of the programmer', python port
+
+---
+ .../day.of.the.programmer.py                   | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.day.of.the.programmer/day.of.the.programmer.py b/hackerrank/algorithms.-.implementation.-.easy.-.day.of.the.programmer/day.of.the.programmer.py
+index 7dc36df..0861a99 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.day.of.the.programmer/day.of.the.programmer.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.day.of.the.programmer/day.of.the.programmer.py
+@@ -9,6 +9,24 @@ from datetime import datetime, timedelta
+ 
+ # Complete the solve function below.
+ def solve(year):
++    day = 256
++    julian_start = 1700
++    julian_end = 1917
++    calendar_switch = 1918
++    gregorian_start = 1919
++    gregorian_end = 2700
++
++    julian_leap = True if (year % 4 == 0) else False
++    gregorian_leap = True if (year % 400 == 0 or (year % 4 == 0 and year % 100 != 0)) else False
++
++    dt = datetime(year, 1, 1) + timedelta(days=(day - 1))
++    # calendar corrections
++    if year >= julian_start and year <= julian_end:
++        if julian_leap and not gregorian_leap:
++            dt = dt - timedelta(days=1)
++    elif year == calendar_switch:
++        dt = dt + timedelta(days=13)
++    return dt.strftime("%d.%m.%Y")
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
