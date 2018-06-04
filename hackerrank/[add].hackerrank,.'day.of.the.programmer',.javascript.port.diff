@@ -1,0 +1,48 @@
+From 9f48bb46d2761f841a89881db9de5d9fadbe0b4a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 4 Jun 2018 11:07:54 +0100
+Subject: [add] hackerrank, 'day of the programmer', javascript port
+
+---
+ .../day.of.the.programmer.js                  | 25 +++++++++++++++++++
+ 1 file changed, 25 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.day.of.the.programmer/day.of.the.programmer.js b/hackerrank/algorithms.-.implementation.-.easy.-.day.of.the.programmer/day.of.the.programmer.js
+index 24ab434..26fca35 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.day.of.the.programmer/day.of.the.programmer.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.day.of.the.programmer/day.of.the.programmer.js
+@@ -27,6 +27,31 @@ function readLine() {
+ 
+ // Complete the solve function below.
+ function solve(year) {
++
++    var day = 256,
++        julian_start = 1700,
++        julian_end = 1917,
++        calendar_switch = 1918,
++        gregorian_start = 1919,
++        gregorian_end = 2700;
++
++    var julian_leap = (year % 4 == 0) ? true : false;
++    var gregorian_leap = (year % 400 == 0 || (year % 4 == 0 && year % 100 != 0)) ? true : false;
++
++    //var dt = new moment(year, 1, 1).add(day - 1, 'days');
++    var dt = new Date(year, 1, 1)
++    dt.setDate(day - 1);
++    // calendar corrections
++    if (year >= julian_start && year <= julian_end) {
++        if (julian_leap && !gregorian_leap)
++            //dt = dt.subtract(1, 'days');
++            dt.setDate(dt.getDate() - 1);
++    } else if (year == calendar_switch)
++        //dt = dt.add(13, 'days');
++        dt.setDate(dt.getDate() + 13);
++
++    //return dt.format('dd.mm.yyyy');
++    return [ ("00" + dt.getDate()).slice(-2), ("00" + dt.getMonth()).slice(-2), year].join('.');
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
