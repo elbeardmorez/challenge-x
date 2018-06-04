@@ -1,0 +1,34 @@
+From 6df3ac26e947a9f77c08742bd2d6659fa3ce951c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 4 Jun 2018 21:43:44 +0100
+Subject: [add] hackerrank, 'bon appetit', c# port
+
+---
+ .../bon.appetit.cs                                    | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.bon.appetit/bon.appetit.cs b/hackerrank/algorithms.-.implementation.-.easy.-.bon.appetit/bon.appetit.cs
+index 9a4b85f..4c6f57b 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.bon.appetit/bon.appetit.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.bon.appetit/bon.appetit.cs
+@@ -8,6 +8,17 @@ namespace Solution {
+ class Solution {
+     static void Main(string[] args) {
+         /* Enter your code here. Read input from STDIN. Print output to STDOUT */
++        var n_k = Console.ReadLine().Split(' ').Select(x => Int32.Parse(x)).ToArray();
++        var n = n_k[0];
++        var k = n_k[1];
++        var bill = Console.ReadLine().Split(' ').Select(x => Int32.Parse(x)).ToArray();
++        var charged = Int32.Parse(Console.ReadLine());
++        //WriteLine(n.ToString() + " items in the bill, item " + (k + 1).ToString() +
++        //    " @ cost " + bill[k].ToString() + " shouldn't have been" +
++        //    " included in the split. " + charged.ToString() + " was charged");
++        var split = (bill.Sum() - bill[k]) / 2;
++        var res = split == charged ? "Bon Appetit" : (charged - split).ToString();
++        WriteLine(res);
+     }
+ }
+ }
+-- 
+2.23.0
+
