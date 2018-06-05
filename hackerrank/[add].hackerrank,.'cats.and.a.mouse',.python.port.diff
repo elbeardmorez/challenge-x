@@ -1,0 +1,32 @@
+From 0e00d36ffce611eb14cc27be7f01f7be5419b3eb Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 5 Jun 2018 14:19:10 +0100
+Subject: [add] hackerrank, 'cats and a mouse', python port
+
+---
+ .../cats.and.a.mouse.py                                  | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.cats.and.a.mouse/cats.and.a.mouse.py b/hackerrank/algorithms.-.implementation.-.easy.-.cats.and.a.mouse/cats.and.a.mouse.py
+index 693ccdd..7fa6f5d 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.cats.and.a.mouse/cats.and.a.mouse.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.cats.and.a.mouse/cats.and.a.mouse.py
+@@ -9,6 +9,15 @@ import sys
+ # Complete the catAndMouse function below.
+ def catAndMouse(x, y, z):
+ 
++    res = "Mouse C";
++    x_diff = abs(x - z);
++    y_diff = abs(y - z);
++    if x_diff < y_diff:
++        res = "Cat A"
++    elif y_diff < x_diff:
++        res = "Cat B"
++    return res
++
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+ 
+-- 
+2.23.0
+
