@@ -1,0 +1,26 @@
+From a0b812e14869e6c1667398607049881b9edee273 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 5 Jun 2018 13:46:35 +0100
+Subject: [fix] hackerrank, 'electronics shop', python solution
+
+-border case < vs <=
+---
+ .../electronics.shop.py                                         | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.electronics.shop/electronics.shop.py b/hackerrank/algorithms.-.implementation.-.easy.-.electronics.shop/electronics.shop.py
+index 899f2ad..4e3ba92 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.electronics.shop/electronics.shop.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.electronics.shop/electronics.shop.py
+@@ -11,7 +11,7 @@ def getMoneySpent(keyboards, drives, b):
+     for k in keyboards:
+         for d in drives:
+             t = k + d
+-            if t > max_under_budget and t < b:
++            if t > max_under_budget and t <= b:
+                 max_under_budget = t
+     return max_under_budget
+ 
+-- 
+2.23.0
+
