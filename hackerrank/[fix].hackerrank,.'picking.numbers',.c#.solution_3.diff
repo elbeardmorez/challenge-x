@@ -1,0 +1,33 @@
+From 9cfd30e4dc2103ee33daeefcc076165b2403418f Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 5 Jun 2018 15:23:17 +0100
+Subject: [fix] hackerrank, 'picking numbers', c# solution
+
+-key diffs not count diffs..
+---
+ .../picking.numbers.cs                                        | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.picking.numbers/picking.numbers.cs b/hackerrank/algorithms.-.implementation.-.easy.-.picking.numbers/picking.numbers.cs
+index 19f9f94..cdb8f49 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.picking.numbers/picking.numbers.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.picking.numbers/picking.numbers.cs
+@@ -18,12 +18,14 @@ class Solution {
+     static int pickingNumbers(int[] a) {
+         var res = 1;
+         var last_count = 0;
++        var last_val = -1;
+         a.GroupBy(x => x).OrderBy(g => g.Key).ToList().ForEach(g => {
+             // max concurrent pair
+-            if (g.Count() - last_count > 1)
++            if (last_val > -1 && g.Key - last_val > 1)
+                 last_count = 0;
+             if (last_count + g.Count() > res)
+                 res = last_count + g.Count();
++            last_val = g.Key;
+             last_count = g.Count();
+         });
+         return res;
+-- 
+2.23.0
+
