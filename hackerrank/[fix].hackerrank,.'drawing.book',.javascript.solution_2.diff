@@ -1,0 +1,30 @@
+From 6bca2cd9defcc9698c38cd21230889ff8f5f675a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 5 Jun 2018 13:03:13 +0100
+Subject: [fix] hackerrank, 'drawing book', javascript solution
+
+-rounding bug
+---
+ .../drawing.book.js                                         | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.drawing.book/drawing.book.js b/hackerrank/algorithms.-.implementation.-.easy.-.drawing.book/drawing.book.js
+index c6d099b..dae3402 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.drawing.book/drawing.book.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.drawing.book/drawing.book.js
+@@ -28,8 +28,10 @@ function readLine() {
+ function pageCount(n, p) {
+     if (p == 1 || p == n)
+         return 0;
+-    var count_forward = parseInt((p + 1) / 2); // round down
+-    var count_backward = parseInt((n + ((n % 2) == 0 ? 1 : 0) - p) / 2); // round down correction
++    // use int cast to round down, and add correction
++    // for backward counting
++    var count_forward = parseInt(p / 2);
++    var count_backward = parseInt((n + ((n % 2) == 0 ? 1 : 0) - p) / 2);
+     return count_forward < count_backward ? count_forward : count_backward;
+ }
+ 
+-- 
+2.23.0
+
