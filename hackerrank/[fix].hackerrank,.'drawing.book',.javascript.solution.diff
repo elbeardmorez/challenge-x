@@ -1,0 +1,32 @@
+From a2b4ceeb9434f8d6d1f028da5ecc98c619addc3e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 5 Jun 2018 11:07:02 +0100
+Subject: [fix] hackerrank, 'drawing book', javascript solution
+
+-lower bound short-circuit is 1
+-correction for rounding
+---
+ .../drawing.book.js                                         | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.drawing.book/drawing.book.js b/hackerrank/algorithms.-.implementation.-.easy.-.drawing.book/drawing.book.js
+index bcda8d9..c6d099b 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.drawing.book/drawing.book.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.drawing.book/drawing.book.js
+@@ -26,10 +26,10 @@ function readLine() {
+  * Complete the pageCount function below.
+  */
+ function pageCount(n, p) {
+-    if (p == 0 || p == n)
++    if (p == 1 || p == n)
+         return 0;
+-    var count_forward = parseInt(p / 2);
+-    var count_backward = parseInt((n - p) / 2);
++    var count_forward = parseInt((p + 1) / 2); // round down
++    var count_backward = parseInt((n + ((n % 2) == 0 ? 1 : 0) - p) / 2); // round down correction
+     return count_forward < count_backward ? count_forward : count_backward;
+ }
+ 
+-- 
+2.23.0
+
