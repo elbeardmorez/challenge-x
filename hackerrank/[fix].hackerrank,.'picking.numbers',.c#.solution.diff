@@ -1,0 +1,35 @@
+From f9b4b25672d448e200840c7f57c17c7950d7058a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 5 Jun 2018 15:16:33 +0100
+Subject: [fix] hackerrank, 'picking numbers', c# solution
+
+-simplify condition with 0 as lower bound
+---
+ .../picking.numbers.cs                                 | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.picking.numbers/picking.numbers.cs b/hackerrank/algorithms.-.implementation.-.easy.-.picking.numbers/picking.numbers.cs
+index d7b5dfb..670cdcc 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.picking.numbers/picking.numbers.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.picking.numbers/picking.numbers.cs
+@@ -17,13 +17,11 @@ class Solution {
+     // Complete the pickingNumbers function below.
+     static int pickingNumbers(int[] a) {
+         var res = 1;
+-        var last_count = -1;
++        var last_count = 0;
+         a.GroupBy(x => x).OrderBy(g => g.Key).ToList().ForEach(g => {
+-            if (last_count > -1) {
+-                // max concurrent pair
+-                if (last_count + g.Count() > res)
+-                    res = last_count + g.Count();
+-            }
++            // max concurrent pair
++            if (last_count + g.Count() > res)
++                res = last_count + g.Count();
+             last_count = g.Count();
+         });
+         return res;
+-- 
+2.23.0
+
