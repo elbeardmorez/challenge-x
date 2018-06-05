@@ -1,0 +1,31 @@
+From 8ce70c2093151ba6b1cf50dfdadd8e10dd2a7439 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 5 Jun 2018 14:00:12 +0100
+Subject: [add] hackerrank, 'cats and a mouse', c# solution
+
+---
+ .../cats.and.a.mouse.cs                                   | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.cats.and.a.mouse/cats.and.a.mouse.cs b/hackerrank/algorithms.-.implementation.-.easy.-.cats.and.a.mouse/cats.and.a.mouse.cs
+index 0563724..f7c9103 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.cats.and.a.mouse/cats.and.a.mouse.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.cats.and.a.mouse/cats.and.a.mouse.cs
+@@ -17,6 +17,14 @@ class Solution {
+ 
+     // Complete the catAndMouse function below.
+     static string catAndMouse(int x, int y, int z) {
++        var res = "Mouse C";
++        var x_diff = Abs(x - z);
++        var y_diff = Abs(y - z);
++        if (x_diff < y_diff)
++            res = "Cat A";
++        else if (y_diff < x_diff)
++            res = "Cat B";
++        return res;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
