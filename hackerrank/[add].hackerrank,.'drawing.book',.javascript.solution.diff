@@ -1,0 +1,28 @@
+From 4ebfac8de164820cf97ce4ec0e1133bde2b06321 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 5 Jun 2018 10:47:14 +0100
+Subject: [add] hackerrank, 'drawing book', javascript solution
+
+---
+ .../drawing.book.js                                          | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.drawing.book/drawing.book.js b/hackerrank/algorithms.-.implementation.-.easy.-.drawing.book/drawing.book.js
+index 1fbea6a..bcda8d9 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.drawing.book/drawing.book.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.drawing.book/drawing.book.js
+@@ -26,6 +26,11 @@ function readLine() {
+  * Complete the pageCount function below.
+  */
+ function pageCount(n, p) {
++    if (p == 0 || p == n)
++        return 0;
++    var count_forward = parseInt(p / 2);
++    var count_backward = parseInt((n - p) / 2);
++    return count_forward < count_backward ? count_forward : count_backward;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
