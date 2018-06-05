@@ -1,0 +1,30 @@
+From 05a90639eaa57b9a625edbe2bf0153e36ab06ca9 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 5 Jun 2018 13:08:25 +0100
+Subject: [add] hackerrank, 'drawing book', c# port
+
+---
+ .../drawing.book.cs                                        | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.drawing.book/drawing.book.cs b/hackerrank/algorithms.-.implementation.-.easy.-.drawing.book/drawing.book.cs
+index 9be003f..ef7c1b2 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.drawing.book/drawing.book.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.drawing.book/drawing.book.cs
+@@ -9,6 +9,13 @@ class Solution {
+      * Complete the pageCount function below.
+      */
+     static int pageCount(int n, int p) {
++        if (p == 1 || p == n)
++            return 0;
++        // use int cast to round down, and add correction
++        // for backward counting
++        var count_forward = (int)(p / 2);
++        var count_backward = (int)((n + ((n % 2) == 0 ? 1 : 0) - p) / 2);
++        return count_forward < count_backward ? count_forward : count_backward;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
