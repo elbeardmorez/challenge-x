@@ -1,0 +1,33 @@
+From 33a66386833a600deb554b756254312348ab65f3 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 5 Jun 2018 13:29:45 +0100
+Subject: [add] hackerrank, 'counting valleys', python solution
+
+---
+ .../counting.valleys.py                                | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.counting.valleys/counting.valleys.py b/hackerrank/algorithms.-.implementation.-.easy.-.counting.valleys/counting.valleys.py
+index 944a438..7107dfe 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.counting.valleys/counting.valleys.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.counting.valleys/counting.valleys.py
+@@ -8,6 +8,16 @@ import sys
+ 
+ # Complete the countingValleys function below.
+ def countingValleys(n, s):
++    res = 0
++    last_state = 0
++    state = 0
++    for step in s:
++        state = state + 1 if step == "U" else state - 1
++        if state == -1 and last_state == 0:
++            res += 1
++        last_state = state
++
++    return res
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
