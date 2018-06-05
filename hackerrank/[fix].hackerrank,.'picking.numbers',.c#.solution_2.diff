@@ -1,0 +1,26 @@
+From 23e0658e3f4e28c43cc12cf3340ade43ee932079 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 5 Jun 2018 15:21:54 +0100
+Subject: [fix] hackerrank, 'picking numbers', c# solution
+
+-reset on group count diffs > 1
+---
+ .../picking.numbers.cs                                          | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.picking.numbers/picking.numbers.cs b/hackerrank/algorithms.-.implementation.-.easy.-.picking.numbers/picking.numbers.cs
+index 670cdcc..19f9f94 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.picking.numbers/picking.numbers.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.picking.numbers/picking.numbers.cs
+@@ -20,6 +20,8 @@ class Solution {
+         var last_count = 0;
+         a.GroupBy(x => x).OrderBy(g => g.Key).ToList().ForEach(g => {
+             // max concurrent pair
++            if (g.Count() - last_count > 1)
++                last_count = 0;
+             if (last_count + g.Count() > res)
+                 res = last_count + g.Count();
+             last_count = g.Count();
+-- 
+2.23.0
+
