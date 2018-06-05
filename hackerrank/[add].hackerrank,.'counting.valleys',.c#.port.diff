@@ -1,0 +1,33 @@
+From f1e5b2246e16daa3859cbf9692e4d63436b6d7d6 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 5 Jun 2018 13:36:02 +0100
+Subject: [add] hackerrank, 'counting valleys', c# port
+
+---
+ .../counting.valleys.cs                                | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.counting.valleys/counting.valleys.cs b/hackerrank/algorithms.-.implementation.-.easy.-.counting.valleys/counting.valleys.cs
+index 9c3a187..ec00a5b 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.counting.valleys/counting.valleys.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.counting.valleys/counting.valleys.cs
+@@ -16,6 +16,16 @@ class Solution {
+ 
+     // Complete the countingValleys function below.
+     static int countingValleys(int n, string s) {
++        var res = 0;
++        var last_state = 0;
++        var state = 0;
++        new List<char>(s.ToCharArray()).ForEach(step => {
++            state = step == 'U' ? state + 1 : state - 1;
++            if (state == -1 && last_state == 0)
++                res += 1;
++            last_state = state;
++        });
++        return res;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
