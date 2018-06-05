@@ -1,0 +1,33 @@
+From e3ef0fd2b016ed35e1d957f690c488feb527ea30 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 5 Jun 2018 14:05:23 +0100
+Subject: [add] hackerrank, 'cats and a mouse', javascript port
+
+---
+ .../cats.and.a.mouse.js                                | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.cats.and.a.mouse/cats.and.a.mouse.js b/hackerrank/algorithms.-.implementation.-.easy.-.cats.and.a.mouse/cats.and.a.mouse.js
+index 879197e..1b0e516 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.cats.and.a.mouse/cats.and.a.mouse.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.cats.and.a.mouse/cats.and.a.mouse.js
+@@ -26,6 +26,16 @@ function readLine() {
+ 
+ // Complete the catAndMouse function below.
+ function catAndMouse(x, y, z) {
++    var abs = (x) => { return x < 0 ? x * -1 : x; };
++
++    var res = "Mouse C";
++    var x_diff = abs(x - z);
++    var y_diff = abs(y - z);
++    if (x_diff < y_diff)
++        res = "Cat A";
++    else if (y_diff < x_diff)
++        res = "Cat B";
++    return res;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
