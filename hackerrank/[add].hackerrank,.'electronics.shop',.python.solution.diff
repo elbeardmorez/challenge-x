@@ -1,0 +1,30 @@
+From 32747a0f0b915292838c0ba527939d55e55bcd88 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 5 Jun 2018 13:45:18 +0100
+Subject: [add] hackerrank, 'electronics shop', python solution
+
+---
+ .../electronics.shop.py                                    | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.electronics.shop/electronics.shop.py b/hackerrank/algorithms.-.implementation.-.easy.-.electronics.shop/electronics.shop.py
+index bb714d5..899f2ad 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.electronics.shop/electronics.shop.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.electronics.shop/electronics.shop.py
+@@ -7,6 +7,13 @@ import sys
+ # Complete the getMoneySpent function below.
+ #
+ def getMoneySpent(keyboards, drives, b):
++    max_under_budget = -1
++    for k in keyboards:
++        for d in drives:
++            t = k + d
++            if t > max_under_budget and t < b:
++                max_under_budget = t
++    return max_under_budget
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
