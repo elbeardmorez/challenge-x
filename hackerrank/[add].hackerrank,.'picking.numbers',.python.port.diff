@@ -1,0 +1,36 @@
+From 67b0d80f7bdfa693637b98842865854b24e1ce11 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 5 Jun 2018 17:42:13 +0100
+Subject: [add] hackerrank, 'picking numbers', python port
+
+---
+ .../picking.numbers.py                              | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.picking.numbers/picking.numbers.py b/hackerrank/algorithms.-.implementation.-.easy.-.picking.numbers/picking.numbers.py
+index e5e65b4..ac6ac8e 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.picking.numbers/picking.numbers.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.picking.numbers/picking.numbers.py
+@@ -9,6 +9,19 @@ from itertools import groupby
+ 
+ # Complete the pickingNumbers function below.
+ def pickingNumbers(a):
++    res = 1
++    last_count = 0
++    last_val = -1
++    for k, g in groupby(sorted(a)):  # identity
++        # max concurrent pair
++        length = len(list(g))  # iterate
++        if last_val > -1 and k - last_val > 1:
++            last_count = 0
++        if last_count + length > res:
++            res = last_count + length
++        last_val = k
++        last_count = length
++    return res
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
