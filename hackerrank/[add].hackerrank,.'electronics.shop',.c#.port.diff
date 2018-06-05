@@ -1,0 +1,32 @@
+From e7efc37900ef9e5009462303d10cc1ea19437e25 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 5 Jun 2018 13:51:06 +0100
+Subject: [add] hackerrank, 'electronics shop', c# port
+
+---
+ .../electronics.shop.cs                                  | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.electronics.shop/electronics.shop.cs b/hackerrank/algorithms.-.implementation.-.easy.-.electronics.shop/electronics.shop.cs
+index a3d760a..1f86e45 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.electronics.shop/electronics.shop.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.electronics.shop/electronics.shop.cs
+@@ -9,6 +9,15 @@ class Solution {
+      * Complete the getMoneySpent function below.
+      */
+     static int getMoneySpent(int[] keyboards, int[] drives, int b) {
++        var max_under_budget = -1;
++        new List<int>(keyboards).ForEach(k => {
++            new List<int>(drives).ForEach(d => {
++                var t = k + d;
++                if (t > max_under_budget && t <= b)
++                    max_under_budget = t;
++            });
++        });
++        return max_under_budget;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
