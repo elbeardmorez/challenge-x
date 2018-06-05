@@ -1,0 +1,45 @@
+From d9f0b0dd8cc572e93d98749388478c17c38c1186 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 5 Jun 2018 17:37:04 +0100
+Subject: [add] hackerrank, 'picking numbers', javascript port
+
+---
+ .../picking.numbers.js                        | 22 +++++++++++++++++++
+ 1 file changed, 22 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.picking.numbers/picking.numbers.js b/hackerrank/algorithms.-.implementation.-.easy.-.picking.numbers/picking.numbers.js
+index 1ae31ba..8af58d5 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.picking.numbers/picking.numbers.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.picking.numbers/picking.numbers.js
+@@ -26,6 +26,28 @@ function readLine() {
+ 
+ // Complete the pickingNumbers function below.
+ function pickingNumbers(a) {
++    var res = 1;
++    var last_count = 0;
++    var last_val = -1;
++    var groups = {};
++    a.forEach(x => {
++        if (!(x in groups))
++            groups[x] = 0;
++        groups[x] += 1;
++    });
++    var keys = Object.keys(groups).sort();
++
++    keys.forEach(k => {
++        var g_count = groups[k];
++        // max concurrent pair
++        if (last_val > -1 && k - last_val > 1)
++            last_count = 0;
++        if (last_count + g_count > res)
++            res = last_count + g_count;
++        last_val = k;
++        last_count = g_count;
++    });
++    return res;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
