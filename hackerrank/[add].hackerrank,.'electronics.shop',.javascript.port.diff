@@ -1,0 +1,32 @@
+From 2d2a8e3fc4c18349c4dc7554e3925178912b875c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 5 Jun 2018 13:48:29 +0100
+Subject: [add] hackerrank, 'electronics shop', javascript port
+
+---
+ .../electronics.shop.js                                  | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.electronics.shop/electronics.shop.js b/hackerrank/algorithms.-.implementation.-.easy.-.electronics.shop/electronics.shop.js
+index 46b7c8c..bc5a7e8 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.electronics.shop/electronics.shop.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.electronics.shop/electronics.shop.js
+@@ -26,6 +26,15 @@ function readLine() {
+  * Complete the getMoneySpent function below.
+  */
+ function getMoneySpent(keyboards, drives, b) {
++    var max_under_budget = -1;
++    keyboards.forEach(k => {
++        drives.forEach(d => {
++            var t = k + d;
++            if (t > max_under_budget && t <= b)
++                max_under_budget = t;
++        });
++    });
++    return max_under_budget;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
