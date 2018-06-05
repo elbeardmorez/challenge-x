@@ -1,0 +1,33 @@
+From e83204aeeded3fe4ff90b38b46d0ab5435bb8b45 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 5 Jun 2018 13:41:47 +0100
+Subject: [add] hackerrank, 'counting valleys', javascript port
+
+---
+ .../counting.valleys.js                                | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.counting.valleys/counting.valleys.js b/hackerrank/algorithms.-.implementation.-.easy.-.counting.valleys/counting.valleys.js
+index 5275a79..fc57fb6 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.counting.valleys/counting.valleys.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.counting.valleys/counting.valleys.js
+@@ -26,6 +26,16 @@ function readLine() {
+ 
+ // Complete the countingValleys function below.
+ function countingValleys(n, s) {
++    var res = 0;
++    var last_state = 0;
++    var state = 0;
++    s.split('').forEach(step => {
++        state = step == 'U' ? state + 1 : state - 1;
++        if (state == -1 && last_state == 0)
++            res += 1;
++        last_state = state;
++    });
++    return res;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
