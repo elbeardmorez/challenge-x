@@ -1,0 +1,24 @@
+From 4c88b8dd39e0418c07d202a5b54339b45275c5b0 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 6 Jun 2018 08:42:50 +0100
+Subject: [add] hackerrank, 'the hurdle race', javascript port
+
+---
+ .../the.hurdle.race.js                                           | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.the.hurdle.race/the.hurdle.race.js b/hackerrank/algorithms.-.implementation.-.easy.-.the.hurdle.race/the.hurdle.race.js
+index 1da8929..318953b 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.the.hurdle.race/the.hurdle.race.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.the.hurdle.race/the.hurdle.race.js
+@@ -26,6 +26,7 @@ function readLine() {
+ 
+ // Complete the hurdleRace function below.
+ function hurdleRace(k, height) {
++    return Math.max(Math.max(...height) - k, 0);
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
