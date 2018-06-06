@@ -1,0 +1,34 @@
+From 8d40d15b23b19d033edcf5c183e9613a79a2c183 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 6 Jun 2018 16:51:54 +0100
+Subject: [add] hackerrank, 'viral advertising', javascript port
+
+---
+ .../viral.advertising.js                              | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.viral.advertising/viral.advertising.js b/hackerrank/algorithms.-.implementation.-.easy.-.viral.advertising/viral.advertising.js
+index 6ea2939..f344757 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.viral.advertising/viral.advertising.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.viral.advertising/viral.advertising.js
+@@ -26,6 +26,17 @@ function readLine() {
+ 
+ // Complete the viralAdvertising function below.
+ function viralAdvertising(n) {
++    var day = 0;
++    var shared = 5;
++    var liked = 0;
++    var liked_cumulative = 0;
++    for (var idx = 0; idx < n; idx++) {
++        day += 1;
++        liked = parseInt(shared/2);
++        liked_cumulative += liked;
++        shared = liked * 3;
++    }
++    return liked_cumulative;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
