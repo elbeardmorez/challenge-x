@@ -1,0 +1,75 @@
+From e195e78b0aca02b5a99881973249159b17f2acb1 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 6 Jun 2018 14:04:18 +0100
+Subject: [fix] hackerrank, 'happy ladybugs', c# solution
+
+-reverse iterators for removal consistency
+-remove unhappy that become happy
+-refactor array 'b' -> 'state'
+---
+ .../happy.ladybugs.cs                         | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.happy.ladybugs/happy.ladybugs.cs b/hackerrank/algorithms.-.implementation.-.easy.-.happy.ladybugs/happy.ladybugs.cs
+index ea00a88..fd5bd0f 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.happy.ladybugs/happy.ladybugs.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.happy.ladybugs/happy.ladybugs.cs
+@@ -17,6 +17,7 @@ class Solution {
+     // Complete the happyLadybugs function below.
+     static string happyLadybugs(string b) {
+ 
++        var state = new List<char>(b.ToCharArray());
+         var res = "YES";
+         if (b.Replace("_","").ToCharArray().GroupBy(x => x).Where(g => g.Count() == 1).Count() != 0) {
+             // fail for any unpairable colours
+@@ -44,10 +45,16 @@ class Solution {
+             while (unhappy.Count > 0 &&
+                    unhappy.Count != unhappy_last) {
+                 unhappy_last = unhappy.Count;
+-                for (var idx = 0; idx < unhappy.Count; idx++) {
++                for (var idx = unhappy.Count - 1; idx >= 0; idx--) {
+                     var u = unhappy[idx];
++                    // remove if now happy
++                    if (u.Item1 > 0 && u.Item2 == state[u.Item1 - 1] ||
++                        u.Item1 < b.Length - 1 && u.Item2 == state[u.Item1 + 1]) {
++                        unhappy.RemoveAt(idx);
++                        continue;
++                    }
+                     // find space..
+-                    for (var idx2 = 0; idx2 < empty.Count; idx2++) {
++                    for (var idx2 = empty.Count - 1; idx2 >= 0; idx2--) {
+                         var e = empty[idx2];
+                         var matched = u.Item2 == e.Item2 || u.Item2 == e.Item3;
+                         Console.WriteLine($"[{matched}] u: {u.Item1}|{u.Item2}, e: {e.Item1}|{e.Item2}|{e.Item3}" );
+@@ -55,6 +62,8 @@ class Solution {
+                             var idx_from = u.Item1;
+                             var idx_to = e.Item1;
+                             // shuffle
++                            state[idx_to] = u.Item2;
++                            state[idx_from] = '_';
+                             empty.RemoveAt(idx2);
+                             // update empty set
+                             for(var idx3 = 0; idx3 < empty.Count; idx3++) {
+@@ -72,8 +81,8 @@ class Solution {
+                                     empty[idx3] = new Tuple<int, char, char>(empty[idx3].Item1, empty[idx3].Item2, u.Item2);
+                             }
+                             empty.Add(new Tuple<int, char, char>(u.Item1,
+-                                                u.Item1 == 0 ? ' ' : b[u.Item1 - 1],
+-                                                u.Item1 == (b.Length - 1) ? ' ' : b[u.Item1 + 1]));
++                                                u.Item1 == 0 ? ' ' : state[u.Item1 - 1],
++                                                u.Item1 == (b.Length - 1) ? ' ' : state[u.Item1 + 1]));
+ 
+                             unhappy.RemoveAt(idx);
+                             break;
+@@ -81,6 +90,8 @@ class Solution {
+                     }
+                 }
+             }
++            if (unhappy.Count > 0)
++                res = "NO";
+         }
+ 
+         return res;
+-- 
+2.23.0
+
