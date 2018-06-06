@@ -1,0 +1,28 @@
+From ea1936f756f99ca9b5a61abdb8b4ada9e46e4748 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 6 Jun 2018 08:39:23 +0100
+Subject: [add] hackerrank, 'the hurdle race', python solution
+
+---
+ .../the.hurdle.race.py                                       | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.the.hurdle.race/the.hurdle.race.py b/hackerrank/algorithms.-.implementation.-.easy.-.the.hurdle.race/the.hurdle.race.py
+index 26fc3ae..86a37a5 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.the.hurdle.race/the.hurdle.race.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.the.hurdle.race/the.hurdle.race.py
+@@ -8,6 +8,11 @@ import sys
+ 
+ # Complete the hurdleRace function below.
+ def hurdleRace(k, height):
++#    units = 0
++#    for hh in height:
++#        if hh - (k + units) > 0:
++#            units += (hh - (k + units))
++    return max(max(height) - k, 0)
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
