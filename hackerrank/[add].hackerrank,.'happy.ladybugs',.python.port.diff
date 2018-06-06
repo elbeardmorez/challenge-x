@@ -1,0 +1,54 @@
+From 38a75d9314f12715756fc7f8ea69f9eec4884431 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 6 Jun 2018 16:10:42 +0100
+Subject: [add] hackerrank, 'happy ladybugs', python port
+
+---
+ .../happy.ladybugs.py                         | 31 +++++++++++++++++++
+ 1 file changed, 31 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.happy.ladybugs/happy.ladybugs.py b/hackerrank/algorithms.-.implementation.-.easy.-.happy.ladybugs/happy.ladybugs.py
+index 6a68ab1..589f25a 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.happy.ladybugs/happy.ladybugs.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.happy.ladybugs/happy.ladybugs.py
+@@ -9,6 +9,37 @@ from itertools import groupby
+ 
+ # Complete the happyLadybugs function below.
+ def happyLadybugs(b):
++    res = "YES"
++    unpairable = False
++    for k, g in groupby(sorted(list(b.replace('_', '')))):
++        if len(list(g)) == 1:
++            unpairable = True
++    if unpairable:
++        # fail for any unpairable colours
++        print("unpairable colours");
++        res = "NO"
++    else:
++        unhappy = []
++        empty = []
++        last_char = ' '
++        for idx in range(0, len(b)):
++            c = b[idx]
++            next_char = idx == ' ' if idx == len(b) - 1 else b[idx + 1]
++            #console.log(`${last_char}|${c}|${next_char}`);
++            if c == '_':
++                empty.append(idx)
++            elif c != last_char and c != next_char:
++                unhappy.append(idx)
++            last_char = c
++
++        print("empty count: %d, unhappy count: %d" % (len(empty), len(unhappy)))
++
++        # if there's no empty to shuffle on, then unless they're all already happy, fail!
++        if len(empty) == 0 and len(unhappy) > 0:
++            res = "NO"
++
++    return res
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
