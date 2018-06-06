@@ -1,0 +1,66 @@
+From c99ca65208f89aa5bfe69dad827defdfb6edf130 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 6 Jun 2018 16:30:49 +0100
+Subject: [add] hackerrank, 'happy ladybugs', javascript port
+
+---
+ .../happy.ladybugs.js                         | 43 +++++++++++++++++++
+ 1 file changed, 43 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.happy.ladybugs/happy.ladybugs.js b/hackerrank/algorithms.-.implementation.-.easy.-.happy.ladybugs/happy.ladybugs.js
+index fa8e454..a8151ef 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.happy.ladybugs/happy.ladybugs.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.happy.ladybugs/happy.ladybugs.js
+@@ -26,6 +26,49 @@ function readLine() {
+ 
+ // Complete the happyLadybugs function below.
+ function happyLadybugs(b) {
++
++    var res = "YES";
++    var groups = {};
++    b.replace(/_/g, '').split('').forEach(c => {
++        if (!(c in groups))
++            groups[c] = 0;
++        groups[c] += 1;
++    });
++    var unpairable = false;
++    Object.keys(groups).forEach(k => {
++        if (groups[k] == 1) {
++            //console.log(`single colour: '${k}'`)
++            unpairable = true;
++            return;
++        }
++    });
++    if (unpairable) {
++        // fail for any unpairable colours
++        console.log("unpairable colours");
++        res = "NO";
++    } else {
++        var unhappy = [];
++        var empty = [];
++        var last_char = ' ';
++        for (var idx = 0; idx < b.length; idx++) {
++            var c = b[idx];
++            var next_char = idx == b.length - 1 ? ' ' : b[idx + 1];
++            //console.log(`${last_char}|${c}|${next_char}`);
++            if (c == '_')
++                empty.push(idx);
++            else if (c != last_char &&
++                     c != next_char)
++                unhappy.push(idx);
++            last_char = c;
++        }
++
++        console.log(`empty count: ${empty.length}, unhappy count: ${unhappy.length}`);
++
++        // if there's no empty to shuffle on, then unless they're all already happy, fail!
++        if (empty.length == 0 && unhappy.length > 0)
++            res = "NO";
++    }
++    return res;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
