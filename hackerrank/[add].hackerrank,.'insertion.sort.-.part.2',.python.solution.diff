@@ -1,0 +1,37 @@
+From ab65b2ff75ab7a2359766249ddaca15adf3d5bae Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 6 Jun 2018 19:17:24 +0100
+Subject: [add] hackerrank, 'insertion sort - part 2', python solution
+
+---
+ .../insertion.sort.part.2.py                       | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.insertion.sort.part.2/insertion.sort.part.2.py b/hackerrank/algorithms.-.sorting.-.easy.-.insertion.sort.part.2/insertion.sort.part.2.py
+index 96831d5..79d74e1 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.insertion.sort.part.2/insertion.sort.part.2.py
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.insertion.sort.part.2/insertion.sort.part.2.py
+@@ -9,6 +9,20 @@ import sys
+ # Complete the insertionSort2 function below.
+ def insertionSort2(n, arr):
+ 
++    def insertionSort1(idx, arr):
++        shift = arr[idx]
++        while idx - 1 >= 0 and arr[idx - 1] > shift:
++            arr[idx] = arr[idx - 1]
++            idx -= 1
++        arr[idx] = shift
++
++    idx = 1
++    while idx < n:
++        shift = arr[idx]
++        insertionSort1(idx, arr)
++        print(" ".join([str(x) for x in arr]))
++        idx += 1
++
+ if __name__ == '__main__':
+     n = int(input())
+ 
+-- 
+2.23.0
+
