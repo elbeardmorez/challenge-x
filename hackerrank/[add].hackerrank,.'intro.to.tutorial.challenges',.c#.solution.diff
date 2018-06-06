@@ -1,0 +1,24 @@
+From 9882078bbd1bc556853aeeb78f5f350a604f50fa Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 6 Jun 2018 19:33:40 +0100
+Subject: [add] hackerrank, 'intro to tutorial challenges', c# solution
+
+---
+ .../intro.to.tutorial.challenges.cs                              | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.intro.to.tutorial.challenges/intro.to.tutorial.challenges.cs b/hackerrank/algorithms.-.sorting.-.easy.-.intro.to.tutorial.challenges/intro.to.tutorial.challenges.cs
+index d119f6b..4513c11 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.intro.to.tutorial.challenges/intro.to.tutorial.challenges.cs
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.intro.to.tutorial.challenges/intro.to.tutorial.challenges.cs
+@@ -16,6 +16,7 @@ class Solution {
+ 
+     // Complete the introTutorial function below.
+     static int introTutorial(int V, int[] arr) {
++        return new List<int>(arr).FindIndex(x => x == V);
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
