@@ -1,0 +1,26 @@
+From 6afac8091c11c76d35f2e0c20f7ba08e84f3729b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 6 Jun 2018 10:49:12 +0100
+Subject: [add] hackerrank, 'designer pdf viewer', python port
+
+---
+ .../designer.pdf.viewer.py                                     | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.designer.pdf.viewer/designer.pdf.viewer.py b/hackerrank/algorithms.-.implementation.-.easy.-.designer.pdf.viewer/designer.pdf.viewer.py
+index 5c75859..68962bd 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.designer.pdf.viewer/designer.pdf.viewer.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.designer.pdf.viewer/designer.pdf.viewer.py
+@@ -9,6 +9,9 @@ import sys
+ 
+ # Complete the designerPdfViewer function below.
+ def designerPdfViewer(h, word):
++    width = len(word)
++    height = sorted(map(lambda c: h[ord(c) - 97], word))[-1]
++    return width * height
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
