@@ -1,0 +1,28 @@
+From 99b26d9e3a04cf4cac1cc88453d338f889181a99 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 6 Jun 2018 17:47:47 +0100
+Subject: [add] hackerrank, 'utopian tree', python solution
+
+---
+ .../utopian.tree.py                                          | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.utopian.tree/utopian.tree.py b/hackerrank/algorithms.-.implementation.-.easy.-.utopian.tree/utopian.tree.py
+index 1bdbd03..bf880a5 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.utopian.tree/utopian.tree.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.utopian.tree/utopian.tree.py
+@@ -8,6 +8,11 @@ import sys
+ 
+ # Complete the utopianTree function below.
+ def utopianTree(n):
++    base = 1
++    seasons = int(n/2);
++    for idx in range(0, seasons):
++        base = base * 2 + 1
++    return base if n % 2 == 0 else 2 * base
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
