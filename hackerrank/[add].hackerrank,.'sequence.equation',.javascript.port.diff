@@ -1,0 +1,31 @@
+From ff9ef363681ad04ee4ab9b4aa28df756ffd5e3bb Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 6 Jun 2018 17:30:32 +0100
+Subject: [add] hackerrank, 'sequence equation', javascript port
+
+---
+ .../sequence.equation.js                                  | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.sequence.equation/sequence.equation.js b/hackerrank/algorithms.-.implementation.-.easy.-.sequence.equation/sequence.equation.js
+index 6d83361..f595add 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.sequence.equation/sequence.equation.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.sequence.equation/sequence.equation.js
+@@ -26,6 +26,14 @@ function readLine() {
+ 
+ // Complete the permutationEquation function below.
+ function permutationEquation(p) {
++    var res = [];
++    for (var idx = 0; idx < p.length; idx++) {
++        // py = idx
++        var py_idx = p.indexOf(idx + 1);
++        var y_idx = p.indexOf(py_idx + 1);
++        res.push(y_idx + 1);
++    }
++    return res;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
