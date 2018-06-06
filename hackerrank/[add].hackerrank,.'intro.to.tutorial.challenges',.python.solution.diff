@@ -1,0 +1,24 @@
+From 56ceb2465b589f22e7b4066039497f6ed6ec5817 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 6 Jun 2018 19:37:14 +0100
+Subject: [add] hackerrank, 'intro to tutorial challenges', python solution
+
+---
+ .../intro.to.tutorial.challenges.py                              | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.intro.to.tutorial.challenges/intro.to.tutorial.challenges.py b/hackerrank/algorithms.-.sorting.-.easy.-.intro.to.tutorial.challenges/intro.to.tutorial.challenges.py
+index d0f7780..73a08bf 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.intro.to.tutorial.challenges/intro.to.tutorial.challenges.py
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.intro.to.tutorial.challenges/intro.to.tutorial.challenges.py
+@@ -8,6 +8,7 @@ import sys
+ 
+ # Complete the introTutorial function below.
+ def introTutorial(V, arr):
++    return arr.index(V)
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
