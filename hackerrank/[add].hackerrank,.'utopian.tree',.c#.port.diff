@@ -1,0 +1,28 @@
+From 028e6b01475ccf4a30dba8fe1aea65de85d037f2 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 6 Jun 2018 17:55:19 +0100
+Subject: [add] hackerrank, 'utopian tree', c# port
+
+---
+ .../utopian.tree.cs                                          | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.utopian.tree/utopian.tree.cs b/hackerrank/algorithms.-.implementation.-.easy.-.utopian.tree/utopian.tree.cs
+index 80a0fb1..f83d46a 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.utopian.tree/utopian.tree.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.utopian.tree/utopian.tree.cs
+@@ -16,6 +16,11 @@ class Solution {
+ 
+     // Complete the utopianTree function below.
+     static int utopianTree(int n) {
++        var size = 1;
++        var seasons = (int)(n / 2);
++        for (var idx = 0; idx < seasons; idx++)
++            size = size * 2 + 1;
++        return n % 2 == 0 ? size : 2 * size;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
