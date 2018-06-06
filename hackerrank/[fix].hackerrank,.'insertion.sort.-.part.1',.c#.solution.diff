@@ -1,0 +1,26 @@
+From 8abbd91cfc4933c2c1ee0ea586035447b3abda1b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 6 Jun 2018 18:28:26 +0100
+Subject: [fix] hackerrank, 'insertion sort - part 1', c# solution
+
+-edge case '=' vs '>='
+---
+ .../insertion.sort.part.1.cs                                    | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.insertion.sort.part.1/insertion.sort.part.1.cs b/hackerrank/algorithms.-.sorting.-.easy.-.insertion.sort.part.1/insertion.sort.part.1.cs
+index c23cb2c..4d6e927 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.insertion.sort.part.1/insertion.sort.part.1.cs
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.insertion.sort.part.1/insertion.sort.part.1.cs
+@@ -18,7 +18,7 @@ class Solution {
+     static void insertionSort1(int n, int[] arr) {
+         var shift = arr[n - 1];
+         var idx = n - 1;
+-        while (idx - 1 > 0 && arr[idx - 1] > shift) {
++        while (idx - 1 >= 0 && arr[idx - 1] > shift) {
+             arr[idx] = arr[idx - 1];
+             Console.WriteLine(String.Join(" ", arr));
+             idx--;
+-- 
+2.23.0
+
