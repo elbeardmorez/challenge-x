@@ -1,0 +1,30 @@
+From e4744175819aa71bc544f6c11e05263b319bed38 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 6 Jun 2018 17:37:24 +0100
+Subject: [add] hackerrank, 'sequence equation', python port
+
+---
+ .../sequence.equation.py                                   | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.sequence.equation/sequence.equation.py b/hackerrank/algorithms.-.implementation.-.easy.-.sequence.equation/sequence.equation.py
+index f7e3af3..08e06b0 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.sequence.equation/sequence.equation.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.sequence.equation/sequence.equation.py
+@@ -8,6 +8,13 @@ import sys
+ 
+ # Complete the permutationEquation function below.
+ def permutationEquation(p):
++    res = []
++    for idx in range(0, len(p)):
++        # py = idx
++        py_idx = p.index(idx + 1)
++        y_idx = p.index(py_idx + 1)
++        res.append(y_idx + 1)
++    return res
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
