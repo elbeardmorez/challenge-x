@@ -1,0 +1,37 @@
+From 23bc11b44560a0a33c013279eaee818f4608e98a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 6 Jun 2018 14:15:41 +0100
+Subject: [fix] hackerrank, 'happy ladybugs', c# solution
+
+-account for movement to within distance of 1
+-to/from var name bug
+---
+ .../happy.ladybugs.cs                                        | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.happy.ladybugs/happy.ladybugs.cs b/hackerrank/algorithms.-.implementation.-.easy.-.happy.ladybugs/happy.ladybugs.cs
+index fd5bd0f..85fce64 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.happy.ladybugs/happy.ladybugs.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.happy.ladybugs/happy.ladybugs.cs
+@@ -56,7 +56,8 @@ class Solution {
+                     // find space..
+                     for (var idx2 = empty.Count - 1; idx2 >= 0; idx2--) {
+                         var e = empty[idx2];
+-                        var matched = u.Item2 == e.Item2 || u.Item2 == e.Item3;
++                        var matched = (u.Item2 == e.Item2 || u.Item2 == e.Item3) &&
++                                       Math.Abs(u.Item1 - e.Item1) > 1;
+                         Console.WriteLine($"[{matched}] u: {u.Item1}|{u.Item2}, e: {e.Item1}|{e.Item2}|{e.Item3}" );
+                         if (matched) {
+                             var idx_from = u.Item1;
+@@ -76,7 +77,7 @@ class Solution {
+                                 if (empty[idx3].Item1 - 1 == idx_to)
+                                     // update left, new ladybug now!
+                                     empty[idx3] = new Tuple<int, char, char>(empty[idx3].Item1, u.Item2, empty[idx3].Item3);
+-                                if (empty[idx3].Item1 + 1 == idx_from)
++                                if (empty[idx3].Item1 + 1 == idx_to)
+                                     // update left, new ladybug now!
+                                     empty[idx3] = new Tuple<int, char, char>(empty[idx3].Item1, empty[idx3].Item2, u.Item2);
+                             }
+-- 
+2.23.0
+
