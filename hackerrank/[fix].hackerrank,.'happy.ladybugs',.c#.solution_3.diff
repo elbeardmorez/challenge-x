@@ -1,0 +1,57 @@
+From fb0ecac3e7e1357d0e0a50146bed47bef3be9493 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 6 Jun 2018 14:37:17 +0100
+Subject: [fix] hackerrank, 'happy ladybugs', c# solution
+
+-replace large part of algorithm with a cheap short-circuit. it worked
+itself into a corner which could be fixed by shuffling the empty
+position(s) adjacent to the uhappy ladybugs and then re-iterating.
+however, as you can always do that, then so long as there's at least
+one space, it's always possible to complete those game, and hence no
+point in 'playing' it
+---
+ .../happy.ladybugs.cs                         | 21 +++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.happy.ladybugs/happy.ladybugs.cs b/hackerrank/algorithms.-.implementation.-.easy.-.happy.ladybugs/happy.ladybugs.cs
+index 85fce64..86eebfc 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.happy.ladybugs/happy.ladybugs.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.happy.ladybugs/happy.ladybugs.cs
+@@ -24,7 +24,15 @@ class Solution {
+             Console.WriteLine($"short-circuit on '${b}'");
+             res = "NO";
+         } else {
+-            // game
++            var empty_count = b.Length - b.Replace("_","").Length;
++            // Console.WriteLine($"spaces: {empty_count}, no short-circuit on '{b}'");
++            if (empty_count > 0)
++                return "YES";
++            else
++                return "NO";
++
++            // unreachable code, see remark below
++            // game on
+             var unhappy = new List<Tuple<int, char>>();
+             var empty = new List<Tuple<int, char, char>>();
+             var last_char = ' ';
+@@ -90,7 +98,16 @@ class Solution {
+                         }
+                     }
+                 }
+-            }
++                Console.WriteLine($"state: {String.Join("", state)}");
++
++                // this algorithm works itself into a corner and can be fixed by
++                // shuffling the empty position(s) adjacent to the unhappy ladybugs
++                // and then re-iterating. here i noted that as you can always to that,
++                // then so long as there's at least one space, it's always possible to
++                // complete the game, and hence no point in 'playing' it. sh1t, what
++                // a waste of time.. top short-circuit added after..
++
++            } // while
+             if (unhappy.Count > 0)
+                 res = "NO";
+         }
+-- 
+2.23.0
+
