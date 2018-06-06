@@ -1,0 +1,37 @@
+From 8b04095aafb3272849c8e2342e4bc62b16c235dc Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 6 Jun 2018 19:28:42 +0100
+Subject: [add] hackerrank, 'insertion sort - part 2', c# port
+
+---
+ .../insertion.sort.part.2.cs                          | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.insertion.sort.part.2/insertion.sort.part.2.cs b/hackerrank/algorithms.-.sorting.-.easy.-.insertion.sort.part.2/insertion.sort.part.2.cs
+index 3115d47..8175e55 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.insertion.sort.part.2/insertion.sort.part.2.cs
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.insertion.sort.part.2/insertion.sort.part.2.cs
+@@ -14,19 +14,10 @@ using System;
+ 
+ class Solution {
+ 
+-    static void insertionSort1(int idx, int[] arr) {
+-        var shift = arr[idx];        
+-        while (idx - 1 >= 0 && arr[idx - 1] > shift) {
+-            arr[idx] = arr[idx - 1];            
+-            idx--;
+-        }
+-        arr[idx] = shift;        
+-    }
+-    
+     // Complete the insertionSort2 function below.
+     static void insertionSort2(int n, int[] arr) {
+         var idx = 1;
+-        while (idx < n) {        
++        while (idx < n) {
+             insertionSort1(idx, arr);
+             Console.WriteLine(String.Join(" ", arr));
+             idx += 1;
+-- 
+2.23.0
+
