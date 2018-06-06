@@ -1,0 +1,33 @@
+From a81b0410da0b44885a30df39566363fba7d4e953 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 6 Jun 2018 10:38:37 +0100
+Subject: [add] hackerrank, 'designer pdf viewer', javascript port
+
+---
+ .../designer.pdf.viewer.js                             | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.designer.pdf.viewer/designer.pdf.viewer.js b/hackerrank/algorithms.-.implementation.-.easy.-.designer.pdf.viewer/designer.pdf.viewer.js
+index d9ab391..650ab34 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.designer.pdf.viewer/designer.pdf.viewer.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.designer.pdf.viewer/designer.pdf.viewer.js
+@@ -26,6 +26,16 @@ function readLine() {
+ 
+ // Complete the designerPdfViewer function below.
+ function designerPdfViewer(h, word) {
++    var width = word.length;
++    var height = 0
++    //console.log(width, " ", height)
++    for (var idx = 0; idx < width; idx++) {
++        let x = h[word[idx].charCodeAt(0) - 97];
++        //console.log(x)
++        if (x > height)
++            height = x;
++    }
++    return width * height;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
