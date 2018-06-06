@@ -1,0 +1,118 @@
+From d1106df41792a9be2a193b8c9916b4ccbfb85327 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 6 Jun 2018 15:08:51 +0100
+Subject: [fix] hackerrank, 'happy ladybugs', c# solution
+
+-fail if there are unhappy bugs and no empty space to shuffle on
+-remove commented code
+---
+ .../happy.ladybugs.cs                         | 77 ++-----------------
+ 1 file changed, 5 insertions(+), 72 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.happy.ladybugs/happy.ladybugs.cs b/hackerrank/algorithms.-.implementation.-.easy.-.happy.ladybugs/happy.ladybugs.cs
+index 86eebfc..a3e2298 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.happy.ladybugs/happy.ladybugs.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.happy.ladybugs/happy.ladybugs.cs
+@@ -16,23 +16,14 @@ class Solution {
+ 
+     // Complete the happyLadybugs function below.
+     static string happyLadybugs(string b) {
+-
++        Console.WriteLine(b);
+         var state = new List<char>(b.ToCharArray());
+         var res = "YES";
+         if (b.Replace("_","").ToCharArray().GroupBy(x => x).Where(g => g.Count() == 1).Count() != 0) {
+             // fail for any unpairable colours
+-            Console.WriteLine($"short-circuit on '${b}'");
++            Console.WriteLine($"unpairable colours");
+             res = "NO";
+         } else {
+-            var empty_count = b.Length - b.Replace("_","").Length;
+-            // Console.WriteLine($"spaces: {empty_count}, no short-circuit on '{b}'");
+-            if (empty_count > 0)
+-                return "YES";
+-            else
+-                return "NO";
+-
+-            // unreachable code, see remark below
+-            // game on
+             var unhappy = new List<Tuple<int, char>>();
+             var empty = new List<Tuple<int, char, char>>();
+             var last_char = ' ';
+@@ -48,70 +39,12 @@ class Solution {
+                 last_char = c;
+             }
+ 
+-            Console.WriteLine($"unhappy length: {unhappy.Count}, empty length: {empty.Count}");
+-            var unhappy_last = unhappy.Count + 1; // break condition
+-            while (unhappy.Count > 0 &&
+-                   unhappy.Count != unhappy_last) {
+-                unhappy_last = unhappy.Count;
+-                for (var idx = unhappy.Count - 1; idx >= 0; idx--) {
+-                    var u = unhappy[idx];
+-                    // remove if now happy
+-                    if (u.Item1 > 0 && u.Item2 == state[u.Item1 - 1] ||
+-                        u.Item1 < b.Length - 1 && u.Item2 == state[u.Item1 + 1]) {
+-                        unhappy.RemoveAt(idx);
+-                        continue;
+-                    }
+-                    // find space..
+-                    for (var idx2 = empty.Count - 1; idx2 >= 0; idx2--) {
+-                        var e = empty[idx2];
+-                        var matched = (u.Item2 == e.Item2 || u.Item2 == e.Item3) &&
+-                                       Math.Abs(u.Item1 - e.Item1) > 1;
+-                        Console.WriteLine($"[{matched}] u: {u.Item1}|{u.Item2}, e: {e.Item1}|{e.Item2}|{e.Item3}" );
+-                        if (matched) {
+-                            var idx_from = u.Item1;
+-                            var idx_to = e.Item1;
+-                            // shuffle
+-                            state[idx_to] = u.Item2;
+-                            state[idx_from] = '_';
+-                            empty.RemoveAt(idx2);
+-                            // update empty set
+-                            for(var idx3 = 0; idx3 < empty.Count; idx3++) {
+-                                if (empty[idx3].Item1 - 1 == idx_from)
+-                                    // update left, empty now!
+-                                    empty[idx3] = new Tuple<int, char, char>(empty[idx3].Item1, '_', empty[idx3].Item3);
+-                                if (empty[idx3].Item1 + 1 == idx_from)
+-                                    // update left, empty now!
+-                                    empty[idx3] = new Tuple<int, char, char>(empty[idx3].Item1, empty[idx3].Item2, '_');
+-                                if (empty[idx3].Item1 - 1 == idx_to)
+-                                    // update left, new ladybug now!
+-                                    empty[idx3] = new Tuple<int, char, char>(empty[idx3].Item1, u.Item2, empty[idx3].Item3);
+-                                if (empty[idx3].Item1 + 1 == idx_to)
+-                                    // update left, new ladybug now!
+-                                    empty[idx3] = new Tuple<int, char, char>(empty[idx3].Item1, empty[idx3].Item2, u.Item2);
+-                            }
+-                            empty.Add(new Tuple<int, char, char>(u.Item1,
+-                                                u.Item1 == 0 ? ' ' : state[u.Item1 - 1],
+-                                                u.Item1 == (b.Length - 1) ? ' ' : state[u.Item1 + 1]));
+-
+-                            unhappy.RemoveAt(idx);
+-                            break;
+-                        }
+-                    }
+-                }
+-                Console.WriteLine($"state: {String.Join("", state)}");
++            Console.WriteLine($"empty count: {empty.Count}, unhappy count: {unhappy.Count}");
+ 
+-                // this algorithm works itself into a corner and can be fixed by
+-                // shuffling the empty position(s) adjacent to the unhappy ladybugs
+-                // and then re-iterating. here i noted that as you can always to that,
+-                // then so long as there's at least one space, it's always possible to
+-                // complete the game, and hence no point in 'playing' it. sh1t, what
+-                // a waste of time.. top short-circuit added after..
+-
+-            } // while
+-            if (unhappy.Count > 0)
++            // if there's no empty to shuffle on, then unless they're all already happy, fail!
++            if (empty.Count == 0 && unhappy.Count > 0)
+                 res = "NO";
+         }
+-
+         return res;
+     }
+ 
+-- 
+2.23.0
+
