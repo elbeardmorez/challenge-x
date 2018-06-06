@@ -1,0 +1,34 @@
+From c6ce6d1384982464eafef1c348fc125c97d67197 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 6 Jun 2018 16:53:27 +0100
+Subject: [add] hackerrank, 'viral advertising', c# port
+
+---
+ .../viral.advertising.cs                              | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.viral.advertising/viral.advertising.cs b/hackerrank/algorithms.-.implementation.-.easy.-.viral.advertising/viral.advertising.cs
+index 19fef7c..705d95d 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.viral.advertising/viral.advertising.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.viral.advertising/viral.advertising.cs
+@@ -16,6 +16,17 @@ class Solution {
+ 
+     // Complete the viralAdvertising function below.
+     static int viralAdvertising(int n) {
++        var day = 0;
++        var shared = 5;
++        var liked = 0;
++        var liked_cumulative = 0;
++        for (var idx = 0; idx < n; idx++) {
++            day += 1;
++            liked = (int)(shared/2);
++            liked_cumulative += liked;
++            shared = liked * 3;
++        }
++        return liked_cumulative;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
