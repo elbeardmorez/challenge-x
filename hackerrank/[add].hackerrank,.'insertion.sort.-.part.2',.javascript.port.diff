@@ -1,0 +1,40 @@
+From 8ae93198e7b06ac11184a6837cc48e0cba13083c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 6 Jun 2018 19:27:29 +0100
+Subject: [add] hackerrank, 'insertion sort - part 2', javascript port
+
+---
+ .../insertion.sort.part.2.js                    | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.insertion.sort.part.2/insertion.sort.part.2.js b/hackerrank/algorithms.-.sorting.-.easy.-.insertion.sort.part.2/insertion.sort.part.2.js
+index f15efb1..fe1fa4d 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.insertion.sort.part.2/insertion.sort.part.2.js
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.insertion.sort.part.2/insertion.sort.part.2.js
+@@ -24,6 +24,23 @@ function readLine() {
+ 
+ // Complete the insertionSort2 function below.
+ function insertionSort2(n, arr) {
++
++    var insertionSort1 = (idx, arr) => {
++        let shift = arr[idx];
++        while (idx - 1 >= 0 && arr[idx - 1] > shift) {
++            arr[idx] = arr[idx - 1];
++            idx--;
++        }
++        arr[idx] = shift;
++    }
++
++    var idx = 1;
++    while (idx < n) {
++        insertionSort1(idx, arr);
++        console.log(arr.join(" "));
++        idx += 1;
++    }
++
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
