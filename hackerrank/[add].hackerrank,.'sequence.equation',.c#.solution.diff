@@ -1,0 +1,32 @@
+From ee0f7173317cac0414698252da0c91c5ae58c40a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 6 Jun 2018 17:22:14 +0100
+Subject: [add] hackerrank, 'sequence equation', c# solution
+
+---
+ .../sequence.equation.cs                                 | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.sequence.equation/sequence.equation.cs b/hackerrank/algorithms.-.implementation.-.easy.-.sequence.equation/sequence.equation.cs
+index 192a5a4..92d5a15 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.sequence.equation/sequence.equation.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.sequence.equation/sequence.equation.cs
+@@ -16,6 +16,15 @@ class Solution {
+ 
+     // Complete the permutationEquation function below.
+     static int[] permutationEquation(int[] p) {
++        var res = new List<int>();
++        var l = new List<int>(p);
++        for (var idx = 0; idx < p.Length; idx++) {
++            // py = idx
++            var py_idx = l.FindIndex(x => x == idx + 1);
++            var y_idx = l.FindIndex(x => x == py_idx + 1);
++            res.Add(y_idx + 1);
++        }
++        return res.ToArray();
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
