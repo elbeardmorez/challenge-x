@@ -1,0 +1,28 @@
+From 541ea84d37be4537a3f830424fc0486adc2f2ea5 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 6 Jun 2018 17:51:53 +0100
+Subject: [add] hackerrank, 'utopian tree', javascript port
+
+---
+ .../utopian.tree.js                                          | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.utopian.tree/utopian.tree.js b/hackerrank/algorithms.-.implementation.-.easy.-.utopian.tree/utopian.tree.js
+index 7e4aad5..eb7c085 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.utopian.tree/utopian.tree.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.utopian.tree/utopian.tree.js
+@@ -26,6 +26,11 @@ function readLine() {
+ 
+ // Complete the utopianTree function below.
+ function utopianTree(n) {
++    var base = 1;
++    var seasons = parseInt(n / 2);
++    for (var idx = 0; idx < seasons; idx++)
++        base = base * 2 + 1;
++    return n % 2 == 0 ? base : 2 * base;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
