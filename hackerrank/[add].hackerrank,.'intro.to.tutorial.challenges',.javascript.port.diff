@@ -1,0 +1,24 @@
+From c8776b2022309c1672862d7848f1c415e4d193fe Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 6 Jun 2018 19:35:01 +0100
+Subject: [add] hackerrank, 'intro to tutorial challenges', javascript port
+
+---
+ .../intro.to.tutorial.challenges.js                              | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.intro.to.tutorial.challenges/intro.to.tutorial.challenges.js b/hackerrank/algorithms.-.sorting.-.easy.-.intro.to.tutorial.challenges/intro.to.tutorial.challenges.js
+index 451b845..c0cd605 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.intro.to.tutorial.challenges/intro.to.tutorial.challenges.js
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.intro.to.tutorial.challenges/intro.to.tutorial.challenges.js
+@@ -26,6 +26,7 @@ function readLine() {
+ 
+ // Complete the introTutorial function below.
+ function introTutorial(V, arr) {
++    return arr.indexOf(V);
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
