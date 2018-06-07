@@ -1,0 +1,56 @@
+From 6ad03612ee6857de42418fc3dc61756186ba4104 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 7 Jun 2018 23:51:52 +0100
+Subject: [fix] hackerrank, 'big sorting', python solution
+
+-string int comparisons
+---
+ .../big.sorting.py                                   | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.py b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.py
+index e3f4c95..93c1a0c 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.py
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.py
+@@ -7,12 +7,14 @@ import re
+ import sys
+ 
+ class node:
+-    value = None
++    value = None  # str
++    value2 = None  # int
+     left = None
+     right = None
+ 
+     def __init__(self, _value):
+         self.value = _value
++        self.value2 = int(_value)
+ 
+     def children(self):
+         res = []
+@@ -24,7 +26,7 @@ class node:
+         return res
+ 
+     def insert(self, _value):
+-        if _value < self.value:
++        if int(_value) < self.value2:
+             if self.left == None:
+                 self.left = node(_value)
+             else:
+@@ -40,10 +42,10 @@ def bigSorting(unsorted):
+     root = None
+     for i in unsorted:
+         if root == None:
+-            root = node(int(i))
++            root = node(i)
+         else:
+-           root.insert(int(i))
+-    return map(lambda x: str(x), root.children())
++           root.insert(i)
++    return root.children()
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
