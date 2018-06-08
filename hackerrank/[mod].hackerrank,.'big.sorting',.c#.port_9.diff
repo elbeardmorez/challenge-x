@@ -1,0 +1,44 @@
+From 6a8e6dc88ada8318b334402d40f3abacf6140d15 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 8 Jun 2018 17:19:15 +0100
+Subject: [mod] hackerrank, 'big sorting', c# port
+
+-speed-up, hack stub to use string arrays over <IEmumerable>
+---
+ .../big.sorting.cs                                        | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
+index 2109034..25712c2 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
+@@ -58,13 +58,13 @@ class node {
+ class Solution {
+ 
+     // Complete the bigSorting function below.
+-    static IEnumerable<string> bigSorting(string[] unsorted) {
++    static string bigSorting(string[] unsorted) {
+         var root = new node(unsorted[0]);
+         for(int idx = 1; idx < unsorted.Length; idx++)
+             root.insert(unsorted[idx]);
+         var nodes = new StringBuilder();
+         root.children(nodes);
+-        return new string[] { nodes.ToString().TrimEnd('\n') };
++        return nodes.ToString().TrimEnd('\n');
+     }
+ 
+     static void Main(string[] args) {
+@@ -79,9 +79,7 @@ class Solution {
+             unsorted[i] = unsortedItem;
+         }
+ 
+-        var result = bigSorting(unsorted);
+-
+-        textWriter.WriteLine(string.Join("\n", result));
++        textWriter.WriteLine(bigSorting(unsorted));
+ 
+         textWriter.Flush();
+         textWriter.Close();
+-- 
+2.23.0
+
