@@ -1,0 +1,55 @@
+From d479c631fac6ed62ba0a30da2e57dfe689d33d54 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 8 Jun 2018 13:41:59 +0100
+Subject: [mod] hackerrank, 'big sorting', c# port
+
+-speed- up, use a stringbuilder
+---
+ .../big.sorting.cs                                  | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
+index ed7500d..aec3485 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
+@@ -15,30 +15,31 @@ using System;
+ class node {
+ 
+     string value;
+-    string values;
++    StringBuilder values;
+     int length;
+     node left = null;
+     node right = null;
+ 
+     public node(ref string _value) {
+         value = _value;
+-        values = _value;
++        values = new StringBuilder(_value);
+         length = _value.Length;
+     }
+ 
+     public void children(List<string> nodes) {
+         if (left != null)
+             left.children(nodes);
+-        nodes.Add(values);
++        nodes.Add(values.ToString());
+         if (right != null)
+             right.children(nodes);
+     }
+ 
+     public void insert(ref string _value) {
+         // string compare due to potential size of 1x10^6 digits
+-        if (_value == value)
+-            values += "\n" + value;
+-        else if (_value.Length < length ||
++        if (_value == value) {
++            values.Append("\n");
++            values.Append(value);
++        } else if (_value.Length < length ||
+            (_value.Length == length && _value.CompareTo(value) < 0)) {
+             if (left == null)
+                 left = new node(ref _value);
+-- 
+2.23.0
+
