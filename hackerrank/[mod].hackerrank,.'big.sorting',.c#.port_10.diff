@@ -1,0 +1,26 @@
+From 89802aef9823c4f5c29c7cd1c64819069fad1aa0 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 8 Jun 2018 17:25:09 +0100
+Subject: [mod] hackerrank, 'big sorting', c# port
+
+-speed-up, remove superfluous ToString()
+---
+ .../algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs    | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
+index 25712c2..d09ee18 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
+@@ -29,7 +29,7 @@ class node {
+     public void children(StringBuilder nodes) {
+         if (left != null)
+             left.children(nodes);
+-        nodes.Append(values.ToString());
++        nodes.Append(values);
+         nodes.Append("\n");
+         if (right != null)
+             right.children(nodes);
+-- 
+2.23.0
+
