@@ -1,0 +1,34 @@
+From c4641002a7c2010543716cf833a8f8a369210ddb Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 8 Jun 2018 12:18:58 +0100
+Subject: [mod] hackerrank, 'big sorting', c# port
+
+-revert switch to string array
+---
+ .../big.sorting.cs                                        | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
+index 2aa45fe..831ba20 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
+@@ -23,12 +23,12 @@ class node {
+         value = _value;
+     }
+ 
+-    public string[] children() {
+-        var res = new string[count].Select(s => value).ToArray();
++    public IEnumerable<string> children() {
++        var res = new string[count].Select(s => value);
+         if (left != null)
+-            res = left.children().Concat(res).ToArray();
++            res = left.children().Concat(res);
+         if (right != null)
+-            res = res.Concat(right.children()).ToArray();
++            res = res.Concat(right.children());
+         return res;
+     }
+ 
+-- 
+2.23.0
+
