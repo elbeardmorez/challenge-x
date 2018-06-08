@@ -1,0 +1,35 @@
+From 0d2de9492beee2ce3f855da22a45192028123e7e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 8 Jun 2018 12:15:01 +0100
+Subject: [fix] hackerrank, 'big sorting', c# port
+
+-speed-up, switch from list to string array
+---
+ .../big.sorting.cs                                       | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
+index f4b7b86..2aa45fe 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
+@@ -23,13 +23,12 @@ class node {
+         value = _value;
+     }
+ 
+-    public IEnumerable<string> children() {
+-        var res = new List<string>();
++    public string[] children() {
++        var res = new string[count].Select(s => value).ToArray();
+         if (left != null)
+-            res.AddRange(left.children());
+-        res.AddRange(new string[count].Select(s => value));
++            res = left.children().Concat(res).ToArray();
+         if (right != null)
+-            res.AddRange(right.children());
++            res = res.Concat(right.children()).ToArray();
+         return res;
+     }
+ 
+-- 
+2.23.0
+
