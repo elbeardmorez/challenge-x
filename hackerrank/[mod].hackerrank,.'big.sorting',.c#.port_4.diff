@@ -1,0 +1,65 @@
+From eb92620f9f642f7669f6944a38f8a8dbf89dcb7b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 8 Jun 2018 13:02:46 +0100
+Subject: [mod] hackerrank, 'big sorting', c# port
+
+-speed-up, use pass by ref for strings
+---
+ .../big.sorting.cs                               | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
+index 1a25bf3..f7f936c 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
+@@ -19,7 +19,7 @@ class node {
+     node left = null;
+     node right = null;
+ 
+-    public node(string _value) {
++    public node(ref string _value) {
+         value = _value;
+         values = _value;
+     }
+@@ -32,21 +32,21 @@ class node {
+             right.children(nodes);
+     }
+ 
+-    public void insert(string _value) {
++    public void insert(ref string _value) {
+         // string compare due to potential size of 1x10^6 digits
+         if (_value == value)
+             values += "\n" + value;
+         else if (_value.Length < value.Length ||
+            (_value.Length == value.Length && _value.CompareTo(value) < 0)) {
+             if (left == null)
+-                left = new node(_value);
++                left = new node(ref _value);
+             else
+-                left.insert(_value);
++                left.insert(ref _value);
+         } else {
+             if (right == null)
+-                right = new node(_value);
++                right = new node(ref _value);
+             else
+-                right.insert(_value);
++                right.insert(ref _value);
+         }
+     }
+ }
+@@ -55,9 +55,9 @@ class Solution {
+ 
+     // Complete the bigSorting function below.
+     static IEnumerable<string> bigSorting(string[] unsorted) {
+-        var root = new node(unsorted[0]);
++        var root = new node(ref unsorted[0]);
+         for(int idx = 1; idx < unsorted.Length; idx++)
+-            root.insert(unsorted[idx]);
++            root.insert(ref unsorted[idx]);
+         var nodes = new List<string>();
+         root.children(nodes);
+         return nodes;
+-- 
+2.23.0
+
