@@ -1,0 +1,43 @@
+From c34554f59b4e4af184533049ae3f9fd6fefc246d Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 8 Jun 2018 13:47:23 +0100
+Subject: [mod] hackerrank, 'big sorting', c# port
+
+-speed-up, use stringbuilder for all nodes
+---
+ .../big.sorting.cs                                       | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
+index aec3485..b242b25 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
+@@ -26,10 +26,11 @@ class node {
+         length = _value.Length;
+     }
+ 
+-    public void children(List<string> nodes) {
++    public void children(StringBuilder nodes) {
+         if (left != null)
+             left.children(nodes);
+-        nodes.Add(values.ToString());
++        nodes.Append(values.ToString());
++        nodes.Append("\n");
+         if (right != null)
+             right.children(nodes);
+     }
+@@ -61,9 +62,9 @@ class Solution {
+         var root = new node(ref unsorted[0]);
+         for(int idx = 1; idx < unsorted.Length; idx++)
+             root.insert(ref unsorted[idx]);
+-        var nodes = new List<string>();
++        var nodes = new StringBuilder();
+         root.children(nodes);
+-        return nodes;
++        return new string[] { nodes.ToString().TrimEnd('\n') };
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
