@@ -1,0 +1,26 @@
+From b7f84ca800980007f595c768c8f3a5bf56ac3353 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 8 Jun 2018 17:44:33 +0100
+Subject: [mod] hackerrank, 'big sorting', c# port
+
+-speed-up, switch to CompareOrdinal for string comparison
+---
+ .../algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs    | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
+index d09ee18..d79a563 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
+@@ -41,7 +41,7 @@ class node {
+             values.Append("\n");
+             values.Append(value);
+         } else if (_value.Length < length ||
+-           (_value.Length == length && _value.CompareTo(value) < 0)) {
++           (_value.Length == length && String.CompareOrdinal(_value, value) < 0)) {
+             if (left == null)
+                 left = new node(_value);
+             else
+-- 
+2.23.0
+
