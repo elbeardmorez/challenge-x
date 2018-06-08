@@ -1,0 +1,43 @@
+From 86f58ba534c0df2f8c495d6cf556662011fe4e50 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 8 Jun 2018 13:15:54 +0100
+Subject: [mod] hackerrank, 'big sorting', c# port
+
+-use length as quicker comparison
+---
+ .../big.sorting.cs                                          | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
+index f7f936c..ed7500d 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
+@@ -16,12 +16,14 @@ class node {
+ 
+     string value;
+     string values;
++    int length;
+     node left = null;
+     node right = null;
+ 
+     public node(ref string _value) {
+         value = _value;
+         values = _value;
++        length = _value.Length;
+     }
+ 
+     public void children(List<string> nodes) {
+@@ -36,8 +38,8 @@ class node {
+         // string compare due to potential size of 1x10^6 digits
+         if (_value == value)
+             values += "\n" + value;
+-        else if (_value.Length < value.Length ||
+-           (_value.Length == value.Length && _value.CompareTo(value) < 0)) {
++        else if (_value.Length < length ||
++           (_value.Length == length && _value.CompareTo(value) < 0)) {
+             if (left == null)
+                 left = new node(ref _value);
+             else
+-- 
+2.23.0
+
