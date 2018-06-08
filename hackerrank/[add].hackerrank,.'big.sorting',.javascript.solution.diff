@@ -1,0 +1,25 @@
+From 002d50338268578a408e890cb881db53c32ac395 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 8 Jun 2018 10:12:56 +0100
+Subject: [add] hackerrank, 'big sorting', javascript solution
+
+---
+ .../algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.js    | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.js b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.js
+index d6959cc..eba866b 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.js
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.js
+@@ -69,7 +69,7 @@ function bigSorting(unsorted) {
+         if (!root)
+             root = new node(i);
+         else
+-            root.insert(i);    
++            root.insert(i);
+     });
+     return root.children();
+ }
+-- 
+2.23.0
+
