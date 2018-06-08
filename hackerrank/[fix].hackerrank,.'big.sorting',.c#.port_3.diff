@@ -1,0 +1,52 @@
+From 2ea98e0f2d62af7d011c3db384bfbcaeb56fca17 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 8 Jun 2018 12:41:43 +0100
+Subject: [fix] hackerrank, 'big sorting', c# port
+
+-revert bug
+-prefer lists over string array everywhere
+---
+ .../big.sorting.cs                                | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
+index 8add2cf..f3d9e09 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
+@@ -23,13 +23,12 @@ class node {
+         value = _value;
+     }
+ 
+-    public IEnumerable<string> children() {
+-        var res = new string[count].Select(s => value);
++    public void children(List<string> nodes) {
+         if (left != null)
+-            res = left.children().Concat(res);
++            left.children(nodes);
++        nodes.Add(String.Join("\n", new string[count].Select(s => value)));
+         if (right != null)
+-            res = res.Concat(right.children());
+-        return res;
++            right.children(nodes);
+     }
+ 
+     public void insert(string _value) {
+@@ -54,11 +53,13 @@ class node {
+ class Solution {
+ 
+     // Complete the bigSorting function below.
+-    static string[] bigSorting(string[] unsorted) {
++    static IEnumerable<string> bigSorting(string[] unsorted) {
+         var root = new node(unsorted[0]);
+         for(int idx = 1; idx < unsorted.Length; idx++)
+             root.insert(unsorted[idx]);
+-        return root.children().ToArray();
++        var nodes = new List<string>();
++        root.children(nodes);
++        return nodes;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
