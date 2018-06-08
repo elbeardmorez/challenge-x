@@ -1,0 +1,34 @@
+From e98592ffa7ac7801ea4dbdb9017c1d5bedb25feb Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 8 Jun 2018 12:02:54 +0100
+Subject: [mod] hackerrank, 'big sorting', c# port
+
+-speed-up, remove loop conditional
+---
+ .../big.sorting.cs                                     | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
+index fde34ee..f4b7b86 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
+@@ -56,13 +56,9 @@ class Solution {
+ 
+     // Complete the bigSorting function below.
+     static string[] bigSorting(string[] unsorted) {
+-        node root = null;
+-        foreach(string s in unsorted) {
+-            if (root == null)
+-                root = new node(s);
+-            else
+-                root.insert(s);
+-        }
++        var root = new node(unsorted[0]);
++        for(int idx = 1; idx < unsorted.Length; idx++)
++            root.insert(unsorted[idx]);
+         return root.children().ToArray();
+     }
+ 
+-- 
+2.23.0
+
