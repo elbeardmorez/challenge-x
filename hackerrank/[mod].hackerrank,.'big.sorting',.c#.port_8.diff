@@ -1,0 +1,66 @@
+From f2f4c5d590784586ceab32e9ce8af87a97c8992e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 8 Jun 2018 17:14:05 +0100
+Subject: [mod] hackerrank, 'big sorting', c# port
+
+-revert pass by ref
+---
+ .../big.sorting.cs                               | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
+index b242b25..2109034 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
+@@ -20,7 +20,7 @@ class node {
+     node left = null;
+     node right = null;
+ 
+-    public node(ref string _value) {
++    public node(string _value) {
+         value = _value;
+         values = new StringBuilder(_value);
+         length = _value.Length;
+@@ -35,7 +35,7 @@ class node {
+             right.children(nodes);
+     }
+ 
+-    public void insert(ref string _value) {
++    public void insert(string _value) {
+         // string compare due to potential size of 1x10^6 digits
+         if (_value == value) {
+             values.Append("\n");
+@@ -43,14 +43,14 @@ class node {
+         } else if (_value.Length < length ||
+            (_value.Length == length && _value.CompareTo(value) < 0)) {
+             if (left == null)
+-                left = new node(ref _value);
++                left = new node(_value);
+             else
+-                left.insert(ref _value);
++                left.insert(_value);
+         } else {
+             if (right == null)
+-                right = new node(ref _value);
++                right = new node(_value);
+             else
+-                right.insert(ref _value);
++                right.insert(_value);
+         }
+     }
+ }
+@@ -59,9 +59,9 @@ class Solution {
+ 
+     // Complete the bigSorting function below.
+     static IEnumerable<string> bigSorting(string[] unsorted) {
+-        var root = new node(ref unsorted[0]);
++        var root = new node(unsorted[0]);
+         for(int idx = 1; idx < unsorted.Length; idx++)
+-            root.insert(ref unsorted[idx]);
++            root.insert(unsorted[idx]);
+         var nodes = new StringBuilder();
+         root.children(nodes);
+         return new string[] { nodes.ToString().TrimEnd('\n') };
+-- 
+2.23.0
+
