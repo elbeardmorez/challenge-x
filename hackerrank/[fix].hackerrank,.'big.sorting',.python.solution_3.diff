@@ -1,0 +1,44 @@
+From 14cf3ee44ef20a3abd2c4d86211552339ea8a2d2 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 8 Jun 2018 08:59:18 +0100
+Subject: [fix] hackerrank, 'big sorting', python solution
+
+-account for duplicates
+---
+ .../big.sorting.py                                         | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.py b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.py
+index 6f4d5a7..3539056 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.py
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.py
+@@ -7,6 +7,7 @@ import re
+ import sys
+ 
+ class node:
++    count = 1
+     value = None  # str
+     left = None
+     right = None
+@@ -18,14 +19,16 @@ class node:
+         res = []
+         if self.left:
+             res.extend(self.left.children())
+-        res.append(self.value)
++        res.extend(self.count * [self.value])
+         if self.right:
+             res.extend(self.right.children())
+         return res
+ 
+     def insert(self, _value):
+         # string compare due to potential size of 1x10^6 digits
+-        if len(_value) < len(self.value) or \
++        if _value == self.value:
++            self.count += 1
++        elif len(_value) < len(self.value) or \
+            (len(_value) == len(self.value) and _value < self.value):
+             if self.left == None:
+                 self.left = node(_value)
+-- 
+2.23.0
+
