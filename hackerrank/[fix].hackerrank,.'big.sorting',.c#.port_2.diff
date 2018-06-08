@@ -1,0 +1,26 @@
+From cd4bc193189d9880a952280a8b0e7f48ed982556 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 8 Jun 2018 12:21:43 +0100
+Subject: [fix] hackerrank, 'big sorting', c# port
+
+-revert bug, use implicit type conversion
+---
+ .../algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs    | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
+index 831ba20..8add2cf 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
+@@ -73,7 +73,7 @@ class Solution {
+             unsorted[i] = unsortedItem;
+         }
+ 
+-        string[] result = bigSorting(unsorted);
++        var result = bigSorting(unsorted);
+ 
+         textWriter.WriteLine(string.Join("\n", result));
+ 
+-- 
+2.23.0
+
