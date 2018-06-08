@@ -1,0 +1,42 @@
+From 50c8751414f1763803bf82e6c4c99a944307d55b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 8 Jun 2018 08:48:12 +0100
+Subject: [fix] hackerrank, 'big sorting', python solution
+
+-switch to string comparison due to size 1x10^6 digits numbers
+---
+ .../big.sorting.py                                          | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.py b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.py
+index 93c1a0c..6f4d5a7 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.py
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.py
+@@ -8,13 +8,11 @@ import sys
+ 
+ class node:
+     value = None  # str
+-    value2 = None  # int
+     left = None
+     right = None
+ 
+     def __init__(self, _value):
+         self.value = _value
+-        self.value2 = int(_value)
+ 
+     def children(self):
+         res = []
+@@ -26,7 +24,9 @@ class node:
+         return res
+ 
+     def insert(self, _value):
+-        if int(_value) < self.value2:
++        # string compare due to potential size of 1x10^6 digits
++        if len(_value) < len(self.value) or \
++           (len(_value) == len(self.value) and _value < self.value):
+             if self.left == None:
+                 self.left = node(_value)
+             else:
+-- 
+2.23.0
+
