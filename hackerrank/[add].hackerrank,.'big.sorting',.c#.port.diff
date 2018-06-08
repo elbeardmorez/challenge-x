@@ -1,0 +1,85 @@
+From 1c63a489e0bed2b16d421a0d0ddf1a87a90fae3a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 8 Jun 2018 11:58:25 +0100
+Subject: [add] hackerrank, 'big sorting', c# port
+
+---
+ .../big.sorting.cs                            | 52 ++++++++++++++++++-
+ 1 file changed, 50 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
+index 733bb2d..fde34ee 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.big.sorting/big.sorting.cs
+@@ -12,10 +12,58 @@ using System.Text.RegularExpressions;
+ using System.Text;
+ using System;
+ 
++class node {
++
++    string value;
++    int count = 1;
++    node left = null;
++    node right = null;
++
++    public node(string _value) {
++        value = _value;
++    }
++
++    public IEnumerable<string> children() {
++        var res = new List<string>();
++        if (left != null)
++            res.AddRange(left.children());
++        res.AddRange(new string[count].Select(s => value));
++        if (right != null)
++            res.AddRange(right.children());
++        return res;
++    }
++
++    public void insert(string _value) {
++        // string compare due to potential size of 1x10^6 digits
++        if (_value == value)
++            count += 1;
++        else if (_value.Length < value.Length ||
++           (_value.Length == value.Length && _value.CompareTo(value) < 0)) {
++            if (left == null)
++                left = new node(_value);
++            else
++                left.insert(_value);
++        } else {
++            if (right == null)
++                right = new node(_value);
++            else
++                right.insert(_value);
++        }
++    }
++}
++
+ class Solution {
+-    
++
+     // Complete the bigSorting function below.
+     static string[] bigSorting(string[] unsorted) {
++        node root = null;
++        foreach(string s in unsorted) {
++            if (root == null)
++                root = new node(s);
++            else
++                root.insert(s);
++        }
++        return root.children().ToArray();
+     }
+ 
+     static void Main(string[] args) {
+@@ -30,7 +78,7 @@ class Solution {
+             unsorted[i] = unsortedItem;
+         }
+ 
+-        var result = bigSorting(unsorted);
++        string[] result = bigSorting(unsorted);
+ 
+         textWriter.WriteLine(string.Join("\n", result));
+ 
+-- 
+2.23.0
+
