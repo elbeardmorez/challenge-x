@@ -1,0 +1,42 @@
+From 29b9d5e16e3591297cae8f0b240c3a395c293e5b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 9 Jun 2018 20:33:49 +0100
+Subject: [add] hackerrank, 'the full counting sort', python port
+
+---
+ .../the.full.counting.sort.py                    | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.the.full.counting.sort/the.full.counting.sort.py b/hackerrank/algorithms.-.sorting.-.easy.-.the.full.counting.sort/the.full.counting.sort.py
+index 37d5024..752458c 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.the.full.counting.sort/the.full.counting.sort.py
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.the.full.counting.sort/the.full.counting.sort.py
+@@ -8,9 +8,25 @@ import sys
+ 
+ if __name__ == '__main__':
+     n = int(input())
++    midway = int(n / 2);
++
++    lists = [ None ] * 100;
+     for n_itr in range(n):
+         xs = input().split()
+ 
+         x = int(xs[0])
+ 
+         s = xs[1]
++
++        if n_itr < midway:
++            s = "-"
++        if lists[x] == None:
++            lists[x] = [s]
++        else:
++            lists[x].append(s);
++
++    res = []
++    for list in lists:
++        if list != None:
++            res = res + list
++    print(" ".join(res))
+-- 
+2.23.0
+
