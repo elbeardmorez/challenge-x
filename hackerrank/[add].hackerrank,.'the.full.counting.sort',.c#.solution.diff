@@ -1,0 +1,45 @@
+From 205e9ac1107f41950aaf8d513776fc0ba6daf4f6 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 9 Jun 2018 20:21:39 +0100
+Subject: [add] hackerrank, 'the full counting sort', c# solution
+
+---
+ .../the.full.counting.sort.cs                 | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.the.full.counting.sort/the.full.counting.sort.cs b/hackerrank/algorithms.-.sorting.-.easy.-.the.full.counting.sort/the.full.counting.sort.cs
+index 32e6768..fdcd25c 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.the.full.counting.sort/the.full.counting.sort.cs
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.the.full.counting.sort/the.full.counting.sort.cs
+@@ -16,9 +16,28 @@ class Solution {
+ 
+     static void Main(string[] args) {
+         int n = Convert.ToInt32(Console.ReadLine());
++        int midway = (int)(n / 2);
++
++        List<string>[] lists = new List<string>[n].Select<List<string>, List<string>>(x => null).ToArray();
++        for (int nItr = 0; nItr < n; nItr++) {
+             string[] xs = Console.ReadLine().Split(' ');
+ 
+             int x = Convert.ToInt32(xs[0]);
+             string s = xs[1];
++
++            if (nItr < midway)
++                s = "-";
++            if (lists[x] == null)
++                lists[x] = new List<string>(new string[] {s});
++            else
++                lists[x].Add(s);
++        }
++
++        var res = new List<string>();
++        foreach(var list in lists) {
++            if (list != null)
++                res.AddRange(list);
++        }
++        Console.WriteLine(string.Join(" ", res));
+     }
+ }
+-- 
+2.23.0
+
