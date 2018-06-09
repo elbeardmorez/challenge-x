@@ -1,0 +1,24 @@
+From 10c783fdcd1eea42535332d4fedcaad8251187af Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 9 Jun 2018 16:55:34 +0100
+Subject: [add] hackerrank, 'angry professor', javascript port
+
+---
+ .../angry.professor.js                                           | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.angry.professor/angry.professor.js b/hackerrank/algorithms.-.implementation.-.easy.-.angry.professor/angry.professor.js
+index 39abe05..99a085c 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.angry.professor/angry.professor.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.angry.professor/angry.professor.js
+@@ -26,6 +26,7 @@ function readLine() {
+ 
+ // Complete the angryProfessor function below.
+ function angryProfessor(k, a) {
++    return a.filter(x => x <= 0).length < k ? "YES" : "NO";
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
