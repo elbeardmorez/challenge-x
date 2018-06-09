@@ -1,0 +1,46 @@
+From 7f531625b4a3db1c897a1139aff36720edcd51eb Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 9 Jun 2018 18:09:12 +0100
+Subject: [add] hackerrank, 'quick sort #1 partition', python solution
+
+---
+ .../quick.sort.1.partition.py                 | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.quick.sort.1.partition/quick.sort.1.partition.py b/hackerrank/algorithms.-.sorting.-.easy.-.quick.sort.1.partition/quick.sort.1.partition.py
+index e630ad8..a4fdf0e 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.quick.sort.1.partition/quick.sort.1.partition.py
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.quick.sort.1.partition/quick.sort.1.partition.py
+@@ -8,6 +8,23 @@ import sys
+ 
+ # Complete the quickSort function below.
+ def quickSort(arr):
++    p = arr[0]
++    left = []
++    equal = [p]
++    right = []
++    for idx in range(1, len(arr)):
++        x = arr[idx]
++        if x == p:
++            equal.append(x)
++        elif x < p:
++            left.append(x)
++        else:
++            right.append(x)
++    print("%s %s %s" % (
++        "" if len(left) == 0 else " ".join([str(x) for x in left]),
++        " ".join([str(x) for x in equal]),
++        "" if len(right) == 0 else " ".join([str(x) for x in right])))
++    return left + equal + right
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+@@ -21,4 +38,4 @@ if __name__ == '__main__':
+     fptr.write(' '.join(map(str, result)))
+     fptr.write('\n')
+ 
+-    fptr.close() 
++    fptr.close()
+-- 
+2.23.0
+
