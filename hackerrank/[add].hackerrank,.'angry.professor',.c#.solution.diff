@@ -1,0 +1,24 @@
+From 2c128c85ca85a448182c038a75abcffc9fb79c48 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 9 Jun 2018 16:51:11 +0100
+Subject: [add] hackerrank, 'angry professor', c# solution
+
+---
+ .../angry.professor.cs                                           | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.angry.professor/angry.professor.cs b/hackerrank/algorithms.-.implementation.-.easy.-.angry.professor/angry.professor.cs
+index d90b15a..06bcd2f 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.angry.professor/angry.professor.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.angry.professor/angry.professor.cs
+@@ -16,6 +16,7 @@ class Solution {
+ 
+     // Complete the angryProfessor function below.
+     static string angryProfessor(int k, int[] a) {
++        return a.Where(x => x <= 0).Count() < k ? "YES" : "NO";
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
