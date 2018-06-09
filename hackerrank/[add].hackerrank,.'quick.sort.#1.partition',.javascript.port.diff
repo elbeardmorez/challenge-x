@@ -1,0 +1,37 @@
+From 8d959db50f5d1dc87c955012ac29a9d7351b63e8 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 9 Jun 2018 18:14:13 +0100
+Subject: [add] hackerrank, 'quick sort #1 partition', javascript port
+
+---
+ .../quick.sort.1.partition.js                      | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.quick.sort.1.partition/quick.sort.1.partition.js b/hackerrank/algorithms.-.sorting.-.easy.-.quick.sort.1.partition/quick.sort.1.partition.js
+index 8e82bb2..f84d301 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.quick.sort.1.partition/quick.sort.1.partition.js
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.quick.sort.1.partition/quick.sort.1.partition.js
+@@ -26,6 +26,20 @@ function readLine() {
+ 
+ // Complete the quickSort function below.
+ function quickSort(arr) {
++    var p = arr[0];
++    var left = [];
++    var equal = [p];
++    var right = [];
++    for (var idx = 1; idx < arr.length; idx++) {
++        var x = arr[idx];
++        if (x == p)
++            equal.push(x);
++        else if (x < p)
++            left.push(x);
++        else
++            right.push(x);
++    }
++    return left.concat(equal).concat(right);
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
