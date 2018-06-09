@@ -1,0 +1,24 @@
+From 95abd884c3738c7f31330db63552668c09d7fd38 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 9 Jun 2018 17:03:23 +0100
+Subject: [add] hackerrank, 'angry professor', python port
+
+---
+ .../angry.professor.py                                           | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.angry.professor/angry.professor.py b/hackerrank/algorithms.-.implementation.-.easy.-.angry.professor/angry.professor.py
+index 360e9c1..22035c5 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.angry.professor/angry.professor.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.angry.professor/angry.professor.py
+@@ -8,6 +8,7 @@ import sys
+ 
+ # Complete the angryProfessor function below.
+ def angryProfessor(k, a):
++    return "YES" if len([x for x in a if x <= 0]) < k else "NO";
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
