@@ -1,0 +1,37 @@
+From 1ed13fa5a1927803f6da9e0e1a47ecd5b0ebef84 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 9 Jun 2018 18:19:15 +0100
+Subject: [add] hackerrank, 'quick sort #1 partition', c# port
+
+---
+ .../quick.sort.1.partition.cs                      | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.quick.sort.1.partition/quick.sort.1.partition.cs b/hackerrank/algorithms.-.sorting.-.easy.-.quick.sort.1.partition/quick.sort.1.partition.cs
+index d0b8a1c..14a7af4 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.quick.sort.1.partition/quick.sort.1.partition.cs
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.quick.sort.1.partition/quick.sort.1.partition.cs
+@@ -16,6 +16,20 @@ class Solution {
+ 
+     // Complete the quickSort function below.
+     static int[] quickSort(int[] arr) {
++        var p = arr[0];
++        var left = new List<int>();
++        var equal = new List<int>(new int[] {p});
++        var right = new List<int>();
++        for (var idx = 1; idx < arr.Length; idx++) {
++            var x = arr[idx];
++            if (x == p)
++                equal.Add(x);
++            else if (x < p)
++                left.Add(x);
++            else
++                right.Add(x);
++        }
++        return left.Concat(equal).Concat(right).ToArray();
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
