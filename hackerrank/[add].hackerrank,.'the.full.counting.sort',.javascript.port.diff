@@ -1,0 +1,46 @@
+From 1e2985588f2701179ecca9e6a5393f22c0756871 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 9 Jun 2018 20:31:54 +0100
+Subject: [add] hackerrank, 'the full counting sort', javascript port
+
+---
+ .../the.full.counting.sort.js                  | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.the.full.counting.sort/the.full.counting.sort.js b/hackerrank/algorithms.-.sorting.-.easy.-.the.full.counting.sort/the.full.counting.sort.js
+index 516a950..e9717be 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.the.full.counting.sort/the.full.counting.sort.js
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.the.full.counting.sort/the.full.counting.sort.js
+@@ -24,11 +24,29 @@ function readLine() {
+ 
+ function main() {
+     const n = parseInt(readLine(), 10);
++    const midway = parseInt(n / 2);
++
++    var lists = Array(100).fill(undefined);
++
+     for (let nItr = 0; nItr < n; nItr++) {
+         const xs = readLine().split(' ');
+ 
+         const x = parseInt(xs[0], 10);
+ 
+         var s = xs[1];
++
++        if (nItr < midway)
++            s = "-";
++        if (!lists[x])
++            lists[x] = [s];
++        else
++            lists[x].push(s);
+     }
++
++    var res = [];
++    lists.forEach(list => {
++        if (list)
++            res = res.concat(list);
++    })
++    console.log(res.join(" "));
+ }
+-- 
+2.23.0
+
