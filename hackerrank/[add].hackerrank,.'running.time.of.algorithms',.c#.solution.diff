@@ -1,0 +1,47 @@
+From d722fc20febad44d94b9b9f9d87643b577c197bd Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 9 Jun 2018 17:48:44 +0100
+Subject: [add] hackerrank, 'running time of algorithms', c# solution
+
+---
+ .../running.time.of.algorithms.cs                   | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.running.time.of.algorithms/running.time.of.algorithms.cs b/hackerrank/algorithms.-.sorting.-.easy.-.running.time.of.algorithms/running.time.of.algorithms.cs
+index 28571c0..28d4639 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.running.time.of.algorithms/running.time.of.algorithms.cs
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.running.time.of.algorithms/running.time.of.algorithms.cs
+@@ -13,10 +13,10 @@ using System.Text;
+ using System;
+ 
+ class Solution {
+-    
++
+     static int insertionSort1(int idx, int[] arr) {
+         var ops = 0;
+-        var shift = arr[idx];        
++        var shift = arr[idx];
+         while (idx - 1 >= 0 && arr[idx - 1] > shift) {
+             arr[idx] = arr[idx - 1];
+             ops++;
+@@ -25,9 +25,16 @@ class Solution {
+         arr[idx] = shift;
+         return ops;
+     }
+-    
++
+     // Complete the insertionSort2 function below.
+     static int insertionSort2(int n, int[] arr) {
++        var ops = 0;
++        var idx = 1;
++        while (idx < n) {
++            ops += insertionSort1(idx, arr);
++            idx += 1;
++        }
++        return ops;
+     }
+ 
+     // Complete the runningTime function below.
+-- 
+2.23.0
+
