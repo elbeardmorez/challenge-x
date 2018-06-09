@@ -1,0 +1,26 @@
+From b1b96a9b3121eb5b08e5c83a191aa9394b03565a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 9 Jun 2018 17:30:15 +0100
+Subject: [add] hackerrank, 'correctness and the loop invariant', python
+ solution
+
+---
+ .../correctness.and.the.loop.invariant.py                       | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.correctness.and.the.loop.invariant/correctness.and.the.loop.invariant.py b/hackerrank/algorithms.-.sorting.-.easy.-.correctness.and.the.loop.invariant/correctness.and.the.loop.invariant.py
+index e90a775..6273b18 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.correctness.and.the.loop.invariant/correctness.and.the.loop.invariant.py
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.correctness.and.the.loop.invariant/correctness.and.the.loop.invariant.py
+@@ -2,7 +2,7 @@ def insertion_sort(l):
+     for i in range(1, len(l)):
+         j = i-1
+         key = l[i]
+-        while (j > 0) and (l[j] > key):
++        while (j >= 0) and (l[j] > key):
+            l[j+1] = l[j]
+            j -= 1
+         l[j+1] = key
+-- 
+2.23.0
+
