@@ -1,0 +1,43 @@
+From e77cf15c2a1e314faeda7207aa232c0123245a9f Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 9 Jun 2018 17:50:10 +0100
+Subject: [add] hackerrank, 'running time of algorithms', javascript port
+
+---
+ .../running.time.of.algorithms.js             | 20 +++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.running.time.of.algorithms/running.time.of.algorithms.js b/hackerrank/algorithms.-.sorting.-.easy.-.running.time.of.algorithms/running.time.of.algorithms.js
+index 2984a7a..e12b758 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.running.time.of.algorithms/running.time.of.algorithms.js
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.running.time.of.algorithms/running.time.of.algorithms.js
+@@ -26,6 +26,26 @@ function readLine() {
+ 
+ // Complete the insertionSort2 function below.
+ function insertionSort2(n, arr) {
++
++    var insertionSort1 = (idx, arr) => {
++        let ops = 0;
++        let shift = arr[idx];
++        while (idx - 1 >= 0 && arr[idx - 1] > shift) {
++            arr[idx] = arr[idx - 1];
++            ops++;
++            idx--;
++        }
++        arr[idx] = shift;
++        return ops;
++    }
++
++    var ops = 0;
++    var idx = 1;
++    while (idx < n) {
++        ops += insertionSort1(idx, arr);
++        idx += 1;
++    }
++    return ops;
+ }
+ 
+ // Complete the runningTime function below.
+-- 
+2.23.0
+
