@@ -1,0 +1,29 @@
+From 644c1ff0347907199f7f7e2c4ad40ce9dd36ab7a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 9 Jun 2018 18:42:55 +0100
+Subject: [add] hackerrank, 'counting sort #1', c# solution
+
+---
+ .../counting.sort.1.cs                                      | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.counting.sort.1/counting.sort.1.cs b/hackerrank/algorithms.-.sorting.-.easy.-.counting.sort.1/counting.sort.1.cs
+index e669a89..28a7072 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.counting.sort.1/counting.sort.1.cs
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.counting.sort.1/counting.sort.1.cs
+@@ -16,6 +16,12 @@ class Solution {
+ 
+     // Complete the countingSort function below.
+     static int[] countingSort(int[] arr) {
++        var n = 100;
++        var idxs = new int[n].Select(x => 0).ToArray();
++        foreach(var x in arr) {
++            idxs[x] += 1;
++        }
++        return idxs;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
