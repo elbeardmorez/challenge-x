@@ -1,0 +1,28 @@
+From 844f756cf55ec8c30ebb5f5d38e6355578981e65 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 9 Jun 2018 18:56:36 +0100
+Subject: [add] hackerrank, 'counting sort #1', python port
+
+---
+ .../counting.sort.1.py                                       | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.counting.sort.1/counting.sort.1.py b/hackerrank/algorithms.-.sorting.-.easy.-.counting.sort.1/counting.sort.1.py
+index 1874ff3..c6d6516 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.counting.sort.1/counting.sort.1.py
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.counting.sort.1/counting.sort.1.py
+@@ -8,6 +8,11 @@ import sys
+ 
+ # Complete the countingSort function below.
+ def countingSort(arr):
++    n = 100
++    idxs = [0] * n
++    for x in arr:
++        idxs[x] += 1
++    return idxs
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
