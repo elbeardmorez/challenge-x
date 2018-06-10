@@ -1,0 +1,41 @@
+From cd9e27a5b054d48700619e4091db4355739e4e99 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 10 Jun 2018 18:16:54 +0100
+Subject: [add] hackerrank, 'closest numbers', c# port
+
+---
+ .../closest.numbers.cs                         | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.closest.numbers/closest.numbers.cs b/hackerrank/algorithms.-.sorting.-.easy.-.closest.numbers/closest.numbers.cs
+index f2babb3..b694479 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.closest.numbers/closest.numbers.cs
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.closest.numbers/closest.numbers.cs
+@@ -16,6 +16,24 @@ class Solution {
+ 
+     // Complete the closestNumbers function below.
+     static int[] closestNumbers(int[] arr) {
++        var res = new List<int>();
++        int last = 0;
++        bool last_set = false;
++        int diff = 0;
++        bool diff_set = false;
++        Array.ForEach(arr.OrderBy(x => x).ToArray(), x => {
++            if (last_set) {
++                if (!diff_set || x - last < diff) {
++                    diff = x - last;
++                    diff_set = true;
++                    res = new List<int>(new int[] {last, x});
++                } else if (x - last == diff)
++                    res.AddRange(new int[] {last, x});
++            }
++            last = x;
++            last_set = true;
++        });
++        return res.ToArray();
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
