@@ -1,0 +1,39 @@
+From 8ad62a74ddc91690ef0685c7cf8c4b020a253d2c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 10 Jun 2018 17:34:35 +0100
+Subject: [add] hackerrank, 'closest numbers', javascript port
+
+---
+ .../closest.numbers.js                           | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.closest.numbers/closest.numbers.js b/hackerrank/algorithms.-.sorting.-.easy.-.closest.numbers/closest.numbers.js
+index f598214..029364e 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.closest.numbers/closest.numbers.js
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.closest.numbers/closest.numbers.js
+@@ -26,6 +26,22 @@ function readLine() {
+ 
+ // Complete the closestNumbers function below.
+ function closestNumbers(arr) {
++    var res = [];
++    var last = undefined;
++    var diff = undefined;
++    arr.sort((a, b) => parseInt(a) > parseInt(b));
++    arr.forEach(x => {
++        //console.log(`considering x: ${x}`);
++        if (last) {
++            if (!diff || x - last < diff) {
++                diff = x - last;
++                res = [last, x];
++            } else if (x - last == diff)
++                res = res.concat([last, x]);
++        }
++        last = x;
++    });
++    return res;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
