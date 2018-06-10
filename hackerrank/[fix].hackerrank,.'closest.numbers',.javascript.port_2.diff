@@ -1,0 +1,31 @@
+From c7ea0051346b3ba6fc2d47242e81dd57d6b83381 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 10 Jun 2018 17:53:05 +0100
+Subject: [fix] hackerrank, 'closest numbers', javascript port
+
+-sort on difference not simply greater / smaller
+---
+ .../closest.numbers.js                                      | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.closest.numbers/closest.numbers.js b/hackerrank/algorithms.-.sorting.-.easy.-.closest.numbers/closest.numbers.js
+index 2b655a5..684dc8c 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.closest.numbers/closest.numbers.js
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.closest.numbers/closest.numbers.js
+@@ -29,10 +29,10 @@ function closestNumbers(arr) {
+     var res = [];
+     var last = undefined;
+     var diff = undefined;
+-    arr = arr.map(x => parseInt(x));
+-    arr.sort((a, b) => a > b);
++    var arr = arr.map(x => parseInt(x));
++    arr.sort((a, b) => a - b);
+     arr.forEach(x => {
+-        console.log(`considering x: ${x}`);
++        //console.log(`considering x: ${x}`);
+         if (last) {
+             if (!diff || x - last < diff) {
+                 diff = x - last;
+-- 
+2.23.0
+
