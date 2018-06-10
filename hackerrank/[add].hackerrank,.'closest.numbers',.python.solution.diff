@@ -1,0 +1,35 @@
+From a5a7b2c5a60c08f0e4097c1e6435a93a7fa362df Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 10 Jun 2018 17:18:05 +0100
+Subject: [add] hackerrank, 'closest numbers', python solution
+
+---
+ .../closest.numbers.py                               | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.closest.numbers/closest.numbers.py b/hackerrank/algorithms.-.sorting.-.easy.-.closest.numbers/closest.numbers.py
+index 2164b4c..a0f829b 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.closest.numbers/closest.numbers.py
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.closest.numbers/closest.numbers.py
+@@ -8,6 +8,18 @@ import sys
+ 
+ # Complete the closestNumbers function below.
+ def closestNumbers(arr):
++    res = []
++    last = None
++    diff = None
++    for x in sorted(arr):
++        if last != None:
++            if diff == None or x - last < diff:
++                diff = x - last
++                res = [last, x]
++            elif x - last == diff:
++                res = res + [last, x]
++        last = x
++    return res
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
