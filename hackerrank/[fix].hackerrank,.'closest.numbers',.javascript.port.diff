@@ -1,0 +1,38 @@
+From 9d2ec1c299099d5c73088979ac2bf4876f045efb Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 10 Jun 2018 17:47:33 +0100
+Subject: [fix] hackerrank, 'closest numbers', javascript port
+
+-work with numbers, convert to strings
+---
+ .../closest.numbers.js                                   | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.closest.numbers/closest.numbers.js b/hackerrank/algorithms.-.sorting.-.easy.-.closest.numbers/closest.numbers.js
+index 029364e..2b655a5 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.closest.numbers/closest.numbers.js
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.closest.numbers/closest.numbers.js
+@@ -29,15 +29,16 @@ function closestNumbers(arr) {
+     var res = [];
+     var last = undefined;
+     var diff = undefined;
+-    arr.sort((a, b) => parseInt(a) > parseInt(b));
++    arr = arr.map(x => parseInt(x));
++    arr.sort((a, b) => a > b);
+     arr.forEach(x => {
+-        //console.log(`considering x: ${x}`);
++        console.log(`considering x: ${x}`);
+         if (last) {
+             if (!diff || x - last < diff) {
+                 diff = x - last;
+-                res = [last, x];
++                res = [last.toString(), x.toString()];
+             } else if (x - last == diff)
+-                res = res.concat([last, x]);
++                res = res.concat([last.toString(), x.toString()]);
+         }
+         last = x;
+     });
+-- 
+2.23.0
+
