@@ -1,0 +1,48 @@
+From 351c7ed0cf5283b42f358a095637f13d7c2cdf59 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 11 Jun 2018 19:29:27 +0100
+Subject: [add] hackerrank, 'two characters', c# solution
+
+---
+ .../two.characters.cs                         | 25 +++++++++++++++++++
+ 1 file changed, 25 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.two.characters/two.characters.cs b/hackerrank/algorithms.-.strings.-.easy.-.two.characters/two.characters.cs
+index 00bc8b6..331b62a 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.two.characters/two.characters.cs
++++ b/hackerrank/algorithms.-.strings.-.easy.-.two.characters/two.characters.cs
+@@ -16,6 +16,31 @@ class Solution {
+ 
+     // Complete the twoCharaters function below.
+     static int twoCharaters(string s) {
++        var pairs = new List<Tuple<char, char>>();
++        var chars = s.ToCharArray();
++        for (var idx = 0; idx < chars.Length; idx++) {
++            for (var idx2 = idx + 1; idx2 < chars.Length; idx2++) {
++                pairs.Add(new Tuple<char, char>(chars[idx], chars[idx2]));
++            }
++        }
++        var max = 0;
++        foreach (var t in pairs) {
++            var remainder = chars.Where(x => x == t.Item1 || x == t.Item2 ).ToArray();
++            var run = 0;
++            var error = false;
++            var last = '_';
++            foreach (var c in remainder) {
++                if (run > 0 && c == last) {
++                    error = true;
++                    break;
++                }
++                run += 1;
++                last = c;
++            }
++            if (!error && run > max)
++                max = run;
++        }
++        return max;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
