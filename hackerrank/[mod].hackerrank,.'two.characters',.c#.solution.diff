@@ -1,0 +1,27 @@
+From 813091fc4b188121c6dc2a1f80e2f40b070505ec Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 11 Jun 2018 19:36:39 +0100
+Subject: [mod] hackerrank, 'two characters', c# solution
+
+-speed-up, add short-circuit
+---
+ .../two.characters.cs                                          | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.two.characters/two.characters.cs b/hackerrank/algorithms.-.strings.-.easy.-.two.characters/two.characters.cs
+index 331b62a..9c22fc1 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.two.characters/two.characters.cs
++++ b/hackerrank/algorithms.-.strings.-.easy.-.two.characters/two.characters.cs
+@@ -26,6 +26,9 @@ class Solution {
+         var max = 0;
+         foreach (var t in pairs) {
+             var remainder = chars.Where(x => x == t.Item1 || x == t.Item2 ).ToArray();
++            if (remainder.Length <= max)
++                continue;
++
+             var run = 0;
+             var error = false;
+             var last = '_';
+-- 
+2.23.0
+
