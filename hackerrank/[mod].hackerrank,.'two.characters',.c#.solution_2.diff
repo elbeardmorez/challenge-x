@@ -1,0 +1,31 @@
+From 1a3eb4b9eb310eeb6caa39f98a162a5aa0f8c283 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 11 Jun 2018 19:40:29 +0100
+Subject: [mod] hackerrank, 'two characters', c# solution
+
+-speed-up, strip duplicate chars
+---
+ .../two.characters.cs                                      | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.two.characters/two.characters.cs b/hackerrank/algorithms.-.strings.-.easy.-.two.characters/two.characters.cs
+index 9c22fc1..fd713dd 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.two.characters/two.characters.cs
++++ b/hackerrank/algorithms.-.strings.-.easy.-.two.characters/two.characters.cs
+@@ -18,9 +18,10 @@ class Solution {
+     static int twoCharaters(string s) {
+         var pairs = new List<Tuple<char, char>>();
+         var chars = s.ToCharArray();
+-        for (var idx = 0; idx < chars.Length; idx++) {
+-            for (var idx2 = idx + 1; idx2 < chars.Length; idx2++) {
+-                pairs.Add(new Tuple<char, char>(chars[idx], chars[idx2]));
++        var chars_unique = s.ToCharArray().Distinct().ToArray();
++        for (var idx = 0; idx < chars_unique.Length; idx++) {
++            for (var idx2 = idx + 1; idx2 < chars_unique.Length; idx2++) {
++                pairs.Add(new Tuple<char, char>(chars_unique[idx], chars_unique[idx2]));
+             }
+         }
+         var max = 0;
+-- 
+2.23.0
+
