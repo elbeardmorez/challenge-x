@@ -1,0 +1,26 @@
+From 290580f22a6020649bf5a778056083de9fe22a13 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 11 Jun 2018 22:18:58 +0100
+Subject: [mod] hackerrank, 'beautiful days at the movies', c# solution
+
+-speed-up, avoid string join overhead
+---
+ .../beautiful.days.at.the.movies.cs                             | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.beautiful.days.at.the.movies/beautiful.days.at.the.movies.cs b/hackerrank/algorithms.-.implementation.-.easy.-.beautiful.days.at.the.movies/beautiful.days.at.the.movies.cs
+index 9b9e1b6..fdd5637 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.beautiful.days.at.the.movies/beautiful.days.at.the.movies.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.beautiful.days.at.the.movies/beautiful.days.at.the.movies.cs
+@@ -15,7 +15,7 @@ using System;
+ class Solution {
+ 
+     static int reverseInt(int x) {
+-        return Convert.ToInt32(String.Join("", x.ToString().Reverse().ToArray()));
++        return Convert.ToInt32(new String(x.ToString().Reverse().ToArray()));
+     }
+ 
+     // Complete the beautifulDays function below.
+-- 
+2.23.0
+
