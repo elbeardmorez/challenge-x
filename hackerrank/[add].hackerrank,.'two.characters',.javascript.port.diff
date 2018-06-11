@@ -1,0 +1,56 @@
+From e74990ef50c319b1de4d806084d997c1b3249da5 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 11 Jun 2018 19:47:34 +0100
+Subject: [add] hackerrank, 'two characters', javascript port
+
+---
+ .../two.characters.js                         | 33 +++++++++++++++++++
+ 1 file changed, 33 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.two.characters/two.characters.js b/hackerrank/algorithms.-.strings.-.easy.-.two.characters/two.characters.js
+index 0a56bfc..f4332ed 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.two.characters/two.characters.js
++++ b/hackerrank/algorithms.-.strings.-.easy.-.two.characters/two.characters.js
+@@ -26,6 +26,39 @@ function readLine() {
+ 
+ // Complete the twoCharaters function below.
+ function twoCharaters(s) {
++
++    var pairs = [];
++    var chars = s.split('');
++    var chars_unique = [...(new Set(chars))];
++    for (var idx = 0; idx < chars_unique.length; idx++) {
++        for (var idx2 = idx + 1; idx2 < chars_unique.length; idx2++) {
++            pairs.push(chars_unique[idx] + chars_unique[idx2]);
++        }
++    }
++    var max = 0;
++    pairs.forEach(pair => {
++        var re = new RegExp("[^" + pair + "]" ,"g");
++        var remainder = s.replace(re, '').split('');
++        //console.log("%j", remainder);
++        if (remainder.length <= max)
++            return;
++
++        var run = 0;
++        var error = false;
++        var last = undefined;
++        for (var idx = 0; idx < remainder.length; idx++) {
++            var c = remainder[idx];
++            if (run > 0 && c == last) {
++                error = true;
++                break;
++            }
++            run += 1;
++            last = c;
++        }
++        if (!error && run > max)
++            max = run;
++    });
++    return max;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
