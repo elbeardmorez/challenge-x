@@ -1,0 +1,25 @@
+From 33dcf1a3ec3b414041a6d3780f91999fb9352d1e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 12 Jun 2018 07:53:40 +0100
+Subject: [add] hackerrank, 'save the prisoner', javascript port
+
+---
+ .../save.the.prisoner.js                                        | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.save.the.prisoner/save.the.prisoner.js b/hackerrank/algorithms.-.implementation.-.easy.-.save.the.prisoner/save.the.prisoner.js
+index 79fe8d1..ddd3036 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.save.the.prisoner/save.the.prisoner.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.save.the.prisoner/save.the.prisoner.js
+@@ -26,6 +26,8 @@ function readLine() {
+ 
+ // Complete the saveThePrisoner function below.
+ function saveThePrisoner(n, m, s) {
++    var remainder = (m + s - 1) % n;
++    return remainder == 0 ? n : remainder;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
