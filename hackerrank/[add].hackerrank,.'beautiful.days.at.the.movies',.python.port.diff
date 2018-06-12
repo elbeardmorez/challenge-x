@@ -1,0 +1,31 @@
+From f12e20c01521c30873c63fc77418849722a6efdd Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 12 Jun 2018 07:33:03 +0100
+Subject: [add] hackerrank, 'beautiful days at the movies', python port
+
+---
+ .../beautiful.days.at.the.movies.py                       | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.beautiful.days.at.the.movies/beautiful.days.at.the.movies.py b/hackerrank/algorithms.-.implementation.-.easy.-.beautiful.days.at.the.movies/beautiful.days.at.the.movies.py
+index 3b027f6..f579153 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.beautiful.days.at.the.movies/beautiful.days.at.the.movies.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.beautiful.days.at.the.movies/beautiful.days.at.the.movies.py
+@@ -8,6 +8,14 @@ import sys
+ 
+ # Complete the beautifulDays function below.
+ def beautifulDays(i, j, k):
++    def reverseInt(x):
++        return int(''.join(list(str(x))[::-1]))
++
++    beautiful = 0
++    for idx in range(i, j + 1):
++        if abs(idx - reverseInt(idx)) % k == 0:
++            beautiful += 1
++    return beautiful
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
