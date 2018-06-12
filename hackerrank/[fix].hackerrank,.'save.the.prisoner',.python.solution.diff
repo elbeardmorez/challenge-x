@@ -1,0 +1,27 @@
+From 4b868ae37d1133e9b59d1c1c55613e6e1e1f1283 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 12 Jun 2018 07:49:36 +0100
+Subject: [fix] hackerrank, 'save the prisoner', python solution
+
+-remainder logic
+---
+ .../save.the.prisoner.py                                       | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.save.the.prisoner/save.the.prisoner.py b/hackerrank/algorithms.-.implementation.-.easy.-.save.the.prisoner/save.the.prisoner.py
+index 4250d95..ff920a0 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.save.the.prisoner/save.the.prisoner.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.save.the.prisoner/save.the.prisoner.py
+@@ -8,7 +8,8 @@ import sys
+ 
+ # Complete the saveThePrisoner function below.
+ def saveThePrisoner(n, m, s):
+-    return (m+s) % n - 1;
++    remainder = (m+s) % n - 1
++    return n if remainder == 0 else remainder
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
