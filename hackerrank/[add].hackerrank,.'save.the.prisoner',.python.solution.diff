@@ -1,0 +1,24 @@
+From 37923c0986a82120cb43eff908cd928957e907f8 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 12 Jun 2018 07:47:31 +0100
+Subject: [add] hackerrank, 'save the prisoner', python solution
+
+---
+ .../save.the.prisoner.py                                         | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.save.the.prisoner/save.the.prisoner.py b/hackerrank/algorithms.-.implementation.-.easy.-.save.the.prisoner/save.the.prisoner.py
+index 109233e..4250d95 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.save.the.prisoner/save.the.prisoner.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.save.the.prisoner/save.the.prisoner.py
+@@ -8,6 +8,7 @@ import sys
+ 
+ # Complete the saveThePrisoner function below.
+ def saveThePrisoner(n, m, s):
++    return (m+s) % n - 1;
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
