@@ -1,0 +1,25 @@
+From 95ede789304537813008162adb9fbeaf54de3dce Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 13 Jun 2018 07:55:40 +0100
+Subject: [add] hackerrank, 'save the prisoner', c# port
+
+---
+ .../save.the.prisoner.cs                                        | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.save.the.prisoner/save.the.prisoner.cs b/hackerrank/algorithms.-.implementation.-.easy.-.save.the.prisoner/save.the.prisoner.cs
+index fac53aa..0b961d9 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.save.the.prisoner/save.the.prisoner.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.save.the.prisoner/save.the.prisoner.cs
+@@ -16,6 +16,8 @@ class Solution {
+ 
+     // Complete the saveThePrisoner function below.
+     static int saveThePrisoner(int n, int m, int s) {
++        var remainder = (m + s - 1) % n;
++        return remainder == 0 ? n : remainder;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
