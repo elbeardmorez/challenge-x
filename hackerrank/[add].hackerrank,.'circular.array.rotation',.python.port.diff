@@ -1,0 +1,32 @@
+From 569e3496acd2b042168466b71a777c39a728c844 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 14 Jun 2018 21:49:17 +0100
+Subject: [add] hackerrank, 'circular array rotation', python port
+
+---
+ .../circular.array.rotation.py                           | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.circular.array.rotation/circular.array.rotation.py b/hackerrank/algorithms.-.implementation.-.easy.-.circular.array.rotation/circular.array.rotation.py
+index dae55bf..634d9a1 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.circular.array.rotation/circular.array.rotation.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.circular.array.rotation/circular.array.rotation.py
+@@ -8,6 +8,15 @@ import sys
+ 
+ # Complete the circularArrayRotation function below.
+ def circularArrayRotation(a, k, queries):
++    a_len = len(a)
++    q_len = len(queries)
++    res = []
++    if k >= a_len:
++        k = k % a_len
++    for i in range(0, q_len):
++        idx_mod = (queries[i] - k + a_len) % a_len
++        res.append(a[idx_mod])
++    return res
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
