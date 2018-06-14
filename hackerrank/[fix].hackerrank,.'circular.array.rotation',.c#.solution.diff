@@ -1,0 +1,26 @@
+From 2c007fc5085e0fa0aaa39dab878aac5e10c6f430 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 14 Jun 2018 21:41:35 +0100
+Subject: [fix] hackerrank, 'circular array rotation', c# solution
+
+-modulus calc
+---
+ .../circular.array.rotation.cs                                  | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.circular.array.rotation/circular.array.rotation.cs b/hackerrank/algorithms.-.implementation.-.easy.-.circular.array.rotation/circular.array.rotation.cs
+index bb4e780..334d201 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.circular.array.rotation/circular.array.rotation.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.circular.array.rotation/circular.array.rotation.cs
+@@ -22,7 +22,7 @@ class Solution {
+         if (k >= a_len)
+             k = k % a_len;
+         for (var i = 0; i < q_len; i++) {
+-            var idx_mod = (queries[i] + k - 1) % a_len;
++            var idx_mod = (queries[i] - k + a_len) % a_len;
+             res[i] = a[idx_mod];
+         }
+         var ll = new LinkedList<int>(a);
+-- 
+2.23.0
+
