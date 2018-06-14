@@ -1,0 +1,34 @@
+From 2dcab041d0a98459be8f49723e84c51f84febdec Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 14 Jun 2018 21:39:52 +0100
+Subject: [add] hackerrank, 'circular array rotation', c# solution
+
+---
+ .../circular.array.rotation.cs                        | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.circular.array.rotation/circular.array.rotation.cs b/hackerrank/algorithms.-.implementation.-.easy.-.circular.array.rotation/circular.array.rotation.cs
+index 651f1f5..bb4e780 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.circular.array.rotation/circular.array.rotation.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.circular.array.rotation/circular.array.rotation.cs
+@@ -16,6 +16,17 @@ class Solution {
+ 
+     // Complete the circularArrayRotation function below.
+     static int[] circularArrayRotation(int[] a, int k, int[] queries) {
++        var a_len = a.Length;
++        var q_len = queries.Length;
++        var res = new int[q_len];
++        if (k >= a_len)
++            k = k % a_len;
++        for (var i = 0; i < q_len; i++) {
++            var idx_mod = (queries[i] + k - 1) % a_len;
++            res[i] = a[idx_mod];
++        }
++        var ll = new LinkedList<int>(a);
++        return res;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
