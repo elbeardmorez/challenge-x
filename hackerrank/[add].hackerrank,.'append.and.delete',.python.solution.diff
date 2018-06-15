@@ -1,0 +1,32 @@
+From 5d88ee0039307cb85374d6b5c1205cef21916ad8 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 15 Jun 2018 21:42:50 +0100
+Subject: [add] hackerrank, 'append and delete', python solution
+
+---
+ .../append.and.delete.py                                 | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.append.and.delete/append.and.delete.py b/hackerrank/algorithms.-.implementation.-.easy.-.append.and.delete/append.and.delete.py
+index 5b31fb9..e8ec844 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.append.and.delete/append.and.delete.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.append.and.delete/append.and.delete.py
+@@ -8,6 +8,15 @@ import sys
+ 
+ # Complete the appendAndDelete function below.
+ def appendAndDelete(s, t, k):
++    res = "Yes"
++    s_len = len(s)
++    t_len = len(t)
++    if abs(t_len - s_len) > k:
++        res = "No"
++    elif abs(t_len - s_len) % 2 != k % 2 and \
++        k < (t_len + s_len):
++        res = "No"
++    return res
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
