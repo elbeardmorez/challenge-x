@@ -1,0 +1,30 @@
+From 32b071b2a99f953dc03d1d4767e2e9770cbc445f Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 15 Jun 2018 17:26:27 +0100
+Subject: [add] hackerrank, 'repeated string', python port
+
+---
+ .../repeated.string.py                                     | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.repeated.string/repeated.string.py b/hackerrank/algorithms.-.implementation.-.easy.-.repeated.string/repeated.string.py
+index 68623d8..cb8a050 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.repeated.string/repeated.string.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.repeated.string/repeated.string.py
+@@ -8,6 +8,13 @@ import sys
+ 
+ # Complete the repeatedString function below.
+ def repeatedString(s, n):
++    repeated = int(n / len(s))
++    remainder = int(n % len(s))
++    a_in_s = len(re.sub("[^a]", "", s))
++    a_in_s_part = 0
++    if remainder > 0:
++        a_in_s_part = len(re.sub("[^a]", "", s[:remainder]))
++    return repeated * a_in_s + a_in_s_part
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
