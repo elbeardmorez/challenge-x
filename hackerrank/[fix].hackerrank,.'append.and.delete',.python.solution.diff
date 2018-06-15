@@ -1,0 +1,43 @@
+From 53f96c8a9439c2a6816b8dc6a7aac14bf548eb90 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 15 Jun 2018 21:48:00 +0100
+Subject: [fix] hackerrank, 'append and delete', python solution
+
+-reduce to usable substring first
+---
+ .../append.and.delete.py                           | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.append.and.delete/append.and.delete.py b/hackerrank/algorithms.-.implementation.-.easy.-.append.and.delete/append.and.delete.py
+index e8ec844..423fa9a 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.append.and.delete/append.and.delete.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.append.and.delete/append.and.delete.py
+@@ -11,11 +11,25 @@ def appendAndDelete(s, t, k):
+     res = "Yes"
+     s_len = len(s)
+     t_len = len(t)
++    if s_len > 0 and t_len > 0:
++        # reduce to usable substring first
++        idx = 0
++        while idx < min(s_len, t_len) and s[idx] == t[idx]:
++            # print("idx: %d, char: %r match!" % (idx, s[idx]))
++            idx += 1
++        idx_diff = idx + 1 - 1
++        k = k - (s_len - idx_diff)
++        s = s[0:idx_diff]
++        s_len = len(s)
++        # print("k: %d, s: %r, s_len: %d" % (k, s, s_len))
++    if (k < 0):
++        res = "No"
+     if abs(t_len - s_len) > k:
+         res = "No"
+     elif abs(t_len - s_len) % 2 != k % 2 and \
+         k < (t_len + s_len):
+         res = "No"
++
+     return res
+ 
+ if __name__ == '__main__':
+-- 
+2.23.0
+
