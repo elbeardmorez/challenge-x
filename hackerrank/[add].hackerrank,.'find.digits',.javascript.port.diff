@@ -1,0 +1,34 @@
+From 840635c8b2b97cda4d3124fd48b72592b29f7a8b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 15 Jun 2018 13:47:18 +0100
+Subject: [add] hackerrank, 'find digits', javascript port
+
+---
+ .../find.digits.js                                    | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.find.digits/find.digits.js b/hackerrank/algorithms.-.implementation.-.easy.-.find.digits/find.digits.js
+index 0039bcb..8df0871 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.find.digits/find.digits.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.find.digits/find.digits.js
+@@ -26,6 +26,17 @@ function readLine() {
+ 
+ // Complete the findDigits function below.
+ function findDigits(n) {
++    var count = 0;
++    // console.log("%j", n.toString().split(''))
++    var digits = n.toString().split('');
++    for (var idx = 0; idx < digits.length; idx++) {
++        var c = digits[idx];
++        var x = parseInt(c);
++        // console.log(`considering digit ${x}`);
++        if (x > 0 && n % x == 0)
++            count += 1;
++    }
++    return count;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
