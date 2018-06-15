@@ -1,0 +1,48 @@
+From c8b376747a0b0a8163807620c8866392b21a4ef1 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 15 Jun 2018 21:53:37 +0100
+Subject: [add] hackerrank, 'append and delete', c# port
+
+---
+ .../append.and.delete.cs                      | 25 +++++++++++++++++++
+ 1 file changed, 25 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.append.and.delete/append.and.delete.cs b/hackerrank/algorithms.-.implementation.-.easy.-.append.and.delete/append.and.delete.cs
+index e705098..4ab0abb 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.append.and.delete/append.and.delete.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.append.and.delete/append.and.delete.cs
+@@ -16,6 +16,31 @@ class Solution {
+ 
+     // Complete the appendAndDelete function below.
+     static string appendAndDelete(string s, string t, int k) {
++        var res = "Yes";
++        var s_len = s.Length;
++        var t_len = t.Length;
++        if (s_len > 0 && t_len > 0) {
++            // reduce to usable substring first
++            var idx = 0;
++            while (idx < Math.Min(s_len, t_len) && s[idx] == t[idx]) {
++                // Console.WriteLine($"idx: {idx}, char: {s[idx]}");
++                idx += 1;
++            }
++            var idx_diff = idx + 1 - 1;
++            k = k - (s_len - idx_diff);
++            s = s.Substring(0, idx_diff);
++            s_len = s.Length;
++            // Console.WriteLine($"k: {k}, s: {s}, s_len: {s_len}");
++        }
++        if (k < 0)
++            res = "No";
++        else if (Math.Abs(t_len - s_len) > k)
++            res = "No";
++        else if (Math.Abs(t_len - s_len) % 2 != k % 2 && k < (t_len + s_len))
++            res = "No";
++
++        return res;
++
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
