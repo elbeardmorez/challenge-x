@@ -1,0 +1,30 @@
+From 4077ea03534ec14176f940170a9fd1849ab32307 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 15 Jun 2018 21:54:22 +0100
+Subject: [mod] hackerrank, 'append and delete', javascript port
+
+-improve code style
+---
+ .../append.and.delete.js                                     | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.append.and.delete/append.and.delete.js b/hackerrank/algorithms.-.implementation.-.easy.-.append.and.delete/append.and.delete.js
+index 3d6a80e..29209a0 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.append.and.delete/append.and.delete.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.append.and.delete/append.and.delete.js
+@@ -32,9 +32,10 @@ function appendAndDelete(s, t, k) {
+     if (s_len > 0 && t_len > 0) {
+         // reduce to usable substring first
+         var idx = 0;
+-        while (idx < Math.min(s_len, t_len) && s[idx] == t[idx])
++        while (idx < Math.min(s_len, t_len) && s[idx] == t[idx]) {
+             // console.log(`idx: ${idx}, char: ${s[idx]} match!`);
+-            idx += 1
++            idx += 1;
++        }
+         var idx_diff = idx + 1 - 1;
+         k = k - (s_len - idx_diff);
+         s = s.substring(0, idx_diff);
+-- 
+2.23.0
+
