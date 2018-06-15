@@ -1,0 +1,46 @@
+From 85d28e8d9a212f873053910a41df2d38a722f2ed Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 15 Jun 2018 21:51:46 +0100
+Subject: [add] hackerrank, 'append and delete', javascript port
+
+---
+ .../append.and.delete.js                      | 23 +++++++++++++++++++
+ 1 file changed, 23 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.append.and.delete/append.and.delete.js b/hackerrank/algorithms.-.implementation.-.easy.-.append.and.delete/append.and.delete.js
+index a018543..25f8b2b 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.append.and.delete/append.and.delete.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.append.and.delete/append.and.delete.js
+@@ -26,6 +26,29 @@ function readLine() {
+ 
+ // Complete the appendAndDelete function below.
+ function appendAndDelete(s, t, k) {
++    var res = "Yes";
++    var s_len = s.length;
++    var t_len = t.length;
++    if (s_len > 0 && t_len > 0) {
++        // reduce to usable substring first
++        var idx = 0;
++        while (idx < Math.min(s_len, t_len) && s[idx] == t[idx])
++            // console.log("idx: %d, char: %r match!" % (idx, s[idx]));
++            idx += 1
++        var idx_diff = idx + 1 - 1;
++        k = k - (s_len - idx_diff);
++        s = s.substring(0, idx_diff);
++        s_len = s.length;
++        // console.log(`k: ${k}, s: ${s}, s_len: ${s_len}`);
++    }
++    if (k < 0)
++        res = "No";
++    else if (Math.abs(t_len - s_len) > k)
++        res = "No";
++    else if (Math.abs(t_len - s_len) % 2 != k % 2 && k < (t_len + s_len))
++        res = "No";
++
++    return res;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
