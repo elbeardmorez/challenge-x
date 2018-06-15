@@ -1,0 +1,34 @@
+From 6459491b297dafaa1b687618e2048e695d1b1861 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 15 Jun 2018 14:00:11 +0100
+Subject: [add] hackerrank, 'find digits', c# port
+
+---
+ .../find.digits.cs                                    | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.find.digits/find.digits.cs b/hackerrank/algorithms.-.implementation.-.easy.-.find.digits/find.digits.cs
+index cf6a92a..1710b16 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.find.digits/find.digits.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.find.digits/find.digits.cs
+@@ -16,6 +16,17 @@ class Solution {
+ 
+     // Complete the findDigits function below.
+     static int findDigits(int n) {
++        var count = 0;
++        //Console.WriteLine($"{n.toString().split('').ToString()}")
++        var digits = n.ToString().ToCharArray().ToArray();
++        for (var idx = 0; idx < digits.Length; idx++) {
++            var c = digits[idx];
++            var x = Int32.Parse(c.ToString());
++            //Console.WriteLine($"considering digit {x}");
++            if (x > 0 && n % x == 0)
++                count += 1;
++        }
++        return count;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
