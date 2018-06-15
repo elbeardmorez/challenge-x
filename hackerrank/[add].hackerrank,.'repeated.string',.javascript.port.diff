@@ -1,0 +1,30 @@
+From 0340229ff7d4f9327d0d103e313693f563301c68 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 15 Jun 2018 17:16:43 +0100
+Subject: [add] hackerrank, 'repeated string', javascript port
+
+---
+ .../repeated.string.js                                     | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.repeated.string/repeated.string.js b/hackerrank/algorithms.-.implementation.-.easy.-.repeated.string/repeated.string.js
+index 8bc4ca2..b337b21 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.repeated.string/repeated.string.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.repeated.string/repeated.string.js
+@@ -26,6 +26,13 @@ function readLine() {
+ 
+ // Complete the repeatedString function below.
+ function repeatedString(s, n) {
++    var repeated = parseInt(n / s.length);
++    var remainder = parseInt(n % s.length);
++    var a_in_s = s.replace(/[^a]/g, "").length;
++    var a_in_s_part = 0;
++    if (remainder > 0)
++        a_in_s_part = s.substring(0, remainder).replace(/[^a]/g, "").length;
++    return repeated * a_in_s + a_in_s_part;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
