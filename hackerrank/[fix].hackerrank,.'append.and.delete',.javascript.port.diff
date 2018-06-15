@@ -1,0 +1,26 @@
+From 8a5ec873590a3fa9cc06bc3954e9476ca9083d0e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 15 Jun 2018 21:52:15 +0100
+Subject: [fix] hackerrank, 'append and delete', javascript port
+
+-porting, commented logging
+---
+ .../append.and.delete.js                                        | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.append.and.delete/append.and.delete.js b/hackerrank/algorithms.-.implementation.-.easy.-.append.and.delete/append.and.delete.js
+index 25f8b2b..3d6a80e 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.append.and.delete/append.and.delete.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.append.and.delete/append.and.delete.js
+@@ -33,7 +33,7 @@ function appendAndDelete(s, t, k) {
+         // reduce to usable substring first
+         var idx = 0;
+         while (idx < Math.min(s_len, t_len) && s[idx] == t[idx])
+-            // console.log("idx: %d, char: %r match!" % (idx, s[idx]));
++            // console.log(`idx: ${idx}, char: ${s[idx]} match!`);
+             idx += 1
+         var idx_diff = idx + 1 - 1;
+         k = k - (s_len - idx_diff);
+-- 
+2.23.0
+
