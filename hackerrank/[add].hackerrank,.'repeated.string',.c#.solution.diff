@@ -1,0 +1,30 @@
+From 30243be4f2f96a82da227dafd38fb7fd19f9444d Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 15 Jun 2018 17:02:55 +0100
+Subject: [add] hackerrank, 'repeated string', c# solution
+
+---
+ .../repeated.string.cs                                     | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.repeated.string/repeated.string.cs b/hackerrank/algorithms.-.implementation.-.easy.-.repeated.string/repeated.string.cs
+index f71c219..a44638a 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.repeated.string/repeated.string.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.repeated.string/repeated.string.cs
+@@ -16,6 +16,13 @@ class Solution {
+ 
+     // Complete the repeatedString function below.
+     static long repeatedString(string s, long n) {
++        var repeated = (long)(n / s.Length);
++        var remainder = (int)(n % s.Length);
++        var a_in_s = s.ToCharArray().Where(c => c == 'a').Count();
++        var a_in_s_part = 0;
++        if (remainder > 0)
++            a_in_s_part = s.Substring(0, remainder).ToCharArray().Where(c => c == 'a').Count();
++        return repeated * a_in_s + a_in_s_part;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
