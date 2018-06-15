@@ -1,0 +1,30 @@
+From 8dd87f5dcb180e74ae17126be2345068735a07da Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 15 Jun 2018 13:30:25 +0100
+Subject: [add] hackerrank, 'find digits', python solution
+
+---
+ .../find.digits.py                                         | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.find.digits/find.digits.py b/hackerrank/algorithms.-.implementation.-.easy.-.find.digits/find.digits.py
+index 6fd7ad6..553f3d5 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.find.digits/find.digits.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.find.digits/find.digits.py
+@@ -8,6 +8,13 @@ import sys
+ 
+ # Complete the findDigits function below.
+ def findDigits(n):
++    count = 0
++    for c in list(str(n)):
++        x = int(c)
++        # print("considering digit: %d" % x)
++        if x > 0 and n % x == 0:
++            count += 1
++    return count
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
