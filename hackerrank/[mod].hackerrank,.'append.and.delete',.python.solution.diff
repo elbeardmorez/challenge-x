@@ -1,0 +1,26 @@
+From 8c4d2a66ab672671a6affb14655c2721c17c91b7 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 15 Jun 2018 21:48:24 +0100
+Subject: [mod] hackerrank, 'append and delete', python solution
+
+-'if' should be 'elif'
+---
+ .../append.and.delete.py                                        | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.append.and.delete/append.and.delete.py b/hackerrank/algorithms.-.implementation.-.easy.-.append.and.delete/append.and.delete.py
+index 423fa9a..6843a07 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.append.and.delete/append.and.delete.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.append.and.delete/append.and.delete.py
+@@ -24,7 +24,7 @@ def appendAndDelete(s, t, k):
+         # print("k: %d, s: %r, s_len: %d" % (k, s, s_len))
+     if (k < 0):
+         res = "No"
+-    if abs(t_len - s_len) > k:
++    elif abs(t_len - s_len) > k:
+         res = "No"
+     elif abs(t_len - s_len) % 2 != k % 2 and \
+         k < (t_len + s_len):
+-- 
+2.23.0
+
