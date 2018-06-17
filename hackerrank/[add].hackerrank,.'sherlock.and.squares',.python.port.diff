@@ -1,0 +1,37 @@
+From 9b180caff7cfb71b2b9d8706d8e404496e858b7a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 17 Jun 2018 09:38:06 +0100
+Subject: [add] hackerrank, 'sherlock and squares', python port
+
+---
+ .../sherlock.and.squares.py                        | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.sherlock.and.squares/sherlock.and.squares.py b/hackerrank/algorithms.-.implementation.-.easy.-.sherlock.and.squares/sherlock.and.squares.py
+index 5956789..71459e1 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.sherlock.and.squares/sherlock.and.squares.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.sherlock.and.squares/sherlock.and.squares.py
+@@ -10,6 +10,20 @@ squares_set = []
+ 
+ # Complete the squares function below.
+ def squares(a, b):
++    root = len(squares_set)
++    last = 0 if root == 0 else squares_set[root - 1];
++    while (last < b):
++        # add squares
++        squares_set.append(root * root)
++        # print("added root: %d -> %d"  % (root, squares_set[root]))
++        last = squares_set[root]
++        root += 1
++
++    res = 0
++    for idx in range(0, len(squares_set)):
++        if squares_set[idx] >= a and squares_set[idx] <= b:
++            res += 1
++    return res;
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
