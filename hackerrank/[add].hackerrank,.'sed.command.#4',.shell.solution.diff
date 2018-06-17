@@ -1,0 +1,20 @@
+From d5c462ce4ce92876fc81552902bb4f57d3f715a8 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 17 Jun 2018 09:50:14 +0100
+Subject: [add] hackerrank, 'sed command #4', shell solution
+
+---
+ .../linux.shell.-.grep.sed.awk.-.sed.command.4/sed.command.4.sh  | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 hackerrank/linux.shell.-.grep.sed.awk.-.sed.command.4/sed.command.4.sh
+
+diff --git a/hackerrank/linux.shell.-.grep.sed.awk.-.sed.command.4/sed.command.4.sh b/hackerrank/linux.shell.-.grep.sed.awk.-.sed.command.4/sed.command.4.sh
+new file mode 100644
+index 0000000..e4eec35
+--- /dev/null
++++ b/hackerrank/linux.shell.-.grep.sed.awk.-.sed.command.4/sed.command.4.sh
+@@ -0,0 +1 @@
++sed 's/[0-9 ]\{14\}/**** **** ****/'
+-- 
+2.23.0
+
