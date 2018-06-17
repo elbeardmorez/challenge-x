@@ -1,0 +1,20 @@
+From 8ab03ddaa2faf8968c3d67f4396f37396bae5c67 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 17 Jun 2018 10:24:33 +0100
+Subject: [fix] hackerrank, 'awk command #2', shell solution
+
+-process numeric fields only
+---
+ .../linux.shell.-.grep.sed.awk.-.awk.command.2/awk.command.2.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/linux.shell.-.grep.sed.awk.-.awk.command.2/awk.command.2.sh b/hackerrank/linux.shell.-.grep.sed.awk.-.awk.command.2/awk.command.2.sh
+index 722917d..4b3284f 100644
+--- a/hackerrank/linux.shell.-.grep.sed.awk.-.awk.command.2/awk.command.2.sh
++++ b/hackerrank/linux.shell.-.grep.sed.awk.-.awk.command.2/awk.command.2.sh
+@@ -1 +1 @@
+-awk -F' ' '{ printf $1" : "; if ( $2 >= 50 ) print("Pass"); else print("Fail"); }'
++awk -F' ' '{ printf $1" : "; pass = 1; for (i = 2; i <= NF; i++) { if ($i < 50) pass = 0; break; }; if ( pass == 1 ) print("Pass"); else print("Fail"); }'
+-- 
+2.23.0
+
