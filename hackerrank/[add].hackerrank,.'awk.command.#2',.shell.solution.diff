@@ -1,0 +1,20 @@
+From 8d0887a9de2ffa96b4d41ba5e9f0d653a154f32b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 17 Jun 2018 10:22:35 +0100
+Subject: [add] hackerrank, 'awk command #2', shell solution
+
+---
+ .../linux.shell.-.grep.sed.awk.-.awk.command.2/awk.command.2.sh  | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 hackerrank/linux.shell.-.grep.sed.awk.-.awk.command.2/awk.command.2.sh
+
+diff --git a/hackerrank/linux.shell.-.grep.sed.awk.-.awk.command.2/awk.command.2.sh b/hackerrank/linux.shell.-.grep.sed.awk.-.awk.command.2/awk.command.2.sh
+new file mode 100644
+index 0000000..722917d
+--- /dev/null
++++ b/hackerrank/linux.shell.-.grep.sed.awk.-.awk.command.2/awk.command.2.sh
+@@ -0,0 +1 @@
++awk -F' ' '{ printf $1" : "; if ( $2 >= 50 ) print("Pass"); else print("Fail"); }'
+-- 
+2.23.0
+
