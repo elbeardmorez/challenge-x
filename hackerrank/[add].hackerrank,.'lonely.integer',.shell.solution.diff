@@ -1,0 +1,35 @@
+From 8de86bdb81717d76c86cc89701d5478c5b4905bc Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 17 Jun 2018 12:08:26 +0100
+Subject: [add] hackerrank, 'lonely integer', shell solution
+
+---
+ .../lonely.integer.bash.sh                       | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+ create mode 100644 hackerrank/linux.shell.-.arrays.in.bash.-.hard.-.lonely.integer/lonely.integer.bash.sh
+
+diff --git a/hackerrank/linux.shell.-.arrays.in.bash.-.hard.-.lonely.integer/lonely.integer.bash.sh b/hackerrank/linux.shell.-.arrays.in.bash.-.hard.-.lonely.integer/lonely.integer.bash.sh
+new file mode 100644
+index 0000000..087af0a
+--- /dev/null
++++ b/hackerrank/linux.shell.-.arrays.in.bash.-.hard.-.lonely.integer/lonely.integer.bash.sh
+@@ -0,0 +1,16 @@
++read n
++read a
++#echo "n: $n"
++#echo "a: $a"
++xs=($a)
++declare -A keys
++declare -A vals
++for x in ${xs[@]}; do
++  #echo "considering x: '$x'"
++  keys[$x]="$x"
++  vals["$x"]=$[vals["$x"] + 1];
++done
++for k in ${keys[@]}; do
++  #echo "$k: ${vals["$k"]}"
++  [ ${vals["$k"]} == 1 ] && echo $k
++done
+-- 
+2.23.0
+
