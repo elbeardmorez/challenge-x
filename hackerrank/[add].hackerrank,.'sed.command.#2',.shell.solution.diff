@@ -1,0 +1,20 @@
+From 2084b0dc3916a2220df0fc85bb6c4971fc509dbc Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 17 Jun 2018 09:46:31 +0100
+Subject: [add] hackerrank, 'sed command #2', shell solution
+
+---
+ .../linux.shell.-.grep.sed.awk.-.sed.command.2/sed.command.2.sh  | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 hackerrank/linux.shell.-.grep.sed.awk.-.sed.command.2/sed.command.2.sh
+
+diff --git a/hackerrank/linux.shell.-.grep.sed.awk.-.sed.command.2/sed.command.2.sh b/hackerrank/linux.shell.-.grep.sed.awk.-.sed.command.2/sed.command.2.sh
+new file mode 100644
+index 0000000..46eefd0
+--- /dev/null
++++ b/hackerrank/linux.shell.-.grep.sed.awk.-.sed.command.2/sed.command.2.sh
+@@ -0,0 +1 @@
++sed 's/[Tt][Hh][Yy]\([^a-zA-Z]\)/your\1/g'
+-- 
+2.23.0
+
