@@ -1,0 +1,20 @@
+From a4c0726230dcc521f231e68c976ed143b1944bcf Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 17 Jun 2018 10:29:13 +0100
+Subject: [fix] hackerrank, 'awk command #2', shell solution
+
+-broken control structure, safer to always use braces
+---
+ .../linux.shell.-.grep.sed.awk.-.awk.command.2/awk.command.2.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/linux.shell.-.grep.sed.awk.-.awk.command.2/awk.command.2.sh b/hackerrank/linux.shell.-.grep.sed.awk.-.awk.command.2/awk.command.2.sh
+index 4b3284f..f41a946 100644
+--- a/hackerrank/linux.shell.-.grep.sed.awk.-.awk.command.2/awk.command.2.sh
++++ b/hackerrank/linux.shell.-.grep.sed.awk.-.awk.command.2/awk.command.2.sh
+@@ -1 +1 @@
+-awk -F' ' '{ printf $1" : "; pass = 1; for (i = 2; i <= NF; i++) { if ($i < 50) pass = 0; break; }; if ( pass == 1 ) print("Pass"); else print("Fail"); }'
++awk -F' ' '{ printf $1" : "; pass = 1; for (i = 2; i <= NF; i++) { if ($i < 50) { pass = 0; break; } } if ( pass == 1 ) print("Pass"); else print("Fail"); }'
+-- 
+2.23.0
+
