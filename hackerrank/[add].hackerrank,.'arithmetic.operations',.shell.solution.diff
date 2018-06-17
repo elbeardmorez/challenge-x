@@ -1,0 +1,46 @@
+From b5dd87772b0012211ce20edd4cff62d72d5d4634 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 17 Jun 2018 19:43:46 +0100
+Subject: [add] hackerrank, 'arithmetic operations', shell solution
+
+---
+ .../arithmetic.operations.sh                  | 27 +++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+ create mode 100644 hackerrank/linux.shell.-.bash.-.medium.-.arithmetic.operations/arithmetic.operations.sh
+
+diff --git a/hackerrank/linux.shell.-.bash.-.medium.-.arithmetic.operations/arithmetic.operations.sh b/hackerrank/linux.shell.-.bash.-.medium.-.arithmetic.operations/arithmetic.operations.sh
+new file mode 100644
+index 0000000..7232d08
+--- /dev/null
++++ b/hackerrank/linux.shell.-.bash.-.medium.-.arithmetic.operations/arithmetic.operations.sh
+@@ -0,0 +1,27 @@
++read x
++
++function round {
++  # in 3400 2, out 3400
++  # in 10.255 2, out 10.26
++  number=$1
++  digit=$2
++  #echo "number: $number, digit: $digit"
++
++  scaled=`echo "$number * 10^$[$digit + 1]" | bc`
++  #echo "scaled: $scaled"
++  truncated="${scaled%.*}"
++  #echo "truncated: $truncated"
++  last="${number:$[${#number} - 1]:1}"
++  #echo "last: $last"
++  rounded=$truncated
++  direction=1
++  [ $rounded -lt 0 ] && direction=-1
++  [ $last -ge 5 ] && rounded=$[$truncated + $direction * (10 - $last)] || rounded=$[$truncated + $direction * $last]
++  #echo "rounded: $rounded"
++  unscaled=`echo "scale=$digit; $rounded / 10^$[$digit + 1]" | bc`
++  #echo "unscaled: $unscaled"
++  echo $unscaled
++}
++
++#round `echo "scale=4; $x" | bc` 3
++printf "%.3f" $(round `echo "scale=4; $x" | bc` 3)
+-- 
+2.23.0
+
