@@ -1,0 +1,20 @@
+From d7658476ab082baa1ab894c9839ec3371eac5e92 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 17 Jun 2018 10:16:53 +0100
+Subject: [add] hackerrank, 'grep command #3', shell solution
+
+---
+ .../grep.command.3.sh                                            | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 hackerrank/linux.shell.-.grep.sed.awk.-.grep.command.3/grep.command.3.sh
+
+diff --git a/hackerrank/linux.shell.-.grep.sed.awk.-.grep.command.3/grep.command.3.sh b/hackerrank/linux.shell.-.grep.sed.awk.-.grep.command.3/grep.command.3.sh
+new file mode 100644
+index 0000000..18f86b4
+--- /dev/null
++++ b/hackerrank/linux.shell.-.grep.sed.awk.-.grep.command.3/grep.command.3.sh
+@@ -0,0 +1 @@
++grep -i -v -P 'that[^a-zA-Z]'
+-- 
+2.23.0
+
