@@ -1,0 +1,38 @@
+From 8664c6fdf454405cc4ab1f5b30766e9a06905325 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 17 Jun 2018 09:35:33 +0100
+Subject: [add] hackerrank, 'sherlock and squares', c# port
+
+---
+ .../sherlock.and.squares.cs                       | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.sherlock.and.squares/sherlock.and.squares.cs b/hackerrank/algorithms.-.implementation.-.easy.-.sherlock.and.squares/sherlock.and.squares.cs
+index 9365e8c..7aea95d 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.sherlock.and.squares/sherlock.and.squares.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.sherlock.and.squares/sherlock.and.squares.cs
+@@ -18,6 +18,21 @@ class Solution {
+ 
+     // Complete the squares function below.
+     static int squares(int a, int b) {
++        var root = squares_set.Count;
++        var last = squares_set.Count == 0 ? 0 : squares_set[root - 1];
++        while (last < b) {
++            // add squares
++            squares_set.Add(root * root);
++            // console.log(`added root: ${root} -> ${squares_set[root]}`);
++            last = squares_set[root];
++            root += 1;
++        }
++        var res = 0;
++        for (var idx = 0; idx < squares_set.Count; idx++) {
++            if (squares_set[idx] >= a && squares_set[idx] <= b)
++                res += 1;
++        }
++        return res;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
