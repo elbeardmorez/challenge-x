@@ -1,0 +1,26 @@
+From b18f049f380ec8e318bce94e587470616dd52aa1 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 17 Jun 2018 09:35:50 +0100
+Subject: [fix] hackerrank, 'sherlock and squares', c# port
+
+-porting error in commented logging
+---
+ .../sherlock.and.squares.cs                                     | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.sherlock.and.squares/sherlock.and.squares.cs b/hackerrank/algorithms.-.implementation.-.easy.-.sherlock.and.squares/sherlock.and.squares.cs
+index 7aea95d..4efde7c 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.sherlock.and.squares/sherlock.and.squares.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.sherlock.and.squares/sherlock.and.squares.cs
+@@ -23,7 +23,7 @@ class Solution {
+         while (last < b) {
+             // add squares
+             squares_set.Add(root * root);
+-            // console.log(`added root: ${root} -> ${squares_set[root]}`);
++            // Console.WriteLine($"added root: {root} -> {squares_set[root]}");
+             last = squares_set[root];
+             root += 1;
+         }
+-- 
+2.23.0
+
