@@ -1,0 +1,20 @@
+From 75d8f41f59fab29afbf3f0287b3fde598d4342b7 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 17 Jun 2018 09:58:02 +0100
+Subject: [add] hackerrank, 'sed command #3', shell solution
+
+---
+ .../linux.shell.-.grep.sed.awk.-.sed.command.3/sed.command.3.sh  | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 hackerrank/linux.shell.-.grep.sed.awk.-.sed.command.3/sed.command.3.sh
+
+diff --git a/hackerrank/linux.shell.-.grep.sed.awk.-.sed.command.3/sed.command.3.sh b/hackerrank/linux.shell.-.grep.sed.awk.-.sed.command.3/sed.command.3.sh
+new file mode 100644
+index 0000000..1707231
+--- /dev/null
++++ b/hackerrank/linux.shell.-.grep.sed.awk.-.sed.command.3/sed.command.3.sh
+@@ -0,0 +1 @@
++sed 's/\(thy\)/{\1}/ig'
+-- 
+2.23.0
+
