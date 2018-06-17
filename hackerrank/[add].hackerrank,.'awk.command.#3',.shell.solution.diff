@@ -1,0 +1,33 @@
+From fcd5a86981a362a2aa2476c603fdba35e5760310 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 17 Jun 2018 10:32:50 +0100
+Subject: [add] hackerrank, 'awk command #3', shell solution
+
+---
+ .../awk.command.3.sh                               | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+ create mode 100644 hackerrank/linux.shell.-.grep.sed.awk.-.awk.command.3/awk.command.3.sh
+
+diff --git a/hackerrank/linux.shell.-.grep.sed.awk.-.awk.command.3/awk.command.3.sh b/hackerrank/linux.shell.-.grep.sed.awk.-.awk.command.3/awk.command.3.sh
+new file mode 100644
+index 0000000..d7e9c06
+--- /dev/null
++++ b/hackerrank/linux.shell.-.grep.sed.awk.-.awk.command.3/awk.command.3.sh
+@@ -0,0 +1,14 @@
++awk -F' ' '{ 
++  printf $0;
++  sum = 0;
++  for (i = 2; i <= NF; i++) { sum += $i; }
++  avg = sum / 3;  
++  grade = "FAIL";
++  if (avg >= 80)
++    grade = "A";
++  else if (avg >= 60)
++    grade = "B";
++  else if (avg >= 50)
++    grade = "C";
++  print" : "grade;
++}'
+-- 
+2.23.0
+
