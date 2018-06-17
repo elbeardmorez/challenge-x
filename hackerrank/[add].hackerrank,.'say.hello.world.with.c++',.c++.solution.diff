@@ -1,0 +1,23 @@
+From 56c75b3a1c708bd9683710c0bfbb6a4c5088c972 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 17 Jun 2018 20:06:17 +0100
+Subject: [add] hackerrank, 'say hello world with c++', c++ solution
+
+---
+ .../say.hello.world.with.c++.cpp                                | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/hackerrank/c++.-.introduction.-.easy.-.say.hello.world.with.c++/say.hello.world.with.c++.cpp b/hackerrank/c++.-.introduction.-.easy.-.say.hello.world.with.c++/say.hello.world.with.c++.cpp
+index fd080ec..dad004b 100644
+--- a/hackerrank/c++.-.introduction.-.easy.-.say.hello.world.with.c++/say.hello.world.with.c++.cpp
++++ b/hackerrank/c++.-.introduction.-.easy.-.say.hello.world.with.c++/say.hello.world.with.c++.cpp
+@@ -3,4 +3,6 @@
+ using namespace std;
+ 
+ int main() {
++    printf("Hello, World!");
++    return 0;
+ }
+-- 
+2.23.0
+
