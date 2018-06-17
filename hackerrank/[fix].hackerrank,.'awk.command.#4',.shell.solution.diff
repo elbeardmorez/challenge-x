@@ -1,0 +1,20 @@
+From 5552202aae826eeac4fdd3c7fc7f1fdce386b319 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 17 Jun 2018 10:37:34 +0100
+Subject: [fix] hackerrank, 'awk command #4', shell solution
+
+-ensure new line
+---
+ .../linux.shell.-.grep.sed.awk.-.awk.command.4/awk.command.4.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/linux.shell.-.grep.sed.awk.-.awk.command.4/awk.command.4.sh b/hackerrank/linux.shell.-.grep.sed.awk.-.awk.command.4/awk.command.4.sh
+index 3b0f52c..a68ceae 100644
+--- a/hackerrank/linux.shell.-.grep.sed.awk.-.awk.command.4/awk.command.4.sh
++++ b/hackerrank/linux.shell.-.grep.sed.awk.-.awk.command.4/awk.command.4.sh
+@@ -1 +1 @@
+-awk -F' ' '{ if (NR % 2 == 0) print ";"$0; else printf $0;}'
++awk -F' ' '{ if (NR % 2 == 0) print ";"$0; else printf $0; }END{ print(""); }'
+-- 
+2.23.0
+
