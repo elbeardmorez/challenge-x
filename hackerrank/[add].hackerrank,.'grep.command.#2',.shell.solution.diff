@@ -1,0 +1,20 @@
+From 02699fbbd774514895fda7b86b22741c13084a23 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 17 Jun 2018 10:13:59 +0100
+Subject: [add] hackerrank, 'grep command #2', shell solution
+
+---
+ .../grep.command.2.sh                                            | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 hackerrank/linux.shell.-.grep.sed.awk.-.grep.command.2/grep.command.2.sh
+
+diff --git a/hackerrank/linux.shell.-.grep.sed.awk.-.grep.command.2/grep.command.2.sh b/hackerrank/linux.shell.-.grep.sed.awk.-.grep.command.2/grep.command.2.sh
+new file mode 100644
+index 0000000..5b93df3
+--- /dev/null
++++ b/hackerrank/linux.shell.-.grep.sed.awk.-.grep.command.2/grep.command.2.sh
+@@ -0,0 +1 @@
++grep -i -P 'the[^a-zA-Z]'
+-- 
+2.23.0
+
