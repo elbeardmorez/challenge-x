@@ -1,0 +1,38 @@
+From 877c16cc2ebcd3f3ea152e13e72e5cdbbcf42794 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 17 Jun 2018 09:22:43 +0100
+Subject: [add] hackerrank, 'sherlock and squares', javascript solution
+
+---
+ .../sherlock.and.squares.js                       | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.sherlock.and.squares/sherlock.and.squares.js b/hackerrank/algorithms.-.implementation.-.easy.-.sherlock.and.squares/sherlock.and.squares.js
+index b3fc74e..5c8ef22 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.sherlock.and.squares/sherlock.and.squares.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.sherlock.and.squares/sherlock.and.squares.js
+@@ -27,6 +27,21 @@ function readLine() {
+ // Complete the squares function below.
+ let squares_set = [];
+ function squares(a, b) {
++    var root = squares_set.length;
++    var last = squares_set.length == 0 ? 0 : squares_set[root - 1];
++    while (last < b) {
++        // add squares
++        squares_set[root] = root * root;
++        // console.log(`added root: ${root} -> ${squares_set[root]}`);
++        last = squares_set[root];
++        root += 1;
++    }
++    var res = 0;
++    for (var idx = 0; idx < squares_set.length; idx++) {
++        if (squares_set[idx] >= a && squares_set[idx] <= b)
++            res += 1;
++    }
++    return res;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
