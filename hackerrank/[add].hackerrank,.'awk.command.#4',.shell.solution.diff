@@ -1,0 +1,20 @@
+From a4039985e0bb2e7c0ffec360d7361ddbeb44cd76 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 17 Jun 2018 10:35:19 +0100
+Subject: [add] hackerrank, 'awk command #4', shell solution
+
+---
+ .../linux.shell.-.grep.sed.awk.-.awk.command.4/awk.command.4.sh  | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 hackerrank/linux.shell.-.grep.sed.awk.-.awk.command.4/awk.command.4.sh
+
+diff --git a/hackerrank/linux.shell.-.grep.sed.awk.-.awk.command.4/awk.command.4.sh b/hackerrank/linux.shell.-.grep.sed.awk.-.awk.command.4/awk.command.4.sh
+new file mode 100644
+index 0000000..3b0f52c
+--- /dev/null
++++ b/hackerrank/linux.shell.-.grep.sed.awk.-.awk.command.4/awk.command.4.sh
+@@ -0,0 +1 @@
++awk -F' ' '{ if (NR % 2 == 0) print ";"$0; else printf $0;}'
+-- 
+2.23.0
+
