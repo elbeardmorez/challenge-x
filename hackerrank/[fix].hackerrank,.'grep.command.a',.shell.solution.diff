@@ -1,0 +1,20 @@
+From b70aae9d5d27cc57d7fbd074ef9920347fff0d0f Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 17 Jun 2018 10:04:04 +0100
+Subject: [fix] hackerrank, 'grep command a', shell solution
+
+-deal with partial matching
+---
+ .../grep.command.a.sh                                           | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/linux.shell.-.grep.sed.awk.-.grep.command.a/grep.command.a.sh b/hackerrank/linux.shell.-.grep.sed.awk.-.grep.command.a/grep.command.a.sh
+index d89e66a..08ed3fa 100644
+--- a/hackerrank/linux.shell.-.grep.sed.awk.-.grep.command.a/grep.command.a.sh
++++ b/hackerrank/linux.shell.-.grep.sed.awk.-.grep.command.a/grep.command.a.sh
+@@ -1 +1 @@
+-grep -i -P '(the|that|then|those)'
++grep -i -P '(the|that|then|those)[^a-zA-Z]'
+-- 
+2.23.0
+
