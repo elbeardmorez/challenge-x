@@ -1,0 +1,47 @@
+From 9ca2486ea72b244ad2ff5f83c01ea67db388004c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 18 Jun 2018 11:30:29 +0100
+Subject: [add] hackerrank, 'rectangle area', c++ solution
+
+---
+ .../rectangle.area.cpp                        | 24 +++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+
+diff --git a/hackerrank/c++.-.inheritance.-.easy.-.rectangle.area/rectangle.area.cpp b/hackerrank/c++.-.inheritance.-.easy.-.rectangle.area/rectangle.area.cpp
+index 40e9bf2..5a652f7 100644
+--- a/hackerrank/c++.-.inheritance.-.easy.-.rectangle.area/rectangle.area.cpp
++++ b/hackerrank/c++.-.inheritance.-.easy.-.rectangle.area/rectangle.area.cpp
+@@ -7,6 +7,30 @@ using namespace std;
+  * Create classes Rectangle and RectangleArea
+  */
+ 
++class Rectangle {
++    public:
++        int width, height;
++        virtual void display();
++};
++
++class RectangleArea : public Rectangle {
++    public:
++        void display() override;
++        void read_input();
++};
++
++void Rectangle::display() {
++    cout << this->width << " " << this->height << endl;
++}
++
++void RectangleArea::display() {
++    cout << this->width * this->height << endl;
++}
++
++void RectangleArea::read_input() {
++    cin >> this->width >> this->height;
++}
++
+ int main()
+ {
+     /*
+-- 
+2.23.0
+
