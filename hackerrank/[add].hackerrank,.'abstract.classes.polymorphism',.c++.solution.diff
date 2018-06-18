@@ -1,0 +1,78 @@
+From 8bef38df5c653b292e49e8f03bc5010ec3b255ca Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 18 Jun 2018 13:48:17 +0100
+Subject: [add] hackerrank, 'abstract classes polymorphism', c++ solution
+
+---
+ .../abstract.classes.polymorphism.cpp         | 55 +++++++++++++++++++
+ 1 file changed, 55 insertions(+)
+
+diff --git a/hackerrank/c++.-.classes.-.hard.-.abstract.classes.polymorphism/abstract.classes.polymorphism.cpp b/hackerrank/c++.-.classes.-.hard.-.abstract.classes.polymorphism/abstract.classes.polymorphism.cpp
+index e7e6caa..6d9f407 100644
+--- a/hackerrank/c++.-.classes.-.hard.-.abstract.classes.polymorphism/abstract.classes.polymorphism.cpp
++++ b/hackerrank/c++.-.classes.-.hard.-.abstract.classes.polymorphism/abstract.classes.polymorphism.cpp
+@@ -28,6 +28,61 @@ class Cache{
+ 
+ };
+ 
++class LRUCache : Cache {
++    public:
++        LRUCache(int);
++        void set(int, int) override;
++        int get(int) override;
++};
++
++LRUCache::LRUCache(int capacity) {
++    cp = capacity;
++}
++
++void LRUCache::set(int key, int value) {
++
++    map<int, Node*>::iterator itr = mp.find(key);
++    if (itr != mp.end()) {
++        Node* hit = (*itr).second;
++        // cut
++        hit->next->prev = hit->prev;
++        hit->prev->next = hit->next;
++        // relink
++        hit->next = tail;
++        hit->prev = head;
++        head = hit;
++    } else {
++        if (mp.size() >= cp) {
++            // remove last
++            //cout << "removing node: " << tail->key << endl;
++            Node* rm = tail;
++            tail = tail->prev;
++            mp.erase(rm->key);
++        }
++        // insert new
++        Node* n = new Node(head, tail, key, value);
++        if (mp.size() == 0) {
++            head = n;
++            tail = n;
++            n->next = n;
++            n->prev = n;
++        } else {
++            head->next = n;
++            tail->prev = n;
++            head = n;
++        }
++        mp[key] = n;
++    }
++}
++
++int LRUCache::get(int key) {
++    map<int, Node*>::iterator itr = mp.find(key);
++    if (itr != mp.end())
++        return (*itr).second->value;
++    else
++        return -1;
++}
++
+ int main() {
+    int n, capacity,i;
+    cin >> n >> capacity;
+-- 
+2.23.0
+
