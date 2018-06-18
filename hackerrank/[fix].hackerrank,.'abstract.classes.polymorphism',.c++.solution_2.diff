@@ -1,0 +1,25 @@
+From adc6e26561bd485def81544f08d2bc7552a920c0 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 18 Jun 2018 14:02:34 +0100
+Subject: [fix] hackerrank, 'abstract classes polymorphism', c++ solution
+
+-no value set
+---
+ .../abstract.classes.polymorphism.cpp                            | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hackerrank/c++.-.classes.-.hard.-.abstract.classes.polymorphism/abstract.classes.polymorphism.cpp b/hackerrank/c++.-.classes.-.hard.-.abstract.classes.polymorphism/abstract.classes.polymorphism.cpp
+index 0de7237..b03f7ad 100644
+--- a/hackerrank/c++.-.classes.-.hard.-.abstract.classes.polymorphism/abstract.classes.polymorphism.cpp
++++ b/hackerrank/c++.-.classes.-.hard.-.abstract.classes.polymorphism/abstract.classes.polymorphism.cpp
+@@ -50,6 +50,7 @@ void LRUCache::set(int key, int value) {
+         // relink
+         hit->next = tail;
+         hit->prev = head;
++        hit->value = value;
+         head = hit;
+     } else {
+         if (mp.size() + 1 >= cp) {
+-- 
+2.23.0
+
