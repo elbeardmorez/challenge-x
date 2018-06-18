@@ -1,0 +1,26 @@
+From 0160c3a2f4d8a05aee0fe3cbf65fc37840fad65e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 18 Jun 2018 09:37:23 +0100
+Subject: [fix] hackerrank, 'box it!', c++ solution
+
+-use a long long cast
+---
+ hackerrank/c++.-.classes.-.easy.-.box.it!/box.it.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/c++.-.classes.-.easy.-.box.it!/box.it.cpp b/hackerrank/c++.-.classes.-.easy.-.box.it!/box.it.cpp
+index e973a55..596839e 100644
+--- a/hackerrank/c++.-.classes.-.easy.-.box.it!/box.it.cpp
++++ b/hackerrank/c++.-.classes.-.easy.-.box.it!/box.it.cpp
+@@ -73,7 +73,7 @@ int Box::getHeight () {
+ }
+ // Return the volume of the box
+ long long Box::CalculateVolume() {
+-    return this->length * this->breadth * this->height;
++    return (long long)this->length * this->breadth * this->height;
+ }
+ 
+ bool Box::operator<(Box& b) {
+-- 
+2.23.0
+
