@@ -1,0 +1,35 @@
+From 7819b14eaeb2675e50f6804c76251581ff5d7ea2 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 18 Jun 2018 09:14:17 +0100
+Subject: [fix] hackerrank, 'box it!', c++ solution
+
+-implement missing '<' operator
+---
+ hackerrank/c++.-.classes.-.easy.-.box.it!/box.it.cpp | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/c++.-.classes.-.easy.-.box.it!/box.it.cpp b/hackerrank/c++.-.classes.-.easy.-.box.it!/box.it.cpp
+index 4650429..e973a55 100644
+--- a/hackerrank/c++.-.classes.-.easy.-.box.it!/box.it.cpp
++++ b/hackerrank/c++.-.classes.-.easy.-.box.it!/box.it.cpp
+@@ -77,7 +77,16 @@ long long Box::CalculateVolume() {
+ }
+ 
+ bool Box::operator<(Box& b) {
+-    return this->CalculateVolume() < b.CalculateVolume();
++    if (this->length < b.length)
++        return true;
++    else if (this->breadth < b.breadth &&
++             this->length == b.length)
++        return true;
++    else if (this->height < b.height &&
++             this->breadth == b.breadth &&
++             this->length == b.length)
++        return true;
++    return false;
+ }
+ 
+ ostream& operator <<(ostream& out, Box& b) {
+-- 
+2.23.0
+
