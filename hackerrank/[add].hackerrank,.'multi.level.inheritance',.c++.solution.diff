@@ -1,0 +1,29 @@
+From 61646a541a80ad9139943ca5144443700f3f8d0c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 18 Jun 2018 11:41:58 +0100
+Subject: [add] hackerrank, 'multi level inheritance', c++ solution
+
+---
+ .../multi.level.inheritance.cpp                             | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/hackerrank/c++.-.inheritance.-.easy.-.multi.level.inheritance/multi.level.inheritance.cpp b/hackerrank/c++.-.inheritance.-.easy.-.multi.level.inheritance/multi.level.inheritance.cpp
+index bb70717..21bc678 100644
+--- a/hackerrank/c++.-.inheritance.-.easy.-.multi.level.inheritance/multi.level.inheritance.cpp
++++ b/hackerrank/c++.-.inheritance.-.easy.-.multi.level.inheritance/multi.level.inheritance.cpp
+@@ -20,6 +20,12 @@ class Isosceles : public Triangle{
+ };
+ 
+ //Write your code here.
++class Equilateral: public Isosceles{
++    public:
++       void equilateral(){
++           cout<<"I am an equilateral triangle\n";
++       }
++};
+ 
+ int main(){
+   
+-- 
+2.23.0
+
