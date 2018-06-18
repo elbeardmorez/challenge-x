@@ -1,0 +1,26 @@
+From 17a78b83c02b4adab6f3fa301aba4139d19cfec4 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 18 Jun 2018 13:54:30 +0100
+Subject: [fix] hackerrank, 'abstract classes polymorphism', c++ solution
+
+-set remove off-by-one
+---
+ .../abstract.classes.polymorphism.cpp                           | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/c++.-.classes.-.hard.-.abstract.classes.polymorphism/abstract.classes.polymorphism.cpp b/hackerrank/c++.-.classes.-.hard.-.abstract.classes.polymorphism/abstract.classes.polymorphism.cpp
+index 6d9f407..0de7237 100644
+--- a/hackerrank/c++.-.classes.-.hard.-.abstract.classes.polymorphism/abstract.classes.polymorphism.cpp
++++ b/hackerrank/c++.-.classes.-.hard.-.abstract.classes.polymorphism/abstract.classes.polymorphism.cpp
+@@ -52,7 +52,7 @@ void LRUCache::set(int key, int value) {
+         hit->prev = head;
+         head = hit;
+     } else {
+-        if (mp.size() >= cp) {
++        if (mp.size() + 1 >= cp) {
+             // remove last
+             //cout << "removing node: " << tail->key << endl;
+             Node* rm = tail;
+-- 
+2.23.0
+
