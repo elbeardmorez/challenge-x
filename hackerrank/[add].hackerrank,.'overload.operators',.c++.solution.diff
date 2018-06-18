@@ -1,0 +1,42 @@
+From 5a57af2944529549c25115c13cfdb39a16048b32 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 18 Jun 2018 10:02:31 +0100
+Subject: [add] hackerrank, 'overload operators', c++ solution
+
+---
+ .../overload.operators.cpp                    | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+diff --git a/hackerrank/c++.-.other.concepts.-.easy.-.overload.operators/overload.operators.cpp b/hackerrank/c++.-.other.concepts.-.easy.-.overload.operators/overload.operators.cpp
+index a69dfb9..559b052 100644
+--- a/hackerrank/c++.-.other.concepts.-.easy.-.overload.operators/overload.operators.cpp
++++ b/hackerrank/c++.-.other.concepts.-.easy.-.overload.operators/overload.operators.cpp
+@@ -36,6 +36,25 @@ public:
+ //+ should add two complex numbers as (a+ib) + (c+id) = (a+c) + i(b+d)
+ //<< should print a complex number in the format "a+ib"
+ 
++Complex& operator+(Complex&, Complex&);
++Complex& operator+(Complex& c1, Complex& c2) {
++    Complex* c = new Complex();
++    int real = c1.a + c2.a;
++    int complex = c1.b + c2.b;
++    c->a = real;
++    c->b = complex;
++    return *c;
++}
++
++ostream& operator<<(ostream&, Complex&);
++ostream& operator<<(ostream& out, Complex& c) {
++    string sign = "+";
++    if (c.b < 0)
++        sign = "-";
++    out << c.a << sign << "i" << c.b << endl;
++    return out;
++}
++
+ int main()
+ {
+     Complex x,y;
+-- 
+2.23.0
+
