@@ -1,0 +1,26 @@
+From 72d175d9e240aa8195cff18401da9bfb2ebc01e9 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 18 Jun 2018 11:08:17 +0100
+Subject: [add] hackerrank, 'preprocessor solution', c++ solution
+
+---
+ .../preprocessor.solution.cpp                                | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/hackerrank/c++.-.other.concepts.-.easy.-.preprocessor.solution/preprocessor.solution.cpp b/hackerrank/c++.-.other.concepts.-.easy.-.preprocessor.solution/preprocessor.solution.cpp
+index 9386adc..34c364f 100644
+--- a/hackerrank/c++.-.other.concepts.-.easy.-.preprocessor.solution/preprocessor.solution.cpp
++++ b/hackerrank/c++.-.other.concepts.-.easy.-.preprocessor.solution/preprocessor.solution.cpp
+@@ -1,4 +1,9 @@
+ /* Enter your macros here */
++#define FUNCTION(func, op) void func(int& cur, int test) { if (test op cur) cur = test; }
++#define INF 100000000
++#define toStr(x) "Result ="
++#define foreach(v, i) for(int i = 0; i < n; i++)
++#define io(v) cin >> v
+ 
+ #include <iostream>
+ #include <vector>
+-- 
+2.23.0
+
