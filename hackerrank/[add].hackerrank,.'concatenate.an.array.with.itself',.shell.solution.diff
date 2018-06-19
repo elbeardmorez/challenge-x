@@ -1,0 +1,25 @@
+From 545d42b3e259b09ebe1572e6db75b2c323239184 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 19 Jun 2018 09:30:21 +0100
+Subject: [add] hackerrank, 'concatenate an array with itself', shell solution
+
+---
+ .../concatenate.an.array.with.itself.sh                     | 6 ++++++
+ 1 file changed, 6 insertions(+)
+ create mode 100644 hackerrank/linux.shell.-.arrays.in.bash.-.concatenate.an.array.with.itself/concatenate.an.array.with.itself.sh
+
+diff --git a/hackerrank/linux.shell.-.arrays.in.bash.-.concatenate.an.array.with.itself/concatenate.an.array.with.itself.sh b/hackerrank/linux.shell.-.arrays.in.bash.-.concatenate.an.array.with.itself/concatenate.an.array.with.itself.sh
+new file mode 100644
+index 0000000..a67bb03
+--- /dev/null
++++ b/hackerrank/linux.shell.-.arrays.in.bash.-.concatenate.an.array.with.itself/concatenate.an.array.with.itself.sh
+@@ -0,0 +1,6 @@
++readarray arr
++res=""
++for x in ${arr[@]}; do
++  [ "x$res" == "x" ] && res="$x" || res="$res $x"
++done
++echo $res $res $res
+-- 
+2.23.0
+
