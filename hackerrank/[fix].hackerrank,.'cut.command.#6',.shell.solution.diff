@@ -1,0 +1,23 @@
+From b4370341807ba834234134354d2c236c09ee54f0 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 19 Jun 2018 10:32:22 +0100
+Subject: [fix] hackerrank, 'cut command #6', shell solution
+
+-no newline switch
+---
+ .../cut.command.6.sh                                            | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/linux.shell.-.text.processing.-.cut.command.6/cut.command.6.sh b/hackerrank/linux.shell.-.text.processing.-.cut.command.6/cut.command.6.sh
+index 3c03151..1792580 100644
+--- a/hackerrank/linux.shell.-.text.processing.-.cut.command.6/cut.command.6.sh
++++ b/hackerrank/linux.shell.-.text.processing.-.cut.command.6/cut.command.6.sh
+@@ -1,4 +1,4 @@
+ readarray arr
+ for s in "${arr[@]}"; do
+-  echo -n "${s:12}"
++  echo "${s:12}"
+ done
+-- 
+2.23.0
+
