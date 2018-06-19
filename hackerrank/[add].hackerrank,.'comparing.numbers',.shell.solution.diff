@@ -1,0 +1,31 @@
+From 3b3c7510c30e61f6745f53ea1201dcf6dafa5243 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 19 Jun 2018 12:16:11 +0100
+Subject: [add] hackerrank, 'comparing numbers', shell solution
+
+---
+ .../comparing.numbers.sh                             | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+ create mode 100644 hackerrank/linux.shell.-.bash.-.comparing.numbers/comparing.numbers.sh
+
+diff --git a/hackerrank/linux.shell.-.bash.-.comparing.numbers/comparing.numbers.sh b/hackerrank/linux.shell.-.bash.-.comparing.numbers/comparing.numbers.sh
+new file mode 100644
+index 0000000..cc649d4
+--- /dev/null
++++ b/hackerrank/linux.shell.-.bash.-.comparing.numbers/comparing.numbers.sh
+@@ -0,0 +1,12 @@
++read -r x
++read -r y
++diff=$[$x-$y]
++rel=""
++if [ $diff -gt 0 ]; then
++  rel="is greater than"
++elif [ $diff -lt 0 ]; then
++  rel="is less than" 
++else
++  rel="is equal to"
++fi
++echo "X $rel Y"
+-- 
+2.23.0
+
