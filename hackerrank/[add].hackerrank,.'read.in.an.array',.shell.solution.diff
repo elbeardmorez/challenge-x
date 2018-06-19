@@ -1,0 +1,24 @@
+From 1c9857ffd0520efcd70dd4c3a46332841dea5cec Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 19 Jun 2018 09:22:00 +0100
+Subject: [add] hackerrank, 'read in an array', shell solution
+
+---
+ .../read.in.an.array.sh                                      | 5 +++++
+ 1 file changed, 5 insertions(+)
+ create mode 100644 hackerrank/linux.shell.-.arrays.in.bash.-.read.in.an.array/read.in.an.array.sh
+
+diff --git a/hackerrank/linux.shell.-.arrays.in.bash.-.read.in.an.array/read.in.an.array.sh b/hackerrank/linux.shell.-.arrays.in.bash.-.read.in.an.array/read.in.an.array.sh
+new file mode 100644
+index 0000000..40fb119
+--- /dev/null
++++ b/hackerrank/linux.shell.-.arrays.in.bash.-.read.in.an.array/read.in.an.array.sh
+@@ -0,0 +1,5 @@
++res=""
++while read x; do
++  [ "x$res" == "x" ] && res="$x" || res="$res $x"
++done
++echo "$res"
+-- 
+2.23.0
+
