@@ -1,0 +1,20 @@
+From 74e393c12e006e6281af2da3cb34d2d8827a26e3 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 19 Jun 2018 11:40:24 +0100
+Subject: [add] hackerrank, 'uniq command #3', shell solution
+
+---
+ .../uniq.command.3.sh                                            | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 hackerrank/linux.shell.-.text.processing.-.uniq.command.3/uniq.command.3.sh
+
+diff --git a/hackerrank/linux.shell.-.text.processing.-.uniq.command.3/uniq.command.3.sh b/hackerrank/linux.shell.-.text.processing.-.uniq.command.3/uniq.command.3.sh
+new file mode 100644
+index 0000000..586ba78
+--- /dev/null
++++ b/hackerrank/linux.shell.-.text.processing.-.uniq.command.3/uniq.command.3.sh
+@@ -0,0 +1 @@
++uniq -i -c | sed 's/^ *//'
+-- 
+2.23.0
+
