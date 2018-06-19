@@ -1,0 +1,25 @@
+From bec3115cb91a77b05568a21f0ca2cccfe6cec7e0 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 19 Jun 2018 09:58:40 +0100
+Subject: [add] hackerrank, 'sort command #3', shell solution
+
+---
+ .../sort.command.3.sh                                       | 6 ++++++
+ 1 file changed, 6 insertions(+)
+ create mode 100644 hackerrank/linux.shell.-.text.processing.-.sort.command.3/sort.command.3.sh
+
+diff --git a/hackerrank/linux.shell.-.text.processing.-.sort.command.3/sort.command.3.sh b/hackerrank/linux.shell.-.text.processing.-.sort.command.3/sort.command.3.sh
+new file mode 100644
+index 0000000..411f0a6
+--- /dev/null
++++ b/hackerrank/linux.shell.-.text.processing.-.sort.command.3/sort.command.3.sh
+@@ -0,0 +1,6 @@
++readarray arr
++data=""
++for x in ${arr[@]}; do
++  [ "x$data" == "x" ] && data="$x" || data="$data\n$x"
++done
++echo -e "$data" | sort -n
+-- 
+2.23.0
+
