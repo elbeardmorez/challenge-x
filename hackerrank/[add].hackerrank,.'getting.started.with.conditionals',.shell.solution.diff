@@ -1,0 +1,24 @@
+From 8d0e4bc5fafd3f84add36e1c72dd100e028fd914 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 19 Jun 2018 12:20:26 +0100
+Subject: [add] hackerrank, 'getting started with conditionals', shell solution
+
+---
+ .../getting.started.with.conditionals.sh                     | 5 +++++
+ 1 file changed, 5 insertions(+)
+ create mode 100644 hackerrank/linux.shell.-.bash.-.getting.started.with.conditionals/getting.started.with.conditionals.sh
+
+diff --git a/hackerrank/linux.shell.-.bash.-.getting.started.with.conditionals/getting.started.with.conditionals.sh b/hackerrank/linux.shell.-.bash.-.getting.started.with.conditionals/getting.started.with.conditionals.sh
+new file mode 100644
+index 0000000..3590140
+--- /dev/null
++++ b/hackerrank/linux.shell.-.bash.-.getting.started.with.conditionals/getting.started.with.conditionals.sh
+@@ -0,0 +1,5 @@
++read -e -n 1 res
++case "$res" in
++  "Y"|"y") echo "YES" ;;
++  "N"|"n") echo "NO" ;;
++esac
+-- 
+2.23.0
+
