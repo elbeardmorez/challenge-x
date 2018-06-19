@@ -1,0 +1,20 @@
+From d0ee8ac25836807bd2c1c4b091e66bcc0e1e87e3 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 19 Jun 2018 11:13:51 +0100
+Subject: [add] hackerrank, 'tail of a text file #1', shell solution
+
+---
+ .../tail.of.a.text.file.1.sh                                     | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 hackerrank/linux.shell.-.text.processing.-.tail.of.a.text.file.1/tail.of.a.text.file.1.sh
+
+diff --git a/hackerrank/linux.shell.-.text.processing.-.tail.of.a.text.file.1/tail.of.a.text.file.1.sh b/hackerrank/linux.shell.-.text.processing.-.tail.of.a.text.file.1/tail.of.a.text.file.1.sh
+new file mode 100644
+index 0000000..ae765ef
+--- /dev/null
++++ b/hackerrank/linux.shell.-.text.processing.-.tail.of.a.text.file.1/tail.of.a.text.file.1.sh
+@@ -0,0 +1 @@
++tail -n20
+-- 
+2.23.0
+
