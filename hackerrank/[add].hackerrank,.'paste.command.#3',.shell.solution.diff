@@ -1,0 +1,20 @@
+From 9f9a2aa5df2038de972c8e0447c2e1f760533645 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 19 Jun 2018 11:48:02 +0100
+Subject: [add] hackerrank, 'paste command #3', shell solution
+
+---
+ .../paste.command.3.sh                                           | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 hackerrank/linux.shell.-.text.processing.-.paste.command.3/paste.command.3.sh
+
+diff --git a/hackerrank/linux.shell.-.text.processing.-.paste.command.3/paste.command.3.sh b/hackerrank/linux.shell.-.text.processing.-.paste.command.3/paste.command.3.sh
+new file mode 100644
+index 0000000..b513fcc
+--- /dev/null
++++ b/hackerrank/linux.shell.-.text.processing.-.paste.command.3/paste.command.3.sh
+@@ -0,0 +1 @@
++paste -sd$'\t' -
+-- 
+2.23.0
+
