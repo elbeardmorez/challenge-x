@@ -1,0 +1,21 @@
+From 6d0c19d263fbcd077c05a93f23a0681f108a7768 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 19 Jun 2018 11:01:28 +0100
+Subject: [add] hackerrank, 'head of a text file #2', shell solution
+
+---
+ .../head.of.a.text.file.2.sh                                    | 2 ++
+ 1 file changed, 2 insertions(+)
+ create mode 100644 hackerrank/linux.shell.-.text.processing.-.head.of.a.text.file.2/head.of.a.text.file.2.sh
+
+diff --git a/hackerrank/linux.shell.-.text.processing.-.head.of.a.text.file.2/head.of.a.text.file.2.sh b/hackerrank/linux.shell.-.text.processing.-.head.of.a.text.file.2/head.of.a.text.file.2.sh
+new file mode 100644
+index 0000000..1f7cd25
+--- /dev/null
++++ b/hackerrank/linux.shell.-.text.processing.-.head.of.a.text.file.2/head.of.a.text.file.2.sh
+@@ -0,0 +1,2 @@
++x=`head -n1`
++echo ${x:0:20}
+-- 
+2.23.0
+
