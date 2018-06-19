@@ -1,0 +1,22 @@
+From c2db5dda2f005e7ced60964393c0fd642893e3c7 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 19 Jun 2018 09:38:23 +0100
+Subject: [add] hackerrank, 'count the number of elements in an array', shell
+ solution
+
+---
+ .../count.the.number.of.elements.in.an.array.sh                 | 2 ++
+ 1 file changed, 2 insertions(+)
+ create mode 100644 hackerrank/linux.shell.-.arrays.in.bash.-.count.the.number.of.elements.in.an.array/count.the.number.of.elements.in.an.array.sh
+
+diff --git a/hackerrank/linux.shell.-.arrays.in.bash.-.count.the.number.of.elements.in.an.array/count.the.number.of.elements.in.an.array.sh b/hackerrank/linux.shell.-.arrays.in.bash.-.count.the.number.of.elements.in.an.array/count.the.number.of.elements.in.an.array.sh
+new file mode 100644
+index 0000000..12309da
+--- /dev/null
++++ b/hackerrank/linux.shell.-.arrays.in.bash.-.count.the.number.of.elements.in.an.array/count.the.number.of.elements.in.an.array.sh
+@@ -0,0 +1,2 @@
++readarray arr
++echo ${#arr[@]}
+-- 
+2.23.0
+
