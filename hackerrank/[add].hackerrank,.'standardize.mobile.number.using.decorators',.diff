@@ -1,0 +1,33 @@
+From c6f6a7c793e2942230e8c4acb35df9d313757756 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 19 Jun 2018 15:38:27 +0100
+Subject: [add] hackerrank, 'standardize mobile number using decorators',
+ python solution
+
+---
+ .../standardize.mobile.number.using.decorators.py        | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/hackerrank/python.-.closures.and.decorators.-.easy.-.standardize.mobile.number.using.decorators/standardize.mobile.number.using.decorators.py b/hackerrank/python.-.closures.and.decorators.-.easy.-.standardize.mobile.number.using.decorators/standardize.mobile.number.using.decorators.py
+index d00b004..21c4203 100644
+--- a/hackerrank/python.-.closures.and.decorators.-.easy.-.standardize.mobile.number.using.decorators/standardize.mobile.number.using.decorators.py
++++ b/hackerrank/python.-.closures.and.decorators.-.easy.-.standardize.mobile.number.using.decorators/standardize.mobile.number.using.decorators.py
+@@ -1,6 +1,15 @@
+ def wrapper(f):
+     def fun(l):
+         # complete the function
++        modded = list()
++        for n in l:
++            # print("processing %r" % n)
++            x = list(n)
++            if len(x) > 10:
++                x = x[-10:]
++            modded.append("+91 %s %s" % ("".join(x[0:5]), "".join(x[5:10])))
++        # print("modified %s" % modded)
++        f(modded)
+     return fun
+ 
+ @wrapper
+-- 
+2.23.0
+
