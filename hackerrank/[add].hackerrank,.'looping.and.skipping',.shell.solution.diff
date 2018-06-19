@@ -1,0 +1,20 @@
+From 1d349fb5263c28b83f0953bf87b82e68dc5a1049 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 19 Jun 2018 12:08:13 +0100
+Subject: [add] hackerrank, 'looping and skipping', shell solution
+
+---
+ .../looping.and.skipping.sh                                      | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 hackerrank/linux.shell.-.bash.-.looping.and.skipping/looping.and.skipping.sh
+
+diff --git a/hackerrank/linux.shell.-.bash.-.looping.and.skipping/looping.and.skipping.sh b/hackerrank/linux.shell.-.bash.-.looping.and.skipping/looping.and.skipping.sh
+new file mode 100644
+index 0000000..0e30045
+--- /dev/null
++++ b/hackerrank/linux.shell.-.bash.-.looping.and.skipping/looping.and.skipping.sh
+@@ -0,0 +1 @@
++seq 1 2 99
+-- 
+2.23.0
+
