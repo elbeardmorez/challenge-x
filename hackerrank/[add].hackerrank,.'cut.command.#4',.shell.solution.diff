@@ -1,0 +1,24 @@
+From 2c24f9ff47d3894fcbd3f7decfecb2c5f95c809f Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 19 Jun 2018 10:22:02 +0100
+Subject: [add] hackerrank, 'cut command #4', shell solution
+
+---
+ .../cut.command.4.sh                                         | 5 +++++
+ 1 file changed, 5 insertions(+)
+ create mode 100644 hackerrank/linux.shell.-.text.processing.-.cut.command.4/cut.command.4.sh
+
+diff --git a/hackerrank/linux.shell.-.text.processing.-.cut.command.4/cut.command.4.sh b/hackerrank/linux.shell.-.text.processing.-.cut.command.4/cut.command.4.sh
+new file mode 100644
+index 0000000..6f176d2
+--- /dev/null
++++ b/hackerrank/linux.shell.-.text.processing.-.cut.command.4/cut.command.4.sh
+@@ -0,0 +1,5 @@
++while read -r || [[ -n $REPLY ]]; do  
++  first=1 && [ ${#REPLY} -lt $first ] && echo "" && continue
++  count=4 && [ ${#REPLY} -lt $count ] && count=${#REPLY}
++  echo "${REPLY:$[$first - 1]:$count}"
++done
+-- 
+2.23.0
+
