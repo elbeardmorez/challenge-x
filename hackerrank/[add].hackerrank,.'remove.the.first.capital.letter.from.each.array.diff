@@ -1,0 +1,25 @@
+From 9dc231d91e3cd8e33135b774766b32cbe1807cc7 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 19 Jun 2018 09:12:35 +0100
+Subject: [add] hackerrank, 'remove the first capital letter from each array
+ element', shell solution
+
+---
+ ...emove.the.first.capital.letter.from.each.array.element.sh | 5 +++++
+ 1 file changed, 5 insertions(+)
+ create mode 100644 hackerrank/linux.shell.-.arrays.in.bash.-.remove.the.first.capital.letter.from.each.array.element/remove.the.first.capital.letter.from.each.array.element.sh
+
+diff --git a/hackerrank/linux.shell.-.arrays.in.bash.-.remove.the.first.capital.letter.from.each.array.element/remove.the.first.capital.letter.from.each.array.element.sh b/hackerrank/linux.shell.-.arrays.in.bash.-.remove.the.first.capital.letter.from.each.array.element/remove.the.first.capital.letter.from.each.array.element.sh
+new file mode 100644
+index 0000000..338ea6a
+--- /dev/null
++++ b/hackerrank/linux.shell.-.arrays.in.bash.-.remove.the.first.capital.letter.from.each.array.element/remove.the.first.capital.letter.from.each.array.element.sh
+@@ -0,0 +1,5 @@
++res=""
++while read x; do
++    [ res == "" ] && res=".${x:1}" || res="$res .${x:1}"
++done
++echo $res
+-- 
+2.23.0
+
