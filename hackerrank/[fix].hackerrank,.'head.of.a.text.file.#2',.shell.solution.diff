@@ -1,0 +1,21 @@
+From e01275581ec9b8ca074f9462237aab1f29f27f67 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 19 Jun 2018 11:02:49 +0100
+Subject: [fix] hackerrank, 'head of a text file #2', shell solution
+
+-don't substring short strings
+---
+ .../head.of.a.text.file.2.sh                                    | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/linux.shell.-.text.processing.-.head.of.a.text.file.2/head.of.a.text.file.2.sh b/hackerrank/linux.shell.-.text.processing.-.head.of.a.text.file.2/head.of.a.text.file.2.sh
+index 1f7cd25..95440a1 100644
+--- a/hackerrank/linux.shell.-.text.processing.-.head.of.a.text.file.2/head.of.a.text.file.2.sh
++++ b/hackerrank/linux.shell.-.text.processing.-.head.of.a.text.file.2/head.of.a.text.file.2.sh
+@@ -1,2 +1,2 @@
+ x=`head -n1`
+-echo ${x:0:20}
++[ ${#x} -ge 20 ] && echo ${x:0:20} || echo "$x"
+-- 
+2.23.0
+
