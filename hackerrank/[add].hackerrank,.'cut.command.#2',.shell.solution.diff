@@ -1,0 +1,25 @@
+From 66549138b587dfdbf21c0178359235bf66a8d74b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 19 Jun 2018 10:14:26 +0100
+Subject: [add] hackerrank, 'cut command #2', shell solution
+
+---
+ .../cut.command.2.sh                                        | 6 ++++++
+ 1 file changed, 6 insertions(+)
+ create mode 100644 hackerrank/linux.shell.-.text.processing.-.cut.command.2/cut.command.2.sh
+
+diff --git a/hackerrank/linux.shell.-.text.processing.-.cut.command.2/cut.command.2.sh b/hackerrank/linux.shell.-.text.processing.-.cut.command.2/cut.command.2.sh
+new file mode 100644
+index 0000000..971442e
+--- /dev/null
++++ b/hackerrank/linux.shell.-.text.processing.-.cut.command.2/cut.command.2.sh
+@@ -0,0 +1,6 @@
++while read -r || [[ -n $REPLY ]]; do
++  res=""
++  [ ${#REPLY} -ge 2 ] && res="${res}${REPLY:1:1}"
++  [ ${#REPLY} -ge 7 ] && res="${res}${REPLY:6:1}"
++  echo "$res"
++done
+-- 
+2.23.0
+
