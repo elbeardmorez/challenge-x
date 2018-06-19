@@ -1,0 +1,59 @@
+From 4ef1c21fc3996e4682c0c715dbfd8ebfd1c84353 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 19 Jun 2018 10:38:08 +0100
+Subject: [fix] hackerrank, 'cut command #6', shell solution
+
+-try more new line manipulation for broken test input
+---
+ .../cut.command.6.sh                                   |  1 +
+ .../input/input02.txt                                  | 10 ++++++++++
+ .../output/output02.txt                                | 10 ++++++++++
+ 3 files changed, 21 insertions(+)
+ create mode 100644 hackerrank/linux.shell.-.text.processing.-.cut.command.6/input/input02.txt
+ create mode 100644 hackerrank/linux.shell.-.text.processing.-.cut.command.6/output/output02.txt
+
+diff --git a/hackerrank/linux.shell.-.text.processing.-.cut.command.6/cut.command.6.sh b/hackerrank/linux.shell.-.text.processing.-.cut.command.6/cut.command.6.sh
+index 1792580..ececce5 100644
+--- a/hackerrank/linux.shell.-.text.processing.-.cut.command.6/cut.command.6.sh
++++ b/hackerrank/linux.shell.-.text.processing.-.cut.command.6/cut.command.6.sh
+@@ -1,4 +1,5 @@
+ readarray arr
+ for s in "${arr[@]}"; do
++  s=`echo -e "$s" | tr -d '\n'`
+   echo "${s:12}"
+ done
+diff --git a/hackerrank/linux.shell.-.text.processing.-.cut.command.6/input/input02.txt b/hackerrank/linux.shell.-.text.processing.-.cut.command.6/input/input02.txt
+new file mode 100644
+index 0000000..ac5f325
+--- /dev/null
++++ b/hackerrank/linux.shell.-.text.processing.-.cut.command.6/input/input02.txt
+@@ -0,0 +1,10 @@
++C.B - Cantonment Board/Cantonment
++C.M.C – City Municipal Council
++C.T – Census Town
++E.O – Estate Office
++G.P - Gram Panchayat
++I.N.A – Industrial Notified Area
++I.T.S - Industrial Township
++M – Municipality
++M.B – Municipal Board
++M.C – Municipal Committee
+diff --git a/hackerrank/linux.shell.-.text.processing.-.cut.command.6/output/output02.txt b/hackerrank/linux.shell.-.text.processing.-.cut.command.6/output/output02.txt
+new file mode 100644
+index 0000000..7a6ea56
+--- /dev/null
++++ b/hackerrank/linux.shell.-.text.processing.-.cut.command.6/output/output02.txt
+@@ -0,0 +1,10 @@
++ment Board/Cantonment
++ty Municipal Council
++us Town
++te Office
++anchayat
++dustrial Notified Area
++strial Township
++pality
++cipal Board
++cipal Committee
+-- 
+2.23.0
+
