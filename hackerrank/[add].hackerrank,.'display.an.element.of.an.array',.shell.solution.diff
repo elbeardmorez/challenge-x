@@ -1,0 +1,21 @@
+From 98962088750911c6377bbc096a2c85370b679a30 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 19 Jun 2018 09:34:24 +0100
+Subject: [add] hackerrank, 'display an element of an array', shell solution
+
+---
+ .../display.an.element.of.an.array.sh                           | 2 ++
+ 1 file changed, 2 insertions(+)
+ create mode 100644 hackerrank/linux.shell.-.arrays.in.bash.-.display.an.element.of.an.array/display.an.element.of.an.array.sh
+
+diff --git a/hackerrank/linux.shell.-.arrays.in.bash.-.display.an.element.of.an.array/display.an.element.of.an.array.sh b/hackerrank/linux.shell.-.arrays.in.bash.-.display.an.element.of.an.array/display.an.element.of.an.array.sh
+new file mode 100644
+index 0000000..e5e4f4a
+--- /dev/null
++++ b/hackerrank/linux.shell.-.arrays.in.bash.-.display.an.element.of.an.array/display.an.element.of.an.array.sh
+@@ -0,0 +1,2 @@
++readarray arr
++echo ${arr[3]}
+-- 
+2.23.0
+
