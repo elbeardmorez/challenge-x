@@ -1,0 +1,20 @@
+From 626246b36562045c4a043146e6b7ca2fa46c0cd4 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 19 Jun 2018 11:09:48 +0100
+Subject: [add] hackerrank, 'middle of a text file', shell solution
+
+---
+ .../middle.of.a.text.file.sh                                     | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 hackerrank/linux.shell.-.text.processing.-.middle.of.a.text.file/middle.of.a.text.file.sh
+
+diff --git a/hackerrank/linux.shell.-.text.processing.-.middle.of.a.text.file/middle.of.a.text.file.sh b/hackerrank/linux.shell.-.text.processing.-.middle.of.a.text.file/middle.of.a.text.file.sh
+new file mode 100644
+index 0000000..b74fc37
+--- /dev/null
++++ b/hackerrank/linux.shell.-.text.processing.-.middle.of.a.text.file/middle.of.a.text.file.sh
+@@ -0,0 +1 @@
++head -n22 | tail -n11
+-- 
+2.23.0
+
