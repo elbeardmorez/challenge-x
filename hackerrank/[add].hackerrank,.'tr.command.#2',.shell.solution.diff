@@ -1,0 +1,20 @@
+From 0d3cd28b5e4787eecd13aefd6dac060c46d9aa36 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 19 Jun 2018 11:24:39 +0100
+Subject: [add] hackerrank, 'tr command #2', shell solution
+
+---
+ .../linux.shell.-.text.processing.-.tr.command.2/tr.command.2.sh | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 hackerrank/linux.shell.-.text.processing.-.tr.command.2/tr.command.2.sh
+
+diff --git a/hackerrank/linux.shell.-.text.processing.-.tr.command.2/tr.command.2.sh b/hackerrank/linux.shell.-.text.processing.-.tr.command.2/tr.command.2.sh
+new file mode 100644
+index 0000000..92935ed
+--- /dev/null
++++ b/hackerrank/linux.shell.-.text.processing.-.tr.command.2/tr.command.2.sh
+@@ -0,0 +1 @@
++tr -d "[a-z]"
+-- 
+2.23.0
+
