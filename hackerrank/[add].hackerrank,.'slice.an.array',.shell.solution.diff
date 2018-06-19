@@ -1,0 +1,29 @@
+From 5ff67a14d25bb9a20a154b6b0c04f4f29d23fe90 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 19 Jun 2018 09:26:26 +0100
+Subject: [add] hackerrank, 'slice an array', shell solution
+
+---
+ .../slice.an.array.sh                                  | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+ create mode 100644 hackerrank/linux.shell.-.arrays.in.bash.-.slice.an.array/slice.an.array.sh
+
+diff --git a/hackerrank/linux.shell.-.arrays.in.bash.-.slice.an.array/slice.an.array.sh b/hackerrank/linux.shell.-.arrays.in.bash.-.slice.an.array/slice.an.array.sh
+new file mode 100644
+index 0000000..df17c97
+--- /dev/null
++++ b/hackerrank/linux.shell.-.arrays.in.bash.-.slice.an.array/slice.an.array.sh
+@@ -0,0 +1,10 @@
++arr=()
++while read x; do
++  arr[${#arr[@]}]=$x
++done
++arr=(${arr[@]:3:5})
++res=""
++for x in ${arr[@]}; do
++  [ "x$res" == "x" ] && res="$x" || res="$res $x"
++done
++echo $res
+-- 
+2.23.0
+
