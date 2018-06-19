@@ -1,0 +1,27 @@
+From a2c2f9a0a67c72e5f4d24d7296140cd671c17ce6 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 19 Jun 2018 10:43:23 +0100
+Subject: [add] hackerrank, 'cut command #7', shell solution
+
+---
+ .../cut.command.7.sh                                      | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+ create mode 100644 hackerrank/linux.shell.-.text.processing.-.cut.command.7/cut.command.7.sh
+
+diff --git a/hackerrank/linux.shell.-.text.processing.-.cut.command.7/cut.command.7.sh b/hackerrank/linux.shell.-.text.processing.-.cut.command.7/cut.command.7.sh
+new file mode 100644
+index 0000000..e5f3c11
+--- /dev/null
++++ b/hackerrank/linux.shell.-.text.processing.-.cut.command.7/cut.command.7.sh
+@@ -0,0 +1,8 @@
++IFS_ORG="$IFS"
++
++readarray arr
++for s in "${arr[@]}"; do
++  s=`echo -e "$s" | tr -d '\n'`
++  IFS=" "; words=(`echo $s`); IFS=$IFS_ORG
++  [ ${#words[@]} -ge 4 ] && echo "${words[3]}" || echo ""
++done
+-- 
+2.23.0
+
