@@ -1,0 +1,26 @@
+From 45248b1464b2e4e7258b88c64862c7cc16bfb26e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 19 Jun 2018 16:20:45 +0100
+Subject: [add] hackerrank, 'hex colour code', python solution
+
+---
+ .../hex.colour.code.py                                    | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/hackerrank/python.-.regex.and.parsing.-.easy.-.hex.colour.code/hex.colour.code.py b/hackerrank/python.-.regex.and.parsing.-.easy.-.hex.colour.code/hex.colour.code.py
+index 7c60a68..eb2bb78 100644
+--- a/hackerrank/python.-.regex.and.parsing.-.easy.-.hex.colour.code/hex.colour.code.py
++++ b/hackerrank/python.-.regex.and.parsing.-.easy.-.hex.colour.code/hex.colour.code.py
+@@ -1 +1,9 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++
++import re
++import sys
++
++for s in sys.stdin:
++    # print("considering line: %s" % (s))
++    for match in re.finditer("[: ]+(#(?:[a-fA-F0-9]{6}|[a-fA-F0-9]{3}))", s):
++        print(match.group(1))
+-- 
+2.23.0
+
