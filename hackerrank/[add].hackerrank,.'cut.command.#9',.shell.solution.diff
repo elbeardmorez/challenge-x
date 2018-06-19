@@ -1,0 +1,23 @@
+From 81048d58755ea6c8c81395384ef5eb9e4707045e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 19 Jun 2018 10:51:27 +0100
+Subject: [add] hackerrank, 'cut command #9', shell solution
+
+---
+ .../cut.command.9.sh                                          | 4 ++++
+ 1 file changed, 4 insertions(+)
+ create mode 100644 hackerrank/linux.shell.-.text.processing.-.cut.command.9/cut.command.9.sh
+
+diff --git a/hackerrank/linux.shell.-.text.processing.-.cut.command.9/cut.command.9.sh b/hackerrank/linux.shell.-.text.processing.-.cut.command.9/cut.command.9.sh
+new file mode 100644
+index 0000000..d851aa7
+--- /dev/null
++++ b/hackerrank/linux.shell.-.text.processing.-.cut.command.9/cut.command.9.sh
+@@ -0,0 +1,4 @@
++readarray arr
++for s in "${arr[@]}"; do
++  echo -n "$s" | cut -d$'\t' -f2-
++done
+-- 
+2.23.0
+
