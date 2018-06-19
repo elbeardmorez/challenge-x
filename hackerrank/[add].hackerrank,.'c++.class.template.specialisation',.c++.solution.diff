@@ -1,0 +1,60 @@
+From 094897a1e9c9d0f20c13f351899e280a02c334fa Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 19 Jun 2018 09:07:03 +0100
+Subject: [add] hackerrank, 'c++ class template specialisation', c++ solution
+
+---
+ .../c++.class.template.specialisation.cpp     | 37 +++++++++++++++++++
+ 1 file changed, 37 insertions(+)
+
+diff --git a/hackerrank/c++.-.other.concepts.-.medium.-.c++.class.template.specialisation/c++.class.template.specialisation.cpp b/hackerrank/c++.-.other.concepts.-.medium.-.c++.class.template.specialisation/c++.class.template.specialisation.cpp
+index ec3cfe6..df664c0 100644
+--- a/hackerrank/c++.-.other.concepts.-.medium.-.c++.class.template.specialisation/c++.class.template.specialisation.cpp
++++ b/hackerrank/c++.-.other.concepts.-.medium.-.c++.class.template.specialisation/c++.class.template.specialisation.cpp
+@@ -7,6 +7,43 @@ template <typename T> struct Traits;
+ 
+ // Define specializations for the Traits class template here.
+ 
++template <class T>
++struct Traits {
++    static string name(int);
++};
++template <class T>
++string Traits<T>::name(int idx) {
++    return "unknown";
++}
++
++template <>
++string Traits<Color>::name(int idx) {
++    switch (idx) {
++        case static_cast<int>(Color::red):
++            return "red";
++        case static_cast<int>(Color::green):
++            return "green";
++        case static_cast<int>(Color::orange):
++            return "orange";
++        default:
++            return "unknown";
++    }
++}
++
++template <>
++string Traits<Fruit>::name(int idx) {
++    switch (idx) {
++        case static_cast<int>(Fruit::apple):
++            return "apple";
++        case static_cast<int>(Fruit::orange):
++            return "orange";
++        case static_cast<int>(Fruit::pear):
++            return "pear";
++        default:
++            return "unknown";
++    }
++}
++
+ int main()
+ {
+ 	int t = 0; std::cin >> t;
+-- 
+2.23.0
+
