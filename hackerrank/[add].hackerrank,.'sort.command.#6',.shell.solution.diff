@@ -1,0 +1,25 @@
+From e373a76ba2907c8cebc308aa88eebb14c34666e8 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 19 Jun 2018 09:50:25 +0100
+Subject: [add] hackerrank, 'sort command #6', shell solution
+
+---
+ .../sort.command.6.sh                                       | 6 ++++++
+ 1 file changed, 6 insertions(+)
+ create mode 100644 hackerrank/linux.shell.-.text.processing.-.sort.command.6/sort.command.6.sh
+
+diff --git a/hackerrank/linux.shell.-.text.processing.-.sort.command.6/sort.command.6.sh b/hackerrank/linux.shell.-.text.processing.-.sort.command.6/sort.command.6.sh
+new file mode 100644
+index 0000000..4107cac
+--- /dev/null
++++ b/hackerrank/linux.shell.-.text.processing.-.sort.command.6/sort.command.6.sh
+@@ -0,0 +1,6 @@
++readarray arr
++for s in "${arr[@]}"; do
++  [ "x$data" == "x" ] && data="$s" || data="$data\n$s"
++done
++IFS=$IFS_ORG
++echo -e "$data" | sort -t$'\t' -k2n | sed /^$/d
+-- 
+2.23.0
+
