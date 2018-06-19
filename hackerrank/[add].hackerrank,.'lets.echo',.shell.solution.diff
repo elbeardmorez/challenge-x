@@ -1,0 +1,20 @@
+From 3f68693e1163d6d9a467b680d56c33e8991d58d5 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 19 Jun 2018 12:04:36 +0100
+Subject: [add] hackerrank, 'lets echo', shell solution
+
+---
+ hackerrank/linux.shell.-.bash.-.lets.echo/lets.echo.sh | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 hackerrank/linux.shell.-.bash.-.lets.echo/lets.echo.sh
+
+diff --git a/hackerrank/linux.shell.-.bash.-.lets.echo/lets.echo.sh b/hackerrank/linux.shell.-.bash.-.lets.echo/lets.echo.sh
+new file mode 100644
+index 0000000..7d592a3
+--- /dev/null
++++ b/hackerrank/linux.shell.-.bash.-.lets.echo/lets.echo.sh
+@@ -0,0 +1 @@
++echo "HELLO"
+-- 
+2.23.0
+
