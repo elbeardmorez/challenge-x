@@ -1,0 +1,30 @@
+From 791ae907b2c84d50ad57312c3b617faba1af423a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 19 Jun 2018 12:24:16 +0100
+Subject: [add] hackerrank, 'more on conditionals', shell solution
+
+---
+ .../more.on.conditionals.sh                           | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+ create mode 100644 hackerrank/linux.shell.-.bash.-.more.on.conditionals/more.on.conditionals.sh
+
+diff --git a/hackerrank/linux.shell.-.bash.-.more.on.conditionals/more.on.conditionals.sh b/hackerrank/linux.shell.-.bash.-.more.on.conditionals/more.on.conditionals.sh
+new file mode 100644
+index 0000000..9318b0e
+--- /dev/null
++++ b/hackerrank/linux.shell.-.bash.-.more.on.conditionals/more.on.conditionals.sh
+@@ -0,0 +1,11 @@
++read -r X
++read -r Y
++read -r Z
++
++if [[ $X -eq $Y && $Y -eq $Z ]]; then
++  echo "EQUILATERAL"
++elif [[ $X -eq $Y || $Y -eq $Z || $X -eq $Z ]]; then
++  echo "ISOSCELES"
++else
++  echo "SCALENE"
++fi
+-- 
+2.23.0
+
