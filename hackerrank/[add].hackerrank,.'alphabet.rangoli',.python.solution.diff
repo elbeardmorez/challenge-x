@@ -1,0 +1,38 @@
+From a3ebbb0e493e373a3566e35700edbabae5314d37 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 20 Jun 2018 08:47:33 +0100
+Subject: [add] hackerrank, 'alphabet rangoli', python solution
+
+---
+ .../alphabet.rangoli.py                       | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+diff --git a/hackerrank/python.-.strings.-.easy.-.alphabet.rangoli/alphabet.rangoli.py b/hackerrank/python.-.strings.-.easy.-.alphabet.rangoli/alphabet.rangoli.py
+index a683741..c9402d6 100644
+--- a/hackerrank/python.-.strings.-.easy.-.alphabet.rangoli/alphabet.rangoli.py
++++ b/hackerrank/python.-.strings.-.easy.-.alphabet.rangoli/alphabet.rangoli.py
+@@ -1,2 +1,21 @@
+ def print_rangoli(size):
+     # your code goes here
++    chars = [chr(c) for c in range(ord('a'), ord('z') + 1)][0:size]
++    rchars = list(reversed(chars))
++    padding = (n - 1) # pairs from corners to centre char
++    dimension = padding * 2 + 1
++    spacer = "-"
++    upper = True
++    pad = padding
++    for row in range(1, dimension + 1):
++        # print("row: %d, pad: %d" % (row, pad))
++        csx = padding - pad # char pad pairs either side
++        # print("csx: %d" % (csx))
++        c = rchars[csx] if upper else chars[padding - csx]
++        csl = "" if csx == 0 else spacer.join([c for c in rchars[:csx]]) + spacer
++        csr = "" if csx == 0 else spacer + spacer.join([c for c in chars[-csx:]])
++        cp = spacer * pad * 2
++        print("".join([cp, csl, c, csr, cp]))
++        pad = pad - 1 if upper else pad + 1
++        if pad == 0:
++            upper = False
+-- 
+2.23.0
+
