@@ -1,0 +1,25 @@
+From 9e02f89c630ffd0e9cfd9f5c8232ff8839fa8f5e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 20 Jun 2018 12:45:06 +0100
+Subject: [add] hackerrank, 'reduce function', python solution
+
+---
+ .../reduce.function.py                                          | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/python.-.python.functionals.-.medium.-.reduce.function/reduce.function.py b/hackerrank/python.-.python.functionals.-.medium.-.reduce.function/reduce.function.py
+index 20b6cef..15e9996 100644
+--- a/hackerrank/python.-.python.functionals.-.medium.-.reduce.function/reduce.function.py
++++ b/hackerrank/python.-.python.functionals.-.medium.-.reduce.function/reduce.function.py
+@@ -2,7 +2,7 @@ from fractions import Fraction
+ from functools import reduce
+ 
+ def product(fracs):
+-    t = # complete this line with a reduce statement
++    t = reduce(lambda a, x: a * x, fracs, Fraction(1)) # complete this line with a reduce statement
+     return t.numerator, t.denominator
+ 
+ if __name__ == '__main__':
+-- 
+2.23.0
+
