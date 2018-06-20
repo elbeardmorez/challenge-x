@@ -1,0 +1,36 @@
+From 29bc053e1d072929923c3b35aba9172a051abce4 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 20 Jun 2018 12:34:10 +0100
+Subject: [add] hackerrank, 'collections deque', python solution
+
+---
+ .../collections.deque.py                       | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/hackerrank/python.-.collections.-.easy.-.collections.deque/collections.deque.py b/hackerrank/python.-.collections.-.easy.-.collections.deque/collections.deque.py
+index 7c60a68..98b6916 100644
+--- a/hackerrank/python.-.collections.-.easy.-.collections.deque/collections.deque.py
++++ b/hackerrank/python.-.collections.-.easy.-.collections.deque/collections.deque.py
+@@ -1 +1,19 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++
++from collections import deque
++dq = deque()
++n = int(input())
++for _ in range(0, n):
++    s = input().split()
++    op = s[0]
++    op_arg = s[1] if len(s) > 1 else None
++    if op == "append":
++        dq.append(op_arg)
++    elif op == "appendleft":
++        dq.appendleft(op_arg)
++    elif op == "pop":
++        dq.pop()
++    elif op == "popleft":
++        dq.popleft()
++
++print(" ".join(dq))
+-- 
+2.23.0
+
