@@ -1,0 +1,35 @@
+From 94cbabd942515e5e4b29bb665ab42f8027d74407 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 20 Jun 2018 08:08:34 +0100
+Subject: [add] hackerrank, 'defaultdict tutorial', python solution
+
+---
+ .../defaultdict.tutorial.py                     | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/hackerrank/python.-.collections.-.easy.-.defaultdict.tutorial/defaultdict.tutorial.py b/hackerrank/python.-.collections.-.easy.-.defaultdict.tutorial/defaultdict.tutorial.py
+index 7c60a68..4a20144 100644
+--- a/hackerrank/python.-.collections.-.easy.-.defaultdict.tutorial/defaultdict.tutorial.py
++++ b/hackerrank/python.-.collections.-.easy.-.defaultdict.tutorial/defaultdict.tutorial.py
+@@ -1 +1,18 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++
++from collections import defaultdict
++import sys
++
++n, m = sys.stdin.readline().rstrip('\n').split(" ")
++dd = defaultdict(lambda: ["-1"])
++
++for idx in range(1, int(n) + 1):
++    s = sys.stdin.readline().rstrip('\n')
++    if not s in dd:
++        dd[s] = []
++    dd[s].append(str(idx))
++
++for _ in range(0, int(m)):
++    s = sys.stdin.readline().rstrip('\n')
++    # print("indices for: %r" % s)
++    print("%s" % " ".join(dd[s]))
+-- 
+2.23.0
+
