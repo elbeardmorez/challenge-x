@@ -1,0 +1,35 @@
+From 1bd5fafb81853bda767bb4711381ed4609417243 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 20 Jun 2018 10:23:52 +0100
+Subject: [add] hackerrank, 'merge the tools', python solution
+
+---
+ .../merge.the.tools.py                           | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/hackerrank/python.-.strings.-.medium.-.merge.the.tools/merge.the.tools.py b/hackerrank/python.-.strings.-.medium.-.merge.the.tools/merge.the.tools.py
+index 0b9e318..f7d109d 100644
+--- a/hackerrank/python.-.strings.-.medium.-.merge.the.tools/merge.the.tools.py
++++ b/hackerrank/python.-.strings.-.medium.-.merge.the.tools/merge.the.tools.py
+@@ -1,2 +1,18 @@
++import re
++
+ def merge_the_tools(string, k):
+     # your code goes here
++    k = int(k)
++    words = int(len(string) / k)
++    words
++    for x in range(0, words):
++        pos = x * k
++        ss = string[pos:pos + k]
++        sss = ""
++        chars = {}
++        for c in list(ss):
++            if c in chars:
++                continue
++            chars[c] = True
++            sss += c
++        print(sss)
+-- 
+2.23.0
+
