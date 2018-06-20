@@ -1,0 +1,23 @@
+From 66de737fdf080a539172b40c23029a9d0ced7297 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 20 Jun 2018 07:34:30 +0100
+Subject: [add] hackerrank, 'print function', python solution
+
+---
+ .../print.function.py                                         | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/hackerrank/python.-.introduction.-.easy.-.print.function/print.function.py b/hackerrank/python.-.introduction.-.easy.-.print.function/print.function.py
+index 74ce7ed..75f9907 100644
+--- a/hackerrank/python.-.introduction.-.easy.-.print.function/print.function.py
++++ b/hackerrank/python.-.introduction.-.easy.-.print.function/print.function.py
+@@ -1,2 +1,6 @@
++import sys
++
+ if __name__ == '__main__':
+     n = int(input())
++    for x in range(1, n + 1):
++        print("%s" % x, end="")
+-- 
+2.23.0
+
