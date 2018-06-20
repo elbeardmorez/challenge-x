@@ -1,0 +1,29 @@
+From e230f00a0dc8f5a81fe53a6648feaf6c84d44958 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 20 Jun 2018 09:00:14 +0100
+Subject: [add] hackerrank, 'incorrect regex', python solution
+
+---
+ .../incorrect.regex.py                                | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/hackerrank/python.-.errors.and.exceptions.-.easy.-.incorrect.regex/incorrect.regex.py b/hackerrank/python.-.errors.and.exceptions.-.easy.-.incorrect.regex/incorrect.regex.py
+index 7c60a68..3b79bda 100644
+--- a/hackerrank/python.-.errors.and.exceptions.-.easy.-.incorrect.regex/incorrect.regex.py
++++ b/hackerrank/python.-.errors.and.exceptions.-.easy.-.incorrect.regex/incorrect.regex.py
+@@ -1 +1,12 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++
++import sys
++import re
++
++n = sys.stdin.readline()
++for r in sys.stdin:
++    try:
++        re.compile(r)
++        print("True")
++    except:
++        print("False")
+-- 
+2.23.0
+
