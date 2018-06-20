@@ -1,0 +1,27 @@
+From 052459c1bec2deaf4410905490d392615f1860fb Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 20 Jun 2018 13:05:39 +0100
+Subject: [fix] hackerrank, 'validating phone numbers', python solution
+
+-revert last
+-anchor matching regexp
+---
+ .../validating.phone.numbers.py                                | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/hackerrank/python.-.regex.and.parsing.-.easy.-.validating.phone.numbers/validating.phone.numbers.py b/hackerrank/python.-.regex.and.parsing.-.easy.-.validating.phone.numbers/validating.phone.numbers.py
+index 8028f85..5332b1b 100644
+--- a/hackerrank/python.-.regex.and.parsing.-.easy.-.validating.phone.numbers/validating.phone.numbers.py
++++ b/hackerrank/python.-.regex.and.parsing.-.easy.-.validating.phone.numbers/validating.phone.numbers.py
+@@ -5,7 +5,6 @@ import re
+ for _ in range(int(input())):
+     s = input()
+     res = "YES"
+-    digits = re.findall("[0-9]", s)
+-    if not re.search('[789][0-9]{9}', "".join(digits)):
++    if not re.search('^[789][0-9]{9}$', s.replace(" ", "")):
+         res = "NO"
+     print(res)
+-- 
+2.23.0
+
