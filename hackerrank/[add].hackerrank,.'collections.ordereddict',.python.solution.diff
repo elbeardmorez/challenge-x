@@ -1,0 +1,34 @@
+From 476d8be11b55afd9b2f1b40f60df8c2e5f9c1c89 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 20 Jun 2018 09:16:52 +0100
+Subject: [add] hackerrank, 'collections ordereddict', python solution
+
+---
+ .../collections.ordereddict.py                   | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/hackerrank/python.-.collections.-.easy.-.collections.ordereddict/collections.ordereddict.py b/hackerrank/python.-.collections.-.easy.-.collections.ordereddict/collections.ordereddict.py
+index 7c60a68..02cbe75 100644
+--- a/hackerrank/python.-.collections.-.easy.-.collections.ordereddict/collections.ordereddict.py
++++ b/hackerrank/python.-.collections.-.easy.-.collections.ordereddict/collections.ordereddict.py
+@@ -1 +1,17 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++
++import sys
++from collections import OrderedDict
++
++od = OrderedDict()
++
++n = sys.stdin.readline()
++for s in sys.stdin:
++    ss = s.split(' ')
++    item = " ".join(ss[0:-1])
++    price = int(ss[-1])
++    # print("item: %s, price: %s" % (item, price))
++    od[item] = price if not item in od else (od[item] + price)
++
++for k, v in od.items():
++    print("%s %d" % (k, v))
+-- 
+2.23.0
+
