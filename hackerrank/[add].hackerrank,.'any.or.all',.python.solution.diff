@@ -1,0 +1,37 @@
+From dcb64cd5cc3be894925644c27363b29ba565e4c3 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 20 Jun 2018 18:55:40 +0100
+Subject: [add] hackerrank, 'any or all', python solution
+
+---
+ .../any.or.all.py                             | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+diff --git a/hackerrank/python.-.built-ins.-.easy.-.any.or.all/any.or.all.py b/hackerrank/python.-.built-ins.-.easy.-.any.or.all/any.or.all.py
+index 7c60a68..cb7827a 100644
+--- a/hackerrank/python.-.built-ins.-.easy.-.any.or.all/any.or.all.py
++++ b/hackerrank/python.-.built-ins.-.easy.-.any.or.all/any.or.all.py
+@@ -1 +1,20 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++
++def is_palendromic(x):
++    d = list(str(x))
++    if len(d) == 1:
++        return True
++    else:
++        left = d[:int(len(d)/2)]
++        right = d[-1 * (int(len(d)/2)):]
++        # print("left: %s, right: %s" % (left, right))
++        if "".join(left) == "".join(reversed(right)):
++            return True
++    return False
++
++for _ in range(int(input())):
++    l = [int(x) for x in input().split()]
++    res = "False"
++    if all([x > 0 for x in l]) and any([is_palendromic(x) for x in l]):
++        res = "True"
++    print(res)
+-- 
+2.23.0
+
