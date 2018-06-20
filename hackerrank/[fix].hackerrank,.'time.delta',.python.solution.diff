@@ -1,0 +1,143 @@
+From f31344caa94984d68b8242b0c2117e52391d3f59 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 20 Jun 2018 16:14:10 +0100
+Subject: [fix] hackerrank, 'time delta', python solution
+
+-more accuracy in leap year calculation
+-off-by-one month length array access bug
+-make days_between generic, based on date not year
+-calc days between once at end, not incrementally
+-speed-up, reduce object access
+-return month name not number in to_string
+---
+ .../time.delta.py                             | 59 ++++++++++++-------
+ 1 file changed, 39 insertions(+), 20 deletions(-)
+
+diff --git a/hackerrank/python.-.date.and.time.-.medium.-.time.delta/time.delta.py b/hackerrank/python.-.date.and.time.-.medium.-.time.delta/time.delta.py
+index 250f9cc..29202eb 100644
+--- a/hackerrank/python.-.date.and.time.-.medium.-.time.delta/time.delta.py
++++ b/hackerrank/python.-.date.and.time.-.medium.-.time.delta/time.delta.py
+@@ -15,8 +15,13 @@ def days_in(mon):
+     return month_days[mon]
+ 
+ def is_leap(year):
+-    # leap years, ..roughly
+-    return True if year % 4 else False
++    # leap years.. roughly
++    res = False
++    if year % 4 == 0:
++        res = True
++    if year % 100 == 0 and not year % 400 == 0:
++        res = False
++    return res
+ 
+ def month_idx(mon):
+     return list(month_days.keys()).index(mon)
+@@ -24,23 +29,33 @@ def month_idx(mon):
+ def day_of_year(day, mon, year):
+     days = day
+     if mon > 0:
+-        days += sum(list(month_days.values())[0:mon - 1]);
++        days += sum(list(month_days.values())[0:(mon - 1) + 1]);
+     if is_leap(year) and mon > 2:
+         days += 1
+     return days
+ 
+-def days_between_years(y1, y2):
+-    if y1 == y2:
++def days_between(zd1, zd2):
++    if zd1.y == zd2.y and zd1.dy == zd2.dy:
+         return 0
+-    if y1 > y2:
++    if zd1.is_after(zd2):
+         # switch
+-        y1, y2 = y2, y1
++        zd1, zd2 = zd2, zd1
+     days = 0
+-    while y1 < y2:
+-        if is_leap(y1):
++    zd1y = zd1.y
++    if zd1.dy < zd2.dy:
++        days += zd2.dy - zd1.dy
++    else:
++        days += (365 - zd1.dy)
++        if is_leap(zd1y):
++            days += 1
++        days += zd2.dy
++        zd1y += 1
++    while zd1y < zd2.y:
++        if is_leap(zd1y):
+             days += 366
+         else:
+             days += 365
++        zd1y += 1
+     return days
+ 
+ class zdate:
+@@ -82,15 +97,15 @@ class zdate:
+             self.th = self.t[0] = self.th - 24
+             self.d += 1
+         if self.d == 0:
+-            self.m = ((self.m - 1) - 1 % 12) + 1
+-            self.mn = list(month_days.keys())[self.m - 1]
++            self.m = (self.m - 1) % 12
++            self.mn = list(month_days.keys())[self.m]
+             self.d = month_days[self.mn]
+             if self.d == 31 and self.m == 12:
+                 self.y -= 1
+         elif self.d > month_days[self.mn] and (
+              not self.m == 2 and self.d == 29 and is_leap(self.y)):
+-            self.m = ((self.m - 1) + 1 % 12) + 1
+-            self.mn = list(month_days.keys())[self.m - 1]
++            self.m = (self.m + 1) % 12
++            self.mn = list(month_days.keys())[self.m]
+             self.d = 1
+             if self.d == 1 and self.m == 1:
+                 self.y += 1
+@@ -120,11 +135,13 @@ class zdate:
+         return res
+ 
+     def to_string(self):
+-        return ("%d %d %d %02d:%02d:%02d" % (self.d, self.m, self.y, self.th, self.tm, self.tm))
++        return ("%d %s %d %02d:%02d:%02d" % (self.d, self.mn, self.y, self.th, self.tm, self.tm))
+ 
+ # Complete the time_delta function below.
+ def time_delta(dt1, dt2):
+-    # parts
++    print("[dt1] d: %s" % (dt1))
++    print("[dt2] d: %s" % (dt2))
++
+     zd1 = zdate(dt1)
+     zd2 = zdate(dt2)
+ 
+@@ -139,11 +156,10 @@ def time_delta(dt1, dt2):
+         zd1, zd2 = zd2, zd1
+ 
+     # days diff
+-    d_delta = days_between_years(zd1.y, zd2.y)
+-    d_delta += abs(zd2.dy - zd1.dy)
++    d_delta = days_between(zd1, zd2)
+     # hours diff
+     h_delta = d_delta * 24
+-    h_delta += zd2.th - zd1.th
++    h_delta += (zd2.th - zd1.th)
+     # minute diff
+     m_delta = h_delta * 60
+     m_delta += (zd2.tm - zd1.tm)
+@@ -153,8 +169,11 @@ def time_delta(dt1, dt2):
+ 
+     print("[deltas] d: %d, h: %d, m: %d, s: %d" % (d_delta, h_delta, m_delta, s_delta))
+ 
+-    print("[dt1] d: %s, m: %d, dy: %d" % (dt1, zd1.m, zd1.dy))
+-    print("[dt2] d: %s, m: %d, dy: %d" % (dt2, zd2.m, zd2.dy))
++    print("[zd1] d: %s, m: %d, dy: %d" % (zd1.to_string(), zd1.m, zd1.dy))
++    print("[zd2] d: %s, m: %d, dy: %d" % (zd2.to_string(), zd2.m, zd2.dy))
++
++    print("[result] %d" % (s_delta))
++    print("[target] 413962293")
+ 
+     return str(s_delta)
+ 
+-- 
+2.23.0
+
