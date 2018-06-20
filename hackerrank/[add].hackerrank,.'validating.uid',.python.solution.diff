@@ -1,0 +1,41 @@
+From 06d9d225c526cf6863e8bed843d028b4312b57ef Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 20 Jun 2018 09:42:32 +0100
+Subject: [add] hackerrank, 'validating uid', python solution
+
+---
+ .../validating.uid.py                         | 23 +++++++++++++++++++
+ 1 file changed, 23 insertions(+)
+
+diff --git a/hackerrank/python.-.regex.and.parsing.-.easy.-.validating.uid/validating.uid.py b/hackerrank/python.-.regex.and.parsing.-.easy.-.validating.uid/validating.uid.py
+index 7c60a68..832cf7a 100644
+--- a/hackerrank/python.-.regex.and.parsing.-.easy.-.validating.uid/validating.uid.py
++++ b/hackerrank/python.-.regex.and.parsing.-.easy.-.validating.uid/validating.uid.py
+@@ -1 +1,24 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++
++import sys
++import re
++
++sys.stdin.readline()
++for s in sys.stdin:
++    res = "Valid"
++    if not re.match('[A-Za-z0-9]{10}', s):
++        res = "Invalid"
++    if len(re.findall('[A-Z]', s)) < 2:
++        res = "Invalid"
++    if len(re.findall('[0-9]', s)) < 3:
++        res = "Invalid"
++    if re.search('.*?(.)\\1', "".join(sorted(list(s)))):
++        res = "Invalid"
++
++    last = ""
++    for c in s:
++        if c == last:
++            res = "Invalid"
++            break
++        last = c
++    print(res)
+-- 
+2.23.0
+
