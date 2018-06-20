@@ -1,0 +1,26 @@
+From 059774c3e34056d95c3f6278de2adae317e8726e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 20 Jun 2018 08:54:47 +0100
+Subject: [fix] hackerrank, 'capitalise', python solution
+
+-don't split empty strings
+---
+ hackerrank/python.-.strings.-.easy.-.capitalise/capitalise.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/python.-.strings.-.easy.-.capitalise/capitalise.py b/hackerrank/python.-.strings.-.easy.-.capitalise/capitalise.py
+index e54bdc8..6b6416c 100644
+--- a/hackerrank/python.-.strings.-.easy.-.capitalise/capitalise.py
++++ b/hackerrank/python.-.strings.-.easy.-.capitalise/capitalise.py
+@@ -8,7 +8,7 @@ import sys
+ 
+ # Complete the solve function below.
+ def solve(s):
+-    return " ".join(map(lambda s: s[0].upper() + s[1:], s.split(' ')))
++    return " ".join(map(lambda s: "" if len(s) == 0 else s[0].upper() + s[1:], s.split(' ')))
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
