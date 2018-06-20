@@ -1,0 +1,181 @@
+From 986bf598ef9d0b61e5526771ea1f9771f94ffa5e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 20 Jun 2018 15:37:51 +0100
+Subject: [add] hackerrank, 'time delta', python solution
+
+---
+ .../time.delta.py                             | 153 +++++++++++++++++-
+ 1 file changed, 151 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/python.-.date.and.time.-.medium.-.time.delta/time.delta.py b/hackerrank/python.-.date.and.time.-.medium.-.time.delta/time.delta.py
+index 52dff2b..250f9cc 100644
+--- a/hackerrank/python.-.date.and.time.-.medium.-.time.delta/time.delta.py
++++ b/hackerrank/python.-.date.and.time.-.medium.-.time.delta/time.delta.py
+@@ -1,13 +1,162 @@
+ #!/bin/python3
+-
+ import math
+ import os
+ import random
+ import re
+ import sys
++from collections import OrderedDict
++
++month_days = OrderedDict((
++    ('Jan', 31), ('Feb', 28), ('Mar', 31), ('Apr', 30), ('May', 31), ('Jun', 30),
++    ('Jul', 31), ('Aug', 31), ('Sep', 30), ('Oct', 31), ('Nov', 30), ('Dec', 31)
++))
++
++def days_in(mon):
++    return month_days[mon]
++
++def is_leap(year):
++    # leap years, ..roughly
++    return True if year % 4 else False
++
++def month_idx(mon):
++    return list(month_days.keys()).index(mon)
++
++def day_of_year(day, mon, year):
++    days = day
++    if mon > 0:
++        days += sum(list(month_days.values())[0:mon - 1]);
++    if is_leap(year) and mon > 2:
++        days += 1
++    return days
++
++def days_between_years(y1, y2):
++    if y1 == y2:
++        return 0
++    if y1 > y2:
++        # switch
++        y1, y2 = y2, y1
++    days = 0
++    while y1 < y2:
++        if is_leap(y1):
++            days += 366
++        else:
++            days += 365
++    return days
++
++class zdate:
++    def __init__(self, dt):
++        _, self.d, self.mn, self.y, self.t, self.z = dt.split()
++        self.d = int(self.d)
++        self.m = month_idx(self.mn)
++        self.y = int(self.y)
++        self.t = [int(p) for p in self.t.split(':')]
++        self.th = self.t[0]
++        self.tm = self.t[1]
++        self.ts = self.t[2]
++        self.z = list(self.z)
++        self.z_ = self.z[0]
++        self.zh = int("".join(self.z[1:3]))
++        self.zm = int("".join(self.z[3:]))
++
++        self.dy = day_of_year(self.d, self.m, self.y)
++
++    def utc_adjust(self):
++        # zone adjust to utc
++        # minutes
++        if self.zm != 0:
++            self.tm = self.t[1] = self.tm + ((1 if self.z_ == "-" else -1) * self.zm)
++        if self.tm < 0:
++            self.tm = self.t[1] = self.tm + 60
++            self.th = self.t[0] = self.th - 1
++        elif self.tm > 60:
++            self.tm = self.t[1] = self.tm - 60
++            self.th = self.t[0] = self.th + 1
++        # hours
++        # print("adding: %d hours" % ((-1 if z1[0] == "-" else 1) * int("".join(z1[1:3]))))
++        if self.zh != 0:
++            self.th = self.t[0] = self.th + ((1 if self.z_ == "-" else -1) * self.zh)
++        if self.th < 0:
++            self.th = self.t[0] = self.th + 24
++            self.d -= 1
++        elif self.th > 23:
++            self.th = self.t[0] = self.th - 24
++            self.d += 1
++        if self.d == 0:
++            self.m = ((self.m - 1) - 1 % 12) + 1
++            self.mn = list(month_days.keys())[self.m - 1]
++            self.d = month_days[self.mn]
++            if self.d == 31 and self.m == 12:
++                self.y -= 1
++        elif self.d > month_days[self.mn] and (
++             not self.m == 2 and self.d == 29 and is_leap(self.y)):
++            self.m = ((self.m - 1) + 1 % 12) + 1
++            self.mn = list(month_days.keys())[self.m - 1]
++            self.d = 1
++            if self.d == 1 and self.m == 1:
++                self.y += 1
++        # recalc day
++        self.dy = day_of_year(self.d, self.m, self.y)
++
++    # seconds resolution only
++    def is_after(self, d2):
++        res = False
++        if self.y > d2.y:
++            res = True
++        elif self.y == d2.y:
++            if self.m > d2.m:
++                res = True
++            elif self.m == d2.m:
++                if self.d > d2.d:
++                    res = True
++                elif self.d == d2.d:
++                    if self.th > d2.th:
++                        res = True
++                    elif self.th == d2.th:
++                        if self.tm > d2.tm:
++                            res = True
++                        elif self.tm == d2.tm:
++                            if self.ts > d2.ts:
++                                  res = True
++        return res
++
++    def to_string(self):
++        return ("%d %d %d %02d:%02d:%02d" % (self.d, self.m, self.y, self.th, self.tm, self.tm))
+ 
+ # Complete the time_delta function below.
+-def time_delta(t1, t2):
++def time_delta(dt1, dt2):
++    # parts
++    zd1 = zdate(dt1)
++    zd2 = zdate(dt2)
++
++    print("[zd1] %s" % (zd1.to_string()))
++    zd1.utc_adjust()
++    print("[zd1] %s [utc]" % (zd1.to_string()))
++    print("[zd2] %s" % (zd2.to_string()))
++    zd2.utc_adjust()
++    print("[zd2] %s [utc]" % (zd2.to_string()))
++
++    if zd1.is_after(zd2):
++        zd1, zd2 = zd2, zd1
++
++    # days diff
++    d_delta = days_between_years(zd1.y, zd2.y)
++    d_delta += abs(zd2.dy - zd1.dy)
++    # hours diff
++    h_delta = d_delta * 24
++    h_delta += zd2.th - zd1.th
++    # minute diff
++    m_delta = h_delta * 60
++    m_delta += (zd2.tm - zd1.tm)
++    # second diff
++    s_delta = m_delta * 60
++    s_delta += (zd2.ts - zd1.ts)
++
++    print("[deltas] d: %d, h: %d, m: %d, s: %d" % (d_delta, h_delta, m_delta, s_delta))
++
++    print("[dt1] d: %s, m: %d, dy: %d" % (dt1, zd1.m, zd1.dy))
++    print("[dt2] d: %s, m: %d, dy: %d" % (dt2, zd2.m, zd2.dy))
++
++    return str(s_delta)
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
