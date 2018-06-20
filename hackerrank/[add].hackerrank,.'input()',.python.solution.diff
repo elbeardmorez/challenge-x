@@ -1,0 +1,21 @@
+From cdcccdd1a6ded1057cc3f136792826adcb94f411 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 20 Jun 2018 18:27:11 +0100
+Subject: [add] hackerrank, 'input()', python solution
+
+---
+ hackerrank/python.-.built-ins.-.easy.-.input/input.py | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/hackerrank/python.-.built-ins.-.easy.-.input/input.py b/hackerrank/python.-.built-ins.-.easy.-.input/input.py
+index 7c60a68..d0bd23e 100644
+--- a/hackerrank/python.-.built-ins.-.easy.-.input/input.py
++++ b/hackerrank/python.-.built-ins.-.easy.-.input/input.py
+@@ -1 +1,4 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++
++x, k = [int(s) for s in input().split()]
++print("True" if eval(input()) == k else "False")
+-- 
+2.23.0
+
