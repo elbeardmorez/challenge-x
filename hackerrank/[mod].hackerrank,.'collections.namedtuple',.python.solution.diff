@@ -1,0 +1,24 @@
+From e7d59df8247f8240e444a2ed1ba3adc1deb954e8 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 20 Jun 2018 12:21:17 +0100
+Subject: [mod] hackerrank, 'collections namedtuple', python solution
+
+-more parsimonious version embedding input reads
+---
+ .../collections.namedtuple.py                                  | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/hackerrank/python.-.collections.-.easy.-.collections.namedtuple/collections.namedtuple.py b/hackerrank/python.-.collections.-.easy.-.collections.namedtuple/collections.namedtuple.py
+index 3d50e80..e5e5ff2 100644
+--- a/hackerrank/python.-.collections.-.easy.-.collections.namedtuple/collections.namedtuple.py
++++ b/hackerrank/python.-.collections.-.easy.-.collections.namedtuple/collections.namedtuple.py
+@@ -2,5 +2,4 @@
+ 
+ import sys
+ from collections import namedtuple
+-n, cols = [int(input()), input()]
+-print("%.2f" % (sum(map(lambda s: int(namedtuple('mark', cols)._make(s.rstrip('\n').split()).MARKS), sys.stdin.readlines())) / n))
++print("%.2f" % ((1/int(input())) * sum(map(lambda s, cols=sys.stdin.readline(): int(namedtuple('mark', cols)._make(s.rstrip('\n').split()).MARKS), sys.stdin.readlines()))))
+-- 
+2.23.0
+
