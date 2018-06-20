@@ -1,0 +1,24 @@
+From 4fbb594832d9ad028dc4c4b6e92276def83d8ef3 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 20 Jun 2018 08:52:39 +0100
+Subject: [add] hackerrank, 'capitalise', python solution
+
+---
+ hackerrank/python.-.strings.-.easy.-.capitalise/capitalise.py | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hackerrank/python.-.strings.-.easy.-.capitalise/capitalise.py b/hackerrank/python.-.strings.-.easy.-.capitalise/capitalise.py
+index 52fa411..e54bdc8 100644
+--- a/hackerrank/python.-.strings.-.easy.-.capitalise/capitalise.py
++++ b/hackerrank/python.-.strings.-.easy.-.capitalise/capitalise.py
+@@ -8,6 +8,7 @@ import sys
+ 
+ # Complete the solve function below.
+ def solve(s):
++    return " ".join(map(lambda s: s[0].upper() + s[1:], s.split(' ')))
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
