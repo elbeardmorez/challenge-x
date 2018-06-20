@@ -1,0 +1,72 @@
+From 6670ecc1e8b3ca2a5e1a01a9e118279a1ce1c30b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 20 Jun 2018 17:47:44 +0100
+Subject: [add] hackerrank, 'time delta', python solution
+
+-further month idx off-by-one bugs
+---
+ .../time.delta.py                             | 25 ++++++++++++-------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
+
+diff --git a/hackerrank/python.-.date.and.time.-.medium.-.time.delta/time.delta.py b/hackerrank/python.-.date.and.time.-.medium.-.time.delta/time.delta.py
+index a3f3ac1..4c29845 100644
+--- a/hackerrank/python.-.date.and.time.-.medium.-.time.delta/time.delta.py
++++ b/hackerrank/python.-.date.and.time.-.medium.-.time.delta/time.delta.py
+@@ -100,14 +100,14 @@ class zdate:
+             self.m = (self.m - 1) % 12
+             self.mn = list(month_days.keys())[self.m]
+             self.d = month_days[self.mn]
+-            if self.d == 31 and self.m == 12:
++            if self.d == 31 and self.m == 11:
+                 self.y -= 1
+         elif self.d > month_days[self.mn] and not \
+              (self.m == 1 and self.d == 29 and is_leap(self.y)):
+             self.m = (self.m + 1) % 12
+             self.mn = list(month_days.keys())[self.m]
+             self.d = 1
+-            if self.d == 1 and self.m == 1:
++            if self.d == 1 and self.m == 0:
+                 self.y += 1
+         # recalc day
+         self.dy = day_of_year(self.d, self.m, self.y)
+@@ -173,23 +173,30 @@ def time_delta(dt1, dt2):
+     print("[zd2] d: %s, m: %d, dy: %d" % (zd2.to_string(), zd2.m, zd2.dy))
+ 
+     print("[result] %d" % (s_delta))
+-#   if str(s_delta)[0] == "4":
+-#       print("[target] 413962293")
+-#   elif str(s_delta)[0] == "9":
+-#       print("[target] 9683593930")
+-#   else:
+-#       print("[target] 1155677269")
++
++    """
++    if str(s_delta)[0:2] == "41":
++        print("[target] 413962293")
++    elif str(s_delta)[0:2] == "96":
++        print("[target] 9683593930")
++    elif str(s_delta)[0:2] == "11":
++        print("[target] 1155677269")
++    elif str(s_delta)[0:2] == "57":
++        print("[target] 5782414860")
++    """
+ 
+     return str(s_delta)
+ 
+ """
+-3
++4
+ Fri 11 Feb 2078 00:05:21 +0400
+ Mon 29 Dec 2064 03:33:48 -1100
+ Thu 20 Oct 2140 04:28:27 +0330
+ Thu 06 Mar 2104 23:00:38 -0430
+ Fri 20 Apr 1973 17:33:30 -0200
+ Sun 29 Feb 2280 13:45:40 +0300
++Tue 27 Mar 2170 15:37:17 -0430
++Thu 01 Jan 1987 00:46:17 +0700
+ """
+ 
+ if __name__ == '__main__':
+-- 
+2.23.0
+
