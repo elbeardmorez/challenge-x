@@ -1,0 +1,27 @@
+From 9f98d7d6b910c5135f8e381d5a911edca1e64122 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 20 Jun 2018 13:01:42 +0100
+Subject: [add] hackerrank, 'validating phone numbers', python solution
+
+---
+ .../validating.phone.numbers.py                          | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/hackerrank/python.-.regex.and.parsing.-.easy.-.validating.phone.numbers/validating.phone.numbers.py b/hackerrank/python.-.regex.and.parsing.-.easy.-.validating.phone.numbers/validating.phone.numbers.py
+index 7c60a68..ba694b8 100644
+--- a/hackerrank/python.-.regex.and.parsing.-.easy.-.validating.phone.numbers/validating.phone.numbers.py
++++ b/hackerrank/python.-.regex.and.parsing.-.easy.-.validating.phone.numbers/validating.phone.numbers.py
+@@ -1 +1,10 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++
++import re
++
++for _ in range(int(input())):
++    s = input()
++    res = "YES"
++    if not re.search('[789][0-9]{9}', s.replace(" ", "")):
++        res = "NO"
++    print(res)
+-- 
+2.23.0
+
