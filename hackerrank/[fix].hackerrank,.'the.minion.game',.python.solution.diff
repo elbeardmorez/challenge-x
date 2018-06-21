@@ -1,0 +1,25 @@
+From 0f9ef102f998fa5366ab8a08eaca152ba347d70b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 21 Jun 2018 20:59:52 +0100
+Subject: [fix] hackerrank, 'the minion game', python solution
+
+-whitespace output bug
+---
+ .../the.minion.game.py                                          | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/python.-.strings.-.medium.-.the.minion.game/the.minion.game.py b/hackerrank/python.-.strings.-.medium.-.the.minion.game/the.minion.game.py
+index c61eb64..12de88f 100644
+--- a/hackerrank/python.-.strings.-.medium.-.the.minion.game/the.minion.game.py
++++ b/hackerrank/python.-.strings.-.medium.-.the.minion.game/the.minion.game.py
+@@ -19,6 +19,6 @@ def minion_game(string):
+     if cc > vc:
+         print("Stuart " + str(cc))
+     elif vc > cc:
+-        print("Kevin" + str(vc))
++        print("Kevin " + str(vc))
+     else:
+         print("Draw")
+-- 
+2.23.0
+
