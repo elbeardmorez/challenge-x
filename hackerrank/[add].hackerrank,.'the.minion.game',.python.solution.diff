@@ -1,0 +1,37 @@
+From 35e9f84d22f2c6480df65ce95c76bf0346e556e0 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 21 Jun 2018 20:25:27 +0100
+Subject: [add] hackerrank, 'the minion game', python solution
+
+---
+ .../the.minion.game.py                         | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/hackerrank/python.-.strings.-.medium.-.the.minion.game/the.minion.game.py b/hackerrank/python.-.strings.-.medium.-.the.minion.game/the.minion.game.py
+index 58434fa..d174c61 100644
+--- a/hackerrank/python.-.strings.-.medium.-.the.minion.game/the.minion.game.py
++++ b/hackerrank/python.-.strings.-.medium.-.the.minion.game/the.minion.game.py
+@@ -1,2 +1,20 @@
+ def minion_game(string):
+     # your code goes here
++    l = len(string)
++    cc, vc = 0, 0
++    vowels = list("aeiouAEIOU")
++    sss = None
++    for lss in range(l):
++        sss = {}
++        idx = 0
++        while idx < l - lss:
++            ss = string[idx:idx+lss + 1]
++            #print("considering substring: %s" % (ss))
++            sss[ss] = 1 if not ss in sss else sss[ss] + 1
++            idx += 1
++        for k, v in sss.items():
++            if k[0] in vowels:
++                vc += v
++            else:
++                cc += v
++    print("Stuart " + str(cc) if cc > vc else "Kevin" + str(vc))
+-- 
+2.23.0
+
