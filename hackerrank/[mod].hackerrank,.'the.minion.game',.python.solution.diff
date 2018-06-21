@@ -1,0 +1,47 @@
+From c6e57d2a2cae4790eba3e1feae7f8b46faf4e84f Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 21 Jun 2018 20:45:14 +0100
+Subject: [mod] hackerrank, 'the minion game', python solution
+
+-speed-up, convert to lower case and test only half the possibilities
+-speed-up, use 'in' as opposed to loop
+-speed-up, count matches only, discard superfluous information
+---
+ .../the.minion.game.py                           | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
+
+diff --git a/hackerrank/python.-.strings.-.medium.-.the.minion.game/the.minion.game.py b/hackerrank/python.-.strings.-.medium.-.the.minion.game/the.minion.game.py
+index d174c61..878fcb1 100644
+--- a/hackerrank/python.-.strings.-.medium.-.the.minion.game/the.minion.game.py
++++ b/hackerrank/python.-.strings.-.medium.-.the.minion.game/the.minion.game.py
+@@ -1,20 +1,18 @@
+ def minion_game(string):
+     # your code goes here
++    string = string.lower()
+     l = len(string)
+     cc, vc = 0, 0
+-    vowels = list("aeiouAEIOU")
+-    sss = None
++    vowels = list("aeiou")
+     for lss in range(l):
+-        sss = {}
+         idx = 0
+         while idx < l - lss:
+             ss = string[idx:idx+lss + 1]
+             #print("considering substring: %s" % (ss))
+-            sss[ss] = 1 if not ss in sss else sss[ss] + 1
+-            idx += 1
+-        for k, v in sss.items():
+-            if k[0] in vowels:
+-                vc += v
++            if ss[0] in vowels:
++                vc += 1
+             else:
+-                cc += v
++                cc += 1
++            idx += 1
++
+     print("Stuart " + str(cc) if cc > vc else "Kevin" + str(vc))
+-- 
+2.23.0
+
