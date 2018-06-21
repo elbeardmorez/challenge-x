@@ -1,0 +1,38 @@
+From c46095be69ba29dfd05bdc3c2774c9cfdbaf3fb0 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 21 Jun 2018 20:56:52 +0100
+Subject: [add] hackerrank, 'the minion game', python solution
+
+-increments substring length to leading char count not just 1
+---
+ .../the.minion.game.py                             | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
+
+diff --git a/hackerrank/python.-.strings.-.medium.-.the.minion.game/the.minion.game.py b/hackerrank/python.-.strings.-.medium.-.the.minion.game/the.minion.game.py
+index 546ee70..c61eb64 100644
+--- a/hackerrank/python.-.strings.-.medium.-.the.minion.game/the.minion.game.py
++++ b/hackerrank/python.-.strings.-.medium.-.the.minion.game/the.minion.game.py
+@@ -2,14 +2,12 @@ def minion_game(string):
+     # your code goes here
+     l = len(string)
+     counts = {chr(c): 0 for c in range(ord('A'), ord('Z') + 1)}
+-    for lss in range(l):
+-        idx = 0
+-        while idx < l - lss:
+-            #ss = string[idx:idx+lss + 1]
+-            #print("considering substring: %s" % (ss))
+-            #count[ss[0]] += 1
+-            counts[string[idx]] += 1
+-            idx += 1
++    idx = 0
++    for c in string:
++        #ss = string[idx:idx+lss + 1]
++        #print("considering substring: %s" % (ss))
++        counts[c] += l - idx
++        idx += 1
+     cc, vc = 0, 0
+     vowels = list("AEIOU")
+     #print("counts: %s" % counts)
+-- 
+2.23.0
+
