@@ -1,0 +1,26 @@
+From 18624fde3e7700ee4334e8a96fc0a1c5f13dd2f0 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 22 Jun 2018 19:26:30 +0100
+Subject: [fix] hackerrank, 'validating postal codes', python solution
+
+-account for leading single digit or pair
+---
+ .../validating.postal.codes.py                                  | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/python.-.regex.and.parsing.-.hard.-.validating.postal.codes/validating.postal.codes.py b/hackerrank/python.-.regex.and.parsing.-.hard.-.validating.postal.codes/validating.postal.codes.py
+index 2a04693..a5b1d7d 100644
+--- a/hackerrank/python.-.regex.and.parsing.-.hard.-.validating.postal.codes/validating.postal.codes.py
++++ b/hackerrank/python.-.regex.and.parsing.-.hard.-.validating.postal.codes/validating.postal.codes.py
+@@ -1,7 +1,7 @@
+ regex_integer_in_range = r"_________"	# Do not delete 'r'.
+ regex_alternating_repetitive_digit_pair = r"_________"	# Do not delete 'r'.
+ 
+-regex_integer_in_range = r"^[1-9][0-9]{6}$"
++regex_integer_in_range = r"^([1-9]|[0-9]{2})[0-9]{5}$"
+ regex_alternating_repetitive_digit_pair = r"([0-9])(?=.\1)"
+ 
+ import re
+-- 
+2.23.0
+
