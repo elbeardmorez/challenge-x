@@ -1,0 +1,26 @@
+From 6ce685452088119c239b1ac88e696c4496974672 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 22 Jun 2018 19:23:05 +0100
+Subject: [add] hackerrank, 'validating postal codes', python solution
+
+---
+ .../validating.postal.codes.py                                 | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/hackerrank/python.-.regex.and.parsing.-.hard.-.validating.postal.codes/validating.postal.codes.py b/hackerrank/python.-.regex.and.parsing.-.hard.-.validating.postal.codes/validating.postal.codes.py
+index b9935d2..2a04693 100644
+--- a/hackerrank/python.-.regex.and.parsing.-.hard.-.validating.postal.codes/validating.postal.codes.py
++++ b/hackerrank/python.-.regex.and.parsing.-.hard.-.validating.postal.codes/validating.postal.codes.py
+@@ -1,6 +1,9 @@
+ regex_integer_in_range = r"_________"	# Do not delete 'r'.
+ regex_alternating_repetitive_digit_pair = r"_________"	# Do not delete 'r'.
+ 
++regex_integer_in_range = r"^[1-9][0-9]{6}$"
++regex_alternating_repetitive_digit_pair = r"([0-9])(?=.\1)"
++
+ import re
+ P = input()
+ 
+-- 
+2.23.0
+
