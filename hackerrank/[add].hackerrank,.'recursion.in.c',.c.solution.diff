@@ -1,0 +1,31 @@
+From c1b7e015cb2ca7cd111b2fbe5fa0cb33b0a0f73e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 22 Jun 2018 19:55:00 +0100
+Subject: [add] hackerrank, 'recursion in c', c solution
+
+---
+ .../c.-.functions.-.easy.-.recursion.in.c/recursion.in.c  | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/hackerrank/c.-.functions.-.easy.-.recursion.in.c/recursion.in.c b/hackerrank/c.-.functions.-.easy.-.recursion.in.c/recursion.in.c
+index 89f75ed..f41b856 100644
+--- a/hackerrank/c.-.functions.-.easy.-.recursion.in.c/recursion.in.c
++++ b/hackerrank/c.-.functions.-.easy.-.recursion.in.c/recursion.in.c
+@@ -6,6 +6,14 @@
+ 
+ int find_nth_term(int n, int a, int b, int c) {
+     //Write your code here.
++    int sn = c + b + a;
++    a = b;
++    b = c;
++    c = sn;
++    n--;
++    if (n > 3)
++       return find_nth_term(n, a, b, c);
++    return sn;
+ }
+ 
+ int main() {
+-- 
+2.23.0
+
