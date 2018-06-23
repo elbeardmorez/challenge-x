@@ -1,0 +1,44 @@
+From a6e5eed45d47ffc87bf51aa6fe0a12d4d9acc125 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 23 Jun 2018 12:37:57 +0100
+Subject: [fix] hackerrank, 'sorting array of strings', c solution
+
+-ensure char pointers aren't being altered via const
+-ensure buffer space for string termination chars
+---
+ .../sorting.array.of.strings.c                         | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/hackerrank/c.-.strings.-.hard.-.sorting.array.of.strings/sorting.array.of.strings.c b/hackerrank/c.-.strings.-.hard.-.sorting.array.of.strings/sorting.array.of.strings.c
+index d646798..c5c3bad 100644
+--- a/hackerrank/c.-.strings.-.hard.-.sorting.array.of.strings/sorting.array.of.strings.c
++++ b/hackerrank/c.-.strings.-.hard.-.sorting.array.of.strings/sorting.array.of.strings.c
+@@ -37,12 +37,12 @@ int lexicographic_sort_reverse(const char* a, const char* b) {
+ 
+ int sort_by_number_of_distinct_characters(const char* a, const char* b) {
+ 
+-    char** strings[2] = {a, b};
+-    int unique[1];
+-    int counts[25];
++    const char* strings[2] = {a, b};
++    int unique[2];
++    int counts[26];
+ 
+     for (int u = 0; u < 2; u++) {
+-        char* str = strings[u];
++        const char* str = strings[u];
+         memset(counts, 0, 25 * sizeof(int));
+         for (int i = 0; i < strlen(str); i++) {
+             int o = (int)str[i] - 97;
+@@ -86,7 +86,7 @@ void string_sort(char** arr,const int len,int (*cmp_func)(const char* a, const c
+             j++;
+ 
+         //add
+-        //printf("adding %s at idx: %d\n", arr[i], j);
++        //printf("adding %s at idx: %d, las: %d\n", arr[i], j, res, las);
+         if (j < las) {
+             //insert, shuffle!
+             for (int k = las; k > j; k--)
+-- 
+2.23.0
+
