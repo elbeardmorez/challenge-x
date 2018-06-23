@@ -1,0 +1,101 @@
+From 629c2d679538967438bebe4feacf2ce398f551f1 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 23 Jun 2018 12:08:13 +0100
+Subject: [add] hackerrank, 'sorting array of strings', c solution
+
+---
+ .../sorting.array.of.strings.c                | 62 +++++++++++++++++--
+ 1 file changed, 57 insertions(+), 5 deletions(-)
+
+diff --git a/hackerrank/c.-.strings.-.hard.-.sorting.array.of.strings/sorting.array.of.strings.c b/hackerrank/c.-.strings.-.hard.-.sorting.array.of.strings/sorting.array.of.strings.c
+index 3849c15..eb46188 100644
+--- a/hackerrank/c.-.strings.-.hard.-.sorting.array.of.strings/sorting.array.of.strings.c
++++ b/hackerrank/c.-.strings.-.hard.-.sorting.array.of.strings/sorting.array.of.strings.c
+@@ -1,27 +1,79 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+-int lexicographic_sort(const char* a, const char* b) {
+ 
++int lexicographic_sort(const char* a, const char* b) {
++    int oa = (int)*a;
++    int ob = (int)*b;
++    return ob > oa ? 1 : 0;
+ }
+ 
+ int lexicographic_sort_reverse(const char* a, const char* b) {
+-
++    return lexicographic_sort(b, a);
+ }
+ 
+ int sort_by_number_of_distinct_characters(const char* a, const char* b) {
+ 
++    char** strings[2] = {a, b};
++    int unique[1];
++    int counts[25];
++
++    for (int u = 0; u < 2; u++) {
++        char* str = strings[u];
++        memset(counts, 0, 25 * sizeof(int));
++        for (int i = 0; i < strlen(str); i++) {
++            int o = (int)str[i] - 97;
++            counts[o]++;
++        }
++        int count = 0;
++        for (int i = 0; i < 26; i++) {
++            if (counts[i] > 0)
++                count++;
++        }
++        unique[u] = count;
++    }
++    return unique[1] < unique[0] ? 1 : 0;
+ }
+ 
+ int sort_by_length(const char* a, const char* b) {
+-
++    int la = strlen(a);
++    int lb = strlen(b);
++    return lb - la > 0 ? 1 : 0;
+ }
+ 
+ void string_sort(char** arr,const int len,int (*cmp_func)(const char* a, const char* b)){
+-
++    char* as[len];
++    as[0] = arr[0];
++    int las = 1;
++
++    //printf("a: %s, b: %s, func res: %d\n", arr[0], as[0], cmp_func(arr[0], as[0]));
++    //for(int x = 0; x < len; x++)
++    //    printf("[%d] %s\n", x, arr[x]);
++
++    for (int i = 1; i < len; i++) {
++        //printf("idx i: %d, sorted len: %d\n", i, las);
++        //for(int x = 0; x < las; x++)
++        //    printf("[%d] %s\n", x, as[x]);
++
++        int j = 0;
++        while (j < las && cmp_func(as[j], arr[i]) > 0)
++            j++;
++
++        //add
++        //printf("adding %s at idx: %d\n", arr[i], j);
++        if (j < las) {
++            //insert, shuffle!
++            for (int k = las; k > j; k--)
++                as[k] = as[k - 1];
++        }
++        //set
++        as[j] = arr[i];
++        las++;
++    }
++    for (int i = 0; i < len; i++)
++        arr[i] = as[i];
+ }
+ 
+-
+ int main()
+ {
+     int n;
+-- 
+2.23.0
+
