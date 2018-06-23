@@ -1,0 +1,26 @@
+From 545e164c875e9c80343b8a79fdda944f587fdea6 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 23 Jun 2018 12:30:51 +0100
+Subject: [fix] hackerrank, 'sorting array of strings', c solution
+
+-switch order direction
+---
+ .../sorting.array.of.strings.c                                  | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/c.-.strings.-.hard.-.sorting.array.of.strings/sorting.array.of.strings.c b/hackerrank/c.-.strings.-.hard.-.sorting.array.of.strings/sorting.array.of.strings.c
+index 4c21993..d646798 100644
+--- a/hackerrank/c.-.strings.-.hard.-.sorting.array.of.strings/sorting.array.of.strings.c
++++ b/hackerrank/c.-.strings.-.hard.-.sorting.array.of.strings/sorting.array.of.strings.c
+@@ -58,7 +58,7 @@ int sort_by_number_of_distinct_characters(const char* a, const char* b) {
+     if (unique[0] == unique[1])
+         return lexicographic_sort(a, b);
+     else
+-        return unique[1] < unique[0] ? 1 : 0;
++        return unique[1] > unique[0] ? 1 : 0;
+ }
+ 
+ int sort_by_length(const char* a, const char* b) {
+-- 
+2.23.0
+
