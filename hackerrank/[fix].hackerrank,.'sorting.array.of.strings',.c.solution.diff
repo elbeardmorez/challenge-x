@@ -1,0 +1,67 @@
+From 3cf653f34b76a990e300ab95ab5252fbf40c7004 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 23 Jun 2018 12:27:29 +0100
+Subject: [fix] hackerrank, 'sorting array of strings', c solution
+
+-implement full lexographic sort algo, resort to this when initial
+characters are equal
+---
+ .../sorting.array.of.strings.c                | 34 ++++++++++++++++---
+ 1 file changed, 30 insertions(+), 4 deletions(-)
+
+diff --git a/hackerrank/c.-.strings.-.hard.-.sorting.array.of.strings/sorting.array.of.strings.c b/hackerrank/c.-.strings.-.hard.-.sorting.array.of.strings/sorting.array.of.strings.c
+index eb46188..4c21993 100644
+--- a/hackerrank/c.-.strings.-.hard.-.sorting.array.of.strings/sorting.array.of.strings.c
++++ b/hackerrank/c.-.strings.-.hard.-.sorting.array.of.strings/sorting.array.of.strings.c
+@@ -2,10 +2,33 @@
+ #include <stdlib.h>
+ #include <string.h>
+ 
++int min(int a, int b) {
++    return a < b ? a : b;
++}
++
+ int lexicographic_sort(const char* a, const char* b) {
+-    int oa = (int)*a;
+-    int ob = (int)*b;
+-    return ob > oa ? 1 : 0;
++
++    int la = strlen(a);
++    int lb = strlen(b);
++
++    int res = 0;
++    int i = 0;
++    int match = 1;
++    while (i < min(la, lb)) {
++        int oa = (int)a[i];
++        int ob = (int)b[i];
++        if (oa != ob) {
++            match = 0;
++            if (ob > oa)
++                res = 1;
++            break;
++        }
++        i++;
++    }
++    if (res == 0 && match == 1 && lb > la)
++        // a is substring of b
++        res = 1;
++    return res;
+ }
+ 
+ int lexicographic_sort_reverse(const char* a, const char* b) {
+@@ -32,7 +55,10 @@ int sort_by_number_of_distinct_characters(const char* a, const char* b) {
+         }
+         unique[u] = count;
+     }
+-    return unique[1] < unique[0] ? 1 : 0;
++    if (unique[0] == unique[1])
++        return lexicographic_sort(a, b);
++    else
++        return unique[1] < unique[0] ? 1 : 0;
+ }
+ 
+ int sort_by_length(const char* a, const char* b) {
+-- 
+2.23.0
+
