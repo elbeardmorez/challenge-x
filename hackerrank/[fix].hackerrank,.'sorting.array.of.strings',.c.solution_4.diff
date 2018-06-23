@@ -1,0 +1,26 @@
+From 24af49c01f60c4b34dfc3a337a6a82ae93211a2e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 23 Jun 2018 12:43:18 +0100
+Subject: [fix] hackerrank, 'sorting array of strings', c solution
+
+-ensure memory is allocated for terminating characters
+---
+ .../sorting.array.of.strings.c                                  | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/c.-.strings.-.hard.-.sorting.array.of.strings/sorting.array.of.strings.c b/hackerrank/c.-.strings.-.hard.-.sorting.array.of.strings/sorting.array.of.strings.c
+index c5c3bad..6f811bd 100644
+--- a/hackerrank/c.-.strings.-.hard.-.sorting.array.of.strings/sorting.array.of.strings.c
++++ b/hackerrank/c.-.strings.-.hard.-.sorting.array.of.strings/sorting.array.of.strings.c
+@@ -43,7 +43,7 @@ int sort_by_number_of_distinct_characters(const char* a, const char* b) {
+ 
+     for (int u = 0; u < 2; u++) {
+         const char* str = strings[u];
+-        memset(counts, 0, 25 * sizeof(int));
++        memset(counts, 0, 26 * sizeof(int));
+         for (int i = 0; i < strlen(str); i++) {
+             int o = (int)str[i] - 97;
+             counts[o]++;
+-- 
+2.23.0
+
