@@ -1,0 +1,39 @@
+From 71f603273eb64138e2768f1d36f0da79e8c17242 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 24 Jun 2018 12:09:21 +0100
+Subject: [add] hackerrank, 'validating credit card numbers', python solution
+
+---
+ .../validating.credit.card.numbers.py         | 21 +++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+diff --git a/hackerrank/python.-.regex.and.parsing.-.medium.-.validating.credit.card.numbers/validating.credit.card.numbers.py b/hackerrank/python.-.regex.and.parsing.-.medium.-.validating.credit.card.numbers/validating.credit.card.numbers.py
+index 7c60a68..7669303 100644
+--- a/hackerrank/python.-.regex.and.parsing.-.medium.-.validating.credit.card.numbers/validating.credit.card.numbers.py
++++ b/hackerrank/python.-.regex.and.parsing.-.medium.-.validating.credit.card.numbers/validating.credit.card.numbers.py
+@@ -1 +1,22 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++
++import re
++
++rules = [
++    lambda s: re.search('^[4-6]', s),
++    lambda s: len(re.findall('[0-9]', s)) == 16,
++    lambda s: re.search('^(?:[0-9]{16}|(?:[0-9]{4}-){3}[0-9]{4})$', s),
++    lambda s: not re.search('(.)\\1{3}', s.replace('-', ''))
++]
++
++for _ in range(int(input())):
++    res = "Valid"
++    s = input()
++    idx = 0
++    for f in rules:
++        if not f(s):
++            # print("{} failed on rule {}".format(s, idx))
++            res = "Invalid"
++            break;
++        idx += 1
++    print(res)
+-- 
+2.23.0
+
