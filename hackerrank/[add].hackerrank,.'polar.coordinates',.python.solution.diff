@@ -1,0 +1,22 @@
+From 6a87c7066889f4dce0973eae4ed1daf30b57fd86 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 24 Jun 2018 10:52:26 +0100
+Subject: [add] hackerrank, 'polar coordinates', python solution
+
+---
+ .../polar.coordinates.py                                      | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/hackerrank/python.-.math.-.easy.-.polar.coordinates/polar.coordinates.py b/hackerrank/python.-.math.-.easy.-.polar.coordinates/polar.coordinates.py
+index 7c60a68..45c61b8 100644
+--- a/hackerrank/python.-.math.-.easy.-.polar.coordinates/polar.coordinates.py
++++ b/hackerrank/python.-.math.-.easy.-.polar.coordinates/polar.coordinates.py
+@@ -1 +1,5 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++import cmath
++cn = complex(*input().split())
++print("%.3f" % abs(cn))
++print("%.3f" % cmath.phase(cn))
+-- 
+2.23.0
+
