@@ -1,0 +1,25 @@
+From ca6e87cc7d8f1acab4c021d4b8bfc9b2049ecd7b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 24 Jun 2018 11:22:45 +0100
+Subject: [add] hackerrank, 'word order', python solution
+
+---
+ .../word.order.py                                          | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/hackerrank/python.-.collections.-.medium.-.word.order/word.order.py b/hackerrank/python.-.collections.-.medium.-.word.order/word.order.py
+index 7c60a68..9dd8a05 100644
+--- a/hackerrank/python.-.collections.-.medium.-.word.order/word.order.py
++++ b/hackerrank/python.-.collections.-.medium.-.word.order/word.order.py
+@@ -1 +1,8 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++from collections import OrderedDict
++
++od = OrderedDict()
++for x in range(int(input())):
++    w = input()
++    od[w] = od[w] + 1 if w in od else 1
++print("{}\n{}".format(len(od.values()), " ".join([str(c) for c in od.values()])))
+-- 
+2.23.0
+
