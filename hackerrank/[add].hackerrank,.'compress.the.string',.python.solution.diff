@@ -1,0 +1,22 @@
+From de53138d930369b7e7f86a82e51f35941ac77a5a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 24 Jun 2018 10:48:52 +0100
+Subject: [add] hackerrank, 'compress the string', python solution
+
+---
+ .../compress.the.string.py                                    | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/hackerrank/python.-.itertools.-.medium.-.compress.the.string/compress.the.string.py b/hackerrank/python.-.itertools.-.medium.-.compress.the.string/compress.the.string.py
+index 7c60a68..707a096 100644
+--- a/hackerrank/python.-.itertools.-.medium.-.compress.the.string/compress.the.string.py
++++ b/hackerrank/python.-.itertools.-.medium.-.compress.the.string/compress.the.string.py
+@@ -1 +1,5 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++
++from itertools import groupby
++
++print(" ".join(["(" + str(len(list(c)))+ ", " + str(k) + ")" for k, c in groupby(list(input()))]))
+-- 
+2.23.0
+
