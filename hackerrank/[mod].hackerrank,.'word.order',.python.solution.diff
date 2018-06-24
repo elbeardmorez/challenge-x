@@ -1,0 +1,32 @@
+From cdb05b647e7185861480a2d5ce89a6d80de677fc Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 24 Jun 2018 11:24:57 +0100
+Subject: [mod] hackerrank, 'word order', python solution
+
+-clearer OrderedDict use
+-test raw_input()
+---
+ .../word.order.py                                        | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/python.-.collections.-.medium.-.word.order/word.order.py b/hackerrank/python.-.collections.-.medium.-.word.order/word.order.py
+index 9dd8a05..52bc974 100644
+--- a/hackerrank/python.-.collections.-.medium.-.word.order/word.order.py
++++ b/hackerrank/python.-.collections.-.medium.-.word.order/word.order.py
+@@ -2,7 +2,10 @@
+ from collections import OrderedDict
+ 
+ od = OrderedDict()
+-for x in range(int(input())):
+-    w = input()
+-    od[w] = od[w] + 1 if w in od else 1
++for x in range(int(raw_input())):
++    w = raw_input()
++    #print("w: {}".format(w))
++    if not w in od:
++        od[w] = 0
++    od[w] += 1
+ print("{}\n{}".format(len(od.values()), " ".join([str(c) for c in od.values()])))
+-- 
+2.23.0
+
