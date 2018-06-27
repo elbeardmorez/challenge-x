@@ -1,0 +1,34 @@
+From d976ed575880283026b85a2f540cfd4b6c9fe1fa Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 27 Jun 2018 10:38:11 +0100
+Subject: [fix] hackerrank, 'iterables and iterators', python solution
+
+-division by zero bug
+-combinations without equation
+---
+ .../iterables.and.iterators.py                             | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/hackerrank/python.-.itertools.-.medium.-.iterables.and.iterators/iterables.and.iterators.py b/hackerrank/python.-.itertools.-.medium.-.iterables.and.iterators/iterables.and.iterators.py
+index 8a1e0ce..a19abd7 100644
+--- a/hackerrank/python.-.itertools.-.medium.-.iterables.and.iterators/iterables.and.iterators.py
++++ b/hackerrank/python.-.itertools.-.medium.-.iterables.and.iterators/iterables.and.iterators.py
+@@ -1,12 +1,11 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
+ 
+-from itertools import groupby
+ from math import factorial as fac
+ n = int(input())
+ l = input().split()
+ k = int(input())
+-comb_with = fac(n) / (fac(k) * fac(n - k))
+-# nCr .. n! / r!(n-r)!x!y! for x, y dupes
+ la = len([c for c in l if c == 'a'])
+-comb_without = 0 if n - la == 0 else fac(n - la) / (fac(min(k, n - la)) * fac(max(0, (n - la) - k)))
++# nCr .. n! / r!(n-r)!x!y! for x, y dupes
++comb_with = fac(n) / (fac(k) * fac(n - k))
++comb_without = 0 if (n - la == 0 or k > n - la) else fac(n - la) / (fac(min(k, n - la)) * fac(n - la - k))
+ print("%.3f" % (1.0 - (comb_without/comb_with)))
+-- 
+2.23.0
+
