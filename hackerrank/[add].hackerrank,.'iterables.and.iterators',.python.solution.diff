@@ -1,0 +1,31 @@
+From 32fda7ab29384869ec030246d1e390417d4ed23e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 27 Jun 2018 07:32:39 +0100
+Subject: [add] hackerrank, 'iterables and iterators', python solution
+
+---
+ .../iterables.and.iterators.py                      | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/hackerrank/python.-.itertools.-.medium.-.iterables.and.iterators/iterables.and.iterators.py b/hackerrank/python.-.itertools.-.medium.-.iterables.and.iterators/iterables.and.iterators.py
+index 7c60a68..7c85464 100644
+--- a/hackerrank/python.-.itertools.-.medium.-.iterables.and.iterators/iterables.and.iterators.py
++++ b/hackerrank/python.-.itertools.-.medium.-.iterables.and.iterators/iterables.and.iterators.py
+@@ -1 +1,14 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++
++from itertools import groupby
++from math import factorial
++n = int(input())
++l = input().split()
++k = int(input())
++comb = factorial(n) / factorial(n - k)
++# nCr .. n! / (n-r)!x!y! for x, y dupes
++for k, cs in groupby(sorted(l)):
++    if k == 'a':
++        comb = comb / len(list(cs))
++        break
++print("%.f3" % 1/comb)
+-- 
+2.23.0
+
