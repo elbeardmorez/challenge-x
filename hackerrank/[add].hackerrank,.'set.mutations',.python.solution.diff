@@ -1,0 +1,33 @@
+From c07f58729338872a15ebc43362e779d43858046a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 27 Jun 2018 09:55:08 +0100
+Subject: [add] hackerrank, 'set mutations', python solution
+
+---
+ .../set.mutations.py                              | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/hackerrank/python.-.sets.-.easy.-.set.mutations/set.mutations.py b/hackerrank/python.-.sets.-.easy.-.set.mutations/set.mutations.py
+index 7c60a68..c17b034 100644
+--- a/hackerrank/python.-.sets.-.easy.-.set.mutations/set.mutations.py
++++ b/hackerrank/python.-.sets.-.easy.-.set.mutations/set.mutations.py
+@@ -1 +1,16 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++
++n = int(input())
++s = set([int(d) for d in input().split()])
++for _ in range(n):
++    t, tn = list(map(lambda s: int(s) if isnumeric(s) else s, input().split()))
++    s2 = set([int(d) for d in input().split()])
++    if t == "intersection_update":
++        s &= s2
++    elif t == "update":
++        s |= s2
++    elif t == "symmetric_difference_update":
++        s ^= s2
++    elif t == " difference_update":
++        s -= s2
++print(sum(s))
+-- 
+2.23.0
+
