@@ -1,0 +1,39 @@
+From bf16f3f0d708fe464dec99c011f8ac181fb7907c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 27 Jun 2018 10:50:18 +0100
+Subject: [mod] hackerrank, 'iterables and iterators', python solution
+
+-itertools combinations alternative approach ..as intended!
+---
+ .../iterables.and.iterators.py                   | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/hackerrank/python.-.itertools.-.medium.-.iterables.and.iterators/iterables.and.iterators.py b/hackerrank/python.-.itertools.-.medium.-.iterables.and.iterators/iterables.and.iterators.py
+index a19abd7..248fc5c 100644
+--- a/hackerrank/python.-.itertools.-.medium.-.iterables.and.iterators/iterables.and.iterators.py
++++ b/hackerrank/python.-.itertools.-.medium.-.iterables.and.iterators/iterables.and.iterators.py
+@@ -1,11 +1,15 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
+ 
+-from math import factorial as fac
++from itertools import combinations as comb
+ n = int(input())
+ l = input().split()
+ k = int(input())
+-la = len([c for c in l if c == 'a'])
+-# nCr .. n! / r!(n-r)!x!y! for x, y dupes
+-comb_with = fac(n) / (fac(k) * fac(n - k))
+-comb_without = 0 if (n - la == 0 or k > n - la) else fac(n - la) / (fac(min(k, n - la)) * fac(n - la - k))
+-print("%.3f" % (1.0 - (comb_without/comb_with)))
++count_in = 0
++count_total = 0
++for ca in comb(l, k):
++    for c in ca:
++        if c == 'a':
++            count_in += 1
++            break
++    count_total += 1
++print("%.3f" % (count_in/count_total))
+-- 
+2.23.0
+
