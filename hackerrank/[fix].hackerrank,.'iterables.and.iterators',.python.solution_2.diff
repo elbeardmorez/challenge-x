@@ -1,0 +1,37 @@
+From c678c2d5f4a0f359d7ef2e19c2ee686ff5726889 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 27 Jun 2018 10:25:49 +0100
+Subject: [fix] hackerrank, 'iterables and iterators', python solution
+
+-combinations equation fix
+-ultimate equation fixed, proportion without / with
+-refactor variable names for improved readability
+---
+ .../iterables.and.iterators.py                      | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
+
+diff --git a/hackerrank/python.-.itertools.-.medium.-.iterables.and.iterators/iterables.and.iterators.py b/hackerrank/python.-.itertools.-.medium.-.iterables.and.iterators/iterables.and.iterators.py
+index fdda827..819c3d5 100644
+--- a/hackerrank/python.-.itertools.-.medium.-.iterables.and.iterators/iterables.and.iterators.py
++++ b/hackerrank/python.-.itertools.-.medium.-.iterables.and.iterators/iterables.and.iterators.py
+@@ -5,10 +5,11 @@ from math import factorial
+ n = int(input())
+ l = input().split()
+ k = int(input())
+-comb = factorial(n) / factorial(n - k)
+-# nCr .. n! / (n-r)!x!y! for x, y dupes
+-for k, cs in groupby(sorted(l)):
+-    if k == 'a':
+-        comb = comb / len(list(cs))
++comb_with = factorial(n) / (factorial(k) * factorial(n - k))
++# nCr .. n! / r!(n-r)!x!y! for x, y dupes
++for c, cs in groupby(sorted(l)):
++    if c == 'a':
++        la = len(list(cs))
++        comb_without = factorial(n - la) / (factorial(min(k, n - la)) * factorial(max(0, (n - la) - k)))
+         break
+-print("%.3f" % (1.0 - (1.0/comb)))
++print("%.3f" % (1.0 - (comb_without/comb_with)))
+-- 
+2.23.0
+
