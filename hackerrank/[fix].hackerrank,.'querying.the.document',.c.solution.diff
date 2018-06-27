@@ -1,0 +1,26 @@
+From fcd3af4ef83ab824ee0676b6b4efc13dead82583 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 27 Jun 2018 16:04:46 +0100
+Subject: [fix] hackerrank, 'querying the document', c solution
+
+-grow needs a double pointer function return type
+---
+ .../querying.the.document.c                                     | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/c.-.functions.-.hard.-.querying.the.document/querying.the.document.c b/hackerrank/c.-.functions.-.hard.-.querying.the.document/querying.the.document.c
+index e276e17..1cc765b 100644
+--- a/hackerrank/c.-.functions.-.hard.-.querying.the.document/querying.the.document.c
++++ b/hackerrank/c.-.functions.-.hard.-.querying.the.document/querying.the.document.c
+@@ -18,7 +18,7 @@ char*** kth_paragraph(char**** document, int k) {
+     return document[k-1];
+ }
+ 
+-char* array_grow(char** array, int size) {
++char** array_grow(char** array, int size) {
+     char** array_new = (char**)malloc((size + MAX_ITEMS) * sizeof(char*));
+     for (int i = 0; i < size; i++)
+         array_new[i] = array[i];
+-- 
+2.23.0
+
