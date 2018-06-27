@@ -1,0 +1,24 @@
+From 2e0c83817ac1738ae91ad76af5f32edee1bcd822 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 27 Jun 2018 07:56:18 +0100
+Subject: [fix] hackerrank, 'iterables and iterators', python solution
+
+-probability calc
+-float formating floa
+---
+ .../iterables.and.iterators.py                                  | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/python.-.itertools.-.medium.-.iterables.and.iterators/iterables.and.iterators.py b/hackerrank/python.-.itertools.-.medium.-.iterables.and.iterators/iterables.and.iterators.py
+index 7c85464..fdda827 100644
+--- a/hackerrank/python.-.itertools.-.medium.-.iterables.and.iterators/iterables.and.iterators.py
++++ b/hackerrank/python.-.itertools.-.medium.-.iterables.and.iterators/iterables.and.iterators.py
+@@ -11,4 +11,4 @@ for k, cs in groupby(sorted(l)):
+     if k == 'a':
+         comb = comb / len(list(cs))
+         break
+-print("%.f3" % 1/comb)
++print("%.3f" % (1.0 - (1.0/comb)))
+-- 
+2.23.0
+
