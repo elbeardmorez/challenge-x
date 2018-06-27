@@ -1,0 +1,39 @@
+From 2cc59e374275571ec67c6cd41bcba9b40438fd04 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 27 Jun 2018 10:31:57 +0100
+Subject: [fix] hackerrank, 'iterables and iterators', python solution
+
+-division by 0 bug
+-alias factorial -> fac for readability
+-remove superfluous groupby usage
+---
+ .../iterables.and.iterators.py                        | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
+
+diff --git a/hackerrank/python.-.itertools.-.medium.-.iterables.and.iterators/iterables.and.iterators.py b/hackerrank/python.-.itertools.-.medium.-.iterables.and.iterators/iterables.and.iterators.py
+index 819c3d5..8a1e0ce 100644
+--- a/hackerrank/python.-.itertools.-.medium.-.iterables.and.iterators/iterables.and.iterators.py
++++ b/hackerrank/python.-.itertools.-.medium.-.iterables.and.iterators/iterables.and.iterators.py
+@@ -1,15 +1,12 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
+ 
+ from itertools import groupby
+-from math import factorial
++from math import factorial as fac
+ n = int(input())
+ l = input().split()
+ k = int(input())
+-comb_with = factorial(n) / (factorial(k) * factorial(n - k))
++comb_with = fac(n) / (fac(k) * fac(n - k))
+ # nCr .. n! / r!(n-r)!x!y! for x, y dupes
+-for c, cs in groupby(sorted(l)):
+-    if c == 'a':
+-        la = len(list(cs))
+-        comb_without = factorial(n - la) / (factorial(min(k, n - la)) * factorial(max(0, (n - la) - k)))
+-        break
++la = len([c for c in l if c == 'a'])
++comb_without = 0 if n - la == 0 else fac(n - la) / (fac(min(k, n - la)) * fac(max(0, (n - la) - k)))
+ print("%.3f" % (1.0 - (comb_without/comb_with)))
+-- 
+2.23.0
+
