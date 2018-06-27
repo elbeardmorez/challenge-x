@@ -1,0 +1,38 @@
+From b3e1233afa428634867911e9909a1c75a488b574 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 27 Jun 2018 09:57:29 +0100
+Subject: [fix] hackerrank, 'set mutations', python solution
+
+-input order
+---
+ .../python.-.sets.-.easy.-.set.mutations/set.mutations.py  | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/python.-.sets.-.easy.-.set.mutations/set.mutations.py b/hackerrank/python.-.sets.-.easy.-.set.mutations/set.mutations.py
+index c17b034..2fd0a26 100644
+--- a/hackerrank/python.-.sets.-.easy.-.set.mutations/set.mutations.py
++++ b/hackerrank/python.-.sets.-.easy.-.set.mutations/set.mutations.py
+@@ -1,9 +1,10 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
+ 
+-n = int(input())
++ns = int(input())
+ s = set([int(d) for d in input().split()])
++n = int(input())
+ for _ in range(n):
+-    t, tn = list(map(lambda s: int(s) if isnumeric(s) else s, input().split()))
++    t, tn = list(map(lambda s: int(s) if s.isnumeric() else s, input().split()))
+     s2 = set([int(d) for d in input().split()])
+     if t == "intersection_update":
+         s &= s2
+@@ -11,6 +12,6 @@ for _ in range(n):
+         s |= s2
+     elif t == "symmetric_difference_update":
+         s ^= s2
+-    elif t == " difference_update":
++    elif t == "difference_update":
+         s -= s2
+ print(sum(s))
+-- 
+2.23.0
+
