@@ -1,0 +1,24 @@
+From f7365642c711274ac7b3dc52c29dd172c80c9890 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 28 Jun 2018 12:26:53 +0100
+Subject: [add] hackerrank, 'arrays', c# port
+
+---
+ hackerrank/data.structures.-.arrays.-.easy.-.arrays/arrays.cs | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hackerrank/data.structures.-.arrays.-.easy.-.arrays/arrays.cs b/hackerrank/data.structures.-.arrays.-.easy.-.arrays/arrays.cs
+index c1c2df2..9093af5 100644
+--- a/hackerrank/data.structures.-.arrays.-.easy.-.arrays/arrays.cs
++++ b/hackerrank/data.structures.-.arrays.-.easy.-.arrays/arrays.cs
+@@ -16,6 +16,7 @@ class Solution {
+ 
+     // Complete the reverseArray function below.
+     static int[] reverseArray(int[] a) {
++        return a.Reverse().ToArray();
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
