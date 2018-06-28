@@ -1,0 +1,44 @@
+From 42d483bf1c7352222daf45f8fe62ee4bc09d7296 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 28 Jun 2018 15:44:12 +0100
+Subject: [add] hackerrank, '2d array', c# port
+
+---
+ .../2d.array.cs                               | 21 +++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.arrays.-.easy.-.2d.array/2d.array.cs b/hackerrank/data.structures.-.arrays.-.easy.-.2d.array/2d.array.cs
+index 4a13e2e..5150437 100644
+--- a/hackerrank/data.structures.-.arrays.-.easy.-.2d.array/2d.array.cs
++++ b/hackerrank/data.structures.-.arrays.-.easy.-.2d.array/2d.array.cs
+@@ -17,6 +17,27 @@ class Solution {
+ 
+     // Complete the hourglassSum function below.
+     static int hourglassSum(int[][] arr) {
++        var max_set = false;
++        int max = 0;
++        for (var idx = 1; idx < arr.Length - 1; idx++) {
++            for (var idx2 = 1; idx2 < arr.Length - 1; idx2++) {
++                int[][] sa = new int[][] {
++                    arr[idx - 1].Skip(idx2 - 1).Take(3).ToArray(),
++                    arr[idx].Skip(idx2 - 1).Take(3).ToArray(),
++                    arr[idx + 1].Skip(idx2 - 1).Take(3).ToArray()
++                };
++                var hg_items = new List<int>();
++                hg_items.AddRange(sa[0]);
++                hg_items.Add(sa[1][1]);
++                hg_items.AddRange(sa[2]);
++                var sum = hg_items.Sum();
++                if (!max_set || sum > max) {
++                    max_set = true;
++                    max = sum;
++                }
++            }
++        }
++        return max;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
