@@ -1,0 +1,39 @@
+From 18537f219fddd3d56e4b48bfaf32020a66f7a787 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 28 Jun 2018 15:45:53 +0100
+Subject: [add] hackerrank, '2d array', python port
+
+---
+ .../2d.array.py                                  | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.arrays.-.easy.-.2d.array/2d.array.py b/hackerrank/data.structures.-.arrays.-.easy.-.2d.array/2d.array.py
+index 329ca68..1f67bb3 100644
+--- a/hackerrank/data.structures.-.arrays.-.easy.-.2d.array/2d.array.py
++++ b/hackerrank/data.structures.-.arrays.-.easy.-.2d.array/2d.array.py
+@@ -8,6 +8,22 @@ import sys
+ 
+ # Complete the hourglassSum function below.
+ def hourglassSum(arr):
++    def hourglass_digits_sum(arr):
++        #print("considering digits: %s" % " ".join([str(x) for x in arr[0] + [arr[1][1]] + arr[2]]))
++        return sum(arr[0] + [arr[1][1]] + arr[2])
++
++    max = None;
++    for idx in range(1, len(arr) - 1):
++        for idx2 in range(1, len(arr) - 1):
++            sa = [arr[idx - 1][idx2 - 1:idx2 - 1 + 3],
++                  arr[idx][idx2 - 1:idx2 - 1 + 3],
++                  arr[idx + 1][idx2 - 1:idx2 - 1 + 3]]
++            #print("considering subarray: %s" % sa)
++            _sum = hourglass_digits_sum(sa)
++            if max is None or _sum > max:
++                #print("sum type: %r, max type: %r, %d > %s" % (type(_sum), type(max), _sum, str(max)));
++                max = _sum
++    return max;
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
