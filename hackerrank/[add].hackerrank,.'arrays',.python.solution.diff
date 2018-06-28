@@ -1,0 +1,24 @@
+From 875e697cd502dceb80230385f11c3a476072c5fb Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 28 Jun 2018 12:23:39 +0100
+Subject: [add] hackerrank, 'arrays', python solution
+
+---
+ hackerrank/data.structures.-.arrays.-.easy.-.arrays/arrays.py | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hackerrank/data.structures.-.arrays.-.easy.-.arrays/arrays.py b/hackerrank/data.structures.-.arrays.-.easy.-.arrays/arrays.py
+index f533c15..4e2cbb4 100644
+--- a/hackerrank/data.structures.-.arrays.-.easy.-.arrays/arrays.py
++++ b/hackerrank/data.structures.-.arrays.-.easy.-.arrays/arrays.py
+@@ -8,6 +8,7 @@ import sys
+ 
+ # Complete the reverseArray function below.
+ def reverseArray(a):
++    return a[::-1]
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
