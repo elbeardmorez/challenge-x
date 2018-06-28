@@ -1,0 +1,42 @@
+From b096687a53ff96ac4c119360ebe29e0ac47f0fa9 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 28 Jun 2018 17:04:14 +0100
+Subject: [add] hackerrank, 'dynamic array', javascript port
+
+---
+ .../dynamic.array.js                          | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.arrays.-.easy.-.dynamic.array/dynamic.array.js b/hackerrank/data.structures.-.arrays.-.easy.-.dynamic.array/dynamic.array.js
+index 03effd1..8f540dd 100644
+--- a/hackerrank/data.structures.-.arrays.-.easy.-.dynamic.array/dynamic.array.js
++++ b/hackerrank/data.structures.-.arrays.-.easy.-.dynamic.array/dynamic.array.js
+@@ -29,6 +29,25 @@ function dynamicArray(n, queries) {
+     /*
+      * Write your code here.
+      */
++    var lastAnswer = 0;
++    var seqList = [];
++    for (var i = 0; i < n; i++)
++        seqList[i] = [];
++    var seq;
++    var res = [];
++    for (var i = 0; i < queries.length; i++) {
++        var t = queries[i][0];
++        var x = queries[i][1];
++        var y = queries[i][2];
++        seq = (x ^ lastAnswer) % n;
++        if (t == 1)
++            seqList[seq].push(y);
++        else {
++            lastAnswer = seqList[seq][y % seqList[seq].length];
++            res.push(lastAnswer);
++        }
++    }
++    return res;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
