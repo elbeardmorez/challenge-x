@@ -1,0 +1,37 @@
+From 86a6eceeea71704f49e537221ba7dc78f1ab11b4 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 28 Jun 2018 17:40:30 +0100
+Subject: [add] hackerrank, 'left rotation', javascript port
+
+---
+ .../left.rotation.js                                     | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.arrays.-.easy.-.left.rotation/left.rotation.js b/hackerrank/data.structures.-.arrays.-.easy.-.left.rotation/left.rotation.js
+index 396ce7b..6887e29 100644
+--- a/hackerrank/data.structures.-.arrays.-.easy.-.left.rotation/left.rotation.js
++++ b/hackerrank/data.structures.-.arrays.-.easy.-.left.rotation/left.rotation.js
+@@ -22,6 +22,11 @@ function readLine() {
+     return inputString[currentLine++];
+ }
+ 
++function left_rotate(arr, n, d) {
++    var idx = (d % n);
++    return arr.slice(idx, n).concat(arr.slice(0, idx));
++}
++
+ function main() {
+     const nd = readLine().split(' ');
+ 
+@@ -30,4 +35,8 @@ function main() {
+     const d = parseInt(nd[1], 10);
+ 
+     const a = readLine().split(' ').map(aTemp => parseInt(aTemp, 10));
++
++    var left_rotated = left_rotate(a, n, d);
++
++    console.log(left_rotated.join(" "));
+ }
+-- 
+2.23.0
+
