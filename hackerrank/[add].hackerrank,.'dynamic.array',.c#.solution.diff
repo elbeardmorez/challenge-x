@@ -1,0 +1,42 @@
+From 91f2c86632a55da2e2f68a09cc5c7e431cbb42ad Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 28 Jun 2018 17:02:10 +0100
+Subject: [add] hackerrank, 'dynamic array', c# solution
+
+---
+ .../dynamic.array.cs                          | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.arrays.-.easy.-.dynamic.array/dynamic.array.cs b/hackerrank/data.structures.-.arrays.-.easy.-.dynamic.array/dynamic.array.cs
+index be6adf4..0b7bb0f 100644
+--- a/hackerrank/data.structures.-.arrays.-.easy.-.dynamic.array/dynamic.array.cs
++++ b/hackerrank/data.structures.-.arrays.-.easy.-.dynamic.array/dynamic.array.cs
+@@ -12,6 +12,25 @@ class Solution {
+         /*
+          * Write your code here.
+          */
++        int lastAnswer = 0;
++        var seqList = new List<int>[n];
++        for (var i = 0; i < n; i++)
++            seqList[i] = new List<int>();
++        int seq;
++        var res = new List<int>();
++        for (int i = 0; i < queries.Length; i++) {
++            var t = queries[i][0];
++            var x = queries[i][1];
++            var y = queries[i][2];
++            seq = (x ^ lastAnswer) % n;
++            if (t == 1)
++                seqList[seq].Add(y);
++            else {
++                lastAnswer = seqList[seq][y % seqList[seq].Count];
++                res.Add(lastAnswer);
++            }
++        }
++        return res.ToArray();
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
