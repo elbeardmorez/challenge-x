@@ -1,0 +1,40 @@
+From 58900245a2c9cd2f9c1c571d3f5eaf5e1edb42fc Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 28 Jun 2018 14:33:12 +0100
+Subject: [add] hackerrank, '2d array', javascript solution
+
+---
+ .../2d.array.js                                 | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.arrays.-.easy.-.2d.array/2d.array.js b/hackerrank/data.structures.-.arrays.-.easy.-.2d.array/2d.array.js
+index b4066db..4a1fb5b 100644
+--- a/hackerrank/data.structures.-.arrays.-.easy.-.2d.array/2d.array.js
++++ b/hackerrank/data.structures.-.arrays.-.easy.-.2d.array/2d.array.js
+@@ -26,6 +26,23 @@ function readLine() {
+ 
+ // Complete the hourglassSum function below.
+ function hourglassSum(arr) {
++    var hourglass_digits_sum = (arr) => {
++        //console.log("considing digits: %j", arr[0].concat(arr[1][1]).concat(arr[2]));
++        return arr[0].concat(arr[1][1]).concat(arr[2]).reduce((acc, x) => { return acc + x });
++    }
++    var max = undefined;
++    for (var idx = 1; idx < arr.length - 2; idx++) {
++        for (var idx2 = 1; idx2 < arr.length - 2; idx2++) {
++            var sa = [arr[idx - 1].slice(idx2 - 1, idx2 - 1 + 3),
++                      arr[idx].slice(idx2 - 1, idx2 - 1 + 3),
++                      arr[idx + 1].slice(idx2 - 1, idx2 - 1 + 3)]
++            //console.log("considering subarray: %j", sa);
++            var sum = hourglass_digits_sum(sa);
++            if (!max || sum > max)
++                max = sum;
++        }
++    }
++    return max;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
