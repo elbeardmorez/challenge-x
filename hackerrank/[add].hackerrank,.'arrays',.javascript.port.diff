@@ -1,0 +1,25 @@
+From 7b5515c1f36648a6cf2232035b5635dce95f9e7b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 28 Jun 2018 12:33:31 +0100
+Subject: [add] hackerrank, 'arrays', javascript port
+
+---
+ hackerrank/data.structures.-.arrays.-.easy.-.arrays/arrays.js | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.arrays.-.easy.-.arrays/arrays.js b/hackerrank/data.structures.-.arrays.-.easy.-.arrays/arrays.js
+index 8525666..0b0493d 100644
+--- a/hackerrank/data.structures.-.arrays.-.easy.-.arrays/arrays.js
++++ b/hackerrank/data.structures.-.arrays.-.easy.-.arrays/arrays.js
+@@ -26,6 +26,8 @@ function readLine() {
+ 
+ // Complete the reverseArray function below.
+ function reverseArray(a) {
++    a.reverse();
++    return a;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
