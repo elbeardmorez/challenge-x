@@ -1,0 +1,41 @@
+From 4b10c422ef49323cbfeae9ca05479078f0e753a5 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 28 Jun 2018 17:33:10 +0100
+Subject: [add] hackerrank, 'left rotation', c# solution
+
+---
+ .../left.rotation.cs                                 | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.arrays.-.easy.-.left.rotation/left.rotation.cs b/hackerrank/data.structures.-.arrays.-.easy.-.left.rotation/left.rotation.cs
+index e861baf..8f79400 100644
+--- a/hackerrank/data.structures.-.arrays.-.easy.-.left.rotation/left.rotation.cs
++++ b/hackerrank/data.structures.-.arrays.-.easy.-.left.rotation/left.rotation.cs
+@@ -14,6 +14,14 @@ using System;
+ 
+ class Solution {
+ 
++    static int[] left_rotate(int[] arr, int n, int d) {
++        int idx = (d % n);
++        var l = new List<int>();
++        l.AddRange(arr.Skip(idx).Take(n - idx));
++        l.AddRange(arr.Take(idx));
++        return l.ToArray();
++    }
++
+     static void Main(string[] args) {
+         string[] nd = Console.ReadLine().Split(' ');
+ 
+@@ -22,5 +30,9 @@ class Solution {
+         int d = Convert.ToInt32(nd[1]);
+ 
+         int[] a = Array.ConvertAll(Console.ReadLine().Split(' '), aTemp => Convert.ToInt32(aTemp));
++
++        int[] left_rotated = left_rotate(a, n, d);
++
++        Console.WriteLine(string.Join(" ", new List<int>(left_rotated).Select(x => x.ToString())));
+     }
+ }
+-- 
+2.23.0
+
