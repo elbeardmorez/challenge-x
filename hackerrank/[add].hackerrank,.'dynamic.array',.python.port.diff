@@ -1,0 +1,39 @@
+From bfe28e09aa9210d4c38ed11ee1c602dab7666a01 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 28 Jun 2018 17:06:59 +0100
+Subject: [add] hackerrank, 'dynamic array', python port
+
+---
+ .../dynamic.array.py                             | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.arrays.-.easy.-.dynamic.array/dynamic.array.py b/hackerrank/data.structures.-.arrays.-.easy.-.dynamic.array/dynamic.array.py
+index c63264c..0fd163f 100644
+--- a/hackerrank/data.structures.-.arrays.-.easy.-.dynamic.array/dynamic.array.py
++++ b/hackerrank/data.structures.-.arrays.-.easy.-.dynamic.array/dynamic.array.py
+@@ -10,6 +10,22 @@ def dynamicArray(n, queries):
+     #
+     # Write your code here.
+     #
++    lastAnswer = 0
++    seqList = []
++    for _ in range(n):
++        seqList.append([])
++    res = []
++    for i in range(len(queries)):
++        t = queries[i][0]
++        x = queries[i][1]
++        y = queries[i][2]
++        seq = (x ^ lastAnswer) % n
++        if t == 1:
++            seqList[seq].append(y)
++        else:
++            lastAnswer = seqList[seq][y % len(seqList[seq])]
++            res.append(lastAnswer)
++    return res
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
