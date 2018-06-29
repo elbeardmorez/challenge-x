@@ -1,0 +1,73 @@
+From 4b004a4c5148af0c14e77e20332adcbee373639a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 29 Jun 2018 14:15:21 +0100
+Subject: [mod] hackerrank, 'array manipulation', c# solution
+
+-speed-up, remove secondary sorting to of queries
+-remove commented code
+---
+ .../array.manipulation.cs                     | 24 ++++---------------
+ 1 file changed, 4 insertions(+), 20 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
+index d93feb0..b0bb3fc 100644
+--- a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
++++ b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
+@@ -17,7 +17,7 @@ class Solution {
+ 
+     // Complete the arrayManipulation function below.
+     static long arrayManipulation(int n, int[][] queries) {
+-        int[][] squeries = queries.OrderBy(x => x[0]).ThenBy(x => x[1]).ToArray();
++        var squeries = queries.OrderBy(x => x[0]).ToArray();
+ 
+         /*
+         for (var ii = 0; ii < queries.Length; ii++) {
+@@ -26,13 +26,10 @@ class Solution {
+         }
+         */
+ 
+-        // iterate ordered queries maintaining a dictionary of 'current'
+-        // queries (e.g. valid / in range of current index!)
+-        // also maintain a hash for quickly deducing when a query
+-        // in 'current' needs to drop out, and thus impact the  of the 'current'
++        // iterate ordered queries maintaining a hash for deducing when a valid
++        // (e.g. idx in range!) query needs to drop out, and thus impact the current
++        // score
+ 
+-        //var d_interest = new Dictionary<string, int>();
+-        //var d_drop_at_index = new SortedDictionary<int, List<string>>();
+         var d_drop_at_index = new SortedDictionary<int, long>();
+         long max = 0;
+         long score = 0;
+@@ -41,14 +38,8 @@ class Solution {
+         for (var i = 0; i < squeries.Length; i++) {
+             idx = squeries[i][0];
+ 
+-            // add to 'current / of interest'
+-            //string key = string.Join(" ", squeries[i]);
+             score += (long)squeries[i][2];
+             //WriteLine($"idx: {idx}, key: {key}, score: {score} [+= {squeries[i][2]}]");
+-            //if (d_interest.ContainsKey(key))
+-            //    d_interest[key] += squeries[i][2];
+-            //else
+-            //    d_interest[key] = squeries[i][2];
+ 
+             // note drop index
+             int drop_at_index = squeries[i][1];
+@@ -78,13 +69,6 @@ class Solution {
+                 if (ik >= next)
+                     break;
+                 // drop
+-                //foreach (var sk in d_drop_at_index[ik]) {
+-                //    if (d_interest.ContainsKey(sk)) {
+-                //        //score -= d_interest[sk];
+-                //
+-                //    }
+-                //    d_interest.Remove(sk);
+-                //}
+                 score -= d_drop_at_index[ik];
+                 //WriteLine($"idx: {idx}, score: {score} [-= {d_drop_at_index[ik]}]");
+                 d_drop_at_index.Remove(ik);
+-- 
+2.23.0
+
