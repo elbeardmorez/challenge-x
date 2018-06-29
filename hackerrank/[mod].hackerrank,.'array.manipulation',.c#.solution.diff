@@ -1,0 +1,48 @@
+From 4121bb0819be6832701e7e73d29847166b396014 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 29 Jun 2018 14:05:35 +0100
+Subject: [mod] hackerrank, 'array manipulation', c# solution
+
+-comment debugging
+---
+ .../array.manipulation.cs                                   | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
+index 281e3d1..d93feb0 100644
+--- a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
++++ b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
+@@ -19,10 +19,12 @@ class Solution {
+     static long arrayManipulation(int n, int[][] queries) {
+         int[][] squeries = queries.OrderBy(x => x[0]).ThenBy(x => x[1]).ToArray();
+ 
++        /*
+         for (var ii = 0; ii < queries.Length; ii++) {
+             var s = string.Join(" ", squeries[ii]);
+             WriteLine($"considering ordered query: {s}");
+         }
++        */
+ 
+         // iterate ordered queries maintaining a dictionary of 'current'
+         // queries (e.g. valid / in range of current index!)
+@@ -67,7 +69,7 @@ class Solution {
+             else
+                 next = squeries[i + 1][0];
+ 
+-            WriteLine($"idx: {idx}, score: {score}, next: {next}");
++            //WriteLine($"idx: {idx}, score: {score}, next: {next}");
+ 
+             // fast forward idx accounting for removals
+             var keys = d_drop_at_index.Keys.ToList(); // ordered
+@@ -84,7 +86,7 @@ class Solution {
+                 //    d_interest.Remove(sk);
+                 //}
+                 score -= d_drop_at_index[ik];
+-                WriteLine($"idx: {idx}, score: {score} [-= {d_drop_at_index[ik]}]");
++                //WriteLine($"idx: {idx}, score: {score} [-= {d_drop_at_index[ik]}]");
+                 d_drop_at_index.Remove(ik);
+             }
+         }
+-- 
+2.23.0
+
