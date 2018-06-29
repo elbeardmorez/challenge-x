@@ -1,0 +1,24 @@
+From a57bdc573b0855a2b318275488700680bc2fc17b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 29 Jun 2018 10:23:38 +0100
+Subject: [add] hackerrank, 'sparse arrays', c# port
+
+---
+ .../sparse.arrays.cs                                             | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hackerrank/data.structures.-.arrays.-.medium.-.sparse.arrays/sparse.arrays.cs b/hackerrank/data.structures.-.arrays.-.medium.-.sparse.arrays/sparse.arrays.cs
+index d0eb9e7..d25c5f8 100644
+--- a/hackerrank/data.structures.-.arrays.-.medium.-.sparse.arrays/sparse.arrays.cs
++++ b/hackerrank/data.structures.-.arrays.-.medium.-.sparse.arrays/sparse.arrays.cs
+@@ -16,6 +16,7 @@ class Solution {
+ 
+     // Complete the matchingStrings function below.
+     static int[] matchingStrings(string[] strings, string[] queries) {
++        return queries.Select(q => strings.Where(s => s == q).Count()).ToArray();
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
