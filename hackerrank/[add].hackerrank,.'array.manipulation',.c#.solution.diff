@@ -1,0 +1,39 @@
+From f012c16b72ad54e49e97ae15a72f231dc72d64a5 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 29 Jun 2018 10:41:29 +0100
+Subject: [add] hackerrank, 'array manipulation', c# solution
+
+---
+ .../array.manipulation.cs                             | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
+index b1c89ff..8036c1a 100644
+--- a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
++++ b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
+@@ -11,12 +11,21 @@ using System.Runtime.Serialization;
+ using System.Text.RegularExpressions;
+ using System.Text;
+ using System;
+-using static System.Console;
+ 
+ class Solution {
+ 
+     // Complete the arrayManipulation function below.
+     static long arrayManipulation(int n, int[][] queries) {
++        var arr = new List<int>(new int[n].Select(x => 0));
++        var max = 0;
++        for (var i = 0; i < queries.Length; i++) {
++            var a = queries[i][0] - 1;
++            var b = queries[i][1] - 1;
++            var k = queries[i][2];
++            for (var ii = a ; ii < b; ii++)
++                arr[ii] += k;
++        }
++        return arr.OrderBy(x => x).Last();
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
