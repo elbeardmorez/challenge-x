@@ -1,0 +1,43 @@
+From b367d97468ac56cfa4ddf66b41f7f0923dd6457c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 29 Jun 2018 11:11:13 +0100
+Subject: [fix] hackerrank, 'array manipulation', c# solution
+
+-speed-up, remove temp counts array and its associated intermediate
+vars, calc sum on-the-fly
+---
+ .../array.manipulation.cs                        | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
+index 661bf91..00199be 100644
+--- a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
++++ b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
+@@ -16,17 +16,15 @@ class Solution {
+ 
+     // Complete the arrayManipulation function below.
+     static long arrayManipulation(int n, int[][] queries) {
+-        var arr = new List<int>(new int[n].Select(x => 0));
+         var max = 0;
+-        for (var i = 0; i < queries.Length; i++) {
+-            var a = queries[i][0] - 1;
+-            var b = queries[i][1] - 1;
+-            var k = queries[i][2];
+-            for (var ii = a ; ii <= b; ii++) {
+-                arr[ii] += k;
+-                if (arr[ii] > max)
+-                    max = arr[ii];
++        for (var i = 0; i < n; i++) {
++            var sum = 0;
++            for (var ii = 0; ii < queries.Length; ii++) {
++                if (i + 1 >= queries[ii][0] && i + 1 <= queries[ii][1])
++                    sum += queries[ii][2];
+             }
++            if (sum > max)
++                max = sum;
+         }
+         return max;
+     }
+-- 
+2.23.0
+
