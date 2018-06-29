@@ -1,0 +1,31 @@
+From aa4a937c39042a8d4c311d416b8eb56cda0e5c04 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 29 Jun 2018 10:04:53 +0100
+Subject: [fix] hackerrank, 'sparse arrays', python solution
+
+-algorithm redux iterating all substrings performing simple testing
+against the potential matches
+---
+ .../sparse.arrays.py                                        | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.arrays.-.medium.-.sparse.arrays/sparse.arrays.py b/hackerrank/data.structures.-.arrays.-.medium.-.sparse.arrays/sparse.arrays.py
+index 449b205..630881a 100644
+--- a/hackerrank/data.structures.-.arrays.-.medium.-.sparse.arrays/sparse.arrays.py
++++ b/hackerrank/data.structures.-.arrays.-.medium.-.sparse.arrays/sparse.arrays.py
+@@ -8,9 +8,9 @@ import sys
+ 
+ # Complete the matchingStrings function below.
+ def matchingStrings(strings, queries):
+-    search = "|" + "|".join(strings) + "|"
+-    print(search)
+-    return [len(re.findall("\|" + q + "\|", search)) for q in queries]
++    #search = "|" + "|".join(strings) + "|"
++    #return [len(re.findall("\|" + q + "\|", search, overlapped=True)) for q in queries]
++    return [len([s for s in strings if s == q]) for q in queries]
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
