@@ -1,0 +1,29 @@
+From dd4466134460850122dcbfb5fcebf1a9fc0702bf Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 29 Jun 2018 11:54:46 +0100
+Subject: [fix] hackerrank, 'array manipulation', c# solution
+
+-use long data types to avoid int looping at their limit
+---
+ .../array.manipulation.cs                                     | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
+index 00199be..e16774d 100644
+--- a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
++++ b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
+@@ -16,9 +16,9 @@ class Solution {
+ 
+     // Complete the arrayManipulation function below.
+     static long arrayManipulation(int n, int[][] queries) {
+-        var max = 0;
++        long max = 0;
+         for (var i = 0; i < n; i++) {
+-            var sum = 0;
++            long sum = 0;
+             for (var ii = 0; ii < queries.Length; ii++) {
+                 if (i + 1 >= queries[ii][0] && i + 1 <= queries[ii][1])
+                     sum += queries[ii][2];
+-- 
+2.23.0
+
