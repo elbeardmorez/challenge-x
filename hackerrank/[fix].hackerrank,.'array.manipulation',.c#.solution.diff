@@ -1,0 +1,34 @@
+From 4418113b511836bbfba23492d485fdb970ac10bd Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 29 Jun 2018 10:48:36 +0100
+Subject: [fix] hackerrank, 'array manipulation', c# solution
+
+-edge case, boundary off-by-one bug
+-speed-up, update a max var on-the-fly to avoid costly orderby
+---
+ .../array.manipulation.cs                                  | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
+index 8036c1a..661bf91 100644
+--- a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
++++ b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
+@@ -22,10 +22,13 @@ class Solution {
+             var a = queries[i][0] - 1;
+             var b = queries[i][1] - 1;
+             var k = queries[i][2];
+-            for (var ii = a ; ii < b; ii++)
++            for (var ii = a ; ii <= b; ii++) {
+                 arr[ii] += k;
++                if (arr[ii] > max)
++                    max = arr[ii];
++            }
+         }
+-        return arr.OrderBy(x => x).Last();
++        return max;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
