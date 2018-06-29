@@ -1,0 +1,26 @@
+From 28825dfa0191d8935d3c347dbffa52a8eb437b69 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 29 Jun 2018 09:46:44 +0100
+Subject: [add] hackerrank, 'sparse arrays', python solution
+
+---
+ .../sparse.arrays.py                                           | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.arrays.-.medium.-.sparse.arrays/sparse.arrays.py b/hackerrank/data.structures.-.arrays.-.medium.-.sparse.arrays/sparse.arrays.py
+index fe56171..449b205 100644
+--- a/hackerrank/data.structures.-.arrays.-.medium.-.sparse.arrays/sparse.arrays.py
++++ b/hackerrank/data.structures.-.arrays.-.medium.-.sparse.arrays/sparse.arrays.py
+@@ -8,6 +8,9 @@ import sys
+ 
+ # Complete the matchingStrings function below.
+ def matchingStrings(strings, queries):
++    search = "|" + "|".join(strings) + "|"
++    print(search)
++    return [len(re.findall("\|" + q + "\|", search)) for q in queries]
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
