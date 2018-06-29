@@ -1,0 +1,24 @@
+From 43b18dda27841c3e7abd328fe9d7ee96990a951e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 29 Jun 2018 10:17:02 +0100
+Subject: [add] hackerrank, 'sparse arrays', javascript port
+
+---
+ .../sparse.arrays.js                                             | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hackerrank/data.structures.-.arrays.-.medium.-.sparse.arrays/sparse.arrays.js b/hackerrank/data.structures.-.arrays.-.medium.-.sparse.arrays/sparse.arrays.js
+index efde42d..74f5c2f 100644
+--- a/hackerrank/data.structures.-.arrays.-.medium.-.sparse.arrays/sparse.arrays.js
++++ b/hackerrank/data.structures.-.arrays.-.medium.-.sparse.arrays/sparse.arrays.js
+@@ -26,6 +26,7 @@ function readLine() {
+ 
+ // Complete the matchingStrings function below.
+ function matchingStrings(strings, queries) {
++    return queries.map((q) => { var c = 0; strings.forEach((s) => c = s == q ? c + 1 : c); return c; });
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
