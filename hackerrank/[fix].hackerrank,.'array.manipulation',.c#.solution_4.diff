@@ -1,0 +1,104 @@
+From 3648e07414b167284526097e3502abf89bfced60 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 29 Jun 2018 13:25:08 +0100
+Subject: [fix] hackerrank, 'array manipulation', c# solution
+
+-algo redux. iterate ordered queries maintaining a dictionary of
+'current' queries (e.g. valid / in range of current index!) also
+maintain a hash for quickly deducing when a query in 'current'
+needs to drop out, and thus impact the score
+---
+ .../array.manipulation.cs                     | 70 +++++++++++++++++--
+ 1 file changed, 63 insertions(+), 7 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
+index e16774d..76eb4c4 100644
+--- a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
++++ b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
+@@ -11,20 +11,76 @@ using System.Runtime.Serialization;
+ using System.Text.RegularExpressions;
+ using System.Text;
+ using System;
++using static System.Console;
+ 
+ class Solution {
+ 
+     // Complete the arrayManipulation function below.
+     static long arrayManipulation(int n, int[][] queries) {
++        int[][] squeries = queries.OrderBy(x => x[0]).ThenBy(x => x[1]).ToArray();
++
++        //for (var ii = 0; ii < queries.Length; ii++) {
++        //    var s = string.Join(" ", squeries[ii]);
++        //    WriteLine($"considering ordered query: {s}");
++        //}
++
++        // iterate ordered queries maintaining a dictionary of 'current'
++        // queries (e.g. valid / in range of current index!)
++        // also maintain a hash for quickly deducing when a query
++        // in 'current' needs to drop out, and thus impact the  of the 'current'
++        var d_interest = new Dictionary<string, int>();
++        var d_drop_at_index = new SortedDictionary<int, List<string>>();
+         long max = 0;
+-        for (var i = 0; i < n; i++) {
+-            long sum = 0;
+-            for (var ii = 0; ii < queries.Length; ii++) {
+-                if (i + 1 >= queries[ii][0] && i + 1 <= queries[ii][1])
+-                    sum += queries[ii][2];
++        long score = 0;
++        int idx;
++        long next = 0;
++        for (var i = 0; i < squeries.Length; i++) {
++            idx = squeries[i][0];
++
++            // add to 'current / of interest'
++            string key = string.Join(" ", squeries[i]);
++            score += (long)squeries[i][2];
++            //WriteLine($"idx: {idx}, key: {key}, score: {score} [+= {squeries[i][2]}]");
++            if (d_interest.ContainsKey(key))
++                d_interest[key] += squeries[i][2];
++            else
++                d_interest[key] = squeries[i][2];
++
++            // note drop index
++            int drop_at_index = squeries[i][1];
++            if (d_drop_at_index.ContainsKey(drop_at_index))
++                d_drop_at_index[drop_at_index].Add(key);
++            else
++                d_drop_at_index[drop_at_index] = new List<string>(new string[]{key});
++
++            // maintain max score
++            if (score > max)
++                max = score;
++
++            // next range start
++            if (i == queries.Length - 1)
++                next = n + 1;
++            else
++                next = squeries[i + 1][0];
++
++            //WriteLine($"next: {next}");
++
++            // fast forward idx accounting for removals
++            var keys = d_drop_at_index.Keys.ToList(); // ordered
++            foreach (var ik in keys) {
++                if (ik > next)
++                    break;
++                // drop
++                foreach (var sk in d_drop_at_index[ik]) {
++                    if (d_interest.ContainsKey(sk)) {
++                        score -= d_interest[sk];
++                        //WriteLine($"idx: {idx}, dropping key: {sk}, score: {score} [-= {d_interest[sk]}]");
++                    }
++                    d_interest.Remove(sk);
++                }
++                d_drop_at_index.Remove(ik);
++                idx = ik;
+             }
+-            if (sum > max)
+-                max = sum;
+         }
+         return max;
+     }
+-- 
+2.23.0
+
