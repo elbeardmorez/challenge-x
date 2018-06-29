@@ -1,0 +1,95 @@
+From d9cbba07f17dd4436554aa8187b9015b1dc24ca3 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 29 Jun 2018 15:02:17 +0100
+Subject: [mod] hackerrank, 'array manipulation', c# solution
+
+-speed-up, remove superfluous ToArray()
+-speed-up, avoid multi-dimensional array access via switch to foreach
+control loop
+-speed-up, short-circuit 0 idx case
+---
+ .../array.manipulation.cs                     | 34 +++++++++++--------
+ 1 file changed, 20 insertions(+), 14 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
+index b0bb3fc..b2bfe55 100644
+--- a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
++++ b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
+@@ -17,7 +17,7 @@ class Solution {
+ 
+     // Complete the arrayManipulation function below.
+     static long arrayManipulation(int n, int[][] queries) {
+-        var squeries = queries.OrderBy(x => x[0]).ToArray();
++        var squeries = queries.OrderBy(x => x[0]);
+ 
+         /*
+         for (var ii = 0; ii < queries.Length; ii++) {
+@@ -33,32 +33,35 @@ class Solution {
+         var d_drop_at_index = new SortedDictionary<int, long>();
+         long max = 0;
+         long score = 0;
+-        int idx;
+-        long next = 0;
+-        for (var i = 0; i < squeries.Length; i++) {
+-            idx = squeries[i][0];
+-
+-            score += (long)squeries[i][2];
++        int idx = 0;
++        int idx_next = 0;
++        int[] q = new int[]{};
++        int i = 0;
++        foreach (var next in squeries) {
++            if (i > 0) {
++                idx = q[0];
++
++                score += (long)q[2];
+             //WriteLine($"idx: {idx}, key: {key}, score: {score} [+= {squeries[i][2]}]");
+ 
+             // note drop index
+-            int drop_at_index = squeries[i][1];
++                int drop_at_index = q[1];
+             if (d_drop_at_index.ContainsKey(drop_at_index))
+                 //d_drop_at_index[drop_at_index].Add(key);
+-                d_drop_at_index[drop_at_index] += squeries[i][2];
++                    d_drop_at_index[drop_at_index] += q[2];
+             else
+                 //d_drop_at_index[drop_at_index] = new List<string>(new string[]{key});
+-                d_drop_at_index[drop_at_index] = squeries[i][2];
++                    d_drop_at_index[drop_at_index] = q[2];
+ 
+             // maintain max score
+             if (score > max)
+                 max = score;
+ 
+             // next range start
+-            if (i == squeries.Length - 1)
+-                next = n + 1;
++                if (i == queries.Length - 1)
++                    idx_next = n + 1;
+             else
+-                next = squeries[i + 1][0];
++                    idx_next = next[0];
+ 
+             //WriteLine($"idx: {idx}, score: {score}, next: {next}");
+ 
+@@ -66,13 +69,16 @@ class Solution {
+             var keys = d_drop_at_index.Keys.ToList(); // ordered
+             foreach (var ik in keys) {
+                 idx = ik;
+-                if (ik >= next)
++                    if (ik >= idx_next)
+                     break;
+                 // drop
+                 score -= d_drop_at_index[ik];
+                 //WriteLine($"idx: {idx}, score: {score} [-= {d_drop_at_index[ik]}]");
+                 d_drop_at_index.Remove(ik);
+             }
++        }
++            q = next;
++            i += 1;
+         }
+         return max;
+     }
+-- 
+2.23.0
+
