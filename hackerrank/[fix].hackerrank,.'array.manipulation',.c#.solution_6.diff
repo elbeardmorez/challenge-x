@@ -1,0 +1,98 @@
+From 8e1d45b04d19d43e5ee4cdedeab58243aba02510 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 29 Jun 2018 15:25:42 +0100
+Subject: [fix] hackerrank, 'array manipulation', c# solution
+
+---
+ .../array.manipulation.cs                     | 37 +++++++++++--------
+ 1 file changed, 21 insertions(+), 16 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
+index f1a4740..9a7a374 100644
+--- a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
++++ b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
+@@ -17,40 +17,39 @@ class Solution {
+ 
+     // Complete the arrayManipulation function below.
+     static long arrayManipulation(int n, int[][] queries) {
+-        var squeries = queries.OrderBy(x => x[0]);
+-
+-        /*
+-        for (var ii = 0; ii < queries.Length; ii++) {
+-            var s = string.Join(" ", squeries[ii]);
+-            WriteLine($"considering ordered query: {s}");
+-        }
+-        */
+ 
+         // iterate ordered queries maintaining a hash for deducing when a valid
+         // (e.g. idx in range!) query needs to drop out, and thus impact the current
+         // score
+ 
+         var d_drop_at_index = new SortedDictionary<int, long>();
++
+         long max = 0;
+         long score = 0;
+         int idx = 0;
+         int idx_next = 0;
+         int[] q = new int[]{};
+         int i = 0;
++
++        var squeries = queries.OrderBy(x => x[0]);
++        /*
++        for (var ii = 0; ii < queries.Length; ii++) {
++            var s = string.Join(" ", squeries[ii]);
++            WriteLine($"considering ordered query: {s}");
++        }
++        */
+         foreach (var next in squeries) {
+             if (i > 0) {
+                 idx = q[0];
+ 
+                 score += (long)q[2];
+-                //WriteLine($"idx: {idx}, key: {key}, score: {score} [+= {squeries[i][2]}]");
++                //WriteLine($"idx: {idx}, score: {score} [+= {q[2]}]");
+ 
+                 // note drop index
+                 int drop_at_index = q[1];
+                 if (d_drop_at_index.ContainsKey(drop_at_index))
+-                    //d_drop_at_index[drop_at_index].Add(key);
+                     d_drop_at_index[drop_at_index] += q[2];
+                 else
+-                    //d_drop_at_index[drop_at_index] = new List<string>(new string[]{key});
+                     d_drop_at_index[drop_at_index] = q[2];
+ 
+                 // maintain max score
+@@ -58,12 +57,9 @@ class Solution {
+                     max = score;
+ 
+                 // next range start
+-                if (i == queries.Length - 1)
+-                    idx_next = n + 1;
+-                else
+-                    idx_next = next[0];
++                idx_next = next[0];
+ 
+-                //WriteLine($"idx: {idx}, score: {score}, next: {next}");
++                //WriteLine($"idx: {idx}, score: {score}, idx_next: {idx_next}");
+ 
+                 // fast forward idx accounting for removals
+                 var keys = d_drop_at_index.Keys.ToList(); // ordered
+@@ -76,6 +72,15 @@ class Solution {
+                     //WriteLine($"idx: {idx}, score: {score} [-= {d_drop_at_index[ik]}]");
+                     d_drop_at_index.Remove(ik);
+                 }
++
++                // process last
++                if (i == queries.Length - 1) {
++                    idx = next[0];
++                    score += (long)next[2];
++                    //WriteLine($"idx: {idx}, score: {score} [+= {q[2]}]");
++                    if (score > max)
++                        max = score;
++                }
+             }
+             q = next;
+             i += 1;
+-- 
+2.23.0
+
