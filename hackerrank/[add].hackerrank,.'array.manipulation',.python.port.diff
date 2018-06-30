@@ -1,0 +1,86 @@
+From 412ee3b1a271677ae4c4aae7d8743210a8bb4bde Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 30 Jun 2018 12:43:06 +0100
+Subject: [add] hackerrank, 'array manipulation', python port
+
+---
+ .../array.manipulation.py                     | 63 +++++++++++++++++++
+ 1 file changed, 63 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.py b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.py
+index 629a3e2..e6ff467 100644
+--- a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.py
++++ b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.py
+@@ -9,6 +9,69 @@ import sys
+ # Complete the arrayManipulation function below.
+ def arrayManipulation(n, queries):
+ 
++    # iterate ordered queries maintaining a hash for deducing when a valid
++    # (e.g. idx in range!) query needs to drop out, and thus impact the current
++    # score
++
++    d_drop_at_index = {}
++    a_drop_at_index = []
++
++    max = 0
++    score = 0
++    idx_next = 0
++    nq = len(queries)
++
++    queries = sorted(queries, key=lambda x: x[0])
++
++    #for i in range(nq):
++    #    print("considering ordered query: {}".format(" ".join([str(x) for x in queries[i]])))
++
++    for i in range(nq):
++        q = queries[i]
++
++        score += q[2]
++        #print("idx: {}, score: {} [+= {}]".format(q[0], score, q[2]))
++
++        # note drop index
++        drop_at_index = q[1]
++        if drop_at_index in d_drop_at_index:
++            d_drop_at_index[drop_at_index] += q[2]
++        else:
++            d_drop_at_index[drop_at_index] = q[2]
++            ii = len(a_drop_at_index) - 1
++            if ii == -1:
++                a_drop_at_index.append(drop_at_index)
++            else:
++                # ensure ordered insert
++                while ii >= 0 and a_drop_at_index[ii] > drop_at_index:
++                    ii -= 1
++                a_drop_at_index.insert(ii + 1, drop_at_index)
++            #print("drop set: {}, length: {}".format(" ".join([str(x) for x in a_drop_at_index]), len(a_drop_at_index)));
++
++        # maintain max score
++        if score > max:
++            max = score
++
++        # next range start
++        if i == nq - 1:
++            idx_next = q[1] + 1
++        else:
++            idx_next = queries[i + 1][0]
++
++        #print("idx: {}, score: {}, idx_next: {}".format(q[0], score, idx_next));
++
++        # fast forward idx accounting for removals
++        while a_drop_at_index:
++            ik = a_drop_at_index[0]
++            if ik >= idx_next:
++                break
++            # drop
++            score -= d_drop_at_index[ik]
++            del a_drop_at_index[0]
++
++    return max
++
++
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+ 
+-- 
+2.23.0
+
