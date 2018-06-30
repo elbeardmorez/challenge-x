@@ -1,0 +1,27 @@
+From d3df08d33734b11faa4b2e2116fdb4ccb33f6d8a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 30 Jun 2018 13:18:29 +0100
+Subject: [mod] hackerrank, 'array manipulation', python port
+
+-speed-up, in-place sort
+---
+ .../array.manipulation.py                                      | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.py b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.py
+index 66300e4..c653ff4 100644
+--- a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.py
++++ b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.py
+@@ -22,7 +22,8 @@ def arrayManipulation(n, queries):
+     idx_drop = 0
+     nq = len(queries)
+ 
+-    queries = sorted(queries, key=lambda x: x[0])
++    #queries = sorted(queries, key=lambda x: x[0])
++    queries.sort(key=lambda x: x[0])
+ 
+     #for i in range(nq):
+     #    print("considering ordered query: {}".format(" ".join([str(x) for x in queries[i]])))
+-- 
+2.23.0
+
