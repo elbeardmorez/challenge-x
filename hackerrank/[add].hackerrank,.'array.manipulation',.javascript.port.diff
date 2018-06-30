@@ -1,0 +1,92 @@
+From 4b3d0635b598656f2e46603a43753fb3d6eced1a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 30 Jun 2018 12:17:31 +0100
+Subject: [add] hackerrank, 'array manipulation', javascript port
+
+---
+ .../array.manipulation.js                     | 69 +++++++++++++++++++
+ 1 file changed, 69 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.js b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.js
+index fd81abf..5877e71 100644
+--- a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.js
++++ b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.js
+@@ -26,6 +26,75 @@ function readLine() {
+ 
+ // Complete the arrayManipulation function below.
+ function arrayManipulation(n, queries) {
++
++    // iterate ordered queries maintaining a hash for deducing when a valid
++    // (e.g. idx in range!) query needs to drop out, and thus impact the current
++    // score
++
++    var d_drop_at_index = {}
++    var a_drop_at_index = []
++
++    var max = 0;
++    var score = 0;
++    var idx = 0;
++    var idx_next = 0;
++    var nq = queries.length;
++
++    queries.sort((a, b) => a[0] - b[0]);
++
++    for (var i = 0; i < nq; i++)
++        console.log(`considering ordered query: ${queries[i].join(" ")}`);
++
++    var q;
++    for (var i = 0; i < nq; i++) {
++        q = queries[i];
++
++        score += q[2];
++        console.log(`idx: ${q[0]}, score: ${score} [+= ${q[2]}]`);
++
++        // note drop index
++        var drop_at_index = q[1];
++        if (drop_at_index in d_drop_at_index)
++            d_drop_at_index[drop_at_index] += q[2];
++        else {
++            d_drop_at_index[drop_at_index] = q[2];
++            var ii = a_drop_at_index.length - 1;
++            if (ii == -1)
++                a_drop_at_index.push(drop_at_index);
++            else {
++                // ensure ordered insert
++                while (ii >= 0 && a_drop_at_index[ii] > drop_at_index)
++                    ii--;
++                a_drop_at_index.splice(ii + 1, 0, drop_at_index);
++            }
++            //console.log(`drop set: ${a_drop_at_index.join(" ")}`);
++            console.log(`drop set length: ${a_drop_at_index.length}`);
++        }
++
++        // maintain max score
++        if (score > max)
++            max = score;
++
++        // next range start
++        if (i == nq - 1)
++            idx_next = q[1] + 1;
++        else
++            idx_next = queries[i + 1][0];
++
++        console.log(`idx: ${q[0]}, score: ${score}, idx_next: ${idx_next}`);
++
++        // fast forward idx accounting for removals
++        while (a_drop_at_index.length > 0) {
++            var ik = a_drop_at_index[0]; // O(1)
++            if (ik >= idx_next)
++                break;
++            // drop
++            score -= d_drop_at_index[ik];
++            //d_drop_at_index.delete(ik);
++            a_drop_at_index.shift();
++        }
++    }
++    return max;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
