@@ -1,0 +1,53 @@
+From 583689c3dde5031b2071b4ff2e350dd5b3aad442 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 30 Jun 2018 13:10:08 +0100
+Subject: [fix] hackerrank, 'array manipulation', python port
+
+-avoid o(n) array delete. append to drop array and maintain global idx
+of position to start dropping from
+---
+ .../array.manipulation.py                              | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.py b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.py
+index e6ff467..66300e4 100644
+--- a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.py
++++ b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.py
+@@ -19,6 +19,7 @@ def arrayManipulation(n, queries):
+     max = 0
+     score = 0
+     idx_next = 0
++    idx_drop = 0
+     nq = len(queries)
+ 
+     queries = sorted(queries, key=lambda x: x[0])
+@@ -46,7 +47,7 @@ def arrayManipulation(n, queries):
+                 while ii >= 0 and a_drop_at_index[ii] > drop_at_index:
+                     ii -= 1
+                 a_drop_at_index.insert(ii + 1, drop_at_index)
+-            #print("drop set: {}, length: {}".format(" ".join([str(x) for x in a_drop_at_index]), len(a_drop_at_index)));
++        #print("drop set: {}, length: {}".format(" ".join([str(x) for x in a_drop_at_index]), len(a_drop_at_index)));
+ 
+         # maintain max score
+         if score > max:
+@@ -61,13 +62,14 @@ def arrayManipulation(n, queries):
+         #print("idx: {}, score: {}, idx_next: {}".format(q[0], score, idx_next));
+ 
+         # fast forward idx accounting for removals
+-        while a_drop_at_index:
+-            ik = a_drop_at_index[0]
++        while idx_drop < len(a_drop_at_index):
++            ik = a_drop_at_index[idx_drop]
+             if ik >= idx_next:
+                 break
+             # drop
+             score -= d_drop_at_index[ik]
+-            del a_drop_at_index[0]
++            #del a_drop_at_index.pop() # O(n)
++            idx_drop += 1
+ 
+     return max
+ 
+-- 
+2.23.0
+
