@@ -1,0 +1,56 @@
+From 22d025f462bbe3da9da27694aca321e1150d1a50 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 30 Jun 2018 09:01:58 +0100
+Subject: [mod] hackerrank, 'array manipulation', c# solution
+
+-speed-up, switch to Array.Sort from linq OrderBy
+-speed-up, foreach and key-value pair usage
+---
+ .../array.manipulation.cs                        | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
+index 9a7a374..d7a383e 100644
+--- a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
++++ b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
+@@ -31,14 +31,14 @@ class Solution {
+         int[] q = new int[]{};
+         int i = 0;
+ 
+-        var squeries = queries.OrderBy(x => x[0]);
++        Array.Sort(queries, (a, b) => b[0] - b[0]);
+         /*
+         for (var ii = 0; ii < queries.Length; ii++) {
+             var s = string.Join(" ", squeries[ii]);
+             WriteLine($"considering ordered query: {s}");
+         }
+         */
+-        foreach (var next in squeries) {
++        foreach (var next in queries) {
+             if (i > 0) {
+                 idx = q[0];
+ 
+@@ -62,15 +62,13 @@ class Solution {
+                 //WriteLine($"idx: {idx}, score: {score}, idx_next: {idx_next}");
+ 
+                 // fast forward idx accounting for removals
+-                var keys = d_drop_at_index.Keys.ToList(); // ordered
+-                foreach (var ik in keys) {
+-                    idx = ik;
+-                    if (ik >= idx_next)
++                for (int ii = 0; ii < d_drop_at_index.Count;) {
++                    var kvp = d_drop_at_index.ElementAt(0); // O(1)
++                    if (kvp.Key >= idx_next)
+                         break;
+                     // drop
+-                    score -= d_drop_at_index[ik];
+-                    //WriteLine($"idx: {idx}, score: {score} [-= {d_drop_at_index[ik]}]");
+-                    d_drop_at_index.Remove(ik);
++                    score -= kvp.Value;
++                    d_drop_at_index.Remove(kvp.Key);
+                 }
+ 
+                 // process last
+-- 
+2.23.0
+
