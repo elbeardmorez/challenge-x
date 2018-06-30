@@ -1,0 +1,26 @@
+From 28129780c8b9a49e971b3868474ab350ac27a9d6 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 30 Jun 2018 09:08:32 +0100
+Subject: [fix] hackerrank, 'array manipulation', c# solution
+
+-Array.Sort binary compare lambda bug
+---
+ .../array.manipulation.cs                                       | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
+index d7a383e..01e8d34 100644
+--- a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
++++ b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
+@@ -31,7 +31,7 @@ class Solution {
+         int[] q = new int[]{};
+         int i = 0;
+ 
+-        Array.Sort(queries, (a, b) => b[0] - b[0]);
++        Array.Sort(queries, (a, b) => a[0] - b[0]);
+         /*
+         for (var ii = 0; ii < queries.Length; ii++) {
+             var s = string.Join(" ", squeries[ii]);
+-- 
+2.23.0
+
