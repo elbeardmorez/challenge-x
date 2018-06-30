@@ -1,0 +1,41 @@
+From 190b79ee33529eb045f8446f1688d488e7800a11 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 30 Jun 2018 09:10:40 +0100
+Subject: [mod] hackerrank, 'array manipulation', c# solution
+
+-remove nesting, explain 'pair' intent
+---
+ .../array.manipulation.cs                              | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
+index 01e8d34..448fe84 100644
+--- a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
++++ b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.cs
+@@ -39,7 +39,14 @@ class Solution {
+         }
+         */
+         foreach (var next in queries) {
+-            if (i > 0) {
++
++            if (i == 0) {
++              // set up processing pair
++              i = 1;
++              q = next;
++              continue;
++            }
++
+                 idx = q[0];
+ 
+                 score += (long)q[2];
+@@ -78,7 +85,6 @@ class Solution {
+                     //WriteLine($"idx: {idx}, score: {score} [+= {q[2]}]");
+                     if (score > max)
+                         max = score;
+-                }
+             }
+             q = next;
+             i += 1;
+-- 
+2.23.0
+
