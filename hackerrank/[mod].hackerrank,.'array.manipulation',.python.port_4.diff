@@ -1,0 +1,38 @@
+From 1903047d3f13bc2275aac3dc008641b296b2ad37 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 1 Jul 2018 09:13:26 +0100
+Subject: [mod] hackerrank, 'array manipulation', python port
+
+-speed-up, unpack all query parts directly in loop
+---
+ .../array.manipulation.py                                  | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.py b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.py
+index 0ebb0da..a211da0 100644
+--- a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.py
++++ b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.py
+@@ -47,9 +47,8 @@ def arrayManipulation(n, queries):
+     #for i in range(nq):
+     #    print("considering ordered query: {}".format(" ".join([str(x) for x in queries[i]])))
+ 
+-    for i in range(nq):
+-        q = queries[i]
+-        q0, q1, q2 = q
++    i = 0
++    for q0, q1, q2 in queries:
+ 
+         score += q2
+         # maintain max score
+@@ -109,6 +108,8 @@ def arrayManipulation(n, queries):
+         else:
+             n_drop_at_index_root._prev = None
+ 
++        i += 1
++
+     return max
+ 
+ if __name__ == '__main__':
+-- 
+2.23.0
+
