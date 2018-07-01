@@ -1,0 +1,153 @@
+From a442f51ef469f6bf38fe92a4db0fb823fa93ca83 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 1 Jul 2018 09:04:57 +0100
+Subject: [mod] hackerrank, 'array manipulation', python port
+
+-speed-up, implement and use double-linked list to simulate removal
+without the overhead
+---
+ .../array.manipulation.py                     | 86 +++++++++++++------
+ 1 file changed, 61 insertions(+), 25 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.py b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.py
+index c653ff4..db16d1b 100644
+--- a/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.py
++++ b/hackerrank/data.structures.-.arrays.-.hard.-.array.manipulation/array.manipulation.py
+@@ -6,6 +6,24 @@ import random
+ import re
+ import sys
+ 
++# simple double-linked list
++class Node:
++
++    def __init__(self, value, _prev=None, _next=None):
++        self.value = value
++        self._prev = _prev
++        self._next = _next
++
++    def chain(self):
++        c = 1
++        s = str(self.value)
++        n = self._next
++        while n != None:
++            s += " " + str(n.value)
++            c += 1
++            n = n._next
++        return c, s
++
+ # Complete the arrayManipulation function below.
+ def arrayManipulation(n, queries):
+ 
+@@ -14,16 +32,17 @@ def arrayManipulation(n, queries):
+     # score
+ 
+     d_drop_at_index = {}
+-    a_drop_at_index = []
++    n_drop_at_index_root = None
++    n_drop_at_index_last = None
++    #n_drop_at_index_count = 0
+ 
+     max = 0
+     score = 0
+     idx_next = 0
+-    idx_drop = 0
+     nq = len(queries)
+ 
+-    #queries = sorted(queries, key=lambda x: x[0])
+-    queries.sort(key=lambda x: x[0])
++    queries = sorted(queries, key=lambda x: x[0])
++    #queries.sort(key=lambda x: x[0])
+ 
+     #for i in range(nq):
+     #    print("considering ordered query: {}".format(" ".join([str(x) for x in queries[i]])))
+@@ -32,7 +51,10 @@ def arrayManipulation(n, queries):
+         q = queries[i]
+ 
+         score += q[2]
+-        #print("idx: {}, score: {} [+= {}]".format(q[0], score, q[2]))
++        # maintain max score
++        if score > max:
++            max = score
++        #print("i: {}, idx: {}, score: {} [+= {}]".format(i, q[0], score, q[2]))
+ 
+         # note drop index
+         drop_at_index = q[1]
+@@ -40,19 +62,31 @@ def arrayManipulation(n, queries):
+             d_drop_at_index[drop_at_index] += q[2]
+         else:
+             d_drop_at_index[drop_at_index] = q[2]
+-            ii = len(a_drop_at_index) - 1
+-            if ii == -1:
+-                a_drop_at_index.append(drop_at_index)
++            if n_drop_at_index_root == None:
++                n_drop_at_index_root = Node(drop_at_index)
++                n_drop_at_index_last = n_drop_at_index_root
+             else:
+                 # ensure ordered insert
+-                while ii >= 0 and a_drop_at_index[ii] > drop_at_index:
+-                    ii -= 1
+-                a_drop_at_index.insert(ii + 1, drop_at_index)
+-        #print("drop set: {}, length: {}".format(" ".join([str(x) for x in a_drop_at_index]), len(a_drop_at_index)));
+-
+-        # maintain max score
+-        if score > max:
+-            max = score
++                n_insert = n_drop_at_index_last
++                while n_insert != None and \
++                      n_insert.value > drop_at_index:
++                    n_insert = n_insert._prev
++                if n_insert == None:
++                    n = Node(drop_at_index, _next=n_drop_at_index_root)
++                    n_drop_at_index_root._prev = n
++                    n_drop_at_index_root = n
++                else:
++                    _next = n_insert._next
++                    n = Node(drop_at_index, n_insert, _next)
++                    n_insert._next = n
++                    if _next != None:
++                        _next._prev = n
++                if n_insert is n_drop_at_index_last:
++                    n_drop_at_index_last = n_insert._next
++                #n_drop_at_index_count += 1
++        #c, s = n_drop_at_index_root.chain()
++        #print("drop set: {}, length: {}".format(s, c))
++        #print("drop set length: {}".format(n_drop_at_index_count))
+ 
+         # next range start
+         if i == nq - 1:
+@@ -60,21 +94,23 @@ def arrayManipulation(n, queries):
+         else:
+             idx_next = queries[i + 1][0]
+ 
+-        #print("idx: {}, score: {}, idx_next: {}".format(q[0], score, idx_next));
++        #print("i: {}, idx: {}, score: {}, idx_next: {}".format(i, q[0], score, idx_next))
+ 
+         # fast forward idx accounting for removals
+-        while idx_drop < len(a_drop_at_index):
+-            ik = a_drop_at_index[idx_drop]
+-            if ik >= idx_next:
+-                break
++        while n_drop_at_index_root != None and \
++            n_drop_at_index_root.value < idx_next:
+             # drop
+-            score -= d_drop_at_index[ik]
+-            #del a_drop_at_index.pop() # O(n)
+-            idx_drop += 1
++            score -= d_drop_at_index[n_drop_at_index_root.value]
++            #print("i: {}, idx: {}, score: {} [+= {}]".format(i, n_drop_at_index_root.value, score, d_drop_at_index[n_drop_at_index_root.value]))
++            n_drop_at_index_root = n_drop_at_index_root._next
++            #n_drop_at_index_count -= 1
++        if n_drop_at_index_root == None:
++            n_drop_at_index_last = None
++        else:
++            n_drop_at_index_root._prev = None
+ 
+     return max
+ 
+-
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+ 
+-- 
+2.23.0
+
