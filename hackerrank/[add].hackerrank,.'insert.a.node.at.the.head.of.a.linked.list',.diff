@@ -1,0 +1,27 @@
+From 9a48c6ee5ce1f112a9d15c6492e88b90f472a221 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 2 Jul 2018 12:33:06 +0100
+Subject: [add] hackerrank, 'insert a node at the head of a linked list',
+ python port
+
+---
+ .../insert.a.node.at.the.head.of.a.linked.list.py              | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.at.the.head.of.a.linked.list/insert.a.node.at.the.head.of.a.linked.list.py b/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.at.the.head.of.a.linked.list/insert.a.node.at.the.head.of.a.linked.list.py
+index a86dfee..6085843 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.at.the.head.of.a.linked.list/insert.a.node.at.the.head.of.a.linked.list.py
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.at.the.head.of.a.linked.list/insert.a.node.at.the.head.of.a.linked.list.py
+@@ -36,6 +36,9 @@ def print_singly_linked_list(node, sep, fptr):
+ #
+ #
+ def insertNodeAtHead(llist, data):
++    n = SinglyLinkedListNode(data)
++    n.next = llist
++    return n
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
