@@ -1,0 +1,39 @@
+From 4bee1c1a1ca92c1ae777dfb142fef0279edc3859 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 2 Jul 2018 14:47:48 +0100
+Subject: [add] hackerrank, 'reverse a linked list', python port
+
+---
+ .../reverse.a.linked.list.py                     | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.reverse.a.linked.list/reverse.a.linked.list.py b/hackerrank/data.structures.-.linked.lists.-.easy.-.reverse.a.linked.list/reverse.a.linked.list.py
+index 2f2d60a..a91ac30 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.reverse.a.linked.list/reverse.a.linked.list.py
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.reverse.a.linked.list/reverse.a.linked.list.py
+@@ -47,6 +47,22 @@ def print_singly_linked_list(node, sep, fptr):
+ #
+ #
+ def reverse(head):
++    a = []
++    n = head
++    while n != None:
++        a.append(n)
++        #print("added n: %s, count: %d" % (n, len(a)))
++        n = n.next
++
++    head = a[-1]
++    #print("head: %s" % (type(head)))
++    n = head
++    for x in range(1, len(a) + 1):
++        n.next = a[-x]
++        n = n.next
++
++    n.next = None
++    return head
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
