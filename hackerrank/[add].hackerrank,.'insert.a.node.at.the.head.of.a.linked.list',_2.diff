@@ -1,0 +1,27 @@
+From e14b3ea5d9eb4934b336075bebb81aa6f76a0122 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 2 Jul 2018 12:36:58 +0100
+Subject: [add] hackerrank, 'insert a node at the head of a linked list',
+ javascript port
+
+---
+ .../insert.a.node.at.the.head.of.a.linked.list.js              | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.at.the.head.of.a.linked.list/insert.a.node.at.the.head.of.a.linked.list.js b/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.at.the.head.of.a.linked.list/insert.a.node.at.the.head.of.a.linked.list.js
+index adcbd7b..78e75b7 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.at.the.head.of.a.linked.list/insert.a.node.at.the.head.of.a.linked.list.js
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.at.the.head.of.a.linked.list/insert.a.node.at.the.head.of.a.linked.list.js
+@@ -63,6 +63,9 @@ function printSinglyLinkedList(node, sep, ws) {
+  *
+  */
+ function insertNodeAtHead(head, data) {
++    var n = new SinglyLinkedListNode(data);
++    n.next = head;
++    return n;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
