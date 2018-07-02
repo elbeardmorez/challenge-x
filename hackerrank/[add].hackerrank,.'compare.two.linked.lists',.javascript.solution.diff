@@ -1,0 +1,33 @@
+From ca4225f11209cb5cf6e331a26e009f44060091d4 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 2 Jul 2018 14:58:16 +0100
+Subject: [add] hackerrank, 'compare two linked lists', javascript solution
+
+---
+ .../compare.two.linked.lists.js                        | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.compare.two.linked.lists/compare.two.linked.lists.js b/hackerrank/data.structures.-.linked.lists.-.easy.-.compare.two.linked.lists/compare.two.linked.lists.js
+index ea58cb9..3d49370 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.compare.two.linked.lists/compare.two.linked.lists.js
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.compare.two.linked.lists/compare.two.linked.lists.js
+@@ -74,6 +74,16 @@ function printSinglyLinkedList(node, sep, ws) {
+  *
+  */
+ function CompareLists(llist1, llist2) {
++    var res = 1;
++    var n1 = llist1;
++    var n2 = llist2;
++    while (n1 && n2 && n1.data == n2.data) {
++        n1 = n1.next;
++        n2 = n2.next;
++    }
++    if (n1 || n2)
++        res = 0;
++    return res;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
