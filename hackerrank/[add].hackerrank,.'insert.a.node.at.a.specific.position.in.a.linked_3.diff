@@ -1,0 +1,39 @@
+From ce7e0eeb1c34d3a9a2e77d6ee44bbeab2535eced Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 2 Jul 2018 13:11:33 +0100
+Subject: [add] hackerrank, 'insert a node at a specific position in a linked
+ list', python port
+
+---
+ ...ode.at.a.specific.position.in.a.linked.list.py | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.at.a.specific.position.in.a.linked.list/insert.a.node.at.a.specific.position.in.a.linked.list.py b/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.at.a.specific.position.in.a.linked.list/insert.a.node.at.a.specific.position.in.a.linked.list.py
+index d0a042d..c6841b6 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.at.a.specific.position.in.a.linked.list/insert.a.node.at.a.specific.position.in.a.linked.list.py
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.at.a.specific.position.in.a.linked.list/insert.a.node.at.a.specific.position.in.a.linked.list.py
+@@ -47,6 +47,21 @@ def print_singly_linked_list(node, sep, fptr):
+ #
+ #
+ def insertNodeAtPosition(head, data, position):
++    node = SinglyLinkedListNode(data)
++    pos = 0
++    n = head
++    if position == 0:
++        node.next = n
++        head = node
++    else:
++        while pos < position - 1 and n.next != None:
++            n = n.next
++            pos += 1
++        if n.next != None:
++            node.next = n.next
++        n.next = node
++    return head
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
