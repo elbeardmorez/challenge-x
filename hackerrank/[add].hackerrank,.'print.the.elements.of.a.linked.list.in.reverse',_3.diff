@@ -1,0 +1,31 @@
+From 438ff6426a1b0fbc5f9863839b1b869d2f60a1b4 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 2 Jul 2018 13:54:51 +0100
+Subject: [add] hackerrank, 'print the elements of a linked list in reverse',
+ c# port
+
+---
+ .../print.the.elements.of.a.linked.list.in.reverse.cs      | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.print.the.elements.of.a.linked.list.in.reverse/print.the.elements.of.a.linked.list.in.reverse.cs b/hackerrank/data.structures.-.linked.lists.-.easy.-.print.the.elements.of.a.linked.list.in.reverse/print.the.elements.of.a.linked.list.in.reverse.cs
+index 2e82ec3..43705e6 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.print.the.elements.of.a.linked.list.in.reverse/print.the.elements.of.a.linked.list.in.reverse.cs
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.print.the.elements.of.a.linked.list.in.reverse/print.the.elements.of.a.linked.list.in.reverse.cs
+@@ -70,6 +70,13 @@ class Solution {
+      *
+      */
+     static void reversePrint(SinglyLinkedListNode head) {
++        var n = head;
++        var s = "";
++        while (n != null) {
++            s = n.data + "\n" + s;
++            n = n.next;
++        }
++        Console.WriteLine(s.Trim('\n'));
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
