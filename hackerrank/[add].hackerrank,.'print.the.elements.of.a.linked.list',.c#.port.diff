@@ -1,0 +1,28 @@
+From ea3d8375186d77bc8e5e80db6cd0a401f70d8067 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 2 Jul 2018 11:32:51 +0100
+Subject: [add] hackerrank, 'print the elements of a linked list', c# port
+
+---
+ .../print.the.elements.of.a.linked.list.cs                   | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.print.the.elements.of.a.linked.list/print.the.elements.of.a.linked.list.cs b/hackerrank/data.structures.-.linked.lists.-.easy.-.print.the.elements.of.a.linked.list/print.the.elements.of.a.linked.list.cs
+index 783db12..dca6df2 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.print.the.elements.of.a.linked.list/print.the.elements.of.a.linked.list.cs
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.print.the.elements.of.a.linked.list/print.the.elements.of.a.linked.list.cs
+@@ -58,6 +58,11 @@ class Solution {
+      *
+      */
+     static void printLinkedList(SinglyLinkedListNode head) {
++        var n = head;
++        while (n != null) {
++            Console.WriteLine(n.data);
++            n = n.next;
++        }
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
