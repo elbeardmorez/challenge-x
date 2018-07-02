@@ -1,0 +1,29 @@
+From 79a1e6d083d561d2140d7ed16c0c0c8a64e96ae5 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 2 Jul 2018 11:44:44 +0100
+Subject: [add] hackerrank, 'print the elements of a linked list', javascript
+ port
+
+---
+ .../print.the.elements.of.a.linked.list.js                   | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.print.the.elements.of.a.linked.list/print.the.elements.of.a.linked.list.js b/hackerrank/data.structures.-.linked.lists.-.easy.-.print.the.elements.of.a.linked.list/print.the.elements.of.a.linked.list.js
+index a2948a1..c7d2c94 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.print.the.elements.of.a.linked.list/print.the.elements.of.a.linked.list.js
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.print.the.elements.of.a.linked.list/print.the.elements.of.a.linked.list.js
+@@ -60,6 +60,11 @@ const SinglyLinkedList = class {
+  *
+  */
+ function printLinkedList(head) {
++    var n = head;
++    while (n != null) {
++        console.log(n.data);
++        n = n.next;
++    }
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
