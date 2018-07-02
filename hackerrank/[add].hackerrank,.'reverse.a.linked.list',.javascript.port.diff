@@ -1,0 +1,41 @@
+From 80d6dbebcd9660f547f632d9e7188347b3847340 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 2 Jul 2018 14:38:33 +0100
+Subject: [add] hackerrank, 'reverse a linked list', javascript port
+
+---
+ .../reverse.a.linked.list.js                   | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.reverse.a.linked.list/reverse.a.linked.list.js b/hackerrank/data.structures.-.linked.lists.-.easy.-.reverse.a.linked.list/reverse.a.linked.list.js
+index 015c090..b28fcd5 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.reverse.a.linked.list/reverse.a.linked.list.js
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.reverse.a.linked.list/reverse.a.linked.list.js
+@@ -74,6 +74,24 @@ function printSinglyLinkedList(node, sep, ws) {
+  *
+  */
+ function reverse(head) {
++    //console.log(`head: ${typeof(head.data)}`)
++    var s = []
++    var n = head;
++    while (n) {
++        s.unshift(n);
++        //console.log(`added n: '${n}', count: ${s.length}`);
++        n = n.next;
++    }
++    head = s.shift();
++    //console.log(`head: ${typeof(head)}`)
++    n = head;
++    while (s.length > 0) {
++        n.next = s.shift();
++        n = n.next;
++        //console.log(`count: ${s.length}`);
++    }
++    n.next = null;
++    return head;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
