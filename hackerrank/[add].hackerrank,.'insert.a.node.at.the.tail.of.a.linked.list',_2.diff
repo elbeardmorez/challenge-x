@@ -1,0 +1,33 @@
+From 54b2e871a3a961011caef41aede3f971419a2ed5 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 2 Jul 2018 12:14:03 +0100
+Subject: [add] hackerrank, 'insert a node at the tail of a linked list',
+ python port
+
+---
+ .../insert.a.node.at.the.tail.of.a.linked.list.py        | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.at.the.tail.of.a.linked.list/insert.a.node.at.the.tail.of.a.linked.list.py b/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.at.the.tail.of.a.linked.list/insert.a.node.at.the.tail.of.a.linked.list.py
+index f6421f8..e0e97f9 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.at.the.tail.of.a.linked.list/insert.a.node.at.the.tail.of.a.linked.list.py
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.at.the.tail.of.a.linked.list/insert.a.node.at.the.tail.of.a.linked.list.py
+@@ -35,6 +35,15 @@ def print_singly_linked_list(node, sep, fptr):
+ #
+ #
+ def insertNodeAtTail(head, data):
++    node = SinglyLinkedListNode(data)
++    if head == None:
++        return node
++    else:
++        n = head
++        while n.next:
++            n = n.next
++        n.next = node
++        return head
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
