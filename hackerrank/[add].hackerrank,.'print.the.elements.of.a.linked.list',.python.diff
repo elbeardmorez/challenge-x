@@ -1,0 +1,28 @@
+From 4fbd13d7c9e7da0ba870eb0d5f9224caf4571f85 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 2 Jul 2018 11:02:15 +0100
+Subject: [add] hackerrank, 'print the elements of a linked list', python
+ solution
+
+---
+ .../print.the.elements.of.a.linked.list.py                    | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.print.the.elements.of.a.linked.list/print.the.elements.of.a.linked.list.py b/hackerrank/data.structures.-.linked.lists.-.easy.-.print.the.elements.of.a.linked.list/print.the.elements.of.a.linked.list.py
+index 1ed526f..dc7c9c2 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.print.the.elements.of.a.linked.list/print.the.elements.of.a.linked.list.py
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.print.the.elements.of.a.linked.list/print.the.elements.of.a.linked.list.py
+@@ -38,6 +38,10 @@ class SinglyLinkedList:
+ #
+ #
+ def printLinkedList(head):
++    n = head;
++    while n != None:
++        print(n.data)
++        n = n.next
+ 
+ if __name__ == '__main__':
+     llist_count = int(input())
+-- 
+2.23.0
+
