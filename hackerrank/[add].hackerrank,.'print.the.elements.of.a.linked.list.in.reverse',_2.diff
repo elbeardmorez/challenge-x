@@ -1,0 +1,31 @@
+From cf4b308c8212937837812bb96782ef7199f3e484 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 2 Jul 2018 13:50:29 +0100
+Subject: [add] hackerrank, 'print the elements of a linked list in reverse',
+ javascript port
+
+---
+ .../print.the.elements.of.a.linked.list.in.reverse.js      | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.print.the.elements.of.a.linked.list.in.reverse/print.the.elements.of.a.linked.list.in.reverse.js b/hackerrank/data.structures.-.linked.lists.-.easy.-.print.the.elements.of.a.linked.list.in.reverse/print.the.elements.of.a.linked.list.in.reverse.js
+index 1293c0a..296c6cc 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.print.the.elements.of.a.linked.list.in.reverse/print.the.elements.of.a.linked.list.in.reverse.js
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.print.the.elements.of.a.linked.list.in.reverse/print.the.elements.of.a.linked.list.in.reverse.js
+@@ -72,6 +72,13 @@ function printSinglyLinkedList(node, sep) {
+  *
+  */
+ function reversePrint(head) {
++    var n = head;
++    var s = "";
++    while (n) {
++        s = n.data + '\n' + s;
++        n = n.next;
++    }
++    console.log(s.trim('\n'));
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
