@@ -1,0 +1,41 @@
+From 49fe32e7cbed2706277d0ffdcf6ee8ac11ee4667 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 2 Jul 2018 13:08:41 +0100
+Subject: [add] hackerrank, 'insert a node at a specific position in a linked
+ list', c# port
+
+---
+ ...e.at.a.specific.position.in.a.linked.list.js | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.at.a.specific.position.in.a.linked.list/insert.a.node.at.a.specific.position.in.a.linked.list.js b/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.at.a.specific.position.in.a.linked.list/insert.a.node.at.a.specific.position.in.a.linked.list.js
+index 6a0ee48..f5ac282 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.at.a.specific.position.in.a.linked.list/insert.a.node.at.a.specific.position.in.a.linked.list.js
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.at.a.specific.position.in.a.linked.list/insert.a.node.at.a.specific.position.in.a.linked.list.js
+@@ -74,6 +74,23 @@ function printSinglyLinkedList(node, sep, ws) {
+  *
+  */
+ function insertNodeAtPosition(head, data, position) {
++    var node = new SinglyLinkedListNode(data);
++    var pos = 0;
++    var n = head;
++    if (position == 0) {
++        node.next = n;
++        head = node;
++    }
++    else {
++        while (pos < position - 1 && n.next != null) {
++            n = n.next;
++            pos++;
++        }
++        if (n.next != null)
++            node.next = n.next;
++        n.next = node;
++    }
++    return head;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
