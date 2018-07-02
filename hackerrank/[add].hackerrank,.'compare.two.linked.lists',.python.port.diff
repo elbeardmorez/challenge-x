@@ -1,0 +1,32 @@
+From df8d83c8743f11337c81720b83f2cb90c3053996 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 2 Jul 2018 15:04:01 +0100
+Subject: [add] hackerrank, 'compare two linked lists', python port
+
+---
+ .../compare.two.linked.lists.py                          | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.compare.two.linked.lists/compare.two.linked.lists.py b/hackerrank/data.structures.-.linked.lists.-.easy.-.compare.two.linked.lists/compare.two.linked.lists.py
+index c96da06..baedafc 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.compare.two.linked.lists/compare.two.linked.lists.py
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.compare.two.linked.lists/compare.two.linked.lists.py
+@@ -44,6 +44,15 @@ def print_singly_linked_list(node, sep, fptr):
+ #
+ #
+ def compare_lists(llist1, llist2):
++    res = True
++    n1 = llist1
++    n2 = llist2
++    while n1 != None and n2 != None and n1.data == n2.data:
++        n1 = n1.next
++        n2 = n2.next
++    if n1 != None or n2 != None:
++        res = False
++    return res
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
