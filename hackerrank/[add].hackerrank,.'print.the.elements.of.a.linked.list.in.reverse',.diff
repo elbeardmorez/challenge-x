@@ -1,0 +1,30 @@
+From ec57d8e15527e648c5ac94ec29834d62d7a8051a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 2 Jul 2018 13:46:37 +0100
+Subject: [add] hackerrank, 'print the elements of a linked list in reverse',
+ python solution
+
+---
+ .../print.the.elements.of.a.linked.list.in.reverse.py       | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.print.the.elements.of.a.linked.list.in.reverse/print.the.elements.of.a.linked.list.in.reverse.py b/hackerrank/data.structures.-.linked.lists.-.easy.-.print.the.elements.of.a.linked.list.in.reverse/print.the.elements.of.a.linked.list.in.reverse.py
+index bcb7b7e..48d6ad8 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.print.the.elements.of.a.linked.list.in.reverse/print.the.elements.of.a.linked.list.in.reverse.py
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.print.the.elements.of.a.linked.list.in.reverse/print.the.elements.of.a.linked.list.in.reverse.py
+@@ -47,6 +47,12 @@ def print_singly_linked_list(node, sep):
+ #
+ #
+ def reversePrint(head):
++    n = head
++    s = ""
++    while n != None:
++        s = str(n.data) + '\n' + s
++        n = n.next
++    print(s.rstrip('\n'))
+ 
+ if __name__ == '__main__':
+     tests = int(input())
+-- 
+2.23.0
+
