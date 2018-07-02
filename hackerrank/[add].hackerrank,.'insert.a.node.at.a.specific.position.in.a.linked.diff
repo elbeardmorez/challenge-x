@@ -1,0 +1,41 @@
+From c5951f9d4cd335dda63a3672efcd1541412476f9 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 2 Jul 2018 13:05:49 +0100
+Subject: [add] hackerrank, 'insert a node at a specific position in a linked
+ list', c# solution
+
+---
+ ...e.at.a.specific.position.in.a.linked.list.cs | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.at.a.specific.position.in.a.linked.list/insert.a.node.at.a.specific.position.in.a.linked.list.cs b/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.at.a.specific.position.in.a.linked.list/insert.a.node.at.a.specific.position.in.a.linked.list.cs
+index d282a49..d74bb7c 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.at.a.specific.position.in.a.linked.list/insert.a.node.at.a.specific.position.in.a.linked.list.cs
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.at.a.specific.position.in.a.linked.list/insert.a.node.at.a.specific.position.in.a.linked.list.cs
+@@ -69,6 +69,23 @@ class Solution {
+      *
+      */
+     static SinglyLinkedListNode insertNodeAtPosition(SinglyLinkedListNode head, int data, int position) {
++        var node = new SinglyLinkedListNode(data);
++        var pos = 0;
++        var n = head;
++        if (position == 0) {
++            node.next = n;
++            head = node;
++        }
++        else {
++            while (pos < position - 1 && n.next != null) {
++                n = n.next;
++                pos++;
++            }
++            if (n.next != null)
++                node.next = n.next;
++            n.next = node;
++        }
++        return head;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
