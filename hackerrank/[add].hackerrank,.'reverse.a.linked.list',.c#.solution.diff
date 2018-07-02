@@ -1,0 +1,41 @@
+From 08d2fa53e41719c9e6a4f33ff4dbf3dd2ba347ec Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 2 Jul 2018 14:18:40 +0100
+Subject: [add] hackerrank, 'reverse a linked list', c# solution
+
+---
+ .../reverse.a.linked.list.cs                   | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.reverse.a.linked.list/reverse.a.linked.list.cs b/hackerrank/data.structures.-.linked.lists.-.easy.-.reverse.a.linked.list/reverse.a.linked.list.cs
+index 82588ac..491b891 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.reverse.a.linked.list/reverse.a.linked.list.cs
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.reverse.a.linked.list/reverse.a.linked.list.cs
+@@ -70,6 +70,24 @@ class Solution {
+      *
+      */
+     static SinglyLinkedListNode reverse(SinglyLinkedListNode head) {
++        var s = new Stack<SinglyLinkedListNode>();
++        //Console.WriteLine($"count: {s.Count}");
++
++        var n = head;
++        while (n != null) {
++            s.Push(n);
++            n = n.next;
++            //Console.WriteLine($"count: {s.Count}");
++        }
++        head = s.Pop();
++        n = head;
++        while (s.Count > 0) {
++            n.next = s.Pop();
++            n = n.next;
++            //Console.WriteLine($"count: {s.Count}");
++        }
++        n.next = null;
++        return head;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
