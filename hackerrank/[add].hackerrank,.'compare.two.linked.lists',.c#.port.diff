@@ -1,0 +1,33 @@
+From 4496b53dad2e3931b05044bb4accaae78d4f7bb0 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 2 Jul 2018 15:01:28 +0100
+Subject: [add] hackerrank, 'compare two linked lists', c# port
+
+---
+ .../compare.two.linked.lists.cs                        | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.compare.two.linked.lists/compare.two.linked.lists.cs b/hackerrank/data.structures.-.linked.lists.-.easy.-.compare.two.linked.lists/compare.two.linked.lists.cs
+index 25ba681..69f8405 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.compare.two.linked.lists/compare.two.linked.lists.cs
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.compare.two.linked.lists/compare.two.linked.lists.cs
+@@ -61,6 +61,16 @@ class Solution {
+      *
+      */
+     static bool CompareLists(SinglyLinkedListNode head1, SinglyLinkedListNode head2) {
++        var res = true;
++        var n1 = head1;
++        var n2 = head2;
++        while (n1 != null && n2 != null && n1.data == n2.data) {
++            n1 = n1.next;
++            n2 = n2.next;
++        }
++        if (n1 != null || n2 != null)
++            res = false;
++        return res;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
