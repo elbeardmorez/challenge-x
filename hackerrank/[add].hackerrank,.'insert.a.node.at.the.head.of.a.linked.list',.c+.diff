@@ -1,0 +1,27 @@
+From f53ed9f3576221aa6902439015133ef999882c8f Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 2 Jul 2018 12:29:23 +0100
+Subject: [add] hackerrank, 'insert a node at the head of a linked list', c+
+ solution
+
+---
+ .../insert.a.node.at.the.head.of.a.linked.list.cpp             | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.at.the.head.of.a.linked.list/insert.a.node.at.the.head.of.a.linked.list.cpp b/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.at.the.head.of.a.linked.list/insert.a.node.at.the.head.of.a.linked.list.cpp
+index e3b4b11..9b960ac 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.at.the.head.of.a.linked.list/insert.a.node.at.the.head.of.a.linked.list.cpp
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.at.the.head.of.a.linked.list/insert.a.node.at.the.head.of.a.linked.list.cpp
+@@ -58,6 +58,9 @@ void free_singly_linked_list(SinglyLinkedListNode* node) {
+  *
+  */
+ SinglyLinkedListNode* insertNodeAtHead(SinglyLinkedListNode* llist, int data) {
++    SinglyLinkedListNode* n = new SinglyLinkedListNode(data);
++    n->next = llist;
++    return n;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
