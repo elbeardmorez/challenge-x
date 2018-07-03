@@ -1,0 +1,40 @@
+From 0de71f4323dbbf458ea26338b19f06b6f327258e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 3 Jul 2018 11:58:14 +0100
+Subject: [add] hackerrank, 'find the merge point of two joined linked lists',
+ c# solution
+
+---
+ ...the.merge.point.of.two.joined.linked.lists.cs | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.find.the.merge.point.of.two.joined.linked.lists/find.the.merge.point.of.two.joined.linked.lists.cs b/hackerrank/data.structures.-.linked.lists.-.easy.-.find.the.merge.point.of.two.joined.linked.lists/find.the.merge.point.of.two.joined.linked.lists.cs
+index 1814f4f..8488702 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.find.the.merge.point.of.two.joined.linked.lists/find.the.merge.point.of.two.joined.linked.lists.cs
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.find.the.merge.point.of.two.joined.linked.lists/find.the.merge.point.of.two.joined.linked.lists.cs
+@@ -69,6 +69,22 @@ class Solution {
+      *
+      */
+     static int findMergeNode(SinglyLinkedListNode head1, SinglyLinkedListNode head2) {
++        var res = -1;
++        var n = head1;
++        var d = new Dictionary<SinglyLinkedListNode, int>();
++        while (n != null) {
++            d.Add(n, 1);
++            n = n.next;
++        }
++        n = head2;
++        while (n != null) {
++           if (d.ContainsKey(n)) {
++               res = n.data;
++               break;
++            }
++            n = n.next;
++        }
++        return res;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
