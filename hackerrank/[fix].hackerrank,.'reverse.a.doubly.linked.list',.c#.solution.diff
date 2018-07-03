@@ -1,0 +1,25 @@
+From c28c848d2892526b0e95daaa78a63281949026d0 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 3 Jul 2018 13:39:15 +0100
+Subject: [fix] hackerrank, 'reverse a doubly linked list', c# solution
+
+-set new prev null if current is null
+---
+ .../reverse.a.doubly.linked.list.cs                              | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.reverse.a.doubly.linked.list/reverse.a.doubly.linked.list.cs b/hackerrank/data.structures.-.linked.lists.-.easy.-.reverse.a.doubly.linked.list/reverse.a.doubly.linked.list.cs
+index 4c878f0..069857d 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.reverse.a.doubly.linked.list/reverse.a.doubly.linked.list.cs
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.reverse.a.doubly.linked.list/reverse.a.doubly.linked.list.cs
+@@ -98,6 +98,7 @@ class Solution {
+ 
+             // finalise
+             if (n == null)
++                n2.prev = null;
+                 head = n2;
+         }
+         return head;
+-- 
+2.23.0
+
