@@ -1,0 +1,65 @@
+From 04e1427011c8464bc8abb56b2f50f9854bb7b81d Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 3 Jul 2018 10:23:49 +0100
+Subject: [add] hackerrank, 'merge two sorted linked lists', python port
+
+---
+ .../merge.two.sorted.linked.lists.py          | 42 +++++++++++++++++++
+ 1 file changed, 42 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.merge.two.sorted.linked.lists/merge.two.sorted.linked.lists.py b/hackerrank/data.structures.-.linked.lists.-.easy.-.merge.two.sorted.linked.lists/merge.two.sorted.linked.lists.py
+index bf8d60d..fa37d22 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.merge.two.sorted.linked.lists/merge.two.sorted.linked.lists.py
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.merge.two.sorted.linked.lists/merge.two.sorted.linked.lists.py
+@@ -47,6 +47,48 @@ def print_singly_linked_list(node, sep, fptr):
+ #
+ #
+ def mergeLists(head1, head2):
++    n1 = head1;
++    n2 = head2;
++    head = None;
++    n = None;
++    while n1 != None or n2 != None:
++        # increment n1
++        while n1 != None:
++            #print("[n1] n: %s, n1: %s, n2: %s" %
++            #            ("x" if n == None else str(n.data),
++            #             "x" if n1 == None else str(n1.data),
++            #             "x" if n2 == None else str(n2.data)))
++            if n2 != None and n1.data > n2.data:
++                break
++            if n == None:
++                head = n1
++                n = n1
++            else:
++                n.next = n1
++                if n.next != None:
++                    n = n.next
++            n1 = n1.next
++
++        #print("%s" % (head))
++        # increment n2
++        while n2 != None:
++            #print("[n2] n: %s, n1: %s, n2: %s" %
++            #            ("x" if n == None else str(n.data),
++            #             "x" if n1 == None else str(n1.data),
++            #             "x" if n2 == None else str(n2.data)))
++            if n1 != None and n2.data > n1.data:
++                break
++            if n == None:
++                head = n2
++                n = n2
++            else:
++                n.next = n2
++                if n.next != None:
++                    n = n.next
++            n2 = n2.next
++        #print("%s" % (head))
++    n.next = None
++    return head
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
