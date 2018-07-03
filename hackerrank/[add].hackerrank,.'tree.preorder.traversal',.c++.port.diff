@@ -1,0 +1,46 @@
+From 5bc781eaa790f3e637de607d59ee55865c1decf6 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 3 Jul 2018 14:45:29 +0100
+Subject: [add] hackerrank, 'tree preorder traversal', c++ port
+
+---
+ .../tree.preorder.traversal.cpp               | 22 +++++++++++++++++++
+ 1 file changed, 22 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.trees.-.easy.-.tree.preorder.traversal/tree.preorder.traversal.cpp b/hackerrank/data.structures.-.trees.-.easy.-.tree.preorder.traversal/tree.preorder.traversal.cpp
+index eeb5c00..a80194e 100644
+--- a/hackerrank/data.structures.-.trees.-.easy.-.tree.preorder.traversal/tree.preorder.traversal.cpp
++++ b/hackerrank/data.structures.-.trees.-.easy.-.tree.preorder.traversal/tree.preorder.traversal.cpp
+@@ -51,7 +51,29 @@ class Node {
+ };
+ 
+ */
++
++    vector<int>* dump(Node* root) {
++        vector<int>* v = new vector<int>();
++        vector<int>* v2;
++        v->push_back(root->data);
++        if (root->left) {
++            v2 = dump(root->left);
++            v->insert(v->end(), v2->begin(), v2->end());
++        }
++        if (root->right) {
++            v2 = dump(root->right);
++            v->insert(v->end(), v2->begin(), v2->end());
++        }
++        return v;
++    }
++
+     void preOrder(Node *root) {
++        vector<int>* v = dump(root);
++        int* data = v->data();
++        for (int i = 0; i < v->size(); i++)
++            //cout << "[" << i << "] " << data[i] << " ";
++            cout << data[i] << " ";
++        cout << endl;
+     }
+ 
+ }; //End of Solution
+-- 
+2.23.0
+
