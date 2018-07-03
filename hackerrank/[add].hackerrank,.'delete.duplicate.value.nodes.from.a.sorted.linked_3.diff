@@ -1,0 +1,48 @@
+From 87e260b736a7bdcd1a90e9eefa03b08c0fc792ed Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 3 Jul 2018 11:12:29 +0100
+Subject: [add] hackerrank, 'delete duplicate value nodes from a sorted linked
+ list', c# port
+
+---
+ ...e.value.nodes.from.a.sorted.linked.list.cs | 24 +++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.delete.duplicate.value.nodes.from.a.sorted.linked.list/delete.duplicate.value.nodes.from.a.sorted.linked.list.cs b/hackerrank/data.structures.-.linked.lists.-.easy.-.delete.duplicate.value.nodes.from.a.sorted.linked.list/delete.duplicate.value.nodes.from.a.sorted.linked.list.cs
+index c39c41e..18b2072 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.delete.duplicate.value.nodes.from.a.sorted.linked.list/delete.duplicate.value.nodes.from.a.sorted.linked.list.cs
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.delete.duplicate.value.nodes.from.a.sorted.linked.list/delete.duplicate.value.nodes.from.a.sorted.linked.list.cs
+@@ -69,6 +69,30 @@ class Solution {
+      *
+      */
+     static SinglyLinkedListNode removeDuplicates(SinglyLinkedListNode head) {
++        // index the items, remove on existence in index
++        var n = head;
++        var d = new Dictionary<int, int>();
++        SinglyLinkedListNode last = null;
++        while (n != null) {
++            while (d.ContainsKey(n.data)) {
++                n = n.next;
++                if (n == null)
++                    break;
++            }
++            if (n == null)
++                break;
++            d.Add(n.data, 1);
++            if (last == null)
++                last = n;
++            else {
++                last.next = n;
++                if (last != null)
++                    last = last.next;
++            }
++            n = n.next;
++        }
++        last.next = null;
++        return head;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
