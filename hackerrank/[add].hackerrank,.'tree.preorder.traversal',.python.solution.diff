@@ -1,0 +1,33 @@
+From e523802fc5774e379d74b759dea679176801fa4c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 3 Jul 2018 14:21:15 +0100
+Subject: [add] hackerrank, 'tree preorder traversal', python solution
+
+---
+ .../tree.preorder.traversal.py                         | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.trees.-.easy.-.tree.preorder.traversal/tree.preorder.traversal.py b/hackerrank/data.structures.-.trees.-.easy.-.tree.preorder.traversal/tree.preorder.traversal.py
+index 24b66fc..e589fc0 100644
+--- a/hackerrank/data.structures.-.trees.-.easy.-.tree.preorder.traversal/tree.preorder.traversal.py
++++ b/hackerrank/data.structures.-.trees.-.easy.-.tree.preorder.traversal/tree.preorder.traversal.py
+@@ -42,6 +42,16 @@ self.info (the value of the node)
+ """
+ def preOrder(root):
+     #Write your code here
++    def dump(root):
++        values = [];
++        values.append(root.info)
++        if root.left:
++            values += dump(root.left)
++        if root.right:
++            values += dump(root.right)
++        return values
++
++    print(" ".join([str(x) for x in dump(root)]))
+ 
+ tree = BinarySearchTree()
+ t = int(input())
+-- 
+2.23.0
+
