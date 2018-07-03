@@ -1,0 +1,51 @@
+From 4fc43b334d7f98c25dd6714f5e1ddc74870dc781 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 3 Jul 2018 13:50:50 +0100
+Subject: [add] hackerrank, 'reverse a doubly linked list', python port
+
+---
+ .../reverse.a.doubly.linked.list.py           | 28 +++++++++++++++++++
+ 1 file changed, 28 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.reverse.a.doubly.linked.list/reverse.a.doubly.linked.list.py b/hackerrank/data.structures.-.linked.lists.-.easy.-.reverse.a.doubly.linked.list/reverse.a.doubly.linked.list.py
+index 6ac7162..695ab21 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.reverse.a.doubly.linked.list/reverse.a.doubly.linked.list.py
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.reverse.a.doubly.linked.list/reverse.a.doubly.linked.list.py
+@@ -50,6 +50,34 @@ def print_doubly_linked_list(node, sep, fptr):
+ #
+ #
+ def reverse(head):
++    n = head  # cycle forward with n
++    tail = head
++    n2 = tail  # mod next -> prev with n2
++    while n != None:
++
++        # hold positions
++        prev = n.prev;  # -1
++        next = n.next;  # +1
++
++        # update reversed
++        if n2 == tail:
++            n2.next = None
++            if next != None:
++                n2.prev = next
++                n2 = n2.prev
++        else:
++            n2.prev = n
++            n2 = n2.prev
++            n2.next = prev
++
++        # loop forward
++        n = next
++
++        # finalise
++        if n == None:
++            head = n2;
++
++    return head;
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
