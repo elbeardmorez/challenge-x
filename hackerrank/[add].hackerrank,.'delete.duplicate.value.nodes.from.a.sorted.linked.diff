@@ -1,0 +1,45 @@
+From 675903b1a71c2f321e041cc58f5c0b4806e1de99 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 3 Jul 2018 11:03:48 +0100
+Subject: [add] hackerrank, 'delete duplicate value nodes from a sorted linked
+ list', python port
+
+---
+ ...e.value.nodes.from.a.sorted.linked.list.py | 21 +++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.delete.duplicate.value.nodes.from.a.sorted.linked.list/delete.duplicate.value.nodes.from.a.sorted.linked.list.py b/hackerrank/data.structures.-.linked.lists.-.easy.-.delete.duplicate.value.nodes.from.a.sorted.linked.list/delete.duplicate.value.nodes.from.a.sorted.linked.list.py
+index 9a6b2d3..a844fca 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.delete.duplicate.value.nodes.from.a.sorted.linked.list/delete.duplicate.value.nodes.from.a.sorted.linked.list.py
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.delete.duplicate.value.nodes.from.a.sorted.linked.list/delete.duplicate.value.nodes.from.a.sorted.linked.list.py
+@@ -48,6 +48,27 @@ def print_singly_linked_list(node, sep, fptr):
+ #
+ #
+ def removeDuplicates(head):
++    # index the items, remove on existence in index
++    n = head
++    d = {}
++    last = None
++    while n != None:
++        while n.data in d:
++            n = n.next
++            if n == None:
++                break
++        if n == None:
++            break
++        d[n.data] = 1
++        if last == None:
++            last = n
++        else:
++            last.next = n
++            if last != None:
++                last = last.next
++        n = n.next
++    last.next = None
++    return head
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
