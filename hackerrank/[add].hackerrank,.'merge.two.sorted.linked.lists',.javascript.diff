@@ -1,0 +1,70 @@
+From 4d804bd41e7f843cf48def1aa16443ad4081a885 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 3 Jul 2018 09:48:53 +0100
+Subject: [add] hackerrank, 'merge two sorted linked lists', javascript
+ solution
+
+---
+ .../merge.two.sorted.linked.lists.js          | 46 +++++++++++++++++++
+ 1 file changed, 46 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.merge.two.sorted.linked.lists/merge.two.sorted.linked.lists.js b/hackerrank/data.structures.-.linked.lists.-.easy.-.merge.two.sorted.linked.lists/merge.two.sorted.linked.lists.js
+index 5e4d7ac..2088059 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.merge.two.sorted.linked.lists/merge.two.sorted.linked.lists.js
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.merge.two.sorted.linked.lists/merge.two.sorted.linked.lists.js
+@@ -74,6 +74,52 @@ function printSinglyLinkedList(node, sep, ws) {
+  *
+  */
+ function mergeLists(head1, head2) {
++    var n1 = head1;
++    var n2 = head2;
++    var head = null;
++    var n = null;
++    while (n1 != null || n2 != null) {
++        // increment n1
++        while (n1 != null) {
++            //console.log("[n1], n: %j, n1: %j, n2: %j",
++            //            n == null ? "x" : n.data,
++            //            n1 == null ? "x" : n1.data,
++            //            n2 == null ? "x" : n2.data);
++            if (n2 != null && n1.data > n2.data)
++                break;
++            if (n == null) {
++                head = n1;
++                n = n1;
++            } else {
++                n.next = n1;
++                if (n.next != null)
++                    n = n.next;
++            }
++            n1 = n1.next;
++        }
++        //console.log("n %j", head);
++        // increment n2
++        while (n2 != null) {
++            //console.log("[n2] n: %j, n1: %j, n2: %j",
++            //            n == null ? "x" : n.data,
++            //            n1 == null ? "x" : n1.data,
++            //            n2 == null ? "x" : n2.data);
++            if (n1 != null && n2.data > n1.data)
++                break;
++            if (n == null) {
++                head = n2;
++                n = n2;
++            } else {
++                n.next = n2;
++                if (n.next != null)
++                    n = n.next;
++            }
++            n2 = n2.next;
++        }
++        //console.log("n %j", head);
++    }
++    n.next = null;
++    return head;
+ }
+ 
+ 
+-- 
+2.23.0
+
