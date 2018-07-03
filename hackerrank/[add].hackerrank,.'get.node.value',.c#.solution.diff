@@ -1,0 +1,35 @@
+From b85c3f07dbd85028e4047ae08f7ce5c9b3ff3d26 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 3 Jul 2018 10:42:19 +0100
+Subject: [add] hackerrank, 'get node value', c# solution
+
+---
+ .../get.node.value.cs                                | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.get.node.value/get.node.value.cs b/hackerrank/data.structures.-.linked.lists.-.easy.-.get.node.value/get.node.value.cs
+index 4192363..89c0f1e 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.get.node.value/get.node.value.cs
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.get.node.value/get.node.value.cs
+@@ -70,6 +70,18 @@ class Solution {
+      *
+      */
+     static int getNode(SinglyLinkedListNode head, int positionFromTail) {
++        // index the linked list
++        var d = new Dictionary<int, int>();
++        var n = head;
++        var i = 0;
++        while (n != null) {
++            d.Add(i, n.data);
++            n = n.next;
++            i++;
++        }
++        //foreach(var kvp in d)
++        //    Console.WriteLine($"key: {kvp.Key}, value: {kvp.Value}");
++        return d[i - positionFromTail - 1];
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
