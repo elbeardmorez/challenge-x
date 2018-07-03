@@ -1,0 +1,48 @@
+From 2fe8725fb58e0215e86c8da6f96d64bf92dd21d2 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 3 Jul 2018 11:09:32 +0100
+Subject: [add] hackerrank, 'delete duplicate value nodes from a sorted linked
+ list', javascript port
+
+---
+ ...e.value.nodes.from.a.sorted.linked.list.js | 24 +++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.delete.duplicate.value.nodes.from.a.sorted.linked.list/delete.duplicate.value.nodes.from.a.sorted.linked.list.js b/hackerrank/data.structures.-.linked.lists.-.easy.-.delete.duplicate.value.nodes.from.a.sorted.linked.list/delete.duplicate.value.nodes.from.a.sorted.linked.list.js
+index 63ce0d7..3fdf614 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.delete.duplicate.value.nodes.from.a.sorted.linked.list/delete.duplicate.value.nodes.from.a.sorted.linked.list.js
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.delete.duplicate.value.nodes.from.a.sorted.linked.list/delete.duplicate.value.nodes.from.a.sorted.linked.list.js
+@@ -74,6 +74,30 @@ function printSinglyLinkedList(node, sep, ws) {
+  *
+  */
+ function removeDuplicates(head) {
++    // index the items, remove on existence in index
++    var n = head;
++    var d = {};
++    var last = null;
++    while (n != null) {
++        while (n.data in d) {
++            n = n.next;
++            if (n == null)
++                break;
++        }
++        if (n == null)
++            break;
++        d[n.data] = 1;
++        if (last == null)
++            last = n;
++        else {
++            last.next = n;
++            if (last != null)
++                last = last.next;
++        }
++        n = n.next;
++    }
++    last.next = null;
++    return head;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
