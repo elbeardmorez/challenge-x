@@ -1,0 +1,40 @@
+From 78c41c47b56d5df88e300420cbcf03d9a666a1b8 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 3 Jul 2018 12:33:24 +0100
+Subject: [add] hackerrank, 'insert a node into a sorted doubly linked list',
+ javascript port
+
+---
+ ...rt.a.node.into.a.sorted.doubly.linked.list.js | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.into.a.sorted.doubly.linked.list/insert.a.node.into.a.sorted.doubly.linked.list.js b/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.into.a.sorted.doubly.linked.list/insert.a.node.into.a.sorted.doubly.linked.list.js
+index 73797ae..111958f 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.into.a.sorted.doubly.linked.list/insert.a.node.into.a.sorted.doubly.linked.list.js
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.into.a.sorted.doubly.linked.list/insert.a.node.into.a.sorted.doubly.linked.list.js
+@@ -74,6 +74,22 @@ class Solution {
+      *
+      */
+     static DoublyLinkedListNode sortedInsert(DoublyLinkedListNode head, int data) {
++        var node = new DoublyLinkedListNode(data);
++        var n = head;
++        if (data < n.data) {
++            // insert head
++            head = node;
++            node.next = n;
++        } else {
++            while (n.next != null && n.next.data < data)
++                n = n.next;
++            // insert after
++            node.next = n.next;
++            if (node.next != null)
++                node.next.prev = node;
++            n.next = node;
++        }
++        return head;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
