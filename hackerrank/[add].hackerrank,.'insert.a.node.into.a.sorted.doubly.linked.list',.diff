@@ -1,0 +1,40 @@
+From 0fae9de708b8aa0cd10f4c26c5e38ca48e29cae4 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 3 Jul 2018 12:25:26 +0100
+Subject: [add] hackerrank, 'insert a node into a sorted doubly linked list',
+ python solution
+
+---
+ ...rt.a.node.into.a.sorted.doubly.linked.list.py | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.into.a.sorted.doubly.linked.list/insert.a.node.into.a.sorted.doubly.linked.list.py b/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.into.a.sorted.doubly.linked.list/insert.a.node.into.a.sorted.doubly.linked.list.py
+index e3263e1..171bdb1 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.into.a.sorted.doubly.linked.list/insert.a.node.into.a.sorted.doubly.linked.list.py
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.insert.a.node.into.a.sorted.doubly.linked.list/insert.a.node.into.a.sorted.doubly.linked.list.py
+@@ -50,6 +50,22 @@ def print_doubly_linked_list(node, sep, fptr):
+ #
+ #
+ def sortedInsert(head, data):
++    node = DoublyLinkedListNode(data)
++    n = head;
++    while n.next != None and n.next.data < data:
++        n = n.next
++
++    if n.prev == None:
++        # insert head
++        head = node
++        node.next = n
++    else:
++        # insert after
++        node.next = n.next
++        if node.next != None:
++            node.next.prev = node
++        n.next = node
++    return head
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
