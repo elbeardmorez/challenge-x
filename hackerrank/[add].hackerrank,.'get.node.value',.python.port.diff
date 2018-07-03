@@ -1,0 +1,35 @@
+From 1c4295c7303f8a2b702cd38aa270bd52621fe072 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 3 Jul 2018 10:50:39 +0100
+Subject: [add] hackerrank, 'get node value', python port
+
+---
+ .../get.node.value.py                                | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.get.node.value/get.node.value.py b/hackerrank/data.structures.-.linked.lists.-.easy.-.get.node.value/get.node.value.py
+index c75f0ee..dece6ed 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.get.node.value/get.node.value.py
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.get.node.value/get.node.value.py
+@@ -47,6 +47,18 @@ def print_singly_linked_list(node, sep, fptr):
+ #
+ #
+ def getNode(head, positionFromTail):
++    # index the linked list
++    d = {}
++    n = head
++    i = 0
++    while n != None:
++        d[i] = n.data
++        n = n.next
++        i += 1
++    #for k, v in d.items():
++    #    print("key: %d, value: %d" % (k, v))
++
++    return d[i - positionFromTail - 1]
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
