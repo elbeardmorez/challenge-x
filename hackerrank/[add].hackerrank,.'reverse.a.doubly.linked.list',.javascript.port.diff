@@ -1,0 +1,53 @@
+From 5397d6556333fc543ffc3bcd50090e3904f44351 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 3 Jul 2018 13:45:46 +0100
+Subject: [add] hackerrank, 'reverse a doubly linked list', javascript port
+
+---
+ .../reverse.a.doubly.linked.list.js           | 30 +++++++++++++++++++
+ 1 file changed, 30 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.reverse.a.doubly.linked.list/reverse.a.doubly.linked.list.js b/hackerrank/data.structures.-.linked.lists.-.easy.-.reverse.a.doubly.linked.list/reverse.a.doubly.linked.list.js
+index d091d72..3bed8e2 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.reverse.a.doubly.linked.list/reverse.a.doubly.linked.list.js
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.reverse.a.doubly.linked.list/reverse.a.doubly.linked.list.js
+@@ -77,6 +77,36 @@ function printDoublyLinkedList(node, sep, ws) {
+  *
+  */
+ function reverse(head) {
++    var n = head; // cycle forward with n
++    var tail = head;
++    var n2 = tail; // mod next -> prev with n2
++    while (n != null) {
++
++        // hold positions
++        var prev = n.prev; // -1
++        var next = n.next; // +1
++
++        // update reversed
++        if (n2 == tail) {
++            n2.next = null;
++            if (next != null) {
++                n2.prev = next;
++                n2 = n2.prev;
++            }
++        } else {
++            n2.prev = n;
++            n2 = n2.prev;
++            n2.next = prev;
++        }
++
++        // loop forward
++        n = next;
++
++        // finalise
++        if (n == null)
++            head = n2;
++    }
++    return head;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
