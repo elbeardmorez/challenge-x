@@ -1,0 +1,70 @@
+From a5dbcc37e4ee01fbefe63be70f72f9b707b72a21 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 3 Jul 2018 10:15:35 +0100
+Subject: [add] hackerrank, 'merge two sorted linked lists', c# port
+
+---
+ .../merge.two.sorted.linked.lists.cs          | 47 +++++++++++++++++++
+ 1 file changed, 47 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.merge.two.sorted.linked.lists/merge.two.sorted.linked.lists.cs b/hackerrank/data.structures.-.linked.lists.-.easy.-.merge.two.sorted.linked.lists/merge.two.sorted.linked.lists.cs
+index eae7ac9..3616d36 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.merge.two.sorted.linked.lists/merge.two.sorted.linked.lists.cs
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.merge.two.sorted.linked.lists/merge.two.sorted.linked.lists.cs
+@@ -83,6 +83,53 @@ class Solution {
+      *
+      */
+     static SinglyLinkedListNode mergeLists(SinglyLinkedListNode head1, SinglyLinkedListNode head2) {
++        var n1 = head1;
++        var n2 = head2;
++        SinglyLinkedListNode head = null;
++        SinglyLinkedListNode n = null;
++        while (n1 != null || n2 != null) {
++            // increment n1
++            while (n1 != null) {
++                //Console.WriteLine("[n1] n: {0}, n1: {1}, n2: {2}",
++                //            n == null ? "x" : n.data.ToString(),
++                //            n1 == null ? "x" : n1.data.ToString(),
++                //            n2 == null ? "x" : n2.data.ToString());
++                if (n2 != null && n1.data > n2.data)
++                    break;
++                if (n == null) {
++                    head = n1;
++                    n = n1;
++                } else {
++                    n.next = n1;
++                    if (n.next != null)
++                        n = n.next;
++                }
++                n1 = n1.next;
++            }
++
++            //Console.WriteLine($"{dumpNodes(head)}");
++            // increment n2
++            while (n2 != null) {
++                //Console.WriteLine("[n2] n: {0}, n1: {1}, n2: {2}",
++                //            n == null ? "x" : n.data.ToString(),
++                //            n1 == null ? "x" : n1.data.ToString(),
++                //            n2 == null ? "x" : n2.data.ToString());
++                if (n1 != null && n2.data > n1.data)
++                    break;
++                if (n == null) {
++                    head = n2;
++                    n = n2;
++                } else {
++                    n.next = n2;
++                    if (n.next != null)
++                        n = n.next;
++                }
++                n2 = n2.next;
++            }
++            //Console.WriteLine($"{dumpNodes(head)}");
++        }
++        n.next = null;
++        return head;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
