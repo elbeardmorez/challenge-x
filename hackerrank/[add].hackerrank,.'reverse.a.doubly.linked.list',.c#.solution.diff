@@ -1,0 +1,51 @@
+From 7e33515e22442d230ca69be54b50375d486de194 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 3 Jul 2018 13:38:41 +0100
+Subject: [add] hackerrank, 'reverse a doubly linked list', c# solution
+
+---
+ .../reverse.a.doubly.linked.list.cs           | 28 +++++++++++++++++++
+ 1 file changed, 28 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.reverse.a.doubly.linked.list/reverse.a.doubly.linked.list.cs b/hackerrank/data.structures.-.linked.lists.-.easy.-.reverse.a.doubly.linked.list/reverse.a.doubly.linked.list.cs
+index 4e970f5..4c878f0 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.reverse.a.doubly.linked.list/reverse.a.doubly.linked.list.cs
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.reverse.a.doubly.linked.list/reverse.a.doubly.linked.list.cs
+@@ -73,6 +73,34 @@ class Solution {
+      *
+      */
+     static DoublyLinkedListNode reverse(DoublyLinkedListNode head) {
++        var n = head; // cycle forward with n
++        var tail = head;
++        DoublyLinkedListNode n2 = tail; // mod next -> prev with n2
++        while (n != null) {
++
++            // hold positions
++            var prev = n.prev; // -1
++            var next = n.next; // +1
++
++            // update reversed
++            if (n2 == tail) {
++                n2.next = null;
++                n2.prev = next;
++                n2 = n2.prev;
++            } else {
++                n2.prev = n;
++                n2 = n2.prev;
++                n2.next = prev;
++            }
++
++            // loop forward
++            n = next;
++
++            // finalise
++            if (n == null)
++                head = n2;
++        }
++        return head;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
