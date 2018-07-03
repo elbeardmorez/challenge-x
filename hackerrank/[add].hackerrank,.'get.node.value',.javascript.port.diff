@@ -1,0 +1,36 @@
+From be92c5d89e54189a6dfbe8c8a99a79ee1c402c52 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 3 Jul 2018 10:47:48 +0100
+Subject: [add] hackerrank, 'get node value', javascript port
+
+---
+ .../get.node.value.js                               | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.get.node.value/get.node.value.js b/hackerrank/data.structures.-.linked.lists.-.easy.-.get.node.value/get.node.value.js
+index 897545c..ff62aac 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.get.node.value/get.node.value.js
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.get.node.value/get.node.value.js
+@@ -74,6 +74,19 @@ function printSinglyLinkedList(node, sep, ws) {
+  *
+  */
+ function getNode(head, positionFromTail) {
++    // index the linked list
++    var d = {};
++    var n = head;
++    var i = 0;
++    while (n != null) {
++        d[i] = n.data;
++        n = n.next;
++        i++;
++    }
++    //Object.keys(d).forEach((k) => {
++    //    console.log(`key: ${k}, value: ${d[k]}`);
++    //});
++    return d[i - positionFromTail - 1];
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
