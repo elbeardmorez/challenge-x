@@ -1,0 +1,47 @@
+From f7c55fb5f66cb7fcf2e62f6c137def087ce9815c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 4 Jul 2018 10:29:20 +0100
+Subject: [add] hackerrank, 'tree top view', c++ solution
+
+---
+ .../tree.top.view.cpp                         | 22 ++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/data.structures.-.trees.-.easy.-.tree.top.view/tree.top.view.cpp b/hackerrank/data.structures.-.trees.-.easy.-.tree.top.view/tree.top.view.cpp
+index e9a8389..479b1e5 100644
+--- a/hackerrank/data.structures.-.trees.-.easy.-.tree.top.view/tree.top.view.cpp
++++ b/hackerrank/data.structures.-.trees.-.easy.-.tree.top.view/tree.top.view.cpp
+@@ -47,9 +47,29 @@ class Node {
+ };
+ 
+ */
+-    void topView(Node * root) {
++    vector<int>* dump_top(Node* root, int direction) {
++        vector<int>* v = new vector<int>();
++        vector<int>* v2;
++        v->push_back(root->data);
++        if (root->left && direction <= 0) {
++            v2 = dump_top(root->left, -1);
++            v->insert(v->end(), v2->begin(), v2->end());
++        }
++        if (root->right && direction >= 0) {
++            v2 = dump_top(root->right, 1);
++            v->insert(v->end(), v2->begin(), v2->end());
++        }
++        return v;
+     }
+ 
++    void topView(Node * root) {
++        vector<int>* v = dump_top(root, 0);
++        int* data = v->data();
++        for (int i = 0; i < v->size(); i++)
++            //cout << "[" << i << "] " << data[i] << " ";
++            cout << data[i] << " ";
++        cout << endl;
++    }
+ }; //End of Solution
+ 
+ int main() {
+-- 
+2.23.0
+
