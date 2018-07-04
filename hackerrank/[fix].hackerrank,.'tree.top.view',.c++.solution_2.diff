@@ -1,0 +1,130 @@
+From 2135f5c2ef65f49252d47e98d9b648dbf4163152 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 4 Jul 2018 14:18:39 +0100
+Subject: [fix] hackerrank, 'tree top view', c++ solution
+
+-decisions based on state of the vector required during recursion, so
+pass vector itself as an argument
+---
+ .../tree.top.view.cpp                         | 67 ++++++++++++++-----
+ 1 file changed, 50 insertions(+), 17 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.trees.-.easy.-.tree.top.view/tree.top.view.cpp b/hackerrank/data.structures.-.trees.-.easy.-.tree.top.view/tree.top.view.cpp
+index b620c1b..2c0d3a5 100644
+--- a/hackerrank/data.structures.-.trees.-.easy.-.tree.top.view/tree.top.view.cpp
++++ b/hackerrank/data.structures.-.trees.-.easy.-.tree.top.view/tree.top.view.cpp
+@@ -47,61 +47,94 @@ class Node {
+ };
+ 
+ */
+-    vector<int>* dump_top(Node* root, int direction, int* pos, int* max_left, int* max_right) {
+-        vector<int>* v = new vector<int>();
+-        vector<int>* v2;
+-
++    vector<int>* dump_top(Node* root, vector<int>* v, int direction, int* pos, int* max_left, int* max_right) {
+         bool add = false;
+         // record tree position
++        //cout << "pos: " << *pos << ", direction: " << direction << endl;
++        vector<int>* v2 = NULL;
+         if (direction == -1 && *pos < *max_left) {
+             *max_left = *pos;
++            //cout << "node: " << root->data << ", max left set: " << *max_left << endl;
+             add = true;
+         } else if (direction == 1 && *pos > *max_right) {
+             *max_right = *pos;
++            //cout << "node: " << root->data << ", max right set: " << *max_right << endl;
+             add = true;
+         }
+ 
+         // look in upper left branches first
+         if (root->left && direction <= 0) {
+             (*pos)--;
+-            v2 = dump_top(root->left, -1, pos, max_left, max_right);
+-            v->insert(v->end(), v2->begin(), v2->end());
++            v2 = dump_top(root->left, v, -1, pos, max_left, max_right);
+             (*pos)++;
++            if (v2 != NULL && v2->size() > 0) {
++                // prepend protruding branch
++                //for (int i = 0; i < v2->size(); i++)
++                    //cout << "emplacing: " << v2->at(i) << endl;
++                for (int i = 0; i < v->size(); i++)
++                    v2->insert(v2->end(), v->begin(), v->end());
++                *v = *v2;
++            }
+         }
++
+         // look in lower branches that protrude the width of those above
+-        if (root->right && direction < 0) {
++        if (root->right && direction <= 0) {
+             (*pos)++;
+-            v2 = dump_top(root->right, -1, pos, max_left, max_right);
+-            v->insert(v->end(), v2->begin(), v2->end());
++            v2 = dump_top(root->right, v, -1, pos, max_left, max_right);
++            if (v2 != NULL && v2->size() > 0) {
++                // prepend protruding branch
++                //for (int i = 0; i < v2->size(); i++)
++                    //cout << "emplacing: " << v2->at(i) << endl;
++                for (int i = 0; i < v->size(); i++)
++                    v2->insert(v2->end(), v->begin(), v->end());
++                *v = *v2;
++            }
+             (*pos)--;
+         }
+ 
+         // add current node?
+-        if (direction == 0 || add)
++        if (direction == 0 || add) {
++            //cout << "pushing: " << root->data << endl;
+             v->push_back(root->data);
++        }
+ 
+         // look in upper right branches first
+         if (root->right && direction >= 0) {
+             (*pos)++;
+-            v2 = dump_top(root->right, 1, pos, max_left, max_right);
+-            v->insert(v->end(), v2->begin(), v2->end());
++            v2 = dump_top(root->right, v, 1, pos, max_left, max_right);
+             (*pos)--;
++            if (v2 != NULL && v2->size() > 0) {
++                // append protruding branch
++                for (int i = 0; i < v2->size(); i++) {
++                    //cout << "pushing: " << v2->at(i) << endl;
++                    v2->insert(v->end(), v2->begin(), v2->end());
++                }
++            }
+         }
++
+         // look in lower branches that protrude the width of those above
+-        if (root->left && direction > 0) {
++        if (root->left and direction >= 0) {
+             (*pos)--;
+-            v2 = dump_top(root->left, 1, pos, max_left, max_right);
+-            v->insert(v->end(), v2->begin(), v2->end());
++            v2 = dump_top(root->left, v, 1, pos, max_left, max_right);
+             (*pos)++;
++            if (v2 != NULL && v2->size() > 0) {
++                // append protruding branch
++                for (int i = 0; i < v2->size(); i++) {
++                    //cout << "pushing: " << v2->at(i) << endl;
++                    v2->insert(v->end(), v2->begin(), v2->end());
++                }
++            }
+         }
+-        return v;
++
++        return v2;
+     }
+ 
+     void topView(Node * root) {
+         int pos = 0;
+         int max_left = 0;
+         int max_right = 0;
+-        vector<int>* v = dump_top(root, 0, &pos, &max_left, &max_right);
++        vector<int>* v = new vector<int>();
++        dump_top(root, v, 0, &pos, &max_left, &max_right);
+         int* data = v->data();
+         for (int i = 0; i < v->size(); i++)
+             //cout << "[" << i << "] " << data[i] << " ";
+-- 
+2.23.0
+
