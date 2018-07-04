@@ -1,0 +1,45 @@
+From 515106b5d1add5e9437969e68011313e5f483518 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 4 Jul 2018 08:57:20 +0100
+Subject: [add] hackerrank, 'tree height of a binary tree', c++ solution
+
+---
+ .../tree.height.of.a.binary.tree.cpp          | 20 +++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.trees.-.easy.-.tree.height.of.a.binary.tree/tree.height.of.a.binary.tree.cpp b/hackerrank/data.structures.-.trees.-.easy.-.tree.height.of.a.binary.tree/tree.height.of.a.binary.tree.cpp
+index 6c7b718..a28a5f5 100644
+--- a/hackerrank/data.structures.-.trees.-.easy.-.tree.height.of.a.binary.tree/tree.height.of.a.binary.tree.cpp
++++ b/hackerrank/data.structures.-.trees.-.easy.-.tree.height.of.a.binary.tree/tree.height.of.a.binary.tree.cpp
+@@ -42,8 +42,28 @@ class Node {
+ };
+ 
+ */
++    void search(Node* root, int* level, int* max) {
++        if (*level > *max)
++            *max = *level;
++        if (root->left) {
++            (*level)++;
++            search(root->left, level, max);
++            (*level)--;
++        }
++        if (root->right) {
++            (*level)++;
++            search(root->right, level, max);
++            (*level)--;
++        }
++        return;
++    }
++
+     int height(Node* root) {
+         // Write your code here.
++        int max = 0;
++        int level = 01;
++        search(root, &level, &max);
++        return max;
+     }
+ 
+ }; //End of Solution
+-- 
+2.23.0
+
