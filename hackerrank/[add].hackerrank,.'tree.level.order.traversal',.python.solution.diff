@@ -1,0 +1,39 @@
+From d99dd46b3bff10421fcd99da3b0f3d4724f987ca Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 4 Jul 2018 17:05:04 +0100
+Subject: [add] hackerrank, 'tree level order traversal', python solution
+
+---
+ .../tree.level.order.traversal.py                | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.trees.-.easy.-.tree.level.order.traversal/tree.level.order.traversal.py b/hackerrank/data.structures.-.trees.-.easy.-.tree.level.order.traversal/tree.level.order.traversal.py
+index 105122d..539e9df 100644
+--- a/hackerrank/data.structures.-.trees.-.easy.-.tree.level.order.traversal/tree.level.order.traversal.py
++++ b/hackerrank/data.structures.-.trees.-.easy.-.tree.level.order.traversal/tree.level.order.traversal.py
+@@ -42,6 +42,22 @@ self.info (the value of the node)
+ """
+ def levelOrder(root):
+     #Write your code here
++    def search(n, level, levels):
++        if not level in levels:
++            levels[level] = []
++        levels[level].append(n.info)
++        if n.left:
++            level += 1
++            search(n.left, level, levels)
++            level -= 1
++        if n.right:
++            level += 1
++            search(n.right, level, levels)
++            level -= 1
++
++    levels = {}
++    search(root, 0, levels)
++    print(" ".join(" ".join([str(x) for x in levels[idx]]) for idx in range(len(levels.keys()))))
+ 
+ 
+ tree = BinarySearchTree()
+-- 
+2.23.0
+
