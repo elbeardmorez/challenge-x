@@ -1,0 +1,65 @@
+From cdeab7386af161deae90c2a3689d9fc704ae4ffd Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 4 Jul 2018 08:27:11 +0100
+Subject: [add] hackerrank, 'tree postorder traversal', python solution
+
+---
+ .../tree.postorder.traversal.py               | 24 +++++++++----------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.trees.-.easy.-.tree.postorder.traversal/tree.postorder.traversal.py b/hackerrank/data.structures.-.trees.-.easy.-.tree.postorder.traversal/tree.postorder.traversal.py
+index f74a097..e7133fc 100644
+--- a/hackerrank/data.structures.-.trees.-.easy.-.tree.postorder.traversal/tree.postorder.traversal.py
++++ b/hackerrank/data.structures.-.trees.-.easy.-.tree.postorder.traversal/tree.postorder.traversal.py
+@@ -1,23 +1,23 @@
+ class Node:
+-    def __init__(self, info): 
+-        self.info = info  
+-        self.left = None  
+-        self.right = None 
+-        self.level = None 
++    def __init__(self, info):
++        self.info = info
++        self.left = None
++        self.right = None
++        self.level = None
+ 
+     def __str__(self):
+-        return str(self.info) 
++        return str(self.info)
+ 
+ class BinarySearchTree:
+-    def __init__(self): 
++    def __init__(self):
+         self.root = None
+ 
+-    def create(self, val):  
++    def create(self, val):
+         if self.root == None:
+             self.root = Node(val)
+         else:
+             current = self.root
+-         
++
+             while True:
+                 if val < current.info:
+                     if current.left:
+@@ -45,12 +45,12 @@ def postOrder(root):
+     def dump(root):
+         values = [];
+         if root.left:
+-            values += dump(root.left)        
++            values += dump(root.left)
+         if root.right:
+             values += dump(root.right)
+         values.append(root.info)
+-        return values        
+-    
++        return values
++
+     print(" ".join([str(x) for x in dump(root)]))
+ 
+ 
+-- 
+2.23.0
+
