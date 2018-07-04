@@ -1,0 +1,32 @@
+From 075d6b96ea0483a44dad3047063774daf5ab83e1 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 4 Jul 2018 09:03:40 +0100
+Subject: [add] hackerrank, 'tree height of a binary tree', python port
+
+---
+ .../tree.height.of.a.binary.tree.py                      | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.trees.-.easy.-.tree.height.of.a.binary.tree/tree.height.of.a.binary.tree.py b/hackerrank/data.structures.-.trees.-.easy.-.tree.height.of.a.binary.tree/tree.height.of.a.binary.tree.py
+index 490cac2..e9c0cfd 100644
+--- a/hackerrank/data.structures.-.trees.-.easy.-.tree.height.of.a.binary.tree/tree.height.of.a.binary.tree.py
++++ b/hackerrank/data.structures.-.trees.-.easy.-.tree.height.of.a.binary.tree/tree.height.of.a.binary.tree.py
+@@ -46,6 +46,15 @@ class Node:
+        // this is a node of the tree , which contains info as data, left , right
+ '''
+ def height(root):
++    def search(root, level, max):
++        if level > max:
++            max = level
++        if root.left:
++            max = search(root.left, level + 1, max)
++        if root.right:
++            max = search(root.right, level + 1, max)
++        return max
++    return search(root, 0, 0)
+ 
+ tree = BinarySearchTree()
+ t = int(input())
+-- 
+2.23.0
+
