@@ -1,0 +1,45 @@
+From e5d93fd5300b3b3adbadcfb7f3198cf04338c9ca Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 4 Jul 2018 08:45:04 +0100
+Subject: [add] hackerrank, 'tree inorder traversal', c++ port
+
+---
+ .../tree.inorder.traversal.cpp                | 21 +++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.trees.-.easy.-.tree.inorder.traversal/tree.inorder.traversal.cpp b/hackerrank/data.structures.-.trees.-.easy.-.tree.inorder.traversal/tree.inorder.traversal.cpp
+index ca5d271..b04e5e4 100644
+--- a/hackerrank/data.structures.-.trees.-.easy.-.tree.inorder.traversal/tree.inorder.traversal.cpp
++++ b/hackerrank/data.structures.-.trees.-.easy.-.tree.inorder.traversal/tree.inorder.traversal.cpp
+@@ -49,7 +49,28 @@ class Node {
+ };
+ 
+ */
++    vector<int>* dump(Node* root) {
++        vector<int>* v = new vector<int>();
++        vector<int>* v2;
++        if (root->left) {
++            v2 = dump(root->left);
++            v->insert(v->end(), v2->begin(), v2->end());
++        }
++        v->push_back(root->data);
++        if (root->right) {
++            v2 = dump(root->right);
++            v->insert(v->end(), v2->begin(), v2->end());
++        }
++        return v;
++    }
++
+     void inOrder(Node *root) {
++        vector<int>* v = dump(root);
++        int* data = v->data();
++        for (int i = 0; i < v->size(); i++)
++            //cout << "[" << i << "] " << data[i] << " ";
++            cout << data[i] << " ";
++        cout << endl;
+     }
+ 
+ }; //End of Solution
+-- 
+2.23.0
+
