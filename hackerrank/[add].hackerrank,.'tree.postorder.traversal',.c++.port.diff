@@ -1,0 +1,45 @@
+From fe2451cb245ceff9f2b72cc3a107607ac4a4ab85 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 4 Jul 2018 08:30:32 +0100
+Subject: [add] hackerrank, 'tree postorder traversal', c++ port
+
+---
+ .../tree.postorder.traversal.cpp              | 21 +++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.trees.-.easy.-.tree.postorder.traversal/tree.postorder.traversal.cpp b/hackerrank/data.structures.-.trees.-.easy.-.tree.postorder.traversal/tree.postorder.traversal.cpp
+index 81d37a8..c010e13 100644
+--- a/hackerrank/data.structures.-.trees.-.easy.-.tree.postorder.traversal/tree.postorder.traversal.cpp
++++ b/hackerrank/data.structures.-.trees.-.easy.-.tree.postorder.traversal/tree.postorder.traversal.cpp
+@@ -49,7 +49,28 @@ class Node {
+ };
+ 
+ */
++    vector<int>* dump(Node* root) {
++        vector<int>* v = new vector<int>();
++        vector<int>* v2;
++        if (root->left) {
++            v2 = dump(root->left);
++            v->insert(v->end(), v2->begin(), v2->end());
++        }
++        if (root->right) {
++            v2 = dump(root->right);
++            v->insert(v->end(), v2->begin(), v2->end());
++        }
++        v->push_back(root->data);
++        return v;
++    }
++
+     void postOrder(Node *root) {
++        vector<int>* v = dump(root);
++        int* data = v->data();
++        for (int i = 0; i < v->size(); i++)
++            //cout << "[" << i << "] " << data[i] << " ";
++            cout << data[i] << " ";
++        cout << endl;
+     }
+ }; //End of Solution
+ 
+-- 
+2.23.0
+
