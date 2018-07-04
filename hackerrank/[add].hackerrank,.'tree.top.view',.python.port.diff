@@ -1,0 +1,98 @@
+From fb1092282a0368b9aa2aa230bdde4f14e6edfbe8 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 4 Jul 2018 16:38:22 +0100
+Subject: [add] hackerrank, 'tree top view', python port
+
+---
+ .../tree.top.view.py                          | 75 +++++++++++++++++++
+ 1 file changed, 75 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.trees.-.easy.-.tree.top.view/tree.top.view.py b/hackerrank/data.structures.-.trees.-.easy.-.tree.top.view/tree.top.view.py
+index 7e29236..4212d13 100644
+--- a/hackerrank/data.structures.-.trees.-.easy.-.tree.top.view/tree.top.view.py
++++ b/hackerrank/data.structures.-.trees.-.easy.-.tree.top.view/tree.top.view.py
+@@ -50,6 +50,81 @@ class MaxData:
+ def topView(root):
+     #Write your code here
+ 
++    def dump_top(root, direction, pos, max):
++        v = []
++        v2 = None
++
++        #print("pos: %d, direction: %d" % (pos, direction))
++
++        # record tree position
++        add = False
++        if direction == -1 and pos < max.left:
++            max.left = pos
++            #print("node: %d, max left set: %d" % (root.info, max.left))
++            add = True;
++        elif direction == 1 and pos > max.right:
++            max.right = pos
++            #print("node: %d, max right set: %d" % (root.info, max.right))
++            add = True
++
++        # look in upper left branches first
++        if root.left != None and direction <= 0:
++            pos -= 1
++            v = dump_top(root.left, -1, pos, max)
++            pos += 1
++
++        #if direction == 0:
++        #    print("[1] size of v: ", len(v))
++
++        # add current node?
++        if direction == 0 or add:
++            #print("pushing: ", root.info)
++            v.append(root.info)
++
++        #if direction == 0:
++        #    print("[2] size of v: ", len(v))
++
++        # look in lower branches that protrude the width of those above
++        if root.right != None and direction <= 0:
++            pos += 1
++            v2 = dump_top(root.right, -1, pos, max)
++            if len(v2) > 0:
++                # prepend protruding branch
++                #print("node: %d, emplacing: %s" % (root.info, " ".join([str(x) for x in v2])))
++                v = v2 + v
++            pos -= 1
++        #if direction == 0:
++        #    print("[3] size of v: ", len(v))
++
++        # look in upper right branches first
++        if root.right != None and direction >= 0:
++            pos += 1
++            v2 = dump_top(root.right, 1, pos, max);
++            pos -= 1
++            if len(v2) > 0:
++                # append protruding branch
++                #print("node: %d, pushing: %s" % (root.info, " ".join([str(x) for x in v2])))
++                v += v2
++        #if direction == 0:
++        #    print("[4] size of v: ", len(v))
++
++        # look in lower branches that protrude the width of those above
++        if root.left and direction >= 0:
++            pos -= 1
++            v2 = dump_top(root.left, 1, pos, max);
++            pos += 1
++            if len(v2) > 0:
++                # append protruding branch
++                #print("node: %d, pushing: %s" % (root.info, " ".join([str(x) for x in v2])))
++                v += v2
++        #if direction == 0:
++        #    print("[5] size of v: ", len(v))
++        return v
++
++    max = MaxData()
++    v = dump_top(root, 0, 0, max)
++    print("%s" % (" ".join([str(x) for x in v])))
++
+ tree = BinarySearchTree()
+ t = int(input())
+ 
+-- 
+2.23.0
+
