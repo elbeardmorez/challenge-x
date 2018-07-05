@@ -1,0 +1,47 @@
+From cb004166657145ce34cc0e374b8072f5be4f996b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 5 Jul 2018 13:35:44 +0100
+Subject: [add] hackerrank, 'binary search tree insertion', c++ port
+
+---
+ .../binary.search.tree.insertion.cpp          | 22 ++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/data.structures.-.trees.-.easy.-.binary.search.tree.insertion/binary.search.tree.insertion.cpp b/hackerrank/data.structures.-.trees.-.easy.-.binary.search.tree.insertion/binary.search.tree.insertion.cpp
+index 73617cd..a03d4fa 100644
+--- a/hackerrank/data.structures.-.trees.-.easy.-.binary.search.tree.insertion/binary.search.tree.insertion.cpp
++++ b/hackerrank/data.structures.-.trees.-.easy.-.binary.search.tree.insertion/binary.search.tree.insertion.cpp
+@@ -44,9 +44,29 @@ class Node {
+ };
+ 
+ */
+-    Node * insert(Node * root, int data) {
++    void descend(Node* n, int data) {
++        if (data < n->data) {
++            if (n->left == NULL)
++                n->left = new Node(data);
++            else
++                descend(n->left, data);
++        }
++        else {
++            if (n->right == NULL)
++                n->right = new Node(data);
++            else
++                descend(n->right, data);
++        }
+     }
+ 
++    Node * insert(Node * root, int data) {
++        if (root == NULL)
++            root = new Node(data);
++        else
++            descend(root, data);
++
++        return root;
++    }
+ };
+ 
+ int main() {
+-- 
+2.23.0
+
