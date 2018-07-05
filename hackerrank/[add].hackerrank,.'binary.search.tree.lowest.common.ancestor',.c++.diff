@@ -1,0 +1,56 @@
+From b62d3dcf0739f26466eb368be4b203df397db4e4 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 5 Jul 2018 14:08:26 +0100
+Subject: [add] hackerrank, 'binary search tree lowest common ancestor', c++
+ solution
+
+---
+ ...ary.search.tree.lowest.common.ancestor.cpp | 29 ++++++++++++++++++-
+ 1 file changed, 28 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/data.structures.-.trees.-.easy.-.binary.search.tree.lowest.common.ancestor/binary.search.tree.lowest.common.ancestor.cpp b/hackerrank/data.structures.-.trees.-.easy.-.binary.search.tree.lowest.common.ancestor/binary.search.tree.lowest.common.ancestor.cpp
+index d4d5d60..bbef0c1 100644
+--- a/hackerrank/data.structures.-.trees.-.easy.-.binary.search.tree.lowest.common.ancestor/binary.search.tree.lowest.common.ancestor.cpp
++++ b/hackerrank/data.structures.-.trees.-.easy.-.binary.search.tree.lowest.common.ancestor/binary.search.tree.lowest.common.ancestor.cpp
+@@ -40,10 +40,37 @@ class Solution {
+         Node* right;
+     };
+     */
++    bool search(Node* n, int find, vector<Node*>* path) {
++        bool in_path = false;
++        if (n->data == find)
++            in_path = true;
++        else {
++            if (find < n->data)
++                in_path = search(n->left, find, path);
++            else
++                in_path = search(n->right, find, path);
++        }
++        if (in_path)
++            path->push_back(n);
++        return in_path;
++    }
++
+     Node *lca(Node *root, int v1,int v2) {
+     // Write your code here.
++        vector<Node*>* p1 = new vector<Node*>();
++        vector<Node*>* p2 = new vector<Node*>();
++        search(root, v1, p1);
++        search(root, v2, p2);
++        Node* lcan;
++        for (int i = 0; i < p1->size(); i++) {
++            if (find(p2->begin(), p2->end(), p1->at(i)) != p2->end()) {
++                // first common node
++                lcan = p1->at(i);
++                break;
++            }
++        }
++        return lcan;
+     }
+-
+ }; //End of Solution
+ 
+ int main() {
+-- 
+2.23.0
+
