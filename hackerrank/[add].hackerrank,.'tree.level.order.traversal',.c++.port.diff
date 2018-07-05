@@ -1,0 +1,51 @@
+From b8f29e16fc89f5bc7296784695b5874608689952 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 5 Jul 2018 12:15:50 +0100
+Subject: [add] hackerrank, 'tree level order traversal', c++ port
+
+---
+ .../tree.level.order.traversal.cpp            | 27 +++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.trees.-.easy.-.tree.level.order.traversal/tree.level.order.traversal.cpp b/hackerrank/data.structures.-.trees.-.easy.-.tree.level.order.traversal/tree.level.order.traversal.cpp
+index 0e23c72..7ce7d5e 100644
+--- a/hackerrank/data.structures.-.trees.-.easy.-.tree.level.order.traversal/tree.level.order.traversal.cpp
++++ b/hackerrank/data.structures.-.trees.-.easy.-.tree.level.order.traversal/tree.level.order.traversal.cpp
+@@ -45,7 +45,34 @@ class Node {
+         }
+ };
+ */
++    void search(Node* n, int level, map<int, vector<int>*>* levels) {
++        if (levels->count(level) == 0)
++            (*levels)[level] = new vector<int>();
++        (*levels)[level]->push_back(n->data);
++        if (n->left != NULL) {
++            level++;
++            search(n->left, level, levels);
++            level--;
++        }
++        if (n->right != NULL) {
++            level++;
++            search(n->right, level, levels);
++            level--;
++        }
++    }
++
+     void levelOrder(Node * root) {
++        map<int, vector<int>*>* levels = new map<int, vector<int>*>();
++        search(root, 0, levels);
++        stringstream ss = stringstream();
++        for (int i = 0; i < levels->size(); i++) {
++            //cout << "level: " << i << ", vector length: " << (*levels)[i]->size() << endl;
++            int* data = (*levels)[i]->data();
++            for (int ii = 0; ii < (*levels)[i]->size(); ii++)
++                ss << data[ii] << " ";
++        }
++        string s = ss.str();
++        cout << s.substr(0, s.length() - 1) << endl;
+     }
+ }; //End of Solution
+ 
+-- 
+2.23.0
+
