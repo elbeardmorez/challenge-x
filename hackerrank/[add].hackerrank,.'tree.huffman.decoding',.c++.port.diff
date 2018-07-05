@@ -1,0 +1,54 @@
+From f4af54ad53a1e119a40a92757b2c8f85445b1bdf Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 5 Jul 2018 15:38:50 +0100
+Subject: [add] hackerrank, 'tree huffman decoding', c++ port
+
+---
+ .../tree.huffman.decoding.cpp                 | 30 +++++++++++++++++++
+ 1 file changed, 30 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.trees.-.medium.-.tree.huffman.decoding/tree.huffman.decoding.cpp b/hackerrank/data.structures.-.trees.-.medium.-.tree.huffman.decoding/tree.huffman.decoding.cpp
+index e1cca52..7d08433 100644
+--- a/hackerrank/data.structures.-.trees.-.medium.-.tree.huffman.decoding/tree.huffman.decoding.cpp
++++ b/hackerrank/data.structures.-.trees.-.medium.-.tree.huffman.decoding/tree.huffman.decoding.cpp
+@@ -90,7 +90,37 @@ typedef struct node {
+ } node;
+ 
+ */
++
++void generate_paths(node* n, string path, map<string, char>* codes) {
++    if (path != "" && n->data != '\x00') {
++        //cout << "adding code: '" << path << "', char: '" << n->data << "'" << endl;
++        (*codes)[path] = n->data;
++    }
++    if (n->left != NULL)
++        generate_paths(n->left, path + "0", codes);
++    if (n->right != NULL)
++        generate_paths(n->right, path + "1", codes);
++}
++
+ void decode_huff(node * root, string s) {
++
++    map<string, char>* codes = new map<string, char>();
++    generate_paths(root, "", codes);
++    //for (map<string, char>::iterator iter = codes->begin(); iter != codes->end(); ++iter)
++    //    cout << "code: " << iter->first << ", char: " << iter->second << endl;
++
++    //cout << "code string: " << s << endl;
++    string decoded = "";
++    string ss = "";
++    for (int i = 0; i < s.length(); i++) {
++        ss += s[i];
++        if (codes->count(ss) > 0) {
++            //cout << "ss: " << ss << endl;
++            decoded += (*codes)[ss];
++            ss = "";
++        }
++    }
++    cout << decoded << endl;
+ }
+ 
+ int main() {
+-- 
+2.23.0
+
