@@ -1,0 +1,48 @@
+From db6d2d080a7c81c94542f578418a260cbc3abf6b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 5 Jul 2018 15:06:43 +0100
+Subject: [add] hackerrank, 'tree huffman decoding', python solution
+
+---
+ .../tree.huffman.decoding.py                  | 25 +++++++++++++++++++
+ 1 file changed, 25 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.trees.-.medium.-.tree.huffman.decoding/tree.huffman.decoding.py b/hackerrank/data.structures.-.trees.-.medium.-.tree.huffman.decoding/tree.huffman.decoding.py
+index 0e92664..7755156 100644
+--- a/hackerrank/data.structures.-.trees.-.medium.-.tree.huffman.decoding/tree.huffman.decoding.py
++++ b/hackerrank/data.structures.-.trees.-.medium.-.tree.huffman.decoding/tree.huffman.decoding.py
+@@ -56,6 +56,31 @@ def dfs_hidden(obj, already):
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
+ def decodeHuff(root, s):
+     #Enter Your Code Here
++    def generate_paths(n, path, codes):
++        if path != "" and n.data != '\x00':
++            #print("adding code: %r, char: %r" % (path, n.data))
++            codes[path] = n.data
++
++        if n.left != None:
++            generate_paths(n.left, path + "0", codes)
++        if n.right != None:
++            generate_paths(n.right, path + "1", codes)
++
++    codes = {}
++    generate_paths(root, "", codes)
++    #for code, char in codes.items():
++    #    print("code: %r, char: %r" % (code, char))
++
++    #print("code string: %s" % (s))
++    decoded = ""
++    ss = ""
++    for i in range(len(s)):
++        ss += s[i];
++        if ss in codes:
++            #print(ss)
++            decoded += codes[ss]
++            ss = ""
++    print(decoded)
+ 
+ 
+ ip = input()
+-- 
+2.23.0
+
