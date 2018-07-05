@@ -1,0 +1,39 @@
+From 85c59d11d839c8687b36389f7afa9fdf4a29cd5c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 5 Jul 2018 13:31:09 +0100
+Subject: [add] hackerrank, 'binary search tree insertion', python solution
+
+---
+ .../binary.search.tree.insertion.py              | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.trees.-.easy.-.binary.search.tree.insertion/binary.search.tree.insertion.py b/hackerrank/data.structures.-.trees.-.easy.-.binary.search.tree.insertion/binary.search.tree.insertion.py
+index b303938..84bd796 100644
+--- a/hackerrank/data.structures.-.trees.-.easy.-.binary.search.tree.insertion/binary.search.tree.insertion.py
++++ b/hackerrank/data.structures.-.trees.-.easy.-.binary.search.tree.insertion/binary.search.tree.insertion.py
+@@ -26,6 +26,22 @@ class BinarySearchTree:
+ 
+     def insert(self, val):
+         #Enter you code here.
++        def descend(n, val):
++            if val < n.info:
++                if n.left == None:
++                    n.left = Node(val)
++                else:
++                    descend(n.left, val)
++            else:
++                if n.right == None:
++                    n.right = Node(val)
++                else:
++                    descend(n.right, val)
++
++        if self.root == None:
++            self.root = Node(val)
++        else:
++            descend(self.root, val)
+ 
+ 
+ tree = BinarySearchTree()
+-- 
+2.23.0
+
