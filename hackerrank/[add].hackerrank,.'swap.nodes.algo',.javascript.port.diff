@@ -1,0 +1,115 @@
+From bcd4e0f1d588fdc0316f99fe1cfc12770efbb54b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 5 Jul 2018 23:16:08 +0100
+Subject: [add] hackerrank, 'swap nodes algo', javascript port
+
+---
+ .../swap.nodes.algo.js                        | 85 +++++++++++++++++++
+ 1 file changed, 85 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.trees.-.medium.-.swap.nodes.algo/swap.nodes.algo.js b/hackerrank/data.structures.-.trees.-.medium.-.swap.nodes.algo/swap.nodes.algo.js
+index 6fa42a0..a7a05b8 100644
+--- a/hackerrank/data.structures.-.trees.-.medium.-.swap.nodes.algo/swap.nodes.algo.js
++++ b/hackerrank/data.structures.-.trees.-.medium.-.swap.nodes.algo/swap.nodes.algo.js
+@@ -22,6 +22,29 @@ function readLine() {
+     return inputString[currentLine++];
+ }
+ 
++class Node {
++
++    constructor(data) {
++        this.data = data;
++        this.left = null;
++        this.right = null;
++    }
++
++    swap() {
++        var temp = this.left;
++        this.left = this.right;
++        this.right = temp;
++    }
++
++    traverse(path) {
++        if (this.left != null)
++           this.left.traverse(path);
++        path.push(this.data);
++        if (this.right != null)
++           this.right.traverse(path);
++    }
++};
++
+ /*
+  * Complete the swapNodes function below.
+  */
+@@ -29,6 +52,68 @@ function swapNodes(indexes, queries) {
+     /*
+      * Write your code here.
+      */
++    // build a tree
++    var root = new Node(1);
++    var entries_current = 1; // expected nodes at current depth
++    var entries_next = 2; // expected nodes at next depth
++    var a, b;
++    var levels = {};
++    var depth = 1;
++
++    levels[depth] = [];
++    levels[depth].push(root);
++    // items stored by depth
++    for (var i = 0; i < indexes.length;) {
++        depth++;
++        levels[depth] = [];
++        for (var ii = 0; ii < entries_current; ii++) {
++            a = indexes[i][0];
++            b = indexes[i][1];
++            //console.log(`considering input children: ${a} ${b}`);
++            var p = levels[depth - 1][ii];
++            if (a != -1) {
++                p.left = new Node(a);
++                levels[depth].push(p.left);
++            }
++            else
++                entries_next--;
++            if (b != -1) {
++                p.right = new Node(b);
++                levels[depth].push(p.right);
++            }
++            else
++                entries_next--;
++            i++;
++        }
++        entries_current = entries_next;
++        entries_next = 2 * entries_current;
++    }
++
++    var path = [];
++    /*
++    for (var i = 1; i <= Object.keys(levels).length; i++)
++        console.log(`level ${i}, nodes: ${levels[i].map(n => n.data).join(" ")}`);
++    root.traverse(path);
++    console.log(`orig path: ${path.join(" ")}`);
++    */
++    var k;
++    var res = new Array(queries.length);
++    for (var i = 0; i < queries.length; i++) {
++        k = queries[i];
++        for (var ii = 1; ii <= Object.keys(levels).length; ii++) {
++            if (ii % k == 0) {
++                if (levels[ii].length > 0) {
++                    // switch children
++                    levels[ii].forEach((n) => { n.swap() });
++                }
++            }
++        }
++        path = [];
++        root.traverse(path);
++        //console.log(`k=${k} path: ${path.join(" ")}`);
++        res[i] = path;
++    }
++    return res;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
