@@ -1,0 +1,48 @@
+From ba6e5c9590a9806ca156a4f28e71ee929b996f5e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 5 Jul 2018 14:12:22 +0100
+Subject: [add] hackerrank, 'binary search tree lowest common ancestor', python
+ port
+
+---
+ ...nary.search.tree.lowest.common.ancestor.py | 24 +++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.trees.-.easy.-.binary.search.tree.lowest.common.ancestor/binary.search.tree.lowest.common.ancestor.py b/hackerrank/data.structures.-.trees.-.easy.-.binary.search.tree.lowest.common.ancestor/binary.search.tree.lowest.common.ancestor.py
+index e05b7b6..f99b9b8 100644
+--- a/hackerrank/data.structures.-.trees.-.easy.-.binary.search.tree.lowest.common.ancestor/binary.search.tree.lowest.common.ancestor.py
++++ b/hackerrank/data.structures.-.trees.-.easy.-.binary.search.tree.lowest.common.ancestor/binary.search.tree.lowest.common.ancestor.py
+@@ -48,6 +48,30 @@ class Node:
+ 
+ def lca(root, v1, v2):
+     #Enter your code here
++    def search(n, find, path):
++        in_path = False;
++        if n.info == find:
++            in_path = True
++        else:
++            if find < n.info:
++                in_path = search(n.left, find, path)
++            else:
++                in_path = search(n.right, find, path)
++        if in_path:
++            path.append(n)
++        return in_path
++
++    p1 = []
++    p2 = []
++    search(root, v1, p1)
++    search(root, v2, p2)
++    lcan = None
++    for n in p1:
++        if n in p2:
++            # first common node
++            lcan = n
++            break
++    return lcan
+ 
+ 
+ tree = BinarySearchTree()
+-- 
+2.23.0
+
