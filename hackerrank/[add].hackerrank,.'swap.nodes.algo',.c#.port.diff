@@ -1,0 +1,120 @@
+From becb6da5b046ac9d37280e309624d28192b60e26 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 5 Jul 2018 22:48:36 +0100
+Subject: [add] hackerrank, 'swap nodes algo', c# port
+
+---
+ .../swap.nodes.algo.cs                        | 90 +++++++++++++++++++
+ 1 file changed, 90 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.trees.-.medium.-.swap.nodes.algo/swap.nodes.algo.cs b/hackerrank/data.structures.-.trees.-.medium.-.swap.nodes.algo/swap.nodes.algo.cs
+index d43b668..89beed5 100644
+--- a/hackerrank/data.structures.-.trees.-.medium.-.swap.nodes.algo/swap.nodes.algo.cs
++++ b/hackerrank/data.structures.-.trees.-.medium.-.swap.nodes.algo/swap.nodes.algo.cs
+@@ -3,6 +3,33 @@ using System.Collections.Generic;
+ using System.IO;
+ using System.Linq;
+ 
++class Node {
++
++    public int data;
++    public Node left;
++    public Node right;
++
++    public Node(int data) {
++        this.data = data;
++        this.left = null;
++        this.right = null;
++    }
++
++    public void swap() {
++        Node temp = this.left;
++        this.left = this.right;
++        this.right = temp;
++    }
++
++    public void traverse(List<int> path) {
++        if (this.left != null)
++           this.left.traverse(path);
++        path.Add(this.data);
++        if (this.right != null)
++           this.right.traverse(path);
++    }
++};
++
+ class Solution {
+ 
+     /*
+@@ -12,6 +39,69 @@ class Solution {
+         /*
+          * Write your code here.
+          */
++        // build a tree
++        var root = new Node(1);
++        int entries_current = 1; // expected nodes at current depth
++        int entries_next = 2; // expected nodes at next depth
++        int a, b;
++        var levels = new Dictionary<int, List<Node>>();
++        int depth = 1;
++
++        levels[depth] = new List<Node>();
++        levels[depth].Add(root);
++        // items stored by depth
++        for (var i = 0; i < indexes.Length;) {
++            depth++;
++            levels[depth] = new List<Node>();
++            for (var ii = 0; ii < entries_current; ii++) {
++                a = indexes[i][0];
++                b = indexes[i][1];
++                //Console.WriteLine($"considering input children: {a} {b}");
++                var p = levels[depth - 1][ii];
++                if (a != -1) {
++                    p.left = new Node(a);
++                    levels[depth].Add(p.left);
++                }
++                else
++                    entries_next--;
++                if (b != -1) {
++                    p.right = new Node(b);
++                    levels[depth].Add(p.right);
++                }
++                else
++                    entries_next--;
++                i++;
++            }
++            entries_current = entries_next;
++            entries_next = 2 * entries_current;
++        }
++
++        var path = new List<int>();
++        /*
++        for (int i = 1; i <= levels.Count; i++)
++            Console.WriteLine($"level {i}, nodes: {string.Join(" ", levels[i].Select(n => n.data))}");
++        root.traverse(path);
++        Console.WriteLine($"orig path: {string.Join(" ", path)}");
++        */
++        int k;
++        int[][] res = new int[queries.Length][];
++        for (var i = 0; i < queries.Length; i++) {
++            k = queries[i];
++            for (int ii = 1; ii <= levels.Count; ii++) {
++                if (ii % k == 0) {
++                    if (levels[ii].Count > 0) {
++                        // switch children
++                        levels[ii].ForEach(n => n.swap());
++                    }
++                }
++            }
++
++            path = new List<int>();
++            root.traverse(path);
++            //Console.WriteLine($"k={k} path: {string.Join(" ", path)}");
++            res[i] = path.ToArray();
++        }
++        return res;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
