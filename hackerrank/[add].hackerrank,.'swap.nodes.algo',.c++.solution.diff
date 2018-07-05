@@ -1,0 +1,140 @@
+From 39a6bbc294753eabcf8039137c54bb20387f5715 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 5 Jul 2018 22:05:55 +0100
+Subject: [add] hackerrank, 'swap nodes algo', c++ solution
+
+---
+ .../swap.nodes.algo.cpp                       | 110 ++++++++++++++++++
+ 1 file changed, 110 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.trees.-.medium.-.swap.nodes.algo/swap.nodes.algo.cpp b/hackerrank/data.structures.-.trees.-.medium.-.swap.nodes.algo/swap.nodes.algo.cpp
+index 0b5e99b..02a5fe5 100644
+--- a/hackerrank/data.structures.-.trees.-.medium.-.swap.nodes.algo/swap.nodes.algo.cpp
++++ b/hackerrank/data.structures.-.trees.-.medium.-.swap.nodes.algo/swap.nodes.algo.cpp
+@@ -2,6 +2,33 @@
+ 
+ using namespace std;
+ 
++class Node {
++    public:
++        int data;
++        Node* left;
++        Node* right;
++
++    Node(int data) {
++        this->data = data;
++        this->left = NULL;
++        this->right = NULL;
++    }
++
++    void swap() {
++        Node* temp = this->left;
++        this->left = this->right;
++        this->right = temp;
++    }
++
++    void traverse(vector<int>* path) {
++        if (this->left != NULL)
++           (*this->left).traverse(path);
++        path->push_back(this->data);
++        if (this->right != NULL)
++           (*this->right).traverse(path);
++    }
++};
++
+ /*
+  * Complete the swapNodes function below.
+  */
+@@ -9,6 +36,89 @@ vector<vector<int>> swapNodes(vector<vector<int>> indexes, vector<int> queries)
+     /*
+      * Write your code here.
+      */
++    // build a tree
++    Node root = Node(1);
++    int entries_current = 1; // expected nodes at current depth
++    int entries_next = 2; // expected nodes at next depth
++    int a, b;
++    int* child_data;
++    map<int, vector<Node*>> levels = map<int, vector<Node*>>();
++    int depth = 1;
++
++    levels[depth] = vector<Node*>();
++    levels[depth].push_back(&root);
++    // items stored by depth
++    for (vector<vector<int>>::iterator iter = indexes.begin(); iter != indexes.end();) {
++        depth++;
++        levels[depth] = vector<Node*>();
++        for (int i = 0; i < entries_current; i++) {
++            child_data = iter->data();
++            int a = child_data[0];
++            int b = child_data[1];
++            //cout << "considering input children: " << a << " " << b << endl;
++            Node* p = levels[depth - 1][i];
++            if (a != -1) {
++                p->left = new Node(a);
++                levels[depth].push_back(p->left);
++            }
++            else
++                entries_next--;
++            if (b != -1) {
++                p->right = new Node(b);
++                levels[depth].push_back(p->right);
++            }
++            else
++                entries_next--;
++            ++iter;
++        }
++        entries_current = entries_next;
++        entries_next = 2 * entries_current;
++    }
++
++    vector<int>* path = new vector<int>();
++    /*
++    root.traverse(path);
++    for (int i = 1; i <= levels.size(); i++) {
++        vector<Node*> nodes = levels[i];
++        cout << "level " << i << " nodes: ";
++        for (vector<Node*>::iterator iter = nodes.begin(); iter != nodes.end(); ++iter)
++            cout << " " << (*iter)->data;
++        cout << endl;
++    }
++    cout << "orig path:";
++    for (vector<int>::iterator iter = path.begin(); iter != path.end(); ++iter)
++        cout << " " << *iter;
++    cout << endl;
++    delete(path)
++    */
++    int k;
++    vector<vector<int>>* res = new vector<vector<int>>();
++    for (vector<int>::iterator iter = queries.begin(); iter != queries.end(); ++iter) {
++        k = *iter;
++        for (int i = 1; i <= levels.size(); i++) {
++            if (i % k == 0) {
++                vector<Node*> nodes = levels[i];
++                if (nodes.size() > 0) {
++                    // switch children
++                    for (vector<Node*>::iterator iter = nodes.begin(); iter != nodes.end(); ++iter)
++                        (*iter)->swap();
++                }
++            }
++        }
++        //cout << "k=" << k << " path:";
++        path = new vector<int>();
++        root.traverse(path);
++        /*
++        stringstream ss = stringstream();
++        for (vector<int>::iterator iter = path.begin(); iter != path.end(); ++iter)
++            ss << " " << *iter;
++        string s = ss.str();
++        s = s.substr(0, s.length());
++        cout << s << endl;
++        */
++        res->push_back(*path);
++    }
++    return *res;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
