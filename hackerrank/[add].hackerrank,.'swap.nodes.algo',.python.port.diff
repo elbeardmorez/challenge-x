@@ -1,0 +1,108 @@
+From 95fd30f6956340986b69fc98f5d6e0deedb2c2fa Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 6 Jul 2018 08:12:11 +0100
+Subject: [add] hackerrank, 'swap nodes algo', python port
+
+---
+ .../swap.nodes.algo.py                        | 78 +++++++++++++++++++
+ 1 file changed, 78 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.trees.-.medium.-.swap.nodes.algo/swap.nodes.algo.py b/hackerrank/data.structures.-.trees.-.medium.-.swap.nodes.algo/swap.nodes.algo.py
+index 4312f0e..f90db62 100644
+--- a/hackerrank/data.structures.-.trees.-.medium.-.swap.nodes.algo/swap.nodes.algo.py
++++ b/hackerrank/data.structures.-.trees.-.medium.-.swap.nodes.algo/swap.nodes.algo.py
+@@ -4,6 +4,28 @@ import os
+ import sys
+ from collections import deque
+ 
++class Node:
++
++    def __init__(self, data):
++        self.data = data
++        self.left = None
++        self.right = None
++
++    def swap(self):
++        temp = self.left
++        #print("swapping: %d <-> %d" % (
++        #      -1 if self.left == None else self.left.data,
++        #      -1 if self.right == None else self.right.data))
++        self.left = self.right
++        self.right = temp
++
++    def traverse(self, path):
++        if self.left != None:
++           self.left.traverse(path)
++        path.append(self.data)
++        if self.right != None:
++           self.right.traverse(path)
++
+ #
+ # Complete the swapNodes function below.
+ #
+@@ -12,6 +34,62 @@ def swapNodes(indexes, queries):
+     # Write your code here.
+     #
+ 
++    # build a tree
++    root = Node(1)
++    entries_current = 1  # expected nodes at current depth
++    entries_next = 2  # expected nodes at next depth
++    levels = {}
++    depth = 1
++
++    levels[depth] = []
++    levels[depth].append(root)
++    # items stored by depth
++    i = 0
++    while i < len(indexes):
++        depth += 1
++        levels[depth] = []
++        for ii in range(entries_current):
++            a = indexes[i][0]
++            b = indexes[i][1]
++            #print("considering input children: %d %d" % (a, b))
++            p = levels[depth - 1][ii]
++            if a != -1:
++                p.left = Node(a)
++                levels[depth].append(p.left)
++            else:
++                entries_next -= 1
++            if b != -1:
++                p.right = Node(b)
++                levels[depth].append(p.right)
++            else:
++                entries_next -= 1
++            i += 1
++        entries_current = entries_next
++        entries_next = 2 * entries_current
++
++    #path = []
++    #for i in range(1, len(levels.keys())):
++    #    print("level %d, nodes: %s" % (i, " ".join(str(n.data) for n in levels[i])))
++    #root.traverse(path)
++    #print("orig path:", " ".join(str(x) for x in path))
++
++    res = []
++    for i in range(len(queries)):
++        k = queries[i]
++        for ii in range(1, len(levels) + 1):
++            if ii % k == 0:
++                if len(levels[ii]) > 0:
++                    # switch children
++                    #print("switching k=%d child nodes on %d parent nodes" % (k, len(levels[ii])))
++                    list(map(lambda n: n.swap(), levels[ii]))
++        path = []
++        root.traverse(path)
++        #print("k=%d path: %s" % (k, " ".join(str(x) for x in path)))
++        res.append(path)
++
++    return res
++
++
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+ 
+-- 
+2.23.0
+
