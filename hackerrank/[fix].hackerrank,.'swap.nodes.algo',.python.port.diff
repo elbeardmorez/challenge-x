@@ -1,0 +1,63 @@
+From f12d8433cbfe836ae80a680afa501e2965aba7ca Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 9 Jul 2018 16:13:06 +0100
+Subject: [fix] hackerrank, 'swap nodes algo', python port
+
+-node traverse re-write to avoid tail recursion (stack depth)
+limitation in Python
+---
+ .../swap.nodes.algo.py                        | 31 ++++++++++++++-----
+ 1 file changed, 24 insertions(+), 7 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.trees.-.medium.-.swap.nodes.algo/swap.nodes.algo.py b/hackerrank/data.structures.-.trees.-.medium.-.swap.nodes.algo/swap.nodes.algo.py
+index f90db62..1c69894 100644
+--- a/hackerrank/data.structures.-.trees.-.medium.-.swap.nodes.algo/swap.nodes.algo.py
++++ b/hackerrank/data.structures.-.trees.-.medium.-.swap.nodes.algo/swap.nodes.algo.py
+@@ -20,12 +20,28 @@ class Node:
+         self.right = temp
+ 
+     def traverse(self, path):
+-        if self.left != None:
+-           self.left.traverse(path)
+-        path.append(self.data)
+-        if self.right != None:
+-           self.right.traverse(path)
+-
++        # re-written to avoid tail recursion (stack depth) limitation in Python
++        n = self
++        state = deque()
++        state.appendleft(n)
++        visited = {}
++        while True:
++            if n.left != None and \
++               not n.left.data in visited:
++                state.appendleft(n)
++                n = n.left
++                continue
++            if not n.data in visited:
++                visited[n.data] = True
++                path.append(n.data)
++            if n.right != None and \
++               not n.right.data in visited:
++                state.appendleft(n)
++                n = n.right
++                continue
++            n = state.popleft()
++            if len(state) == 0:
++                break
+ #
+ # Complete the swapNodes function below.
+ #
+@@ -81,7 +97,8 @@ def swapNodes(indexes, queries):
+                 if len(levels[ii]) > 0:
+                     # switch children
+                     #print("switching k=%d child nodes on %d parent nodes" % (k, len(levels[ii])))
+-                    list(map(lambda n: n.swap(), levels[ii]))
++                    for n in levels[ii]:
++                        n.swap()
+         path = []
+         root.traverse(path)
+         #print("k=%d path: %s" % (k, " ".join(str(x) for x in path)))
+-- 
+2.23.0
+
