@@ -1,0 +1,56 @@
+From 6bc20b40fc5497be88d287122e8d73e66d277d98 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 10 Jul 2018 23:35:19 +0100
+Subject: [add] hackerrank, 'is this a binary search tree', python solution
+
+---
+ .../is.this.a.binary.search.tree.py           | 35 +++++++++++++++++++
+ 1 file changed, 35 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.trees.-.medium.-.is.this.a.binary.search.tree/is.this.a.binary.search.tree.py b/hackerrank/data.structures.-.trees.-.medium.-.is.this.a.binary.search.tree/is.this.a.binary.search.tree.py
+index 218b7fa..6f79c44 100644
+--- a/hackerrank/data.structures.-.trees.-.medium.-.is.this.a.binary.search.tree/is.this.a.binary.search.tree.py
++++ b/hackerrank/data.structures.-.trees.-.medium.-.is.this.a.binary.search.tree/is.this.a.binary.search.tree.py
+@@ -6,4 +6,39 @@ class node:
+       self.right = None
+ """
+ 
++def traverse(self, path):
++    # re-written to avoid tail recursion (stack depth) limitation in Python
++    n = self
++    state = []
++    state.append(n)
++    visited = {}
++    while True:
++        if n.left != None and \
++           not n.left.data in visited:
++            state.append(n)
++            n = n.left
++            continue
++        if not n.data in visited:
++            visited[n.data] = True
++            path.append(n.data)
++        if n.right != None and \
++           not n.right.data in visited:
++            state.append(n)
++            n = n.right
++            continue
++        n = state[0]
++        if len(state) - 1 == 0:
++            break
++        state = state[1:]
++
+ def check_binary_search_tree_(root):
++    path = []
++    traverse(root, path)
++    last = path[0]
++    bst = "Yes"
++    for idx in range(1, len(path)):
++        if path[idx] < last:
++            bst = "No"
++            break
++        last = path[idx]
++    return bst
+-- 
+2.23.0
+
