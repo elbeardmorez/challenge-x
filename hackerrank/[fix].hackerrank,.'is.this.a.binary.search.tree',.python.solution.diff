@@ -1,0 +1,120 @@
+From b004ef25abb962b9026415aa40111d88f368673d Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 11 Jul 2018 09:06:42 +0100
+Subject: [fix] hackerrank, 'is this a binary search tree', python solution
+
+-redux, more complex logic to deduce validity on branch / leaf return
+---
+ .../is.this.a.binary.search.tree.py           | 71 ++++++++++++++++++-
+ 1 file changed, 68 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.trees.-.medium.-.is.this.a.binary.search.tree/is.this.a.binary.search.tree.py b/hackerrank/data.structures.-.trees.-.medium.-.is.this.a.binary.search.tree/is.this.a.binary.search.tree.py
+index 6f79c44..e76e893 100644
+--- a/hackerrank/data.structures.-.trees.-.medium.-.is.this.a.binary.search.tree/is.this.a.binary.search.tree.py
++++ b/hackerrank/data.structures.-.trees.-.medium.-.is.this.a.binary.search.tree/is.this.a.binary.search.tree.py
+@@ -5,17 +5,28 @@ class node:
+       self.left = None
+       self.right = None
+ """
++class node:
++  def __init__(self, data):
++      self.data = data
++      self.left = None
++      self.right = None
+ 
+ def traverse(self, path):
+     # re-written to avoid tail recursion (stack depth) limitation in Python
+-    n = self
+     state = []
++    n = self
+     state.append(n)
++    #print("via root node: '%d'" % (n.data))
++
+     visited = {}
++    max_left = {}
++    min_right = {}
++    res = True;
+     while True:
+         if n.left != None and \
+            not n.left.data in visited:
+             state.append(n)
++            #print("via left node: '%d'" % (n.left.data))
+             n = n.left
+             continue
+         if not n.data in visited:
+@@ -24,12 +35,31 @@ def traverse(self, path):
+         if n.right != None and \
+            not n.right.data in visited:
+             state.append(n)
++            #print("via right node: '%d'" % (n.right.data))
+             n = n.right
+             continue
+-        n = state[0]
++        # heading back from leaf
++        #print("considering node: '%d [%s ^ %s]', path: %s" %
++        #      (n.data,
++        #       str(n.left.data) if n.left != None else "x",
++        #       str(n.right.data) if n.right != None else "x",
++        #       path))
++
++        if n.left != None:
++            if max_left[n.left.data] > n.data:
++                res = False
++                break
++        max_left[n.data] = n.data if n.left == None else max(n.data, n.left.data)
++        if n.right != None:
++            if min_right[n.right.data] < n.data:
++                res = False
++                break
++        min_right[n.data] = n.data if n.right == None else min(n.data, n.right.data)
++
++        n = state[-1]
+         if len(state) - 1 == 0:
+             break
+-        state = state[1:]
++        state = state[0:-1]
+ 
+ def check_binary_search_tree_(root):
+     path = []
+@@ -42,3 +72,38 @@ def check_binary_search_tree_(root):
+             break
+         last = path[idx]
+     return bst
++
++if __name__ == "__main__":
++    '''
++    4
++    2 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31
++
++                             16
++                   8                     24
++              4         12         20          28
++            2   6    10   14    18    22    26    30
++           2 3 5 7  9 11 13 15 17 19 21 23 25 27 29 31
++    left -> parent -> right -> parent ..
++    '''
++    root = None
++    n = int(input())
++    levels = {}
++    for idx in range(n + 1):
++        levels[idx] = []
++
++    levels[n] = [node(int(s)) for s in input().split(" ")]
++    for i in range(n, 0, -1):
++        ii = 0
++        while (ii + 2) < len(levels[i]):
++            left = levels[i][ii]
++            right = levels[i][ii + 2]
++            parent = levels[i][ii + 1]
++            parent.left = left
++            parent.right = right
++            levels[i - 1].append(parent)
++            ii += 2
++    for i in range(n + 1):
++        print("level[%d]:%s" % (i, " ".join(str(n.data) for n in levels[i])))
++    root = levels[0][0]
++    res = check_binary_search_tree_(root)
++    print("Yes" if res else "No")
+-- 
+2.23.0
+
