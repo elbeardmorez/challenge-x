@@ -1,0 +1,66 @@
+From ba091f8f63aff04721071a7c8767d1e18cd41ce4 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 11 Jul 2018 10:21:18 +0100
+Subject: [fix] hackerrank, 'is this a binary search tree', python solution
+
+-maintain paths dictionary due to the number of time as node can be
+visited to/from identical subpaths
+---
+ .../is.this.a.binary.search.tree.py           | 40 ++++++++++++-------
+ 1 file changed, 26 insertions(+), 14 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.trees.-.medium.-.is.this.a.binary.search.tree/is.this.a.binary.search.tree.py b/hackerrank/data.structures.-.trees.-.medium.-.is.this.a.binary.search.tree/is.this.a.binary.search.tree.py
+index 14ac3db..9c20d81 100644
+--- a/hackerrank/data.structures.-.trees.-.medium.-.is.this.a.binary.search.tree/is.this.a.binary.search.tree.py
++++ b/hackerrank/data.structures.-.trees.-.medium.-.is.this.a.binary.search.tree/is.this.a.binary.search.tree.py
+@@ -24,21 +24,33 @@ def test_bst(self):
+     min_right = {}
+     res = True;
+     while True:
+-        if n.left != None and \
+-           not n.left.data in visited:
+-            state.append(n)
+-            #print("via left node: '%d'" % (n.left.data))
+-            n = n.left
+-            continue
+-        if not n.data in visited:
+-            visited[n.data] = True
++        visited_key = "%s|%s|%s" % (n.data,
++                                          n.left.data if n.left != None else "x",
++                                          n.right.data if n.right != None else "x")
++        if n.left != None:
++            visited_key2 = "%s|%s|%s" % (n.left.data,
++                                         n.left.left.data if n.left.left != None else "x",
++                                         n.left.right.data if n.left.right != None else "x")
++            if not visited_key2 in visited:
++                state.append(n)
++                #print("via left node: '%d'" % (n.left.data))
++                n = n.left
++                continue
++
++        if not visited_key in visited:
++            visited[visited_key] = True
+             path.append(n.data)
+-        if n.right != None and \
+-           not n.right.data in visited:
+-            state.append(n)
+-            #print("via right node: '%d'" % (n.right.data))
+-            n = n.right
+-            continue
++
++        if n.right != None:
++            visited_key2 = "%s|%s|%s" % (n.right.data,
++                                         n.right.left.data if n.right.left != None else "x",
++                                         n.right.right.data if n.right.right != None else "x")
++            if not visited_key2 in visited:
++                state.append(n)
++                #print("via right node: '%d'" % (n.right.data))
++                n = n.right
++                continue
++
+         # heading back from leaf
+         '''
+         print("considering node: '%d [%s ^ %s]', max_left: %s, min_right: %s, path: %s" %
+-- 
+2.23.0
+
