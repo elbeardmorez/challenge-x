@@ -1,0 +1,44 @@
+From 2cf4fb98074b25e83d90e2b03043c8b7b510a2cc Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 11 Jul 2018 09:36:13 +0100
+Subject: [fix] hackerrank, 'is this a binary search tree', python solution
+
+-edge case, off-by-one on equality '<' vs '<='
+---
+ .../is.this.a.binary.search.tree.py                         | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.trees.-.medium.-.is.this.a.binary.search.tree/is.this.a.binary.search.tree.py b/hackerrank/data.structures.-.trees.-.medium.-.is.this.a.binary.search.tree/is.this.a.binary.search.tree.py
+index c802439..14ac3db 100644
+--- a/hackerrank/data.structures.-.trees.-.medium.-.is.this.a.binary.search.tree/is.this.a.binary.search.tree.py
++++ b/hackerrank/data.structures.-.trees.-.medium.-.is.this.a.binary.search.tree/is.this.a.binary.search.tree.py
+@@ -11,7 +11,7 @@ class node:
+       self.left = None
+       self.right = None
+ 
+-ef test_bst(self):
++def test_bst(self):
+     # re-written to avoid tail recursion (stack depth) limitation in Python
+     state = []
+     path = []
+@@ -50,7 +50,7 @@ ef test_bst(self):
+                path))
+         '''
+         if n.left != None:
+-            if max_left[n.left.data] > n.data:
++            if max_left[n.left.data] >= n.data:
+                 res = False
+                 break
+         max_left[n.data] = n.data
+@@ -60,7 +60,7 @@ ef test_bst(self):
+             max_left[n.data] = max_left[n.right.data]
+ 
+         if n.right != None:
+-            if min_right[n.right.data] < n.data:
++            if min_right[n.right.data] <= n.data:
+                 res = False
+                 break
+         min_right[n.data] = n.data
+-- 
+2.23.0
+
