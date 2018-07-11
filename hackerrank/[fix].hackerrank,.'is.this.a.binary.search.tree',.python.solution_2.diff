@@ -1,0 +1,91 @@
+From 2fbd7ca21be6902a43e4db79f5d1dca1674160a9 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 11 Jul 2018 09:32:24 +0100
+Subject: [fix] hackerrank, 'is this a binary search tree', python solution
+
+-empty node conditionals
+---
+ .../is.this.a.binary.search.tree.py           | 43 +++++++++++--------
+ 1 file changed, 24 insertions(+), 19 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.trees.-.medium.-.is.this.a.binary.search.tree/is.this.a.binary.search.tree.py b/hackerrank/data.structures.-.trees.-.medium.-.is.this.a.binary.search.tree/is.this.a.binary.search.tree.py
+index e76e893..c802439 100644
+--- a/hackerrank/data.structures.-.trees.-.medium.-.is.this.a.binary.search.tree/is.this.a.binary.search.tree.py
++++ b/hackerrank/data.structures.-.trees.-.medium.-.is.this.a.binary.search.tree/is.this.a.binary.search.tree.py
+@@ -11,9 +11,10 @@ class node:
+       self.left = None
+       self.right = None
+ 
+-def traverse(self, path):
++ef test_bst(self):
+     # re-written to avoid tail recursion (stack depth) limitation in Python
+     state = []
++    path = []
+     n = self
+     state.append(n)
+     #print("via root node: '%d'" % (n.data))
+@@ -39,39 +40,43 @@ def traverse(self, path):
+             n = n.right
+             continue
+         # heading back from leaf
+-        #print("considering node: '%d [%s ^ %s]', path: %s" %
+-        #      (n.data,
+-        #       str(n.left.data) if n.left != None else "x",
+-        #       str(n.right.data) if n.right != None else "x",
+-        #       path))
+-
++        '''
++        print("considering node: '%d [%s ^ %s]', max_left: %s, min_right: %s, path: %s" %
++              (n.data,
++               str(n.left.data) if n.left != None else "x",
++               str(n.right.data) if n.right != None else "x",
++               str(max_left[n.left.data]) if n.left != None else "x",
++               str(min_right[n.right.data]) if n.right != None else "x",
++               path))
++        '''
+         if n.left != None:
+             if max_left[n.left.data] > n.data:
+                 res = False
+                 break
+-        max_left[n.data] = n.data if n.left == None else max(n.data, n.left.data)
++        max_left[n.data] = n.data
++        if n.left != None and max_left[n.left.data] > max_left[n.data]:
++            max_left[n.data] = max_left[n.left.data]
++        if n.right != None and max_left[n.right.data] > max_left[n.data]:
++            max_left[n.data] = max_left[n.right.data]
++
+         if n.right != None:
+             if min_right[n.right.data] < n.data:
+                 res = False
+                 break
+-        min_right[n.data] = n.data if n.right == None else min(n.data, n.right.data)
++        min_right[n.data] = n.data
++        if n.left != None and min_right[n.left.data] < min_right[n.data]:
++            min_right[n.data] = min_right[n.left.data]
++        if n.right != None and min_right[n.right.data] < min_right[n.data]:
++            min_right[n.data] = min_right[n.right.data]
+ 
+         n = state[-1]
+         if len(state) - 1 == 0:
+             break
+         state = state[0:-1]
++    return res
+ 
+ def check_binary_search_tree_(root):
+-    path = []
+-    traverse(root, path)
+-    last = path[0]
+-    bst = "Yes"
+-    for idx in range(1, len(path)):
+-        if path[idx] < last:
+-            bst = "No"
+-            break
+-        last = path[idx]
+-    return bst
++    return test_bst(root);
+ 
+ if __name__ == "__main__":
+     '''
+-- 
+2.23.0
+
