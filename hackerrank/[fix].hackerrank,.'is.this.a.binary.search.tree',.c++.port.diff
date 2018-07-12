@@ -1,0 +1,151 @@
+From 15ca127054c8d23db214fd1d349ad39e24fe0208 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 12 Jul 2018 09:39:20 +0100
+Subject: [fix] hackerrank, 'is this a binary search tree', c++ port
+
+-calc max and min of both paths to determine expected order has been
+compromised
+---
+ .../is.this.a.binary.search.tree.cpp          | 88 ++++++++++++++++---
+ 1 file changed, 74 insertions(+), 14 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.trees.-.medium.-.is.this.a.binary.search.tree/is.this.a.binary.search.tree.cpp b/hackerrank/data.structures.-.trees.-.medium.-.is.this.a.binary.search.tree/is.this.a.binary.search.tree.cpp
+index 6f1f2dd..01222a1 100644
+--- a/hackerrank/data.structures.-.trees.-.medium.-.is.this.a.binary.search.tree/is.this.a.binary.search.tree.cpp
++++ b/hackerrank/data.structures.-.trees.-.medium.-.is.this.a.binary.search.tree/is.this.a.binary.search.tree.cpp
+@@ -7,46 +7,58 @@ The Node struct is defined as follows:
+         Node* right;
+     }
+ */
++#include <bits/stdc++.h>
++
++using namespace std;
++
++class Node {
++    public:
++        int data;
++        Node* left;
++        Node* right;
++
++    Node(int data) {
++        this->data = data;
++        this->left = NULL;
++        this->right = NULL;
++    }
++
++};
++
++class Solution {
++    public:
+ 
+     const int MAX_VAL = 10000;
+     const int MIN_VAL = 0;
+ 
+     bool node_valid(Node* n, int* max_left, int* min_right, vector<int>* path) {
+-        bool res;
++        bool res = true;
+         int _max_left = MIN_VAL;
++        int _min_left = MAX_VAL;
++        int _max_right = MIN_VAL;
+         int _min_right = MAX_VAL;
+ 
+         if (n->left != NULL) {
+-            _max_left = MIN_VAL;
+-            _min_right = MAX_VAL;
+             //cout << "via left node: '" << n->left->data << "'" << endl;
+-            res = node_valid(n->left, &_max_left, &_min_right, path);
++            res = node_valid(n->left, &_max_left, &_min_left, path);
+             *max_left = max(*max_left, _max_left);
+             if (!res)
+                 return false;
+             else if (_max_left >= n->data)
+                 return false;
+-            *min_right = min(*min_right, _max_left);
+         }
+ 
+         path->push_back(n->data);
+ 
+         if (n->right != NULL) {
+-            _max_left = MIN_VAL;
+-            _min_right = MAX_VAL;
+             //cout << "via right node: '" << n->right->data << "'" << endl;
+-            res = node_valid(n->right, &_max_left, &_min_right, path);
++            res = node_valid(n->right, &_max_right, &_min_right, path);
+             *min_right = min(*min_right, _min_right);
+             if (!res)
+                 return false;
+             else if (_min_right <= n->data)
+                 return false;
+-            *max_left = max(*max_left, _min_right);
+         }
+-
+-        *max_left = max(*max_left, n->data);
+-        *min_right = min(*min_right, n->data);
+-
+         /*
+         stringstream ss = stringstream();
+         ss << "considering node: '"
+@@ -65,7 +77,15 @@ The Node struct is defined as follows:
+         cout << ss.str() << endl;
+         */
+ 
+-        return true;
++        // update for return
++        if (n->left != NULL)
++            *min_right = min(*min_right, _min_left);
++        if (n->right != NULL)
++            *max_left = max(*max_left, _max_right);
++        *max_left = max(*max_left, n->data);
++        *min_right = min(*min_right, n->data);
++
++        return res;
+     }
+ 
+     bool checkBST(Node* root) {
+@@ -75,3 +95,43 @@ The Node struct is defined as follows:
+         //cout << "via root node: '" << n->data << "'" << endl;
+         return node_valid(root, &max_left, &min_right, &path);
+     }
++};
++
++int main() {
++
++    Node* root = NULL;
++    int n;
++    cin >> n;
++    vector<vector<Node*>> levels = vector<vector<Node*>>();
++    for (int i = 0; i <= n; i++)
++        levels.push_back(vector<Node*>());
++
++    int data;
++    while (cin >> data)
++        levels[n].push_back(new Node(data));
++
++    for (int i = n; i >= 0; i--) {
++        int ii = 0;
++        while ((ii + 2) < levels[i].size()) {
++            Node* parent = levels[i][ii + 1];
++            parent->left = levels[i][ii];
++            parent->right = levels[i][ii + 2];
++            levels[i - 1].push_back(parent);
++            ii += 2;
++        }
++    }
++    /*
++    for (int i = 0; i <= n; i++) {
++        cout << "level[" << i << "]:";
++        for (vector<Node*>::iterator iter = levels[i].begin(); iter != levels[i].end(); ++iter)
++            cout << " " << (*iter)->data;
++        cout << endl;
++    }
++    */
++    root = levels[0][0];
++    Solution x = Solution();
++    bool res = x.checkBST(root);
++    cout << (res ? "Yes" : "No") << endl;
++
++    return 0;
++}
+-- 
+2.23.0
+
