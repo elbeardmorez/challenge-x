@@ -1,0 +1,88 @@
+From 718eb55b6b5acb63c8a026904f17257c6f845c47 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 12 Jul 2018 09:17:29 +0100
+Subject: [add] hackerrank, 'is this a binary search tree', c++ port
+
+---
+ .../is.this.a.binary.search.tree.cpp          | 66 +++++++++++++++++++
+ 1 file changed, 66 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.trees.-.medium.-.is.this.a.binary.search.tree/is.this.a.binary.search.tree.cpp b/hackerrank/data.structures.-.trees.-.medium.-.is.this.a.binary.search.tree/is.this.a.binary.search.tree.cpp
+index bcb708c..6f1f2dd 100644
+--- a/hackerrank/data.structures.-.trees.-.medium.-.is.this.a.binary.search.tree/is.this.a.binary.search.tree.cpp
++++ b/hackerrank/data.structures.-.trees.-.medium.-.is.this.a.binary.search.tree/is.this.a.binary.search.tree.cpp
+@@ -7,5 +7,71 @@ The Node struct is defined as follows:
+         Node* right;
+     }
+ */
++
++    const int MAX_VAL = 10000;
++    const int MIN_VAL = 0;
++
++    bool node_valid(Node* n, int* max_left, int* min_right, vector<int>* path) {
++        bool res;
++        int _max_left = MIN_VAL;
++        int _min_right = MAX_VAL;
++
++        if (n->left != NULL) {
++            _max_left = MIN_VAL;
++            _min_right = MAX_VAL;
++            //cout << "via left node: '" << n->left->data << "'" << endl;
++            res = node_valid(n->left, &_max_left, &_min_right, path);
++            *max_left = max(*max_left, _max_left);
++            if (!res)
++                return false;
++            else if (_max_left >= n->data)
++                return false;
++            *min_right = min(*min_right, _max_left);
++        }
++
++        path->push_back(n->data);
++
++        if (n->right != NULL) {
++            _max_left = MIN_VAL;
++            _min_right = MAX_VAL;
++            //cout << "via right node: '" << n->right->data << "'" << endl;
++            res = node_valid(n->right, &_max_left, &_min_right, path);
++            *min_right = min(*min_right, _min_right);
++            if (!res)
++                return false;
++            else if (_min_right <= n->data)
++                return false;
++            *max_left = max(*max_left, _min_right);
++        }
++
++        *max_left = max(*max_left, n->data);
++        *min_right = min(*min_right, n->data);
++
++        /*
++        stringstream ss = stringstream();
++        ss << "considering node: '"
++            << n->data
++            << " ["
++            << (n->left != NULL ? to_string(n->left->data) : "x")
++            << " ^ "
++            << (n->right != NULL ? to_string(n->right->data) : "x")
++            << "]', max_left: "
++            << (n->left != NULL ? to_string(*max_left) : "x")
++            << ", min_right: "
++            << (n->right != NULL ? to_string(*min_right) : "x")
++            << ", path:";
++        for (vector<int>::iterator iter = path->begin(); iter != path->end(); ++iter)
++            ss << " " << *iter;
++        cout << ss.str() << endl;
++        */
++
++        return true;
++    }
++
+     bool checkBST(Node* root) {
++        int max_left = MIN_VAL;
++        int min_right = MAX_VAL;
++        vector<int> path = vector<int>();
++        //cout << "via root node: '" << n->data << "'" << endl;
++        return node_valid(root, &max_left, &min_right, &path);
+     }
+-- 
+2.23.0
+
