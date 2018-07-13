@@ -1,0 +1,307 @@
+From 9311bd26c7e7c0f45a56a3dfcdd88c48de97cd5f Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 13 Jul 2018 15:26:42 +0100
+Subject: [add] hackerrank, 'self balancing tree', c++ solution
+
+---
+ .../self.balancing.tree.cpp                   | 284 ++++++++++++++++++
+ 1 file changed, 284 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.balanced.trees.-.medium.-.self.balancing.tree/self.balancing.tree.cpp b/hackerrank/data.structures.-.balanced.trees.-.medium.-.self.balancing.tree/self.balancing.tree.cpp
+index ffcd4f9..568db75 100644
+--- a/hackerrank/data.structures.-.balanced.trees.-.medium.-.self.balancing.tree/self.balancing.tree.cpp
++++ b/hackerrank/data.structures.-.balanced.trees.-.medium.-.self.balancing.tree/self.balancing.tree.cpp
+@@ -7,6 +7,290 @@ typedef struct node
+     int ht;
+ } node; */
+ 
++int balance_factor(node* n) {
++    int left = n->left == NULL ? -1 : n->left->ht;
++    int right = n->right == NULL ? -1 : n->right->ht;
++    //if (n->val == 4)
++    //    cout << "balance factor for node: " << n->val
++    //        << ", left-ht: " << left << ", right-ht: " << right << endl;
++    return left - right;
++}
++
++/*
++vector<int>* traverse(node* n) {
++    vector<int>* v = new vector<int>();
++    vector<int>* v2;
++    if (n->left) {
++        v2 = traverse(n->left);
++        v->insert(v->end(), v2->begin(), v2->end());
++    }
++    v->push_back(n->val);
++    if (n->right) {
++        v2 = traverse(n->right);
++        v->insert(v->end(), v2->begin(), v2->end());
++    }
++    return v;
++}
++*/
++
++void traverse(node* n, vector<node*>* v) {
++    if (n->left)
++        traverse(n->left, v);
++    v->push_back(n);
++    if (n->right)
++        traverse(n->right, v);
++}
++
++void traverse_info(node* n, vector<string>* v) {
++    auto* path = new vector<node *>();
++    traverse(n, path);
++    for (auto iter = path->begin(); iter != path->end(); ++iter) {
++        node* n = *iter;
++        v->push_back(to_string(n->val) + "[H:" + to_string(n->ht) + ",BF:" + to_string(balance_factor(n)) + "]");
++    }
++}
++
++bool find_parents(node* n, node* target, vector<node*>* parents) {
++    bool res = false;
++    if (n == target)
++        return true;
++    else {
++        if (n->left)
++            res = find_parents(n->left, target, parents);
++        if (!res && n->right)
++            res = find_parents(n->right, target, parents);
++    }
++    if (res)
++        parents->push_back(n);
++    return res;
++}
++
++node* find_parent(vector<node*>* path, node* n) {
++    for (auto iter = path->begin(); iter != path->end(); ++iter) {
++        node* p = *iter;
++        if (p == n)
++            return NULL; // root!
++        else if (p->left != NULL && p->left == n)
++            return p;
++        else if (p->right != NULL && p->right == n)
++            return p;
++    }
++    return NULL;
++}
++
++/*
++node* find_unbalanced(vector<node*>* path) {
++    int bf;
++    for (auto iter = path->begin(); iter != path->end(); ++iter) {
++        bf = balance_factor(*iter);
++        if (bf == 2 || bf == -2)
++            return *iter;
++    }
++    return NULL;
++}
++*/
++
++void output(vector<string>* tree) {
++    cout << "tree:";
++    for (auto iter = tree->begin(); iter != tree->end(); ++iter)
++        cout << *iter << " ";
++    cout << endl;
++}
++
++
++int node_height(node* n) {
++    int left = n->left == NULL ? -1 : n->left->ht;
++    int right = n->right == NULL ? -1 : n->right->ht;
++    return max(left, right) + 1;
++}
++
++void balance_tree(node* n) {
++    node* un = NULL;
++    int it = 0;
++    auto* path = new vector<node *>();
++    traverse(n, path);
++
++    int bf;
++    bool search = true;
++    bool tweaked;
++    while (search) {
++        tweaked = false;
++        for (auto iter = path->begin(); iter != path->end(); ++iter) {
++            bf = balance_factor(*iter);
++            if (abs(bf) != 2)
++                continue;
++            un = *iter;
++            auto* parents = new vector<node*>();
++            find_parents(n, un, parents);
++            /*
++            cout << "node: " << un->val << " unbalanced" << endl;
++            cout << "parents:";
++            for (auto iter = parents->begin(); iter != parents->end(); ++iter)
++                cout << " " << *iter;
++            cout << endl;
++            */
++            if (bf == 2 && un->left != NULL && balance_factor(un->left) == -1) {
++                // left right case
++                //cout << "left right case" << endl;
++                tweaked = true;
++
++                node* n1 = un->left;
++                node* n2 = un->left->right;
++                un->left = n2;
++                n1->right = n2->left;
++                n2->left = n1;
++                // reset heights..
++                node* base = un;
++                node* left = n2;
++                node* leftleft = n1;
++
++                leftleft->ht = node_height(leftleft);
++                left->ht = node_height(left);
++                base->ht = node_height(base);
++            }
++            else if (bf == -2 && un->right != NULL && balance_factor(un->right) == 1) {
++                // right left case
++                //cout << "right left case" << endl;
++                tweaked = true;
++
++                node* n1 = un->right;
++                node* n2 = un->right->left;
++                un->right = n2;
++                n1->left = n2->right;
++                n2->right = n1;
++                // reset heights..
++                node* base = un;
++                node* right = n2;
++                node* rightright = n1;
++
++                rightright->ht = node_height(rightright);
++                right->ht = node_height(right);
++                base->ht = node_height(base);
++            }
++            else if (bf == 2 && un->left != NULL && balance_factor(un->left) == 1) {
++                // left left case
++                //cout << "left left case" << endl;
++                tweaked = true;
++
++                node* parent = parents->size() == 0 ? NULL : parents->back();
++                node* n1 = un->left;
++                node* n2 = un->left->left;
++                if (parent != NULL) {
++                    if (parent->right == un)
++                        parent->right = n1;
++                    else
++                        parent->left = n1;
++                }
++                un->left = n1->right;
++                n1->right = un;
++                // reset heights..
++                node* base = n1;
++                node* right = un;
++                node* left = n2;
++                right->ht = node_height(right);
++                base->ht = node_height(base);
++            }
++            else if (bf == -2 && un->right != NULL && balance_factor(un->right) == -1) {
++                // right right case
++                //cout << "right right case" << endl;
++                tweaked = true;
++
++                node* parent = parents->size() == 0 ? NULL : parents->back();
++                node* n1 = un->right;
++                node* n2 = un->right->right;
++                if (parent != NULL) {
++                    if (parent->left == un)
++                        parent->left = n1;
++                    else
++                        parent->right = n1;
++                }
++                un->right = n1->left;
++                n1->left = un;
++                // reset heights..
++                node* base = n1;
++                node* left = un;
++                node* right = n2;
++                left->ht = node_height(left);
++                base->ht = node_height(base);
++            }
++            if (tweaked) {
++                // reset heights of parent nodes
++                for (auto iter = parents->rbegin(); iter != parents->rend(); ++iter) {
++                    node *p = *iter;
++                    p->ht = node_height(p);
++                    //cout << "updating height for parent: " << p->val << endl;
++                }
++            }
++            it++;
++            if (it >= 100) {
++                cout << "find_unbalanced loop hit limit!" << endl;
++                break;
++            }
++        } // for
++        if (!tweaked)
++            search = false;
++    }
++}
++
++node* node_new(int val) {
++    // not even c++11 ?!
++    node* n = new node();
++    n->val = val;
++    n->left = NULL;
++    n->right = NULL;
++    n->ht = 0;
++    return n;
++}
++
++bool descend(node* n, int val) {
++    bool deeper = false;
++    if (val < n->val) {
++        if (n->left == NULL) {
++            n->left = node_new(val);
++            if (n->right == NULL)
++                deeper = true;
++        }
++        else
++            deeper = descend(n->left, val);
++    }
++    else {
++        if (n->right == NULL) {
++            n->right = node_new(val);
++            if (n->left == NULL)
++                deeper = true;
++            deeper = true;
++        }
++        else
++            deeper = descend(n->right, val);
++    }
++    if (deeper)
++        n->ht++;
++    return deeper;
++}
++
+ node * insert(node * root,int val)
+ {
++    auto tree = new vector<string>();;
++
++    //cout << "# tree initially" << endl;
++    traverse_info(root, tree);
++    //output(tree);
++
++    if (root == NULL)
++        root = node_new(val);
++    else {
++        descend(root, val);
++        //cout << "# tree post insert" << endl;
++        tree->clear();
++        traverse_info(root, tree);
++        //output(tree);
++        balance_tree(root);
++    }
++
++    //cout << "# tree post rebalance" << endl;
++    tree->clear();
++    traverse_info(root, tree);
++    //output(tree);
++
++    return root;
+ }
+-- 
+2.23.0
+
