@@ -1,0 +1,157 @@
+From aaf1bc929a53935e9a3a730711dd47807f1b9433 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 14 Jul 2018 14:47:57 +0100
+Subject: [fix] hackerrank, 'self balancing tree', c++ solution
+
+-comment debugging
+---
+ .../self.balancing.tree.cpp                   | 53 +++++++++----------
+ 1 file changed, 25 insertions(+), 28 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.balanced.trees.-.medium.-.self.balancing.tree/self.balancing.tree.cpp b/hackerrank/data.structures.-.balanced.trees.-.medium.-.self.balancing.tree/self.balancing.tree.cpp
+index 3c8b81c..93afea4 100644
+--- a/hackerrank/data.structures.-.balanced.trees.-.medium.-.self.balancing.tree/self.balancing.tree.cpp
++++ b/hackerrank/data.structures.-.balanced.trees.-.medium.-.self.balancing.tree/self.balancing.tree.cpp
+@@ -10,9 +10,9 @@ typedef struct node
+ int balance_factor(node* n) {
+     int left = n->left == NULL ? -1 : n->left->ht;
+     int right = n->right == NULL ? -1 : n->right->ht;
+-    if (n->val == 51)
+-        cout << "balance factor for node: " << n->val
+-            << ", left-ht: " << left << ", right-ht: " << right << endl;
++    //if (n->val == 4)
++    //    cout << "balance factor for node: " << n->val
++    //        << ", left-ht: " << left << ", right-ht: " << right << endl;
+     return left - right;
+ }
+ 
+@@ -61,12 +61,10 @@ bool find_parents(node* n, node* target, vector<node*>* parents) {
+             res = find_parents(n->right, target, parents);
+     }
+     if (res)
+-        // closest parent will be at the front, root will be at the back!
+         parents->push_back(n);
+     return res;
+ }
+ 
+-/*
+ node* find_parent(vector<node*>* path, node* n) {
+     for (auto iter = path->begin(); iter != path->end(); ++iter) {
+         node* p = *iter;
+@@ -79,7 +77,6 @@ node* find_parent(vector<node*>* path, node* n) {
+     }
+     return NULL;
+ }
+-*/
+ 
+ /*
+ node* find_unbalanced(vector<node*>* path) {
+@@ -120,9 +117,9 @@ node* balance_tree(node* root) {
+         tweaked = false;
+         path->clear();
+         traverse(root, path);
+-        path_info->clear();
+-        traverse_info(root, path_info);
+-        output(path_info);
++        //path_info->clear();
++        //traverse_info(root, path_info);
++        //output(path_info);
+         for (auto iter = path->begin(); iter != path->end(); ++iter) {
+             bf = balance_factor(*iter);
+             if (abs(bf) != 2)
+@@ -130,16 +127,16 @@ node* balance_tree(node* root) {
+             un = *iter;
+             auto* parents = new vector<node*>();
+             find_parents(root, un, parents);
+-
++            /*
+             cout << "node: " << un->val << " unbalanced" << endl;
+             cout << "parents:";
+             for (auto iter = parents->begin(); iter != parents->end(); ++iter)
+-                cout << " " << (*iter)->val;
++                cout << " " << *iter;
+             cout << endl;
+-
++            */
+             if (bf == 2 && un->left != NULL && balance_factor(un->left) == -1) {
+                 // left right case
+-                cout << "left right case" << endl;
++                //cout << "left right case" << endl;
+                 tweaked = true;
+ 
+                 node* n1 = un->left;
+@@ -158,7 +155,7 @@ node* balance_tree(node* root) {
+             }
+             else if (bf == -2 && un->right != NULL && balance_factor(un->right) == 1) {
+                 // right left case
+-                cout << "right left case" << endl;
++                //cout << "right left case" << endl;
+                 tweaked = true;
+ 
+                 node* n1 = un->right;
+@@ -177,7 +174,7 @@ node* balance_tree(node* root) {
+             }
+             else if (bf == 2 && un->left != NULL && balance_factor(un->left) == 1) {
+                 // left left case
+-                cout << "left left case" << endl;
++                //cout << "left left case" << endl;
+                 tweaked = true;
+ 
+                 node* parent = parents->size() == 0 ? NULL : parents->front();
+@@ -197,14 +194,13 @@ node* balance_tree(node* root) {
+                 node* left = n2;
+                 right->ht = node_height(right);
+                 base->ht = node_height(base);
+-
+                 // ensure root
+                 if (un == root)
+                     root = base;
+             }
+             else if (bf == -2 && un->right != NULL && balance_factor(un->right) == -1) {
+                 // right right case
+-                cout << "right right case" << endl;
++                //cout << "right right case" << endl;
+                 tweaked = true;
+ 
+                 node* parent = parents->size() == 0 ? NULL : parents->front();
+@@ -288,25 +284,26 @@ node * insert(node * root,int val)
+ {
+     auto tree = new vector<string>();;
+ 
+-    cout << "# tree initially" << endl;
+-    traverse_info(root, tree);
+-    output(tree);
++    //cout << "# tree initially" << endl;
++    //traverse_info(root, tree);
++    //output(tree);
+ 
+     if (root == NULL)
+         root = node_new(val);
+     else {
+         descend(root, val);
+-        cout << "# tree post insert" << endl;
+-        tree->clear();
+-        traverse_info(root, tree);
+-        output(tree);
++        //cout << "# tree post insert" << endl;
++        //tree->clear();
++        //traverse_info(root, tree);
++        //output(tree);
+         root = balance_tree(root);
+     }
+ 
+-    cout << "# tree post rebalance" << endl;
+-    tree->clear();
+-    traverse_info(root, tree);
+-    output(tree);
++    //cout << "# tree post rebalance" << endl;
++    //tree->clear();
++    //traverse_info(root, tree);
++    //output(tree);
+ 
+     return root;
+ }
++
+-- 
+2.23.0
+
