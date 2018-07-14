@@ -1,0 +1,52 @@
+From 9b23559dec8f23c4fba9914b4821e0de16cac433 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 14 Jul 2018 15:20:22 +0100
+Subject: [fix] hackerrank, 'self balancing tree', c++ solution
+
+-broken root short-circuit
+---
+ .../self.balancing.tree.cpp                                | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.balanced.trees.-.medium.-.self.balancing.tree/self.balancing.tree.cpp b/hackerrank/data.structures.-.balanced.trees.-.medium.-.self.balancing.tree/self.balancing.tree.cpp
+index 14b70f8..f93d95b 100644
+--- a/hackerrank/data.structures.-.balanced.trees.-.medium.-.self.balancing.tree/self.balancing.tree.cpp
++++ b/hackerrank/data.structures.-.balanced.trees.-.medium.-.self.balancing.tree/self.balancing.tree.cpp
+@@ -71,9 +71,7 @@ bool find_parents(node* n, node* target, vector<node*>* parents) {
+ node* find_parent(vector<node*>* path, node* n) {
+     for (auto iter = path->begin(); iter != path->end(); ++iter) {
+         node* p = *iter;
+-        if (p == n)
+-            return NULL; // root!
+-        else if (p->left != NULL && p->left == n)
++        if (p->left != NULL && p->left == n)
+             return p;
+         else if (p->right != NULL && p->right == n)
+             return p;
+@@ -202,6 +200,7 @@ node* balance_tree(node* root) {
+                 tweaked = true;
+ 
+                 node* parent = find_parent(path, un);
++                //cout << "parent: " << parent << " [" << (parent == NULL ? -1 : parent->val) << "]" << endl;
+                 node* n1 = un->left;
+                 node* n2 = un->left->left;
+                 if (parent != NULL) {
+@@ -228,6 +227,7 @@ node* balance_tree(node* root) {
+                 tweaked = true;
+ 
+                 node* parent = find_parent(path, un);
++                //cout << "parent: " << parent << " [" << (parent == NULL ? -1 : parent->val) << "]" << endl;
+                 node* n1 = un->right;
+                 node* n2 = un->right->right;
+                 if (parent != NULL) {
+@@ -268,7 +268,6 @@ node* balance_tree(node* root) {
+                 cout << "find_unbalanced loop hit limit!" << endl; // big big tree or bug if hit!
+                 break;
+             }
+-
+         } // for
+         if (!tweaked)
+             search = false;
+-- 
+2.23.0
+
