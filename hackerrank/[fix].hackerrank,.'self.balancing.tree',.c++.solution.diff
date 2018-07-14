@@ -1,0 +1,116 @@
+From 5fb805c0b51f98b09783844dbf87facc36556428 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 14 Jul 2018 11:50:03 +0100
+Subject: [fix] hackerrank, 'self balancing tree', c++ solution
+
+-return root of complete tree don't just print
+---
+ .../self.balancing.tree.cpp                   | 32 +++++++++++++------
+ 1 file changed, 22 insertions(+), 10 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.balanced.trees.-.medium.-.self.balancing.tree/self.balancing.tree.cpp b/hackerrank/data.structures.-.balanced.trees.-.medium.-.self.balancing.tree/self.balancing.tree.cpp
+index 568db75..f8b445c 100644
+--- a/hackerrank/data.structures.-.balanced.trees.-.medium.-.self.balancing.tree/self.balancing.tree.cpp
++++ b/hackerrank/data.structures.-.balanced.trees.-.medium.-.self.balancing.tree/self.balancing.tree.cpp
+@@ -104,24 +104,29 @@ int node_height(node* n) {
+     return max(left, right) + 1;
+ }
+ 
+-void balance_tree(node* n) {
++node* balance_tree(node* root) {
+     node* un = NULL;
+     int it = 0;
+     auto* path = new vector<node *>();
+-    traverse(n, path);
++    auto* path_info = new vector<string>();
+ 
+     int bf;
+     bool search = true;
+     bool tweaked;
+     while (search) {
+         tweaked = false;
++        path->clear();
++        traverse(root, path);
++        //path_info->clear();
++        //traverse_info(root, path_info);
++        //output(path_info);
+         for (auto iter = path->begin(); iter != path->end(); ++iter) {
+             bf = balance_factor(*iter);
+             if (abs(bf) != 2)
+                 continue;
+             un = *iter;
+             auto* parents = new vector<node*>();
+-            find_parents(n, un, parents);
++            find_parents(root, un, parents);
+             /*
+             cout << "node: " << un->val << " unbalanced" << endl;
+             cout << "parents:";
+@@ -189,6 +194,9 @@ void balance_tree(node* n) {
+                 node* left = n2;
+                 right->ht = node_height(right);
+                 base->ht = node_height(base);
++                // ensure root
++                if (un == root)
++                    root = base;
+             }
+             else if (bf == -2 && un->right != NULL && balance_factor(un->right) == -1) {
+                 // right right case
+@@ -212,6 +220,9 @@ void balance_tree(node* n) {
+                 node* right = n2;
+                 left->ht = node_height(left);
+                 base->ht = node_height(base);
++                // ensure root
++                if (un == root)
++                    root = base;
+             }
+             if (tweaked) {
+                 // reset heights of parent nodes
+@@ -223,13 +234,14 @@ void balance_tree(node* n) {
+             }
+             it++;
+             if (it >= 100) {
+-                cout << "find_unbalanced loop hit limit!" << endl;
++                cout << "find_unbalanced loop hit limit!" << endl; // big big tree or bug if hit!
+                 break;
+             }
+         } // for
+         if (!tweaked)
+             search = false;
+     }
++    return root;
+ }
+ 
+ node* node_new(int val) {
+@@ -273,7 +285,7 @@ node * insert(node * root,int val)
+     auto tree = new vector<string>();;
+ 
+     //cout << "# tree initially" << endl;
+-    traverse_info(root, tree);
++    //traverse_info(root, tree);
+     //output(tree);
+ 
+     if (root == NULL)
+@@ -281,15 +293,15 @@ node * insert(node * root,int val)
+     else {
+         descend(root, val);
+         //cout << "# tree post insert" << endl;
+-        tree->clear();
+-        traverse_info(root, tree);
++        //tree->clear();
++        //traverse_info(root, tree);
+         //output(tree);
+-        balance_tree(root);
++        root = balance_tree(root);
+     }
+ 
+     //cout << "# tree post rebalance" << endl;
+-    tree->clear();
+-    traverse_info(root, tree);
++    //tree->clear();
++    //traverse_info(root, tree);
+     //output(tree);
+ 
+     return root;
+-- 
+2.23.0
+
