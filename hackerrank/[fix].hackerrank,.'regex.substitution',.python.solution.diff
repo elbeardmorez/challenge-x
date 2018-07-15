@@ -1,0 +1,26 @@
+From ccc1dede92bcc01437df1e614854660066582006 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 15 Jul 2018 22:58:50 +0100
+Subject: [fix] hackerrank, 'regex substitution', python solution
+
+-back-references required for complexity
+---
+ .../regex.substitution.py                                    | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/hackerrank/python.-.regex.and.parsing.-.medium.-.regex.substitution/regex.substitution.py b/hackerrank/python.-.regex.and.parsing.-.medium.-.regex.substitution/regex.substitution.py
+index dd6727b..ef9b71f 100644
+--- a/hackerrank/python.-.regex.and.parsing.-.medium.-.regex.substitution/regex.substitution.py
++++ b/hackerrank/python.-.regex.and.parsing.-.medium.-.regex.substitution/regex.substitution.py
+@@ -1,7 +1,4 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
+ import re
+ for _ in range(int(input())):
+-    s = input()
+-    s = re.sub(' && ', ' and ' , s)
+-    s = re.sub(' \|\| ', ' or ' , s)
+-    print(s)
++    print(re.sub(r' &&(?= )', ' and' , re.sub(r' \|\|(?= )', ' or', input())))
+-- 
+2.23.0
+
