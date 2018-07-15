@@ -1,0 +1,24 @@
+From e6b7c0b864c73cd897f9bf079317687175348069 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 15 Jul 2018 22:30:28 +0100
+Subject: [add] hackerrank, 'regex substitution', python solution
+
+---
+ .../regex.substitution.py                                   | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/hackerrank/python.-.regex.and.parsing.-.medium.-.regex.substitution/regex.substitution.py b/hackerrank/python.-.regex.and.parsing.-.medium.-.regex.substitution/regex.substitution.py
+index 7c60a68..dd6727b 100644
+--- a/hackerrank/python.-.regex.and.parsing.-.medium.-.regex.substitution/regex.substitution.py
++++ b/hackerrank/python.-.regex.and.parsing.-.medium.-.regex.substitution/regex.substitution.py
+@@ -1 +1,7 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++import re
++for _ in range(int(input())):
++    s = input()
++    s = re.sub(' && ', ' and ' , s)
++    s = re.sub(' \|\| ', ' or ' , s)
++    print(s)
+-- 
+2.23.0
+
