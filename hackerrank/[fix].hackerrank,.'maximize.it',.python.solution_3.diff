@@ -1,0 +1,26 @@
+From cf4fa0686427d2d8ba6bd180955e621efad6268f Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 16 Jul 2018 15:27:02 +0100
+Subject: [fix] hackerrank, 'maximize it', python solution
+
+-comment debugging
+---
+ .../python.-.itertools.-.hard.-.maximize.it/maximize.it.py      | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/python.-.itertools.-.hard.-.maximize.it/maximize.it.py b/hackerrank/python.-.itertools.-.hard.-.maximize.it/maximize.it.py
+index fa8335f..d758a04 100644
+--- a/hackerrank/python.-.itertools.-.hard.-.maximize.it/maximize.it.py
++++ b/hackerrank/python.-.itertools.-.hard.-.maximize.it/maximize.it.py
+@@ -18,7 +18,7 @@ for xs in product(*numbers):
+     if v > max_ffx:
+         max_ffx = v
+     if v == m - 1:  # winner
+-        print(xs)
++        #print(xs)
+         max_ffx = m - 1
+         break
+ 
+-- 
+2.23.0
+
