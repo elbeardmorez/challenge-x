@@ -1,0 +1,30 @@
+From afd655902ab552a8c4ffec5d175e111f317a006a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 16 Jul 2018 08:56:33 +0100
+Subject: [add] hackerrank, 'no idea!', python solution
+
+---
+ .../python.-.sets.-.medium.-.no.idea/no.idea.py      | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/hackerrank/python.-.sets.-.medium.-.no.idea/no.idea.py b/hackerrank/python.-.sets.-.medium.-.no.idea/no.idea.py
+index 7c60a68..c61b56d 100644
+--- a/hackerrank/python.-.sets.-.medium.-.no.idea/no.idea.py
++++ b/hackerrank/python.-.sets.-.medium.-.no.idea/no.idea.py
+@@ -1 +1,13 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++
++n, m = [int(x) for x in input().split(' ')]
++t = [int(x) for x in input().split(' ')]
++a = set([int(x) for x in input().split(' ')])
++b = set([int(x) for x in input().split(' ')])
++happiness = 0
++for x in t:
++    if x in a:
++        happiness += 1
++    elif x in b:
++        happiness -= 1
++print(happiness)
+-- 
+2.23.0
+
