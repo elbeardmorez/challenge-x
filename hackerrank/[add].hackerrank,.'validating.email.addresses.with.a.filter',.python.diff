@@ -1,0 +1,27 @@
+From b0a139daab5f3f8a1101645a93c2b03ef248becf Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 16 Jul 2018 08:34:27 +0100
+Subject: [add] hackerrank, 'validating email addresses with a filter', python
+ solution
+
+---
+ .../validating.email.addresses.with.a.filter.py               | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/hackerrank/python.-.python.functionals.-.medium.-.validating.email.addresses.with.a.filter/validating.email.addresses.with.a.filter.py b/hackerrank/python.-.python.functionals.-.medium.-.validating.email.addresses.with.a.filter/validating.email.addresses.with.a.filter.py
+index 6240f9b..e35cecf 100644
+--- a/hackerrank/python.-.python.functionals.-.medium.-.validating.email.addresses.with.a.filter/validating.email.addresses.with.a.filter.py
++++ b/hackerrank/python.-.python.functionals.-.medium.-.validating.email.addresses.with.a.filter/validating.email.addresses.with.a.filter.py
+@@ -1,5 +1,9 @@
++import re
++
+ def fun(s):
+     # return True if s is a valid email, else return False
++    #return sorted(s.filter(lambda s: re.search(r'[0-9a-zA-Z_]\+@[0-9a-zA-Z_]\+\.[0-9a-zA-Z_]\+'))
++    return re.search(r'[0-9a-zA-Z_]+@[0-9a-zA-Z_]+\.[0-9a-zA-Z_]+', s)
+ 
+ def filter_mail(emails):
+     return list(filter(fun, emails))
+-- 
+2.23.0
+
