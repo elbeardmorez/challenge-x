@@ -1,0 +1,27 @@
+From 26d699db7a3724028fb81a58bf7b9eb110eac07d Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 16 Jul 2018 12:27:54 +0100
+Subject: [fix] hackerrank, 'default arguments', python solution
+
+-set 0 iff instance is an EvenStream object type
+---
+ .../default.arguments.py                                       | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/python.-.debugging.-.medium.-.default.arguments/default.arguments.py b/hackerrank/python.-.debugging.-.medium.-.default.arguments/default.arguments.py
+index 4661844..043bd0d 100644
+--- a/hackerrank/python.-.debugging.-.medium.-.default.arguments/default.arguments.py
++++ b/hackerrank/python.-.debugging.-.medium.-.default.arguments/default.arguments.py
+@@ -17,7 +17,8 @@ class OddStream(object):
+         return to_return
+ 
+ def print_from_stream(n, stream=EvenStream()):
+-    stream.current = 0
++    if isinstance(stream, EvenStream)
++        stream.current = 0
+     for _ in range(n):
+         print(stream.get_next())
+ 
+-- 
+2.23.0
+
