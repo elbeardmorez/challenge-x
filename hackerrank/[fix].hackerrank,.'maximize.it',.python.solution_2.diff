@@ -1,0 +1,44 @@
+From 560fe88092f05cb6775f5461fed31375f9794b37 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 16 Jul 2018 14:55:12 +0100
+Subject: [fix] hackerrank, 'maximize it', python solution
+
+-slice away first in lists, it's the irrelevant count
+---
+ .../maximize.it.py                                     | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/hackerrank/python.-.itertools.-.hard.-.maximize.it/maximize.it.py b/hackerrank/python.-.itertools.-.hard.-.maximize.it/maximize.it.py
+index 9aa494a..fa8335f 100644
+--- a/hackerrank/python.-.itertools.-.hard.-.maximize.it/maximize.it.py
++++ b/hackerrank/python.-.itertools.-.hard.-.maximize.it/maximize.it.py
+@@ -5,21 +5,21 @@ from itertools import product
+ k, m = [int(x) for x in input().split()]
+ 
+ def ffx(xs, m):
+-    return sum([pow(x, 2) for x in xs]) % m
++    return (sum([pow(x, 2) for x in xs]) % m)
+ 
+ max_ffx = 0
+ numbers = []
+ for _ in range(k):
+-    l = [int(x) for x in input().split()]
++    l = [int(x) for x in input().split()[1:]]
+     numbers.append(l)
+ 
+ for xs in product(*numbers):
+-    #print(xs)
+     v = ffx(xs, m)
+     if v > max_ffx:
+         max_ffx = v
+     if v == m - 1:  # winner
+-       max_ffx = m - 1
+-       break
++        print(xs)
++        max_ffx = m - 1
++        break
+ 
+ print(max_ffx)
+-- 
+2.23.0
+
