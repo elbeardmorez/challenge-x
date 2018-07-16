@@ -1,0 +1,46 @@
+From d56622f84e01ceda74ed4ca8e361b2650d8468d2 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 16 Jul 2018 14:48:40 +0100
+Subject: [fix] hackerrank, 'maximize it', python solution
+
+-account for the mod M element of the problem
+---
+ .../maximize.it.py                            | 24 ++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/python.-.itertools.-.hard.-.maximize.it/maximize.it.py b/hackerrank/python.-.itertools.-.hard.-.maximize.it/maximize.it.py
+index 525f3b9..9aa494a 100644
+--- a/hackerrank/python.-.itertools.-.hard.-.maximize.it/maximize.it.py
++++ b/hackerrank/python.-.itertools.-.hard.-.maximize.it/maximize.it.py
+@@ -1,7 +1,25 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
+ 
++from itertools import product
++
+ k, m = [int(x) for x in input().split()]
+-sum = 0
++
++def ffx(xs, m):
++    return sum([pow(x, 2) for x in xs]) % m
++
++max_ffx = 0
++numbers = []
+ for _ in range(k):
+-    sum += pow(sorted([int(x) for x in input().split()])[-1],2)
+-print(sum % m)
++    l = [int(x) for x in input().split()]
++    numbers.append(l)
++
++for xs in product(*numbers):
++    #print(xs)
++    v = ffx(xs, m)
++    if v > max_ffx:
++        max_ffx = v
++    if v == m - 1:  # winner
++       max_ffx = m - 1
++       break
++
++print(max_ffx)
+-- 
+2.23.0
+
