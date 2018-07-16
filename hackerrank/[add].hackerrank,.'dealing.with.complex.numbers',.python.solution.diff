@@ -1,0 +1,46 @@
+From 319a3ca4ca17221ad316d431fc5af34e087e8feb Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 16 Jul 2018 13:42:20 +0100
+Subject: [add] hackerrank, 'dealing with complex numbers', python solution
+
+---
+ .../dealing.with.complex.numbers.py              | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/python.-.classes.-.medium.-.dealing.with.complex.numbers/dealing.with.complex.numbers.py b/hackerrank/python.-.classes.-.medium.-.dealing.with.complex.numbers/dealing.with.complex.numbers.py
+index d35f48d..e12dbce 100644
+--- a/hackerrank/python.-.classes.-.medium.-.dealing.with.complex.numbers/dealing.with.complex.numbers.py
++++ b/hackerrank/python.-.classes.-.medium.-.dealing.with.complex.numbers/dealing.with.complex.numbers.py
+@@ -1,16 +1,26 @@
+ import math
+ class Complex(object):
+     def __init__(self, real, imaginary):
+-        
++        self.real = real
++        self.imaginary = imaginary
++
+     def __add__(self, no):
+-        
++        return Complex(self.real + no.real, self.imaginary + no.imaginary)
++    
+     def __sub__(self, no):
+-        
++        return Complex(self.real - no.real, self.imaginary - no.imaginary)
++
+     def __mul__(self, no):
++        return Complex(self.real * no.real - self.imaginary * no.imaginary, self.real * no.imaginary + self.imaginary * no.real)
+ 
+     def __truediv__(self, no):
++        conjugate = Complex(no.real, -no.imaginary)
++        numerator = self * conjugate
++        denominator = (no * conjugate).real
++        return Complex((self * conjugate).real / denominator, (self * conjugate).imaginary / denominator)
+ 
+     def mod(self):
++        return Complex(pow(pow(self.real, 2) + pow(self.imaginary, 2), 0.5), 0)
+ 
+     def __str__(self):
+         if self.imaginary == 0:
+-- 
+2.23.0
+
