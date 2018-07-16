@@ -1,0 +1,24 @@
+From 871d2cdcb203164393fdf8190cadfe55b77799a0 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 16 Jul 2018 14:42:05 +0100
+Subject: [add] hackerrank, 'maximize it', python solution
+
+---
+ .../python.-.itertools.-.hard.-.maximize.it/maximize.it.py  | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/hackerrank/python.-.itertools.-.hard.-.maximize.it/maximize.it.py b/hackerrank/python.-.itertools.-.hard.-.maximize.it/maximize.it.py
+index 7c60a68..525f3b9 100644
+--- a/hackerrank/python.-.itertools.-.hard.-.maximize.it/maximize.it.py
++++ b/hackerrank/python.-.itertools.-.hard.-.maximize.it/maximize.it.py
+@@ -1 +1,7 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++
++k, m = [int(x) for x in input().split()]
++sum = 0
++for _ in range(k):
++    sum += pow(sorted([int(x) for x in input().split()])[-1],2)
++print(sum % m)
+-- 
+2.23.0
+
