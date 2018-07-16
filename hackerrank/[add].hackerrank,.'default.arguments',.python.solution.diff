@@ -1,0 +1,24 @@
+From 8eb18fde73c574a01032dad280a9e7c68193318e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 16 Jul 2018 12:19:11 +0100
+Subject: [add] hackerrank, 'default arguments', python solution
+
+---
+ .../default.arguments.py                                         | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hackerrank/python.-.debugging.-.medium.-.default.arguments/default.arguments.py b/hackerrank/python.-.debugging.-.medium.-.default.arguments/default.arguments.py
+index f87072c..4661844 100644
+--- a/hackerrank/python.-.debugging.-.medium.-.default.arguments/default.arguments.py
++++ b/hackerrank/python.-.debugging.-.medium.-.default.arguments/default.arguments.py
+@@ -17,6 +17,7 @@ class OddStream(object):
+         return to_return
+ 
+ def print_from_stream(n, stream=EvenStream()):
++    stream.current = 0
+     for _ in range(n):
+         print(stream.get_next())
+ 
+-- 
+2.23.0
+
