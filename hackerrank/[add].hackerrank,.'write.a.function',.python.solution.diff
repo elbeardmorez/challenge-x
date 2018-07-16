@@ -1,0 +1,24 @@
+From 059dd17cada9e1b3b0e7c9138774892f568610dc Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 16 Jul 2018 08:23:26 +0100
+Subject: [add] hackerrank, 'write a function', python solution
+
+---
+ .../write.a.function.py                                          | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hackerrank/python.-.introduction.-.medium.-.write.a.function/write.a.function.py b/hackerrank/python.-.introduction.-.medium.-.write.a.function/write.a.function.py
+index 3892493..7752ee5 100644
+--- a/hackerrank/python.-.introduction.-.medium.-.write.a.function/write.a.function.py
++++ b/hackerrank/python.-.introduction.-.medium.-.write.a.function/write.a.function.py
+@@ -2,6 +2,7 @@ def is_leap(year):
+     leap = False
+ 
+     # Write your logic here
++    leap = year % 4 == 0 and not (year % 100 == 0 and not year % 400 == 0)
+ 
+     return leap
+ 
+-- 
+2.23.0
+
