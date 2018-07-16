@@ -1,0 +1,34 @@
+From abe17007a5e6fd21f7c41515d3974236b3d3f787 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 16 Jul 2018 11:51:22 +0100
+Subject: [add] hackerrank, 'athlete sort', python solution
+
+---
+ .../athlete.sort.py                                        | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/python.-.built-ins.-.medium.-.athlete.sort/athlete.sort.py b/hackerrank/python.-.built-ins.-.medium.-.athlete.sort/athlete.sort.py
+index 660a8cb..427b37d 100644
+--- a/hackerrank/python.-.built-ins.-.medium.-.athlete.sort/athlete.sort.py
++++ b/hackerrank/python.-.built-ins.-.medium.-.athlete.sort/athlete.sort.py
+@@ -6,7 +6,10 @@ import random
+ import re
+ import sys
+ 
+-
++def sort_and_print(arr, k):
++    arr.sort(key=lambda x: x[k])
++    for l in arr:
++        print(" ".join([str(x) for x in l]))
+ 
+ if __name__ == '__main__':
+     nm = input().split()
+@@ -21,3 +24,5 @@ if __name__ == '__main__':
+         arr.append(list(map(int, input().rstrip().split())))
+ 
+     k = int(input())
++
++    sort_and_print(arr, k)
+-- 
+2.23.0
+
