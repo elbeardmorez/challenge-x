@@ -1,0 +1,27 @@
+From d94135098571ba7327df997021beb35022a34ea6 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 16 Jul 2018 08:39:16 +0100
+Subject: [fix] hackerrank, 'validating email addresses with a filter', python
+ solution
+
+-anchor regex match
+---
+ .../validating.email.addresses.with.a.filter.py                 | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/python.-.python.functionals.-.medium.-.validating.email.addresses.with.a.filter/validating.email.addresses.with.a.filter.py b/hackerrank/python.-.python.functionals.-.medium.-.validating.email.addresses.with.a.filter/validating.email.addresses.with.a.filter.py
+index e35cecf..bd4029b 100644
+--- a/hackerrank/python.-.python.functionals.-.medium.-.validating.email.addresses.with.a.filter/validating.email.addresses.with.a.filter.py
++++ b/hackerrank/python.-.python.functionals.-.medium.-.validating.email.addresses.with.a.filter/validating.email.addresses.with.a.filter.py
+@@ -3,7 +3,7 @@ import re
+ def fun(s):
+     # return True if s is a valid email, else return False
+     #return sorted(s.filter(lambda s: re.search(r'[0-9a-zA-Z_]\+@[0-9a-zA-Z_]\+\.[0-9a-zA-Z_]\+'))
+-    return re.search(r'[0-9a-zA-Z_]+@[0-9a-zA-Z_]+\.[0-9a-zA-Z_]+', s)
++    return re.search(r'^[0-9a-zA-Z_-]+@[0-9a-zA-Z_-]+\.[0-9a-zA-Z_-]+$', s)
+ 
+ def filter_mail(emails):
+     return list(filter(fun, emails))
+-- 
+2.23.0
+
