@@ -1,0 +1,24 @@
+From c640ab1b902703707352d89e54d3f330e6bbc295 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 16 Jul 2018 08:13:58 +0100
+Subject: [fix] hackerrank, 'find angle', python solution
+
+-remove test angle
+---
+ hackerrank/python.-.math.-.easy.-.find.angle/find.angle.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/python.-.math.-.easy.-.find.angle/find.angle.py b/hackerrank/python.-.math.-.easy.-.find.angle/find.angle.py
+index c39f9be..383ebd0 100644
+--- a/hackerrank/python.-.math.-.easy.-.find.angle/find.angle.py
++++ b/hackerrank/python.-.math.-.easy.-.find.angle/find.angle.py
+@@ -13,5 +13,5 @@ angle_mbc_degrees = math.degrees(angle_mbc)
+ #print("ac: %f, angle_acb: %f, mc: %f, dc: %f, dm: %f, bd: %f, angle_mbc: %f"
+ #      % (ac, angle_acb, mc, dc, dm, bd, angle_mbc))
+ def rounded(x):
+-    return int(x) + 1 if x >= int(x) + 0.5 > 50.5 else int(x)
++    return int(x) + 1 if x >= int(x) + 0.5 else int(x)
+ print(u'%d\N{DEGREE SIGN}' % rounded(angle_mbc_degrees))
+-- 
+2.23.0
+
