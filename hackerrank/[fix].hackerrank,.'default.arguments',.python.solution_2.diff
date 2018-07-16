@@ -1,0 +1,26 @@
+From 8726a1a8a8849412f887617970ca0f577d189609 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 16 Jul 2018 12:28:49 +0100
+Subject: [fix] hackerrank, 'default arguments', python solution
+
+-syntax bug
+---
+ .../default.arguments.py                                        | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/python.-.debugging.-.medium.-.default.arguments/default.arguments.py b/hackerrank/python.-.debugging.-.medium.-.default.arguments/default.arguments.py
+index 043bd0d..5f9a3ea 100644
+--- a/hackerrank/python.-.debugging.-.medium.-.default.arguments/default.arguments.py
++++ b/hackerrank/python.-.debugging.-.medium.-.default.arguments/default.arguments.py
+@@ -17,7 +17,7 @@ class OddStream(object):
+         return to_return
+ 
+ def print_from_stream(n, stream=EvenStream()):
+-    if isinstance(stream, EvenStream)
++    if isinstance(stream, EvenStream):
+         stream.current = 0
+     for _ in range(n):
+         print(stream.get_next())
+-- 
+2.23.0
+
