@@ -1,0 +1,39 @@
+From ac91f2d181dc2a526e105f4b6851ca6a729234f9 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 16 Jul 2018 09:44:13 +0100
+Subject: [add] hackerrank, 'piling up!', python solution
+
+---
+ .../piling.up.py                              | 21 +++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+diff --git a/hackerrank/python.-.collections.-.medium.-.piling.up/piling.up.py b/hackerrank/python.-.collections.-.medium.-.piling.up/piling.up.py
+index 7c60a68..80439da 100644
+--- a/hackerrank/python.-.collections.-.medium.-.piling.up/piling.up.py
++++ b/hackerrank/python.-.collections.-.medium.-.piling.up/piling.up.py
+@@ -1 +1,22 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++
++from collections import deque
++
++for _ in range(int(input())):
++    input()
++    dq = deque([int(x) for x in input().split()])
++    res = "Yes"
++    last = None
++    while len(dq) > 0:
++        next = max(dq[0], dq[-1])
++        if last == None or next <= last:
++            if next == dq[0]:
++                dq.popleft()
++            else:
++                dq.pop()
++        else:
++            break
++        last = next
++    if len(dq) > 0:
++        res = "No"
++    print(res)
+-- 
+2.23.0
+
