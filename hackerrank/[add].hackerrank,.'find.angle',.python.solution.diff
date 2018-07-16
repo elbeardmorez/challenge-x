@@ -1,0 +1,34 @@
+From 41edaaf1ca89131fe078ac46ddd20fa2e3c278c0 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 16 Jul 2018 08:03:50 +0100
+Subject: [add] hackerrank, 'find angle', python solution
+
+---
+ .../find.angle.py                                | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/hackerrank/python.-.math.-.easy.-.find.angle/find.angle.py b/hackerrank/python.-.math.-.easy.-.find.angle/find.angle.py
+index 7c60a68..c39f9be 100644
+--- a/hackerrank/python.-.math.-.easy.-.find.angle/find.angle.py
++++ b/hackerrank/python.-.math.-.easy.-.find.angle/find.angle.py
+@@ -1 +1,17 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++import math
++ab, bc = [int(input()), int(input())]
++ac = math.sqrt(math.pow(ab, 2) + math.pow(bc, 2))
++# let d be a point between b and c
++angle_acb = math.atan(ab / bc)
++mc = ac / 2
++dc = math.cos(angle_acb) * mc
++dm = math.sin(angle_acb) * mc
++bd = bc - dc
++angle_mbc = math.atan(dm / bd)
++angle_mbc_degrees = math.degrees(angle_mbc)
++#print("ac: %f, angle_acb: %f, mc: %f, dc: %f, dm: %f, bd: %f, angle_mbc: %f"
++#      % (ac, angle_acb, mc, dc, dm, bd, angle_mbc))
++def rounded(x):
++    return int(x) + 1 if x >= int(x) + 0.5 > 50.5 else int(x)
++print(u'%d\N{DEGREE SIGN}' % rounded(angle_mbc_degrees))
+-- 
+2.23.0
+
