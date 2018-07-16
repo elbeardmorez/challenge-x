@@ -1,0 +1,46 @@
+From c1e17d60d8ffaf2a6b93f241bf620a4f2530266d Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 16 Jul 2018 09:14:05 +0100
+Subject: [add] hackerrank, 'company logo', python solution
+
+---
+ .../company.logo.py                           | 22 ++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/python.-.collections.-.medium.-.company.logo/company.logo.py b/hackerrank/python.-.collections.-.medium.-.company.logo/company.logo.py
+index 981b5f9..b015bb7 100644
+--- a/hackerrank/python.-.collections.-.medium.-.company.logo/company.logo.py
++++ b/hackerrank/python.-.collections.-.medium.-.company.logo/company.logo.py
+@@ -5,8 +5,28 @@ import os
+ import random
+ import re
+ import sys
++from itertools import groupby
+ 
+-
++def print_max_letters(s):
++    counts = {}
++    for k, g in groupby(sorted(list(s))):
++        count = len(list(g))
++        if not count in counts:
++            counts[count] = []
++        counts[count].append(k)
++    counts_ordered = reversed(sorted(counts.keys()))
++    #print(counts_ordered)
++    print_count = 0
++    for count in counts_ordered:
++        ordered_letters = counts[count] if count == 1 else sorted(counts[count])
++        for c in ordered_letters:
++            print("%s %d" % (c, count))
++            print_count += 1
++            if print_count == 3:
++                break
++        if print_count == 3:
++                break
+ 
+ if __name__ == '__main__':
+     s = input()
++    print_max_letters(s)
+-- 
+2.23.0
+
