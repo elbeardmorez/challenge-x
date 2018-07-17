@@ -1,0 +1,44 @@
+From c16db4c530a7397ed50522aff19c08ae38ca32a1 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 17 Jul 2018 09:23:23 +0100
+Subject: [add] hackerrank, 'matrix script', python solution
+
+---
+ .../matrix.script.py                           | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
+
+diff --git a/hackerrank/python.-.regex.and.parsing.-.hard.-.matrix.script/matrix.script.py b/hackerrank/python.-.regex.and.parsing.-.hard.-.matrix.script/matrix.script.py
+index f2f3b4b..962f516 100644
+--- a/hackerrank/python.-.regex.and.parsing.-.hard.-.matrix.script/matrix.script.py
++++ b/hackerrank/python.-.regex.and.parsing.-.hard.-.matrix.script/matrix.script.py
+@@ -6,17 +6,19 @@ import random
+ import re
+ import sys
+ 
++def decode(matrix):    
++    return re.sub(r'(?<=[0-9a-zA-Z])[^0-9a-zA-Z]+(?=[0-9a-zA-Z])', " ", ''.join([''.join([str(x2) for x2 in x]) for x in zip(*matrix)]))
+ 
++nm = input().split()
+ 
+-if __name__ == '__main__':
+-    nm = input().split()
++n = int(nm[0])
+ 
+-    n = int(nm[0])
++m = int(nm[1])
+ 
+-    m = int(nm[1])
++matrix = []
+ 
+-    matrix = []
++for _ in range(n):
++    matrix_item = input()
++    matrix.append(list(matrix_item))
+ 
+-    for _ in range(n):
+-        matrix_item = input()
+-        matrix.append(matrix_item)
++print(decode(matrix))
+-- 
+2.23.0
+
