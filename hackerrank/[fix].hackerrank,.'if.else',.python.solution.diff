@@ -1,0 +1,23 @@
+From cd01caf59523eeeb6b33b7b1dd25f145cc2dc013 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 18 Jul 2018 21:27:26 +0100
+Subject: [fix] hackerrank, 'if else', python solution
+
+-add missing numeric inclusion range condition
+---
+ hackerrank/python.-.introduction.-.easy.-.if.else/if.else.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/python.-.introduction.-.easy.-.if.else/if.else.py b/hackerrank/python.-.introduction.-.easy.-.if.else/if.else.py
+index b0d9cc9..e91f7fc 100644
+--- a/hackerrank/python.-.introduction.-.easy.-.if.else/if.else.py
++++ b/hackerrank/python.-.introduction.-.easy.-.if.else/if.else.py
+@@ -1,4 +1,4 @@
+ #!/bin/python3
+ 
+ N = int(input())
+-print("Not " if N % 2 == 0 else "", "Weird", sep="")
++print("Not " if (N % 2 == 0 and N not in range(6, 21)) else "", "Weird", sep="")
+-- 
+2.23.0
+
