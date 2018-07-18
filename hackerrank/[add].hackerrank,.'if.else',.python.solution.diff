@@ -1,0 +1,21 @@
+From 99a016261e693d251ca21c2ff593ca7fac4c0608 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 18 Jul 2018 21:23:36 +0100
+Subject: [add] hackerrank, 'if else', python solution
+
+---
+ hackerrank/python.-.introduction.-.easy.-.if.else/if.else.py | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hackerrank/python.-.introduction.-.easy.-.if.else/if.else.py b/hackerrank/python.-.introduction.-.easy.-.if.else/if.else.py
+index 0f14bfe..b0d9cc9 100644
+--- a/hackerrank/python.-.introduction.-.easy.-.if.else/if.else.py
++++ b/hackerrank/python.-.introduction.-.easy.-.if.else/if.else.py
+@@ -1,3 +1,4 @@
+ #!/bin/python3
+ 
+ N = int(input())
++print("Not " if N % 2 == 0 else "", "Weird", sep="")
+-- 
+2.23.0
+
