@@ -1,0 +1,19 @@
+From 50344f603590afcf45a15808b0a3534694fb1f43 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 18 Jul 2018 21:10:50 +0100
+Subject: [add] hackerrank, 'say hello world with python', python solution
+
+---
+ .../say.hello.world.with.python.py                              | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/python.-.introduction.-.easy.-.say.hello.world.with.python/say.hello.world.with.python.py b/hackerrank/python.-.introduction.-.easy.-.say.hello.world.with.python/say.hello.world.with.python.py
+index 613c0c6..7df869a 100644
+--- a/hackerrank/python.-.introduction.-.easy.-.say.hello.world.with.python/say.hello.world.with.python.py
++++ b/hackerrank/python.-.introduction.-.easy.-.say.hello.world.with.python/say.hello.world.with.python.py
+@@ -1 +1 @@
+-print("")
++print("Hello, World!")
+-- 
+2.23.0
+
