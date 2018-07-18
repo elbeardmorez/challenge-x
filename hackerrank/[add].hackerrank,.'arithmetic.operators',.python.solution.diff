@@ -1,0 +1,22 @@
+From 64df400dd76847fc75e76908e7d04e7203e57ab8 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 18 Jul 2018 21:30:05 +0100
+Subject: [add] hackerrank, 'arithmetic operators', python solution
+
+---
+ .../arithmetic.operators.py                                     | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/hackerrank/python.-.introduction.-.easy.-.arithmetic.operators/arithmetic.operators.py b/hackerrank/python.-.introduction.-.easy.-.arithmetic.operators/arithmetic.operators.py
+index e9e1f93..ff1ea1a 100644
+--- a/hackerrank/python.-.introduction.-.easy.-.arithmetic.operators/arithmetic.operators.py
++++ b/hackerrank/python.-.introduction.-.easy.-.arithmetic.operators/arithmetic.operators.py
+@@ -1,3 +1,5 @@
+ if __name__ == '__main__':
+     a = int(input())
+     b = int(input())
++
++    print(a + b, a - b, a * b, sep='\n')
+-- 
+2.23.0
+
