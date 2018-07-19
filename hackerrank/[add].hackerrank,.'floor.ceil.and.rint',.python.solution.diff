@@ -1,0 +1,26 @@
+From 88a2b6f3919a18a4f8880fa72da3f220d987a075 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 19 Jul 2018 08:52:22 +0100
+Subject: [add] hackerrank, 'floor ceil and rint', python solution
+
+---
+ .../floor.ceil.and.rint.py                                | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/hackerrank/python.-.numpy.-.easy.-.floor.ceil.and.rint/floor.ceil.and.rint.py b/hackerrank/python.-.numpy.-.easy.-.floor.ceil.and.rint/floor.ceil.and.rint.py
+index c2e5936..3642c31 100644
+--- a/hackerrank/python.-.numpy.-.easy.-.floor.ceil.and.rint/floor.ceil.and.rint.py
++++ b/hackerrank/python.-.numpy.-.easy.-.floor.ceil.and.rint/floor.ceil.and.rint.py
+@@ -1 +1,9 @@
+ import numpy
++
++arr = numpy.array(list(map(float, input().split())))
++#print(numpy.floor(arr))
++print("[%s]" % " ".join(["%02s." % str(int(x)) for x in numpy.floor(arr)]))
++#print(numpy.ceil(arr))
++print("[%s]" % " ".join(["%03s." % str(int(x)) for x in numpy.ceil(arr)]))
++#print(numpy.rint(arr))
++print("[%s]" % " ".join(["%03s." % str(int(x)) for x in numpy.rint(arr)]))
+-- 
+2.23.0
+
