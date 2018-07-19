@@ -1,0 +1,34 @@
+From 83eec7cd21344ccfba6fb3b19a5971158ca1e191 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 19 Jul 2018 07:45:43 +0100
+Subject: [add] hackerrank, 'nested lists', python solution
+
+---
+ .../nested.lists.py                                 | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/hackerrank/python.-.basic.data.types.-.easy.-.nested.lists/nested.lists.py b/hackerrank/python.-.basic.data.types.-.easy.-.nested.lists/nested.lists.py
+index f9255b7..3804b7a 100644
+--- a/hackerrank/python.-.basic.data.types.-.easy.-.nested.lists/nested.lists.py
++++ b/hackerrank/python.-.basic.data.types.-.easy.-.nested.lists/nested.lists.py
+@@ -1,4 +1,17 @@
+ if __name__ == '__main__':
++    marks = []
+     for _ in range(int(input())):
+         name = input()
+         score = float(input())
++        marks.append([name, score])
++    marks.sort(key=lambda o: o[1])
++    min = marks[0][1]
++    while marks[0][1] == min:
++        marks = marks[1:]
++    names = []
++    min = marks[0][1]
++    for i in range(len(marks)):
++        if marks[i][1] != min:
++            break
++        names.append(marks[i][0])
++    print('\n'.join(sorted(names)))
+-- 
+2.23.0
+
