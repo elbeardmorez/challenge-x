@@ -1,0 +1,21 @@
+From 1e5543b911ddbb05da90af9d79185f4911cb46da Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 19 Jul 2018 07:20:45 +0100
+Subject: [add] hackerrank, 'list comprehensions', python solution
+
+---
+ .../list.comprehensions.py                                       | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hackerrank/python.-.basic.data.types.-.easy.-.list.comprehensions/list.comprehensions.py b/hackerrank/python.-.basic.data.types.-.easy.-.list.comprehensions/list.comprehensions.py
+index 0ff2286..79e855d 100644
+--- a/hackerrank/python.-.basic.data.types.-.easy.-.list.comprehensions/list.comprehensions.py
++++ b/hackerrank/python.-.basic.data.types.-.easy.-.list.comprehensions/list.comprehensions.py
+@@ -3,3 +3,4 @@ if __name__ == '__main__':
+     y = int(input())
+     z = int(input())
+     n = int(input())
++    print([[x_, y_, z_] for x_ in range(x + 1) for y_ in range(y + 1) for z_ in range(z + 1) if sum([x_, y_, z_]) != n])
+-- 
+2.23.0
+
