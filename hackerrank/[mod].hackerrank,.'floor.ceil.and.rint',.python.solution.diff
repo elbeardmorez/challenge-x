@@ -1,0 +1,34 @@
+From 081932b0037de99814869bab50ab17e3491cffc1 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 19 Jul 2018 08:59:48 +0100
+Subject: [mod] hackerrank, 'floor ceil and rint', python solution
+
+-alternative numpy solution, as problem intended
+---
+ .../floor.ceil.and.rint.py                         | 14 +++-----------
+ 1 file changed, 3 insertions(+), 11 deletions(-)
+
+diff --git a/hackerrank/python.-.numpy.-.easy.-.floor.ceil.and.rint/floor.ceil.and.rint.py b/hackerrank/python.-.numpy.-.easy.-.floor.ceil.and.rint/floor.ceil.and.rint.py
+index b7cbbad..732c5c3 100644
+--- a/hackerrank/python.-.numpy.-.easy.-.floor.ceil.and.rint/floor.ceil.and.rint.py
++++ b/hackerrank/python.-.numpy.-.easy.-.floor.ceil.and.rint/floor.ceil.and.rint.py
+@@ -1,13 +1,5 @@
+ import numpy
+ 
+-arr = numpy.array(list(map(float, input().split())))
+-
+-arr2 = numpy.floor(arr)
+-width = str(len(str(int(max(arr2)))) + 1)
+-print("[%s]" % " ".join([("%0" + width + "s.") % int(x) for x in numpy.floor(arr)]))
+-arr2 = numpy.ceil(arr)
+-width = str(len(str(int(max(arr2)))) + 1)
+-print("[%s]" % " ".join([("%0" + width + "s.") % int(x) for x in numpy.ceil(arr)]))
+-arr2 = numpy.rint(arr)
+-width = str(len(str(int(max(arr2)))) + 1)
+-print("[%s]" % " ".join([("%0" + width + "s.") % int(x) for x in numpy.rint(arr)]))
++print(numpy.floor(arr))
++print(numpy.ceil(arr))
++print(numpy.rint(arr))
+-- 
+2.23.0
+
