@@ -1,0 +1,22 @@
+From 58928c877b9ca688e3e2313e8486e293d2214255 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 19 Jul 2018 07:28:15 +0100
+Subject: [add] hackerrank, 'find the runner up score', python solution
+
+---
+ .../find.the.runner.up.score.py                                 | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/hackerrank/python.-.basic.data.types.-.easy.-.find.the.runner.up.score/find.the.runner.up.score.py b/hackerrank/python.-.basic.data.types.-.easy.-.find.the.runner.up.score/find.the.runner.up.score.py
+index 7d23e45..e43ae9c 100644
+--- a/hackerrank/python.-.basic.data.types.-.easy.-.find.the.runner.up.score/find.the.runner.up.score.py
++++ b/hackerrank/python.-.basic.data.types.-.easy.-.find.the.runner.up.score/find.the.runner.up.score.py
+@@ -1,3 +1,5 @@
+ if __name__ == '__main__':
+     n = int(input())
+     arr = map(int, input().split())
++    arr = sorted(arr)
++    print([x for x in arr if x != arr[-1]][-1])
+-- 
+2.23.0
+
