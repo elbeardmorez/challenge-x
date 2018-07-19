@@ -1,0 +1,22 @@
+From a037cc8a3bc90d4b8c4cb93293e9286093bd3626 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 19 Jul 2018 07:48:40 +0100
+Subject: [add] hackerrank, 'finding the percentage', python solution
+
+---
+ .../finding.the.percentage.py                                   | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/hackerrank/python.-.basic.data.types.-.easy.-.finding.the.percentage/finding.the.percentage.py b/hackerrank/python.-.basic.data.types.-.easy.-.finding.the.percentage/finding.the.percentage.py
+index 68920da..9a27d80 100644
+--- a/hackerrank/python.-.basic.data.types.-.easy.-.finding.the.percentage/finding.the.percentage.py
++++ b/hackerrank/python.-.basic.data.types.-.easy.-.finding.the.percentage/finding.the.percentage.py
+@@ -6,3 +6,5 @@ if __name__ == '__main__':
+         scores = list(map(float, line))
+         student_marks[name] = scores
+     query_name = input()
++    marks = student_marks[query_name]
++    print("%0.2f" % (sum(marks)/len(marks)))
+-- 
+2.23.0
+
