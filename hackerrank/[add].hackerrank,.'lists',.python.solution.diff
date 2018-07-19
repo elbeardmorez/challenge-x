@@ -1,0 +1,36 @@
+From 4cc02adfd027604702653150b26c7f1e20cc999d Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 19 Jul 2018 08:06:38 +0100
+Subject: [add] hackerrank, 'lists', python solution
+
+---
+ .../lists.py                                    | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/hackerrank/python.-.basic.data.types.-.easy.-.lists/lists.py b/hackerrank/python.-.basic.data.types.-.easy.-.lists/lists.py
+index aff9dc5..29438a7 100644
+--- a/hackerrank/python.-.basic.data.types.-.easy.-.lists/lists.py
++++ b/hackerrank/python.-.basic.data.types.-.easy.-.lists/lists.py
+@@ -1,2 +1,19 @@
+ if __name__ == '__main__':
+     N = int(input())
++    l = []
++    for _ in range(N):
++        cmd = input().split()
++        if cmd[0] == "insert":
++            l.insert(int(cmd[1]), int(cmd[2]))
++        elif cmd[0] == "remove":
++            l.remove(int(cmd[1]))
++        elif cmd[0] == "append":
++            l.append(int(cmd[1]))
++        elif cmd[0] == "pop":
++            l.pop()
++        elif cmd[0] == "sort":
++            l.sort()
++        elif cmd[0] == "reverse":
++            l = list(reversed(l))
++        elif cmd[0] == "print":
++            print(l)
+-- 
+2.23.0
+
