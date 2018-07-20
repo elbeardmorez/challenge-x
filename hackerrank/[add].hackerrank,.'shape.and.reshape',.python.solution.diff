@@ -1,0 +1,20 @@
+From 2cd93b5510f134abd2ad898746da2e4c5cac5294 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 20 Jul 2018 09:04:11 +0100
+Subject: [add] hackerrank, 'shape and reshape', python solution
+
+---
+ .../shape.and.reshape.py                                        | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/hackerrank/python.-.numpy.-.easy.-.shape.and.reshape/shape.and.reshape.py b/hackerrank/python.-.numpy.-.easy.-.shape.and.reshape/shape.and.reshape.py
+index c2e5936..39e6ae1 100644
+--- a/hackerrank/python.-.numpy.-.easy.-.shape.and.reshape/shape.and.reshape.py
++++ b/hackerrank/python.-.numpy.-.easy.-.shape.and.reshape/shape.and.reshape.py
+@@ -1 +1,3 @@
+ import numpy
++
++print(numpy.reshape(numpy.array([int(x) for x in input().split()]), (3, 3)))
+-- 
+2.23.0
+
