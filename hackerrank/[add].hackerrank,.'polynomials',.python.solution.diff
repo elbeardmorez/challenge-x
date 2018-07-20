@@ -1,0 +1,23 @@
+From e0ffa1d1b7e04dd4cdd9d853d9c9e630ddd6183d Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 20 Jul 2018 11:58:48 +0100
+Subject: [add] hackerrank, 'polynomials', python solution
+
+---
+ .../python.-.numpy.-.easy.-.polynomials/polynomials.py       | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/hackerrank/python.-.numpy.-.easy.-.polynomials/polynomials.py b/hackerrank/python.-.numpy.-.easy.-.polynomials/polynomials.py
+index c2e5936..d4f41e8 100644
+--- a/hackerrank/python.-.numpy.-.easy.-.polynomials/polynomials.py
++++ b/hackerrank/python.-.numpy.-.easy.-.polynomials/polynomials.py
+@@ -1 +1,6 @@
+ import numpy
++
++arr = numpy.array([float(s) for s in input().split()])
++x = int(input())
++
++print(numpy.polyval(arr, x))
+-- 
+2.23.0
+
