@@ -1,0 +1,29 @@
+From 10ba78185ee57a84f2578977dba5eca137ae9ebd Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 20 Jul 2018 11:44:41 +0100
+Subject: [add] hackerrank, 'dot and cross', python solution
+
+---
+ .../dot.and.cross.py                                  | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/hackerrank/python.-.numpy.-.easy.-.dot.and.cross/dot.and.cross.py b/hackerrank/python.-.numpy.-.easy.-.dot.and.cross/dot.and.cross.py
+index c2e5936..5bacaf8 100644
+--- a/hackerrank/python.-.numpy.-.easy.-.dot.and.cross/dot.and.cross.py
++++ b/hackerrank/python.-.numpy.-.easy.-.dot.and.cross/dot.and.cross.py
+@@ -1 +1,12 @@
+ import numpy
++
++n = int(input())
++l = []
++for _ in range(n):
++    l.append([int(s) for s in input().split()])
++a = numpy.array(l)
++l = []
++for _ in range(n):
++    l.append([int(s) for s in input().split()])
++b = numpy.array(l)
++print(numpy.dot(a, b))
+-- 
+2.23.0
+
