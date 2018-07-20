@@ -1,0 +1,35 @@
+From a4004005feffa4a427ce4495acfa605b440121cb Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 20 Jul 2018 10:27:01 +0100
+Subject: [add] hackerrank, 'array mathematics', python solution
+
+---
+ .../array.mathematics.py                        | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/hackerrank/python.-.numpy.-.easy.-.array.mathematics/array.mathematics.py b/hackerrank/python.-.numpy.-.easy.-.array.mathematics/array.mathematics.py
+index c2e5936..f531b86 100644
+--- a/hackerrank/python.-.numpy.-.easy.-.array.mathematics/array.mathematics.py
++++ b/hackerrank/python.-.numpy.-.easy.-.array.mathematics/array.mathematics.py
+@@ -1 +1,18 @@
+ import numpy
++
++n, m = [int(s) for s in input().split()]
++a = numpy.reshape(numpy.array([int(s) for s in input().split()]), (n, m))
++b = numpy.reshape(numpy.array([int(s) for s in input().split()]), (n, m))
++
++# Add (a + b)
++print(numpy.add(a, b))
++# Subtract (a - b)
++print(numpy.subtract(a, b))
++# Multiply (a * b)
++print(numpy.multiply(a, b))
++# Integer Division (a / b)
++print(numpy.array(numpy.divide(a, b), dtype=numpy.int))
++# Mod (a % b)
++print(numpy.mod(a, b))
++# Power (a ** b)
++print(numpy.power(a, b))
+-- 
+2.23.0
+
