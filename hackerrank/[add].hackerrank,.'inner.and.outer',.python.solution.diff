@@ -1,0 +1,23 @@
+From db03a49d8fc4b561dacc37e5dfff29dbc4e0016d Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 20 Jul 2018 11:50:56 +0100
+Subject: [add] hackerrank, 'inner and outer', python solution
+
+---
+ .../inner.and.outer.py                                       | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/hackerrank/python.-.numpy.-.easy.-.inner.and.outer/inner.and.outer.py b/hackerrank/python.-.numpy.-.easy.-.inner.and.outer/inner.and.outer.py
+index c2e5936..7764616 100644
+--- a/hackerrank/python.-.numpy.-.easy.-.inner.and.outer/inner.and.outer.py
++++ b/hackerrank/python.-.numpy.-.easy.-.inner.and.outer/inner.and.outer.py
+@@ -1 +1,6 @@
+ import numpy
++
++a = numpy.array([int(s) for s in input().split()])
++b = numpy.array([int(s) for s in input().split()])
++print(numpy.inner(a, b))
++print(numpy.outer(a, b))
+-- 
+2.23.0
+
