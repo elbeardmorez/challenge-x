@@ -1,0 +1,27 @@
+From d54ada93412be3bd81f2e94c9926aa8d5df4cfca Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 20 Jul 2018 09:14:07 +0100
+Subject: [add] hackerrank, 'transpose and flatten', python solution
+
+---
+ .../transpose.and.flatten.py                             | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/hackerrank/python.-.numpy.-.easy.-.transpose.and.flatten/transpose.and.flatten.py b/hackerrank/python.-.numpy.-.easy.-.transpose.and.flatten/transpose.and.flatten.py
+index c2e5936..35c2af8 100644
+--- a/hackerrank/python.-.numpy.-.easy.-.transpose.and.flatten/transpose.and.flatten.py
++++ b/hackerrank/python.-.numpy.-.easy.-.transpose.and.flatten/transpose.and.flatten.py
+@@ -1 +1,10 @@
+ import numpy
++
++n, m = [int(s) for s in input().split()]
++l = []
++for _ in range(n):
++    l.append([int(s) for s in input().split()])
++arr = numpy.array(l)
++arr.shape = (n, m)
++print(arr.transpose())
++print(arr.flatten())
+-- 
+2.23.0
+
