@@ -1,0 +1,24 @@
+From c1968b17a7fbd698312624c31682fc89f7b75df5 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 20 Jul 2018 12:05:17 +0100
+Subject: [add] hackerrank, 'linear algebra', python solution
+
+---
+ .../linear.algebra.py                                       | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/hackerrank/python.-.numpy.-.easy.-.linear.algebra/linear.algebra.py b/hackerrank/python.-.numpy.-.easy.-.linear.algebra/linear.algebra.py
+index c2e5936..001eca3 100644
+--- a/hackerrank/python.-.numpy.-.easy.-.linear.algebra/linear.algebra.py
++++ b/hackerrank/python.-.numpy.-.easy.-.linear.algebra/linear.algebra.py
+@@ -1 +1,7 @@
+ import numpy
++
++n = int(input())
++l = []
++for _ in range(n):
++    l.append([float(s) for s in input().split()])
++print(numpy.linalg.det(l))
+-- 
+2.23.0
+
