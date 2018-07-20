@@ -1,0 +1,25 @@
+From 465c45f7e35fb1d1b8dd0e4ed6247d761f9b9ad3 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 20 Jul 2018 10:11:26 +0100
+Subject: [add] hackerrank, 'eye and identity', python solution
+
+-note requirement for numpy version compatibility to ensure whitespace
+is 'correct'
+---
+ .../eye.and.identity.py                                      | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/hackerrank/python.-.numpy.-.easy.-.eye.and.identity/eye.and.identity.py b/hackerrank/python.-.numpy.-.easy.-.eye.and.identity/eye.and.identity.py
+index c2e5936..92680b4 100644
+--- a/hackerrank/python.-.numpy.-.easy.-.eye.and.identity/eye.and.identity.py
++++ b/hackerrank/python.-.numpy.-.easy.-.eye.and.identity/eye.and.identity.py
+@@ -1 +1,6 @@
+ import numpy
++
++numpy.set_printoptions(sign=' ') # 1.13 compatibility
++
++n, m = [int(s) for s in input().split()]
++print(numpy.eye(n, m, k = 0))
+-- 
+2.23.0
+
