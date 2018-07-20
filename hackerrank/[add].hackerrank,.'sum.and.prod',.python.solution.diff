@@ -1,0 +1,24 @@
+From 897675e9bc39990979ef42e4d202e1a56e14cf29 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 20 Jul 2018 10:39:59 +0100
+Subject: [add] hackerrank, 'sum and prod', python solution
+
+---
+ .../python.-.numpy.-.easy.-.sum.and.prod/sum.and.prod.py    | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/hackerrank/python.-.numpy.-.easy.-.sum.and.prod/sum.and.prod.py b/hackerrank/python.-.numpy.-.easy.-.sum.and.prod/sum.and.prod.py
+index c2e5936..feeeefe 100644
+--- a/hackerrank/python.-.numpy.-.easy.-.sum.and.prod/sum.and.prod.py
++++ b/hackerrank/python.-.numpy.-.easy.-.sum.and.prod/sum.and.prod.py
+@@ -1 +1,7 @@
+ import numpy
++
++n, m = [int(s) for s in input().split()]
++arr = numpy.array([], dtype=numpy.int).reshape((0, m))
++for _ in range(n):
++    arr = numpy.vstack((arr, [int(s) for s in input().split()]))
++print(numpy.prod(numpy.sum(arr, axis = 0)))
+-- 
+2.23.0
+
