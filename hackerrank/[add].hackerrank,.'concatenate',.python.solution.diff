@@ -1,0 +1,27 @@
+From ed7d93018ba5b145c05bae19c8456563ef6f0756 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 20 Jul 2018 09:58:42 +0100
+Subject: [add] hackerrank, 'concatenate', python solution
+
+---
+ .../python.-.numpy.-.easy.-.concatenate/concatenate.py   | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/hackerrank/python.-.numpy.-.easy.-.concatenate/concatenate.py b/hackerrank/python.-.numpy.-.easy.-.concatenate/concatenate.py
+index c2e5936..6b761f5 100644
+--- a/hackerrank/python.-.numpy.-.easy.-.concatenate/concatenate.py
++++ b/hackerrank/python.-.numpy.-.easy.-.concatenate/concatenate.py
+@@ -1 +1,10 @@
+ import numpy
++
++n, m, p = [int(s) for s in input().split()]
++arr = numpy.array([], dtype=numpy.int).reshape((0, p))
++for _ in range(n):
++    arr = numpy.vstack((arr, numpy.array([int(s) for s in input().split()])))
++arr2 = numpy.array([], dtype=numpy.int).reshape((0, p))
++for _ in range(m):
++    arr2 = numpy.vstack((arr2, numpy.array([int(s) for s in input().split()])))
++print(numpy.concatenate((arr, arr2), axis = 0))
+-- 
+2.23.0
+
