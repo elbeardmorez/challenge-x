@@ -1,0 +1,25 @@
+From 5e017355925cee74eb074db0b1a13ea5db7a2229 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 20 Jul 2018 12:07:35 +0100
+Subject: [fix] hackerrank, 'linear algebra', python solution
+
+-use numpy compatibility option to 'fix' formatting
+---
+ .../python.-.numpy.-.easy.-.linear.algebra/linear.algebra.py    | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/hackerrank/python.-.numpy.-.easy.-.linear.algebra/linear.algebra.py b/hackerrank/python.-.numpy.-.easy.-.linear.algebra/linear.algebra.py
+index 001eca3..86ae2f9 100644
+--- a/hackerrank/python.-.numpy.-.easy.-.linear.algebra/linear.algebra.py
++++ b/hackerrank/python.-.numpy.-.easy.-.linear.algebra/linear.algebra.py
+@@ -1,5 +1,7 @@
+ import numpy
+ 
++numpy.set_printoptions(legacy='1.13')  # 1.13 compatibility
++
+ n = int(input())
+ l = []
+ for _ in range(n):
+-- 
+2.23.0
+
