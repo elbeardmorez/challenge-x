@@ -1,0 +1,24 @@
+From d5968ee101aa7ffbaaed92116a0ab87d168e2010 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 20 Jul 2018 08:58:55 +0100
+Subject: [add] hackerrank, 'arrays', python solution
+
+---
+ hackerrank/python.-.numpy.-.easy.-.arrays/arrays.py | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hackerrank/python.-.numpy.-.easy.-.arrays/arrays.py b/hackerrank/python.-.numpy.-.easy.-.arrays/arrays.py
+index 2d9c974..0c40044 100644
+--- a/hackerrank/python.-.numpy.-.easy.-.arrays/arrays.py
++++ b/hackerrank/python.-.numpy.-.easy.-.arrays/arrays.py
+@@ -3,6 +3,7 @@ import numpy
+ def arrays(arr):
+     # complete this function
+     # use numpy.array
++    return numpy.array([float(x) for x in reversed(arr)])
+ 
+ arr = input().strip().split(' ')
+ result = arrays(arr)
+-- 
+2.23.0
+
