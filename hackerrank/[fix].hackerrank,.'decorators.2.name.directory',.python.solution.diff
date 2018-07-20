@@ -1,0 +1,26 @@
+From 866853d6dcab0ff966997038d353fa771f8a5e5d Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 20 Jul 2018 12:31:09 +0100
+Subject: [fix] hackerrank, 'decorators 2 name directory', python solution
+
+-string to int
+---
+ .../decorators.2.name.directory.py                              | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/python.-.closures.and.decorators.-.easy.-.decorators.2.name.directory/decorators.2.name.directory.py b/hackerrank/python.-.closures.and.decorators.-.easy.-.decorators.2.name.directory/decorators.2.name.directory.py
+index c0c5558..0933dc7 100644
+--- a/hackerrank/python.-.closures.and.decorators.-.easy.-.decorators.2.name.directory/decorators.2.name.directory.py
++++ b/hackerrank/python.-.closures.and.decorators.-.easy.-.decorators.2.name.directory/decorators.2.name.directory.py
+@@ -3,7 +3,7 @@ import operator
+ def person_lister(f):
+     def inner(people):
+         # complete the function
+-        return [f(p) for p in sorted(people, key=lambda p: p[2])]
++        return [f(p) for p in sorted(people, key=lambda p: int(p[2]))]
+     return inner
+ 
+ @person_lister
+-- 
+2.23.0
+
