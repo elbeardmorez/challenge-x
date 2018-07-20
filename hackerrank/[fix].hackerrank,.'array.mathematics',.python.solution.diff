@@ -1,0 +1,34 @@
+From 3550ba2f8667d8a6c7b285eff776e6858c409adf Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 20 Jul 2018 10:31:25 +0100
+Subject: [fix] hackerrank, 'array mathematics', python solution
+
+-numpy formats ints and strings differently, parse to ints
+---
+ .../array.mathematics.py                               | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/python.-.numpy.-.easy.-.array.mathematics/array.mathematics.py b/hackerrank/python.-.numpy.-.easy.-.array.mathematics/array.mathematics.py
+index f531b86..7cffe55 100644
+--- a/hackerrank/python.-.numpy.-.easy.-.array.mathematics/array.mathematics.py
++++ b/hackerrank/python.-.numpy.-.easy.-.array.mathematics/array.mathematics.py
+@@ -1,8 +1,14 @@
+ import numpy
+ 
+ n, m = [int(s) for s in input().split()]
+-a = numpy.reshape(numpy.array([int(s) for s in input().split()]), (n, m))
+-b = numpy.reshape(numpy.array([int(s) for s in input().split()]), (n, m))
++l = []
++for _ in range(n):
++    l += [int(s) for s in input().split()]
++a = numpy.reshape(numpy.array(l), (n, m))
++l = []
++for _ in range(n):
++    l += [int(s) for s in input().split()]
++b = numpy.reshape(numpy.array(l), (n, m))
+ 
+ # Add (a + b)
+ print(numpy.add(a, b))
+-- 
+2.23.0
+
