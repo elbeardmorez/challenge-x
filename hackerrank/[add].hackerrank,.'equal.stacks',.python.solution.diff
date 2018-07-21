@@ -1,0 +1,49 @@
+From 3668365bffbc0f0dce2f1a02c4982630735ad0e9 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 21 Jul 2018 16:12:46 +0100
+Subject: [add] hackerrank, 'equal stacks', python solution
+
+---
+ .../equal.stacks.py                           | 26 +++++++++++++++++++
+ 1 file changed, 26 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.stacks.-.easy.-.equal.stacks/equal.stacks.py b/hackerrank/data.structures.-.stacks.-.easy.-.equal.stacks/equal.stacks.py
+index df745c7..95562ae 100644
+--- a/hackerrank/data.structures.-.stacks.-.easy.-.equal.stacks/equal.stacks.py
++++ b/hackerrank/data.structures.-.stacks.-.easy.-.equal.stacks/equal.stacks.py
+@@ -10,6 +10,32 @@ def equalStacks(h1, h2, h3):
+     #
+     # Write your code here.
+     #
++    cumulative_heights = []
++    for cylinder in [h1, h2, h3]:
++        last = 0
++        accumulated = []
++        for x in reversed(cylinder):
++            last += x
++            accumulated.append(last)
++        cumulative_heights += accumulated
++    count = 0
++    last = 0
++    #s = ""
++    for x in reversed(sorted(cumulative_heights)):
++        if x != last:
++            count = 1
++        else:
++            count += 1
++        last = x
++        #s += str(x)
++        if count == 3:
++            break        
++
++    #print(s)
++    if count == 3:
++        return last
++    else:
++        return 0
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
