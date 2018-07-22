@@ -1,0 +1,23 @@
+From 2739e27a4d38aafd0b853a593d3a21dabe8410b4 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 22 Jul 2018 22:16:17 +0100
+Subject: [add] hackerrank, 'swap case', python solution
+
+---
+ hackerrank/python.-.strings.-.easy.-.swap.case/swap.case.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/python.-.strings.-.easy.-.swap.case/swap.case.py b/hackerrank/python.-.strings.-.easy.-.swap.case/swap.case.py
+index 73197c4..644b2bc 100644
+--- a/hackerrank/python.-.strings.-.easy.-.swap.case/swap.case.py
++++ b/hackerrank/python.-.strings.-.easy.-.swap.case/swap.case.py
+@@ -1,5 +1,5 @@
+ def swap_case(s):
+-    return
++    return "".join(list(map(lambda c: c.upper() if ord(c) >= 97 else c.lower(), list(s))))
+ 
+ if __name__ == '__main__':
+     s = input()
+-- 
+2.23.0
+
