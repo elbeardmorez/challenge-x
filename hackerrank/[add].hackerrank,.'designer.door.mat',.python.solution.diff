@@ -1,0 +1,35 @@
+From 4f5807a9c5fc092765a08244292edc9f1c7ce3e2 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 23 Jul 2018 15:44:41 +0100
+Subject: [add] hackerrank, 'designer door mat', python solution
+
+---
+ .../designer.door.mat.py                        | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/hackerrank/python.-.strings.-.easy.-.designer.door.mat/designer.door.mat.py b/hackerrank/python.-.strings.-.easy.-.designer.door.mat/designer.door.mat.py
+index 7c60a68..00c051a 100644
+--- a/hackerrank/python.-.strings.-.easy.-.designer.door.mat/designer.door.mat.py
++++ b/hackerrank/python.-.strings.-.easy.-.designer.door.mat/designer.door.mat.py
+@@ -1 +1,18 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++n, m = [int(c) for c in input().split()]
++
++pad = "---"
++edge = "."
++wall = "|.."
++center = "|"
++
++pattern = []
++corner = []
++for r in range(1, int((n-1)/2) + 1):
++   corner.append(pad * int((n-1)/2 + 1 - r) + edge + (r - 1) * wall)
++for s in corner:
++   pattern.append(''.join([s, center, *[s[idx] for idx in range(len(s) - 1, -1, -1)]]))
++pattern.append(pad * int((n-1)/2 - 1) + "-WELCOME-" + pad * int((n-1)/2 - 1))
++for idx in range(len(pattern) - 2, -1, -1):
++   pattern.append(pattern[idx])
++print(*pattern, sep='\n')
+-- 
+2.23.0
+
