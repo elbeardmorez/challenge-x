@@ -1,0 +1,42 @@
+From 7e0eebdf717cc0206b427d5625bd967739cee93a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 23 Jul 2018 10:07:38 +0100
+Subject: [add] hackerrank, 'text alignment', python solution
+
+---
+ .../text.alignment.py                                  | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/hackerrank/python.-.strings.-.easy.-.text.alignment/text.alignment.py b/hackerrank/python.-.strings.-.easy.-.text.alignment/text.alignment.py
+index ef1f04b..1e03416 100644
+--- a/hackerrank/python.-.strings.-.easy.-.text.alignment/text.alignment.py
++++ b/hackerrank/python.-.strings.-.easy.-.text.alignment/text.alignment.py
+@@ -5,20 +5,20 @@ c = 'H'
+ 
+ #Top Cone
+ for i in range(thickness):
+-    print((c*i).______(thickness-1)+c+(c*i).______(thickness-1))
++    print((c*i).rjust(thickness-1)+c+(c*i).ljust(thickness-1))
+ 
+ #Top Pillars
+ for i in range(thickness+1):
+-    print((c*thickness).______(thickness*2)+(c*thickness).______(thickness*6))
++    print((c*thickness).center(thickness*2)+(c*thickness).center(thickness*6))
+ 
+ #Middle Belt
+ for i in range((thickness+1)//2):
+-    print((c*thickness*5).______(thickness*6))
++    print((c*thickness*5).center(thickness*6))
+ 
+ #Bottom Pillars
+ for i in range(thickness+1):
+-    print((c*thickness).______(thickness*2)+(c*thickness).______(thickness*6))
++    print((c*thickness).center(thickness*2)+(c*thickness).center(thickness*6))
+ 
+ #Bottom Cone
+ for i in range(thickness):
+-    print(((c*(thickness-i-1)).______(thickness)+c+(c*(thickness-i-1)).______(thickness)).______(thickness*6))
++    print(((c*(thickness-i-1)).rjust(thickness)+c+(c*(thickness-i-1)).ljust(thickness)).rjust(thickness*6))
+-- 
+2.23.0
+
