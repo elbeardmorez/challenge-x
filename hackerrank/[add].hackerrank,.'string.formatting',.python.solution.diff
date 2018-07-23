@@ -1,0 +1,25 @@
+From 8d69d1038c65adb4fbc38ec7deb0014bbad26236 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 23 Jul 2018 16:18:32 +0100
+Subject: [add] hackerrank, 'string formatting', python solution
+
+---
+ .../string.formatting.py                                       | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/hackerrank/python.-.strings.-.easy.-.string.formatting/string.formatting.py b/hackerrank/python.-.strings.-.easy.-.string.formatting/string.formatting.py
+index 46fddf5..d927230 100644
+--- a/hackerrank/python.-.strings.-.easy.-.string.formatting/string.formatting.py
++++ b/hackerrank/python.-.strings.-.easy.-.string.formatting/string.formatting.py
+@@ -1,5 +1,8 @@
+ def print_formatted(number):
+     # your code goes here
++    w = str(len(str(bin(number))) - 2)
++    for x in range(1, number + 1):
++        print(("%" + w + "d %" + w + "o %" + w + "X %" + w + "s") % tuple([x]*3 + [str(bin(x))[2:]]))
+ 
+ if __name__ == '__main__':
+     n = int(input())
+-- 
+2.23.0
+
