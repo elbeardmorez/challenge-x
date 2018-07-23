@@ -1,0 +1,23 @@
+From cbd9912640f9db93aeda0bd7f64da93eb9710218 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 23 Jul 2018 09:45:28 +0100
+Subject: [add] hackerrank, 'find a string', python solution
+
+---
+ .../python.-.strings.-.easy.-.find.a.string/find.a.string.py    | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/python.-.strings.-.easy.-.find.a.string/find.a.string.py b/hackerrank/python.-.strings.-.easy.-.find.a.string/find.a.string.py
+index 7142320..5f40d65 100644
+--- a/hackerrank/python.-.strings.-.easy.-.find.a.string/find.a.string.py
++++ b/hackerrank/python.-.strings.-.easy.-.find.a.string/find.a.string.py
+@@ -1,5 +1,5 @@
+ def count_substring(string, sub_string):
+-    return
++    return sum([1 if string[idx: idx + len(sub_string)] == sub_string else 0 for idx in range(len(string) - len(sub_string) + 1)])
+ 
+ if __name__ == '__main__':
+     string = input().strip()
+-- 
+2.23.0
+
