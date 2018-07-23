@@ -1,0 +1,26 @@
+From 60d284c32f2488427784db5368972d00639f63c3 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 23 Jul 2018 13:23:01 +0100
+Subject: [mod] hackerrank, 'text wrap', python solution
+
+-alternative using string's 'wrap' function
+---
+ hackerrank/python.-.strings.-.easy.-.text.wrap/text.wrap.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/python.-.strings.-.easy.-.text.wrap/text.wrap.py b/hackerrank/python.-.strings.-.easy.-.text.wrap/text.wrap.py
+index f8be06d..588537a 100644
+--- a/hackerrank/python.-.strings.-.easy.-.text.wrap/text.wrap.py
++++ b/hackerrank/python.-.strings.-.easy.-.text.wrap/text.wrap.py
+@@ -1,7 +1,7 @@
+ import textwrap
+ 
+ def wrap(string, max_width):
+-    return ''.join([string[idx] + "\n" if (idx + 1) % max_width == 0 else string[idx] for idx in range(len(string))])
++    return '\n'.join(textwrap.wrap(string, max_width)
+ 
+ if __name__ == '__main__':
+     string, max_width = input(), int(input())
+-- 
+2.23.0
+
