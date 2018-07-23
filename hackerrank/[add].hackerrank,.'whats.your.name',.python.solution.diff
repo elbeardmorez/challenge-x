@@ -1,0 +1,23 @@
+From b94b427feaad5333c27e8645f93efe83e3227515 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 23 Jul 2018 09:10:55 +0100
+Subject: [add] hackerrank, 'whats your name', python solution
+
+---
+ .../whats.your.name.py                                          | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/python.-.strings.-.easy.-.whats.your.name/whats.your.name.py b/hackerrank/python.-.strings.-.easy.-.whats.your.name/whats.your.name.py
+index d7d0bac..77414ac 100644
+--- a/hackerrank/python.-.strings.-.easy.-.whats.your.name/whats.your.name.py
++++ b/hackerrank/python.-.strings.-.easy.-.whats.your.name/whats.your.name.py
+@@ -1,5 +1,5 @@
+ def print_full_name(a, b):
+-    print("")
++    print("Hello ", " ".join([a, b]), "! You just delved into python.", sep="")
+ 
+ if __name__ == '__main__':
+     first_name = input()
+-- 
+2.23.0
+
