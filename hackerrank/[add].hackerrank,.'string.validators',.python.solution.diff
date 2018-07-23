@@ -1,0 +1,24 @@
+From 81dc9b1de8cf47b90d4098b1bb4c610029a3eebe Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 23 Jul 2018 09:59:11 +0100
+Subject: [add] hackerrank, 'string validators', python solution
+
+---
+ .../string.validators.py                                     | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/hackerrank/python.-.strings.-.easy.-.string.validators/string.validators.py b/hackerrank/python.-.strings.-.easy.-.string.validators/string.validators.py
+index 58e66ed..cba3d0e 100644
+--- a/hackerrank/python.-.strings.-.easy.-.string.validators/string.validators.py
++++ b/hackerrank/python.-.strings.-.easy.-.string.validators/string.validators.py
+@@ -1,2 +1,7 @@
+ if __name__ == '__main__':
+     s = input()
++    print(sum([1 if c.isalnum() else 0 for c in list(s)]) > 0,
++          sum([1 if c.isalpha() else 0 for c in list(s)]) > 0,
++          sum([1 if c.isdigit() else 0 for c in list(s)]) > 0,
++          sum([1 if c.islower() else 0 for c in list(s)]) > 0,
++          sum([1 if c.isupper() else 0 for c in list(s)]) > 0, sep='\n')
+-- 
+2.23.0
+
