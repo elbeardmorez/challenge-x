@@ -1,0 +1,23 @@
+From 49f09d8ce7c0224f92582693e3c1f7b264d81f18 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 23 Jul 2018 08:50:30 +0100
+Subject: [add] hackerrank, 'string split and join', python solution
+
+---
+ .../string.split.and.join.py                                     | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hackerrank/python.-.strings.-.easy.-.string.split.and.join/string.split.and.join.py b/hackerrank/python.-.strings.-.easy.-.string.split.and.join/string.split.and.join.py
+index dd6d91e..3126117 100644
+--- a/hackerrank/python.-.strings.-.easy.-.string.split.and.join/string.split.and.join.py
++++ b/hackerrank/python.-.strings.-.easy.-.string.split.and.join/string.split.and.join.py
+@@ -1,5 +1,6 @@
+ def split_and_join(line):
+     # write your code here
++    return "-".join(line.split(" "))
+ 
+ if __name__ == '__main__':
+     line = input()
+-- 
+2.23.0
+
