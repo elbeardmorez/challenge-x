@@ -1,0 +1,22 @@
+From 04eb9f0a139be6fff24430b35c45b76e266c0a18 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 23 Jul 2018 22:39:02 +0100
+Subject: [add] hackerrank, 'product', python solution
+
+---
+ hackerrank/python.-.itertools.-.easy.-.product/product.py | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/hackerrank/python.-.itertools.-.easy.-.product/product.py b/hackerrank/python.-.itertools.-.easy.-.product/product.py
+index 7c60a68..766d974 100644
+--- a/hackerrank/python.-.itertools.-.easy.-.product/product.py
++++ b/hackerrank/python.-.itertools.-.easy.-.product/product.py
+@@ -1 +1,5 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++from itertools import product
++a = [int(c) for c in input().split()]
++b = [int(c) for c in input().split()]
++print(*list(product(a, b)))
+-- 
+2.23.0
+
