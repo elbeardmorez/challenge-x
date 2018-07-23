@@ -1,0 +1,23 @@
+From f7a1e082b939035f6efcaf79c0063f01bdb800a8 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 23 Jul 2018 09:20:02 +0100
+Subject: [add] hackerrank, 'mutations', python solution
+
+---
+ hackerrank/python.-.strings.-.easy.-.mutations/mutations.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/python.-.strings.-.easy.-.mutations/mutations.py b/hackerrank/python.-.strings.-.easy.-.mutations/mutations.py
+index 9578a22..49a41ad 100644
+--- a/hackerrank/python.-.strings.-.easy.-.mutations/mutations.py
++++ b/hackerrank/python.-.strings.-.easy.-.mutations/mutations.py
+@@ -1,5 +1,5 @@
+ def mutate_string(string, position, character):
+-    return
++    return string[:position] + character + string[position + 1:]
+ 
+ if __name__ == '__main__':
+     s = input()
+-- 
+2.23.0
+
