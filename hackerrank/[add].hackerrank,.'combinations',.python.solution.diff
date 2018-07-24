@@ -1,0 +1,24 @@
+From caf32e3d965282f34c8d5d37dd9e012fc8010b7d Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 24 Jul 2018 08:44:31 +0100
+Subject: [add] hackerrank, 'combinations', python solution
+
+---
+ .../combinations.py                                         | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/hackerrank/python.-.itertools.-.easy.-.combinations/combinations.py b/hackerrank/python.-.itertools.-.easy.-.combinations/combinations.py
+index 7c60a68..6c5dfae 100644
+--- a/hackerrank/python.-.itertools.-.easy.-.combinations/combinations.py
++++ b/hackerrank/python.-.itertools.-.easy.-.combinations/combinations.py
+@@ -1 +1,7 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++from itertools import combinations
++args = input().split()
++combos = []
++for r in range(1, int(args[1]) + 1):
++    combos += sorted([''.join(sorted(t)) for t in list(combinations(args[0], r))])
++print(*combos, sep='\n')
+-- 
+2.23.0
+
