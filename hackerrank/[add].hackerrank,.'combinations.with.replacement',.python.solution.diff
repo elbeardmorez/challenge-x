@@ -1,0 +1,23 @@
+From 02d2daec7b342176f1d8841b586fef631701b611 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 24 Jul 2018 08:48:33 +0100
+Subject: [add] hackerrank, 'combinations with replacement', python solution
+
+---
+ .../combinations.with.replacement.py                         | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/hackerrank/python.-.itertools.-.easy.-.combinations.with.replacement/combinations.with.replacement.py b/hackerrank/python.-.itertools.-.easy.-.combinations.with.replacement/combinations.with.replacement.py
+index 7c60a68..005cf41 100644
+--- a/hackerrank/python.-.itertools.-.easy.-.combinations.with.replacement/combinations.with.replacement.py
++++ b/hackerrank/python.-.itertools.-.easy.-.combinations.with.replacement/combinations.with.replacement.py
+@@ -1 +1,6 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++from itertools import combinations_with_replacement
++args = input().split()
++w = sorted(list(args[0]))
++i = int(args[1])
++print(*[''.join(t) for t in combinations_with_replacement(w, i)], sep='\n')
+-- 
+2.23.0
+
