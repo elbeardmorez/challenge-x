@@ -1,0 +1,21 @@
+From 80546937dc42b2fd95a031572317779461b76b14 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 24 Jul 2018 08:33:18 +0100
+Subject: [add] hackerrank, 'permutations', python solution
+
+---
+ .../python.-.itertools.-.easy.-.permutations/permutations.py   | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/hackerrank/python.-.itertools.-.easy.-.permutations/permutations.py b/hackerrank/python.-.itertools.-.easy.-.permutations/permutations.py
+index 7c60a68..a9a8277 100644
+--- a/hackerrank/python.-.itertools.-.easy.-.permutations/permutations.py
++++ b/hackerrank/python.-.itertools.-.easy.-.permutations/permutations.py
+@@ -1 +1,4 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++from itertools import permutations
++args = input().split()
++print(*sorted([''.join(t) for t in permutations(list(args[0]), int(args[1]))]), sep='\n')
+-- 
+2.23.0
+
