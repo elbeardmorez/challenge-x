@@ -1,0 +1,32 @@
+From dba504ba8258a9761fe4d18868245fb2428ab122 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 25 Jul 2018 22:05:18 +0100
+Subject: [add] hackerrank, 'collections counter', python solution
+
+---
+ .../collections.counter.py                         | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/hackerrank/python.-.collections.-.easy.-.collections.counter/collections.counter.py b/hackerrank/python.-.collections.-.easy.-.collections.counter/collections.counter.py
+index 7c60a68..70dc02c 100644
+--- a/hackerrank/python.-.collections.-.easy.-.collections.counter/collections.counter.py
++++ b/hackerrank/python.-.collections.-.easy.-.collections.counter/collections.counter.py
+@@ -1 +1,15 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++
++from collections import Counter
++
++x = int(input())
++ss = [int(s) for s in input().split()]
++counter = Counter(ss)
++n = int(input())
++total = 0
++for _ in range(n):
++    s, v = [int(s) for s in input().split()]
++    if counter[s] > 0:
++        total += v
++        counter[s] -= 1
++print(total)
+-- 
+2.23.0
+
