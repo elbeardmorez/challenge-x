@@ -1,0 +1,24 @@
+From d2c25b43829315046b77697665da1165a2b0c7c7 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 26 Jul 2018 08:29:05 +0100
+Subject: [add] hackerrank, 'introduction to sets', python solution
+
+---
+ .../introduction.to.sets.py                                     | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/hackerrank/python.-.sets.-.easy.-.introduction.to.sets/introduction.to.sets.py b/hackerrank/python.-.sets.-.easy.-.introduction.to.sets/introduction.to.sets.py
+index aee5605..ce90cb2 100644
+--- a/hackerrank/python.-.sets.-.easy.-.introduction.to.sets/introduction.to.sets.py
++++ b/hackerrank/python.-.sets.-.easy.-.introduction.to.sets/introduction.to.sets.py
+@@ -1,5 +1,7 @@
+ def average(array):
+     # your code goes here
++    s = set(array)
++    return sum(s) / len(s)
+ 
+ if __name__ == '__main__':
+     n = int(input())
+-- 
+2.23.0
+
