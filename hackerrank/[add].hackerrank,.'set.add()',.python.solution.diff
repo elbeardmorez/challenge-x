@@ -1,0 +1,22 @@
+From 8f2e880b2027b49754064703d3a4b0022e68dc83 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 26 Jul 2018 20:23:23 +0100
+Subject: [add] hackerrank, 'set .add()', python solution
+
+---
+ hackerrank/python.-.sets.-.easy.-.set.add/set.add.py | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/hackerrank/python.-.sets.-.easy.-.set.add/set.add.py b/hackerrank/python.-.sets.-.easy.-.set.add/set.add.py
+index 7c60a68..30ea04f 100644
+--- a/hackerrank/python.-.sets.-.easy.-.set.add/set.add.py
++++ b/hackerrank/python.-.sets.-.easy.-.set.add/set.add.py
+@@ -1 +1,5 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++s = set()
++for _ in range(int(input())):
++    s.add(input())
++print(len(s))
+-- 
+2.23.0
+
