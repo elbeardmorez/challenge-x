@@ -1,0 +1,22 @@
+From 4a2a3d13ae210139a1cd6304b0f173be2842984c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 26 Jul 2018 08:01:28 +0100
+Subject: [add] hackerrank, 'calendar module', python solution
+
+---
+ .../calendar.module.py                                        | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/hackerrank/python.-.date.and.time.-.easy.-.calendar.module/calendar.module.py b/hackerrank/python.-.date.and.time.-.easy.-.calendar.module/calendar.module.py
+index 7c60a68..7beb7be 100644
+--- a/hackerrank/python.-.date.and.time.-.easy.-.calendar.module/calendar.module.py
++++ b/hackerrank/python.-.date.and.time.-.easy.-.calendar.module/calendar.module.py
+@@ -1 +1,5 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++
++import datetime
++dt = datetime.datetime.strptime(input(), "%m %d %Y")
++print(dt.strftime("%A").upper())
+-- 
+2.23.0
+
