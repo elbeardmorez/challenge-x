@@ -1,0 +1,23 @@
+From c55757a5f719880251571faa5b057ce0ae4b3fb6 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 26 Jul 2018 20:19:30 +0100
+Subject: [add] hackerrank, 'symmetric difference', python solution
+
+---
+ .../symmetric.difference.py                                  | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/hackerrank/python.-.sets.-.easy.-.symmetric.difference/symmetric.difference.py b/hackerrank/python.-.sets.-.easy.-.symmetric.difference/symmetric.difference.py
+index 7c60a68..1a53d21 100644
+--- a/hackerrank/python.-.sets.-.easy.-.symmetric.difference/symmetric.difference.py
++++ b/hackerrank/python.-.sets.-.easy.-.symmetric.difference/symmetric.difference.py
+@@ -1 +1,6 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++m = int(input())
++a = set([int(s) for s in input().split()])
++n = int(input())
++b = set([int(s) for s in input().split()])
++print(*[x for x in sorted(a ^ b)], sep='\n')
+-- 
+2.23.0
+
