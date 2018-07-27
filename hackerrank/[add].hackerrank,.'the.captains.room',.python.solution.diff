@@ -1,0 +1,29 @@
+From 7fa2ef21a316016b6e25d803b138f0e95d7ee3ee Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 27 Jul 2018 08:33:34 +0100
+Subject: [add] hackerrank, 'the captains room', python solution
+
+---
+ .../the.captains.room.py                              | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/hackerrank/python.-.sets.-.easy.-.the.captains.room/the.captains.room.py b/hackerrank/python.-.sets.-.easy.-.the.captains.room/the.captains.room.py
+index 7c60a68..d84123d 100644
+--- a/hackerrank/python.-.sets.-.easy.-.the.captains.room/the.captains.room.py
++++ b/hackerrank/python.-.sets.-.easy.-.the.captains.room/the.captains.room.py
+@@ -1 +1,12 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++k = int(input())
++l = [int(s) for s in input().split()]
++s = set(l)
++rem = None
++try:
++    for _ in range(2):
++        for x in s:
++            rem = x
++            l.remove(x)
++except ValueError as e:
++    print(rem)
+-- 
+2.23.0
+
