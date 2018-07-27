@@ -1,0 +1,24 @@
+From b01add1dc131f9863c6a9e06453ea3e9830c40b8 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 27 Jul 2018 08:07:07 +0100
+Subject: [add] hackerrank, 'set symmetric difference operation', python
+ solution
+
+---
+ .../set.symmetric.difference.operation.py                    | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/hackerrank/python.-.sets.-.easy.-.set.symmetric.difference.operation/set.symmetric.difference.operation.py b/hackerrank/python.-.sets.-.easy.-.set.symmetric.difference.operation/set.symmetric.difference.operation.py
+index 7c60a68..b97db9f 100644
+--- a/hackerrank/python.-.sets.-.easy.-.set.symmetric.difference.operation/set.symmetric.difference.operation.py
++++ b/hackerrank/python.-.sets.-.easy.-.set.symmetric.difference.operation/set.symmetric.difference.operation.py
+@@ -1 +1,6 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++m = int(input())
++a = set([int(s) for s in input().split()])
++n = int(input())
++b = set([int(s) for s in input().split()])
++print(len(a ^ b))
+-- 
+2.23.0
+
