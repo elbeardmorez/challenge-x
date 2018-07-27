@@ -1,0 +1,22 @@
+From 49240a5e53dce89aac104c254bd059102f20fcf4 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 27 Jul 2018 08:47:04 +0100
+Subject: [mod] hackerrank, 'the captains room', python solution
+
+-speed-up, short-circuit loop on success
+---
+ .../the.captains.room.py                                         | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hackerrank/python.-.sets.-.easy.-.the.captains.room/the.captains.room.py b/hackerrank/python.-.sets.-.easy.-.the.captains.room/the.captains.room.py
+index 2721820..d12069e 100644
+--- a/hackerrank/python.-.sets.-.easy.-.the.captains.room/the.captains.room.py
++++ b/hackerrank/python.-.sets.-.easy.-.the.captains.room/the.captains.room.py
+@@ -6,3 +6,4 @@ counter = Counter(input().split())
+ for s, c in counter.items():
+     if c == 1:
+         print(int(s))
++        break
+-- 
+2.23.0
+
