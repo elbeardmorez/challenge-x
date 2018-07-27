@@ -1,0 +1,26 @@
+From f218ebaffe02efdc92c89d56c7c032e53d37fedf Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 27 Jul 2018 08:59:25 +0100
+Subject: [add] hackerrank, 'check strict superset', python solution
+
+---
+ .../check.strict.superset.py                              | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/hackerrank/python.-.sets.-.easy.-.check.strict.superset/check.strict.superset.py b/hackerrank/python.-.sets.-.easy.-.check.strict.superset/check.strict.superset.py
+index 7c60a68..8e19bf1 100644
+--- a/hackerrank/python.-.sets.-.easy.-.check.strict.superset/check.strict.superset.py
++++ b/hackerrank/python.-.sets.-.easy.-.check.strict.superset/check.strict.superset.py
+@@ -1 +1,9 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++res = "True"
++a = set(input().split())
++for _ in range(int(input())):
++    b = set(input().split())
++    if len(a - b) != len(a) - len(b):
++        res = "False"
++        break
++print(res)
+-- 
+2.23.0
+
