@@ -1,0 +1,36 @@
+From 4c8f8c8fe4060d2c3443049d16f5315805f02004 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 27 Jul 2018 08:46:58 +0100
+Subject: [mod] hackerrank, 'the captains room', python solution
+
+-speed-up, use collections Counter
+---
+ .../the.captains.room.py                         | 16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
+
+diff --git a/hackerrank/python.-.sets.-.easy.-.the.captains.room/the.captains.room.py b/hackerrank/python.-.sets.-.easy.-.the.captains.room/the.captains.room.py
+index d84123d..2721820 100644
+--- a/hackerrank/python.-.sets.-.easy.-.the.captains.room/the.captains.room.py
++++ b/hackerrank/python.-.sets.-.easy.-.the.captains.room/the.captains.room.py
+@@ -1,12 +1,8 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++from collections import Counter
++
+ k = int(input())
+-l = [int(s) for s in input().split()]
+-s = set(l)
+-rem = None
+-try:
+-    for _ in range(2):
+-        for x in s:
+-            rem = x
+-            l.remove(x)
+-except ValueError as e:
+-    print(rem)
++counter = Counter(input().split())
++for s, c in counter.items():
++    if c == 1:
++        print(int(s))
+-- 
+2.23.0
+
