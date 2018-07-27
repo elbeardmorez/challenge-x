@@ -1,0 +1,23 @@
+From 9be0241ecd63e9343654acfc893a6d3740d25ea2 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 27 Jul 2018 08:02:07 +0100
+Subject: [add] hackerrank, 'set difference operation', python solution
+
+---
+ .../set.difference.operation.py                              | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/hackerrank/python.-.sets.-.easy.-.set.difference.operation/set.difference.operation.py b/hackerrank/python.-.sets.-.easy.-.set.difference.operation/set.difference.operation.py
+index 7c60a68..e8375e1 100644
+--- a/hackerrank/python.-.sets.-.easy.-.set.difference.operation/set.difference.operation.py
++++ b/hackerrank/python.-.sets.-.easy.-.set.difference.operation/set.difference.operation.py
+@@ -1 +1,6 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++m = int(input())
++a = set([int(s) for s in input().split()])
++n = int(input())
++b = set([int(s) for s in input().split()])
++print(len(a - b))
+-- 
+2.23.0
+
