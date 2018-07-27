@@ -1,0 +1,31 @@
+From 5cd6202da1ace5caf6f9aa8828e399c391997524 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 27 Jul 2018 07:38:15 +0100
+Subject: [add] hackerrank, 'set .discard(), .remove() & .pop()', python
+ solution
+
+---
+ .../set.discard.remove.pop.py                        | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/hackerrank/python.-.sets.-.easy.-.set.discard.remove.pop/set.discard.remove.pop.py b/hackerrank/python.-.sets.-.easy.-.set.discard.remove.pop/set.discard.remove.pop.py
+index 7c60a68..52284a6 100644
+--- a/hackerrank/python.-.sets.-.easy.-.set.discard.remove.pop/set.discard.remove.pop.py
++++ b/hackerrank/python.-.sets.-.easy.-.set.discard.remove.pop/set.discard.remove.pop.py
+@@ -1 +1,13 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++input()
++s = set(map(int, input().split()))
++for _ in range(int(input())):
++    parts = input().split()
++    t = parts[0]
++    if t == "pop":
++        s.pop()
++    elif t == "remove":
++        s.remove(int(parts[1]))
++    elif t == "discard":
++        s.discard(int(parts[1]))
++print(sum(s))
+-- 
+2.23.0
+
