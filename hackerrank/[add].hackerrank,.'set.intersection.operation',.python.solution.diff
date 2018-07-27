@@ -1,0 +1,23 @@
+From 5c385716e9c88559b14f87f3702a0d9eb623abb0 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 27 Jul 2018 08:00:19 +0100
+Subject: [add] hackerrank, 'set intersection operation', python solution
+
+---
+ .../set.intersection.operation.py                            | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/hackerrank/python.-.sets.-.easy.-.set.intersection.operation/set.intersection.operation.py b/hackerrank/python.-.sets.-.easy.-.set.intersection.operation/set.intersection.operation.py
+index 7c60a68..9a1e241 100644
+--- a/hackerrank/python.-.sets.-.easy.-.set.intersection.operation/set.intersection.operation.py
++++ b/hackerrank/python.-.sets.-.easy.-.set.intersection.operation/set.intersection.operation.py
+@@ -1 +1,6 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++m = int(input())
++a = set([int(s) for s in input().split()])
++n = int(input())
++b = set([int(s) for s in input().split()])
++print(len(a & b))
+-- 
+2.23.0
+
