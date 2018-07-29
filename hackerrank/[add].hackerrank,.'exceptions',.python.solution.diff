@@ -1,0 +1,26 @@
+From 777014f0a71c913523f85bb837547bed5d199e04 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 29 Jul 2018 23:27:44 +0100
+Subject: [add] hackerrank, 'exceptions', python solution
+
+---
+ .../exceptions.py                                         | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/hackerrank/python.-.errors.and.exceptions.-.easy.-.exceptions/exceptions.py b/hackerrank/python.-.errors.and.exceptions.-.easy.-.exceptions/exceptions.py
+index 7c60a68..f44b779 100644
+--- a/hackerrank/python.-.errors.and.exceptions.-.easy.-.exceptions/exceptions.py
++++ b/hackerrank/python.-.errors.and.exceptions.-.easy.-.exceptions/exceptions.py
+@@ -1 +1,9 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++for _ in range(int(input())):
++    try:
++        l = [int(s) for s in input().split()]
++        print(l[0] // l[1])
++    except ZeroDivisionError as e:
++        print("Error Code:",e)
++    except ValueError as e:
++        print("Error Code:",e)
+-- 
+2.23.0
+
