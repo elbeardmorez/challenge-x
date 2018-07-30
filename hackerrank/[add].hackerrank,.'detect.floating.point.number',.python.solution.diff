@@ -1,0 +1,27 @@
+From a2f9a538d39dc3c54e004506d436eae32f6be359 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 30 Jul 2018 16:14:37 +0100
+Subject: [add] hackerrank, 'detect floating point number', python solution
+
+---
+ .../detect.floating.point.number.py                      | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/hackerrank/python.-.regex.and.parsing.-.easy.-.detect.floating.point.number/detect.floating.point.number.py b/hackerrank/python.-.regex.and.parsing.-.easy.-.detect.floating.point.number/detect.floating.point.number.py
+index 7c60a68..5b51131 100644
+--- a/hackerrank/python.-.regex.and.parsing.-.easy.-.detect.floating.point.number/detect.floating.point.number.py
++++ b/hackerrank/python.-.regex.and.parsing.-.easy.-.detect.floating.point.number/detect.floating.point.number.py
+@@ -1 +1,10 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++import re
++for _ in range(int(input())):
++    s = input()
++    res = "True" if re.search(r'^[+-0-9]*?(?:[0-9]\.|\.[0-9])[0-9]*$', s) else "False"
++    try:
++        pass # x = float(s)
++    except:
++        res = "False"
++    print(res)
+-- 
+2.23.0
+
