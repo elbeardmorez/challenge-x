@@ -1,0 +1,28 @@
+From c617c67d70f9c8354e87dd209a22b70f370a359f Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 30 Jul 2018 15:28:25 +0100
+Subject: [add] hackerrank, 'map and lambda expression', python solution
+
+---
+ .../map.and.lambda.expression.py                             | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/hackerrank/python.-.python.functionals.-.easy.-.map.and.lambda.expression/map.and.lambda.expression.py b/hackerrank/python.-.python.functionals.-.easy.-.map.and.lambda.expression/map.and.lambda.expression.py
+index afd46db..720c0fd 100644
+--- a/hackerrank/python.-.python.functionals.-.easy.-.map.and.lambda.expression/map.and.lambda.expression.py
++++ b/hackerrank/python.-.python.functionals.-.easy.-.map.and.lambda.expression/map.and.lambda.expression.py
+@@ -2,6 +2,11 @@ cube = lambda x: x ** 3  # complete the lambda function
+ 
+ def fibonacci(n):
+     # return a list of fibonacci numbers
++    fib = [0, 1, 1, 2, 3]
++    n2 = len(fib)
++    for _ in range(n2 + 1, n + 1):
++        fib.append(sum(fib[-2:]))
++    return fib[:n]
+ 
+ if __name__ == '__main__':
+     n = int(input())
+-- 
+2.23.0
+
