@@ -1,0 +1,19 @@
+From f862fbb3138601fc0030a65147f5ef0184829970 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 30 Jul 2018 15:46:39 +0100
+Subject: [add] hackerrank, 'integers come in all sizes', python solution
+
+---
+ .../integers.come.in.all.sizes.py                                | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hackerrank/python.-.math.-.easy.-.integers.come.in.all.sizes/integers.come.in.all.sizes.py b/hackerrank/python.-.math.-.easy.-.integers.come.in.all.sizes/integers.come.in.all.sizes.py
+index 7c60a68..7560c6d 100644
+--- a/hackerrank/python.-.math.-.easy.-.integers.come.in.all.sizes/integers.come.in.all.sizes.py
++++ b/hackerrank/python.-.math.-.easy.-.integers.come.in.all.sizes/integers.come.in.all.sizes.py
+@@ -1 +1,2 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++print(int(input()) ** int(input()) + int(input()) ** int(input()))
+-- 
+2.23.0
+
