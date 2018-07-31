@@ -1,0 +1,21 @@
+From 1d54241ddb5664e727f88cd958d4da4488770250 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 31 Jul 2018 09:13:28 +0100
+Subject: [add] hackerrank, 're .split()', python solution
+
+---
+ .../python.-.regex.and.parsing.-.easy.-.re.split/re.split.py   | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/hackerrank/python.-.regex.and.parsing.-.easy.-.re.split/re.split.py b/hackerrank/python.-.regex.and.parsing.-.easy.-.re.split/re.split.py
+index 7c60a68..c4a00be 100644
+--- a/hackerrank/python.-.regex.and.parsing.-.easy.-.re.split/re.split.py
++++ b/hackerrank/python.-.regex.and.parsing.-.easy.-.re.split/re.split.py
+@@ -1 +1,4 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++regex_pattern = r"[,.]"	# Do not delete 'r'.
++import re
++print("\n".join(re.split(regex_pattern, input())))
+-- 
+2.23.0
+
