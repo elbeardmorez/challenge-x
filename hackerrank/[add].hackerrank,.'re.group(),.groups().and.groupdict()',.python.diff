@@ -1,0 +1,23 @@
+From f5b9df7730356e73f108b3d1f34734498b561e1b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 1 Aug 2018 21:37:26 +0100
+Subject: [add] hackerrank, 're .group(), .groups() and .groupdict()', python
+ solution
+
+---
+ .../re.group,.groups.and.groupdict.py                         | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/hackerrank/python.-.regex.and.parsing.-.easy.-.re.group,.groups.and.groupdict/re.group,.groups.and.groupdict.py b/hackerrank/python.-.regex.and.parsing.-.easy.-.re.group,.groups.and.groupdict/re.group,.groups.and.groupdict.py
+index 7c60a68..9c1d09c 100644
+--- a/hackerrank/python.-.regex.and.parsing.-.easy.-.re.group,.groups.and.groupdict/re.group,.groups.and.groupdict.py
++++ b/hackerrank/python.-.regex.and.parsing.-.easy.-.re.group,.groups.and.groupdict/re.group,.groups.and.groupdict.py
+@@ -1 +1,5 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++import re
++s = input()
++rx = r'.*?(?P<an>[a-zA-Z0-9])(?P=an).*'
++print(-1 if not re.search(rx, s) else re.match(rx, s).group(1))
+-- 
+2.23.0
+
