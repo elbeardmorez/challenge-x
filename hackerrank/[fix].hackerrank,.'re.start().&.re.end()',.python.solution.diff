@@ -1,0 +1,32 @@
+From 362735cf62507bee46908ef0113452d89b0aaced Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 2 Aug 2018 08:12:54 +0100
+Subject: [fix] hackerrank, 're .start() & re .end()', python solution
+
+-deal with empty case
+---
+ .../re.start.re.end.py                                | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/hackerrank/python.-.regex.and.parsing.-.easy.-.re.start.re.end/re.start.re.end.py b/hackerrank/python.-.regex.and.parsing.-.easy.-.re.start.re.end/re.start.re.end.py
+index c95affb..243881a 100644
+--- a/hackerrank/python.-.regex.and.parsing.-.easy.-.re.start.re.end/re.start.re.end.py
++++ b/hackerrank/python.-.regex.and.parsing.-.easy.-.re.start.re.end/re.start.re.end.py
+@@ -4,7 +4,10 @@ s, k = [input(), input()]
+ rx = re.compile(k)
+ idx = 0
+ m = rx.search(s, idx)
+-while m:    
+-    print((m.start(), m.end() - 1))
+-    idx = m.start() + 1
+-    m = rx.search(s, idx)
++if not m:
++    print((-1, -1))
++else:
++    while m:
++        print((m.start(), m.end() - 1))
++        idx = m.start() + 1
++        m = rx.search(s, idx)
+-- 
+2.23.0
+
