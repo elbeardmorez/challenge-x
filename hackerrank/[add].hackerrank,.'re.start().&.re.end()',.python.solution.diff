@@ -1,0 +1,27 @@
+From a836a72dc41f4702c9f37751a9b64b4139f2efa8 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 2 Aug 2018 08:10:24 +0100
+Subject: [add] hackerrank, 're .start() & re .end()', python solution
+
+---
+ .../re.start.re.end.py                                   | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/hackerrank/python.-.regex.and.parsing.-.easy.-.re.start.re.end/re.start.re.end.py b/hackerrank/python.-.regex.and.parsing.-.easy.-.re.start.re.end/re.start.re.end.py
+index 7c60a68..c95affb 100644
+--- a/hackerrank/python.-.regex.and.parsing.-.easy.-.re.start.re.end/re.start.re.end.py
++++ b/hackerrank/python.-.regex.and.parsing.-.easy.-.re.start.re.end/re.start.re.end.py
+@@ -1 +1,10 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++import re
++s, k = [input(), input()]
++rx = re.compile(k)
++idx = 0
++m = rx.search(s, idx)
++while m:    
++    print((m.start(), m.end() - 1))
++    idx = m.start() + 1
++    m = rx.search(s, idx)
+-- 
+2.23.0
+
