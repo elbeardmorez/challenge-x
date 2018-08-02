@@ -1,0 +1,27 @@
+From 9c10358ab48a5e921007a53a3ca0e26d462faf29 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 2 Aug 2018 07:57:55 +0100
+Subject: [fix] hackerrank, 're .findall() & re .finditer()', python solution
+
+-don't return new line on no results
+---
+ .../re.findall.re.finditer.py                               | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/python.-.regex.and.parsing.-.easy.-.re.findall.re.finditer/re.findall.re.finditer.py b/hackerrank/python.-.regex.and.parsing.-.easy.-.re.findall.re.finditer/re.findall.re.finditer.py
+index e89269f..704de43 100644
+--- a/hackerrank/python.-.regex.and.parsing.-.easy.-.re.findall.re.finditer/re.findall.re.finditer.py
++++ b/hackerrank/python.-.regex.and.parsing.-.easy.-.re.findall.re.finditer/re.findall.re.finditer.py
+@@ -2,4 +2,8 @@
+ import re
+ rx_v = 'aeiouAEIOU'
+ rx = r'[^' + rx_v + ']([' + rx_v + ']{2,})(?=[^' + rx_v + '])'
+-print(*re.findall(rx, input()), sep='\n')
++search = re.findall(rx, input())
++if not search:
++    print(-1)
++else:
++    print(*search, sep='\n')
+-- 
+2.23.0
+
