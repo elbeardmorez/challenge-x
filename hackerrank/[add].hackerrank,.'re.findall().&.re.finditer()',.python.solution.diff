@@ -1,0 +1,22 @@
+From a6b6e9ed9f0056665b883b4ae10deb9c13cf26b2 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 2 Aug 2018 07:51:39 +0100
+Subject: [add] hackerrank, 're .findall() & re .finditer()', python solution
+
+---
+ .../re.findall.re.finditer.py                                 | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/hackerrank/python.-.regex.and.parsing.-.easy.-.re.findall.re.finditer/re.findall.re.finditer.py b/hackerrank/python.-.regex.and.parsing.-.easy.-.re.findall.re.finditer/re.findall.re.finditer.py
+index 7c60a68..e89269f 100644
+--- a/hackerrank/python.-.regex.and.parsing.-.easy.-.re.findall.re.finditer/re.findall.re.finditer.py
++++ b/hackerrank/python.-.regex.and.parsing.-.easy.-.re.findall.re.finditer/re.findall.re.finditer.py
+@@ -1 +1,5 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++import re
++rx_v = 'aeiouAEIOU'
++rx = r'[^' + rx_v + ']([' + rx_v + ']{2,})(?=[^' + rx_v + '])'
++print(*re.findall(rx, input()), sep='\n')
+-- 
+2.23.0
+
