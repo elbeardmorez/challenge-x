@@ -1,0 +1,24 @@
+From ed83a39a87772cb991f4f185daa85dbc42fcf452 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 3 Aug 2018 08:24:00 +0100
+Subject: [fix] hackerrank, 'validate roman numerals', python solution
+
+-missing most single digit range, V-IX
+-modify to invalidate >1 I as a V prefix
+---
+ .../validate.roman.numerals.py                                  | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/python.-.regex.and.parsing.-.easy.-.validate.roman.numerals/validate.roman.numerals.py b/hackerrank/python.-.regex.and.parsing.-.easy.-.validate.roman.numerals/validate.roman.numerals.py
+index b6fbca3..e7a88a9 100644
+--- a/hackerrank/python.-.regex.and.parsing.-.easy.-.validate.roman.numerals/validate.roman.numerals.py
++++ b/hackerrank/python.-.regex.and.parsing.-.easy.-.validate.roman.numerals/validate.roman.numerals.py
+@@ -1,4 +1,4 @@
+-regex_pattern = r"^M*(?:C{0,3}|CD|D(?:C{0,3})|CM)(?:X{0,3}|XL|L(?:X{0,3})|XC)?(?:I{0,3}[VX]?)$"	# Do not delete 'r'
++regex_pattern = r"^M*(?:C{0,3}|CD|D(?:C{0,3})|CM)(?:X{0,3}|XL|L(?:X{0,3})|XC)?(?:I{0,3}|IV|V(?:I{0,3})|IX)?$"	# Do not delete 'r'.
+ 
+ import re
+ print(str(bool(re.match(regex_pattern, input()))))
+-- 
+2.23.0
+
