@@ -1,0 +1,27 @@
+From 7ed4a8640532558e02bb9ea25537292d697a5597 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 4 Aug 2018 12:21:14 +0100
+Subject: [add] hackerrank, 'validating and parsing email addresses', python
+ solution
+
+---
+ .../validating.and.parsing.email.addresses.py             | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/hackerrank/python.-.regex.and.parsing.-.easy.-.validating.and.parsing.email.addresses/validating.and.parsing.email.addresses.py b/hackerrank/python.-.regex.and.parsing.-.easy.-.validating.and.parsing.email.addresses/validating.and.parsing.email.addresses.py
+index 7c60a68..41c56c1 100644
+--- a/hackerrank/python.-.regex.and.parsing.-.easy.-.validating.and.parsing.email.addresses/validating.and.parsing.email.addresses.py
++++ b/hackerrank/python.-.regex.and.parsing.-.easy.-.validating.and.parsing.email.addresses/validating.and.parsing.email.addresses.py
+@@ -1 +1,9 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++import email.utils
++import re
++rx = r'^[a-zA-Z][a-zA-Z0-9-._]+@[a-zA-Z]+\.[A-Za-z]{1,3}$'
++n = int(input())
++for _ in range(n):
++    parts = email.utils.parseaddr(input())
++    if re.search(rx, parts[1]):
++        print(email.utils.formataddr((parts[0], parts[1])))
+-- 
+2.23.0
+
