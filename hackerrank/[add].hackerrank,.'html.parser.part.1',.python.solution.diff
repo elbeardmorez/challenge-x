@@ -1,0 +1,35 @@
+From 93dbc7d2c27cb028477b217caf8bfb4d5a8acfa7 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 5 Aug 2018 19:41:14 +0100
+Subject: [add] hackerrank, 'html parser part 1', python solution
+
+---
+ .../html.parser.part.1.py                       | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/hackerrank/python.-.regex.and.parsing.-.easy.-.html.parser.part.1/html.parser.part.1.py b/hackerrank/python.-.regex.and.parsing.-.easy.-.html.parser.part.1/html.parser.part.1.py
+index 7c60a68..769693a 100644
+--- a/hackerrank/python.-.regex.and.parsing.-.easy.-.html.parser.part.1/html.parser.part.1.py
++++ b/hackerrank/python.-.regex.and.parsing.-.easy.-.html.parser.part.1/html.parser.part.1.py
+@@ -1 +1,18 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++from html.parser import HTMLParser
++
++# create a subclass and override the handler methods
++class MyHTMLParser(HTMLParser):
++    def handle_starttag(self, tag, attrs):
++        print("Start :", tag)
++        for k, v in attrs:
++            print("-> %s > %s" % (k, v))
++    def handle_endtag(self, tag):
++        print("End   :", tag)
++    def handle_startendtag(self, tag, attrs):
++        print("Empty :", tag)
++
++# instantiate the parser and fed it some HTML
++parser = MyHTMLParser()
++for _ in range(int(input())):
++    parser.feed(input())
+-- 
+2.23.0
+
