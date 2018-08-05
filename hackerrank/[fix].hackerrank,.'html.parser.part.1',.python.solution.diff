@@ -1,0 +1,37 @@
+From c11dd157a249d8f990ca7015e1784f99a9b4113d Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 5 Aug 2018 19:46:19 +0100
+Subject: [fix] hackerrank, 'html parser part 1', python solution
+
+-abstract 'handle_attributes' routine and call on start end tag too
+---
+ .../html.parser.part.1.py                                  | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/python.-.regex.and.parsing.-.easy.-.html.parser.part.1/html.parser.part.1.py b/hackerrank/python.-.regex.and.parsing.-.easy.-.html.parser.part.1/html.parser.part.1.py
+index 769693a..3bfdb5a 100644
+--- a/hackerrank/python.-.regex.and.parsing.-.easy.-.html.parser.part.1/html.parser.part.1.py
++++ b/hackerrank/python.-.regex.and.parsing.-.easy.-.html.parser.part.1/html.parser.part.1.py
+@@ -3,14 +3,17 @@ from html.parser import HTMLParser
+ 
+ # create a subclass and override the handler methods
+ class MyHTMLParser(HTMLParser):
+-    def handle_starttag(self, tag, attrs):
+-        print("Start :", tag)
++    def handle_attributues(self, attrs):
+         for k, v in attrs:
+             print("-> %s > %s" % (k, v))
++    def handle_starttag(self, tag, attrs):
++        print("Start :", tag)
++        self.handle_attributues(attrs)
+     def handle_endtag(self, tag):
+         print("End   :", tag)
+     def handle_startendtag(self, tag, attrs):
+         print("Empty :", tag)
++        self.handle_attributues(attrs)
+ 
+ # instantiate the parser and fed it some HTML
+ parser = MyHTMLParser()
+-- 
+2.23.0
+
