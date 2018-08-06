@@ -1,0 +1,30 @@
+From ed83c54098303383cbbea41e00f9872b195d1078 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 6 Aug 2018 07:16:53 +0100
+Subject: [add] hackerrank, 'html parser part 2', python solution
+
+---
+ .../html.parser.part.2.py                                  | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/hackerrank/python.-.regex.and.parsing.-.easy.-.html.parser.part.2/html.parser.part.2.py b/hackerrank/python.-.regex.and.parsing.-.easy.-.html.parser.part.2/html.parser.part.2.py
+index b9a4831..c052783 100644
+--- a/hackerrank/python.-.regex.and.parsing.-.easy.-.html.parser.part.2/html.parser.part.2.py
++++ b/hackerrank/python.-.regex.and.parsing.-.easy.-.html.parser.part.2/html.parser.part.2.py
+@@ -1,6 +1,13 @@
+ from html.parser import HTMLParser
+ 
+ class MyHTMLParser(HTMLParser):
++    def handle_comment(self, data):
++        print(">>> %s-line Comment\n%s" % ("Single" if len(data.split('\n')) == 1 else "Multi",
++                                           data.strip()), sep='')
++    def handle_data(self, data):
++        if len(data.strip()) == 0:
++            return
++        print(">>> Data", data, sep='\n')
+ 
+ 
+ html = ""
+-- 
+2.23.0
+
