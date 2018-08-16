@@ -1,0 +1,26 @@
+From 3389c6c35cdd12276906a0a4f2648e23109b1d73 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 16 Aug 2018 12:28:32 +0100
+Subject: [fix] hackerrank, 'find the maximum depth', python solution
+
+-edge case, off-by-one '>1' vs '>=1'
+---
+ .../find.the.maximum.depth.py                                   | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/python.-.xml.-.easy.-.find.the.maximum.depth/find.the.maximum.depth.py b/hackerrank/python.-.xml.-.easy.-.find.the.maximum.depth/find.the.maximum.depth.py
+index 6b19f74..ebdbe37 100644
+--- a/hackerrank/python.-.xml.-.easy.-.find.the.maximum.depth/find.the.maximum.depth.py
++++ b/hackerrank/python.-.xml.-.easy.-.find.the.maximum.depth/find.the.maximum.depth.py
+@@ -10,7 +10,7 @@ def depth(elem, level):
+         maxdepth = level
+     for n in elem.findall('*'):
+         #print("tag: %r, length: %d" % (n.tag, len(n)))
+-        if len(n) > 1:
++        if len(n) > 0:
+             depth(n, level)
+ 
+ if __name__ == '__main__':
+-- 
+2.23.0
+
