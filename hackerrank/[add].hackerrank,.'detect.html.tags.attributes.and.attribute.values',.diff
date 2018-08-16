@@ -1,0 +1,35 @@
+From 8d8b9b41921efb986c2808fe23dc744cb3ed6b08 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 16 Aug 2018 12:55:52 +0100
+Subject: [add] hackerrank, 'detect html tags attributes and attribute values',
+ python solution
+
+---
+ ....html.tags.attributes.and.attribute.values.py | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/hackerrank/python.-.regex.and.parsing.-.easy.-.detect.html.tags.attributes.and.attribute.values/detect.html.tags.attributes.and.attribute.values.py b/hackerrank/python.-.regex.and.parsing.-.easy.-.detect.html.tags.attributes.and.attribute.values/detect.html.tags.attributes.and.attribute.values.py
+index 7c60a68..8ea81cf 100644
+--- a/hackerrank/python.-.regex.and.parsing.-.easy.-.detect.html.tags.attributes.and.attribute.values/detect.html.tags.attributes.and.attribute.values.py
++++ b/hackerrank/python.-.regex.and.parsing.-.easy.-.detect.html.tags.attributes.and.attribute.values/detect.html.tags.attributes.and.attribute.values.py
+@@ -1 +1,17 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++import re
++
++comment = False
++for _ in range(int(input())):
++    s = input()
++    m = re.match('[ ]*<([a-zA-Z][a-zA-Z0-9]*)[ />]+.*', s)
++    if re.search('<!--', s):
++        comment = True
++        continue
++    elif re.search('-->', s):
++        comment = False
++        continue
++    if m:
++        print(m.group(1))
++    for m in re.finditer('([a-zA-Z0-9]+)="([^"]*)"' , s):
++        print("->", m.group(1), ">", m.group(2))
+-- 
+2.23.0
+
