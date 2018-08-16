@@ -1,0 +1,32 @@
+From 753314c81381f886983f12eb8bf4bd103b9984d3 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 16 Aug 2018 12:24:07 +0100
+Subject: [add] hackerrank, 'find the maximum depth', python solution
+
+---
+ .../find.the.maximum.depth.py                            | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/hackerrank/python.-.xml.-.easy.-.find.the.maximum.depth/find.the.maximum.depth.py b/hackerrank/python.-.xml.-.easy.-.find.the.maximum.depth/find.the.maximum.depth.py
+index a3f00b3..6b19f74 100644
+--- a/hackerrank/python.-.xml.-.easy.-.find.the.maximum.depth/find.the.maximum.depth.py
++++ b/hackerrank/python.-.xml.-.easy.-.find.the.maximum.depth/find.the.maximum.depth.py
+@@ -3,6 +3,15 @@ maxdepth = 0
+ def depth(elem, level):
+     global maxdepth
+     # your code goes here
++    if level == -1:
++        level = 0
++    level += 1
++    if level > maxdepth:
++        maxdepth = level
++    for n in elem.findall('*'):
++        #print("tag: %r, length: %d" % (n.tag, len(n)))
++        if len(n) > 1:
++            depth(n, level)
+ 
+ if __name__ == '__main__':
+     n = int(input())
+-- 
+2.23.0
+
