@@ -1,0 +1,24 @@
+From 137e5229f501a162d80eac9c1961b025e7d92f17 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 16 Aug 2018 10:37:57 +0100
+Subject: [add] hackerrank, 'find the score', python solution
+
+---
+ .../python.-.xml.-.easy.-.find.the.score/find.the.score.py       | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hackerrank/python.-.xml.-.easy.-.find.the.score/find.the.score.py b/hackerrank/python.-.xml.-.easy.-.find.the.score/find.the.score.py
+index 2358468..ff01e20 100644
+--- a/hackerrank/python.-.xml.-.easy.-.find.the.score/find.the.score.py
++++ b/hackerrank/python.-.xml.-.easy.-.find.the.score/find.the.score.py
+@@ -3,6 +3,7 @@ import xml.etree.ElementTree as etree
+ 
+ def get_attr_number(node):
+     # your code goes here
++    return 1 + len(node.findall('.//'))
+ 
+ if __name__ == '__main__':
+     sys.stdin.readline()
+-- 
+2.23.0
+
