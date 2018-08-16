@@ -1,0 +1,74 @@
+From c31ff4e35d1b06fb18bb68d55eb512cd60cc263d Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 16 Aug 2018 14:20:18 +0100
+Subject: [fix] hackerrank, 'detect html tags attributes and attribute values',
+ python solution
+
+-more complex algorithm for multiline attributes
+-support comments
+---
+ ...ml.tags.attributes.and.attribute.values.py | 47 +++++++++++++++----
+ 1 file changed, 38 insertions(+), 9 deletions(-)
+
+diff --git a/hackerrank/python.-.regex.and.parsing.-.easy.-.detect.html.tags.attributes.and.attribute.values/detect.html.tags.attributes.and.attribute.values.py b/hackerrank/python.-.regex.and.parsing.-.easy.-.detect.html.tags.attributes.and.attribute.values/detect.html.tags.attributes.and.attribute.values.py
+index 8ea81cf..00b9f20 100644
+--- a/hackerrank/python.-.regex.and.parsing.-.easy.-.detect.html.tags.attributes.and.attribute.values/detect.html.tags.attributes.and.attribute.values.py
++++ b/hackerrank/python.-.regex.and.parsing.-.easy.-.detect.html.tags.attributes.and.attribute.values/detect.html.tags.attributes.and.attribute.values.py
+@@ -2,16 +2,45 @@
+ import re
+ 
+ comment = False
++attribs = False
+ for _ in range(int(input())):
+     s = input()
+-    m = re.match('[ ]*<([a-zA-Z][a-zA-Z0-9]*)[ />]+.*', s)
+-    if re.search('<!--', s):
+-        comment = True
+-        continue
+-    elif re.search('-->', s):
+-        comment = False
+-        continue
++
++    if comment:
++        m = re.match('-->', s)
++        if m:
++            s = s[m.end():]
++            comment = False
++        else:
++            continue
++    m = re.match('<!--', s)
+     if m:
++        s = s[:m.start()]
++        comment = True
++
++    if attribs:
++        # continue printing attributes over this next line(s)
++        s2 = s
++        m = re.match('>', s)
++        if m:
++            s2 = s2[:m.start()]
++            attribs = False
++        for m2 in re.finditer('([a-zA-Z0-9]+)="([^"]*)"' , s2):
++            print("->", m2.group(1), ">", m2.group(2))
++
++    # print nodes
++    m = re.search('<([a-zA-Z][a-zA-Z0-9]*)[ ]?(.*?)(/>|>|$)', s)
++    while m:
+         print(m.group(1))
+-    for m in re.finditer('([a-zA-Z0-9]+)="([^"]*)"' , s):
+-        print("->", m.group(1), ">", m.group(2))
++        if m.group(2) != '':
++            # print attributes
++            for m2 in re.finditer('([a-zA-Z0-9]+)="([^"]*)"' , m.group(2)):
++                print("->", m2.group(1), ">", m2.group(2))
++        if m.group(3) == '':
++            # multi-line attribute set
++            attribs = True
++            continue
++
++        s = s[m.end():]
++        #print("testing:", s)
++        m = re.search('<([a-zA-Z][a-zA-Z0-9]*)[ ]?(.*?)(/>|>|$)', s)
+-- 
+2.23.0
+
