@@ -1,0 +1,26 @@
+From 5df67d2129b579575db083043946293bc70ae5be Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 16 Aug 2018 10:40:48 +0100
+Subject: [fix] hackerrank, 'find the score', python solution
+
+-count of node attributes not count of nodes
+---
+ .../python.-.xml.-.easy.-.find.the.score/find.the.score.py      | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/python.-.xml.-.easy.-.find.the.score/find.the.score.py b/hackerrank/python.-.xml.-.easy.-.find.the.score/find.the.score.py
+index ff01e20..e602098 100644
+--- a/hackerrank/python.-.xml.-.easy.-.find.the.score/find.the.score.py
++++ b/hackerrank/python.-.xml.-.easy.-.find.the.score/find.the.score.py
+@@ -3,7 +3,7 @@ import xml.etree.ElementTree as etree
+ 
+ def get_attr_number(node):
+     # your code goes here
+-    return 1 + len(node.findall('.//'))
++    return len(node.attrib) + sum(len(n.attrib) for n in node.findall('.//'))
+ 
+ if __name__ == '__main__':
+     sys.stdin.readline()
+-- 
+2.23.0
+
