@@ -1,0 +1,36 @@
+From cc84c0f2ca4727bbe5ddf8a6e771d8c64d907db3 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 17 Aug 2018 08:39:45 +0100
+Subject: [fix] hackerrank, 'detect html tags attributes and attribute values',
+ python solution
+
+-valid attribute names only
+---
+ .../detect.html.tags.attributes.and.attribute.values.py       | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/python.-.regex.and.parsing.-.easy.-.detect.html.tags.attributes.and.attribute.values/detect.html.tags.attributes.and.attribute.values.py b/hackerrank/python.-.regex.and.parsing.-.easy.-.detect.html.tags.attributes.and.attribute.values/detect.html.tags.attributes.and.attribute.values.py
+index 44777bd..89e5141 100644
+--- a/hackerrank/python.-.regex.and.parsing.-.easy.-.detect.html.tags.attributes.and.attribute.values/detect.html.tags.attributes.and.attribute.values.py
++++ b/hackerrank/python.-.regex.and.parsing.-.easy.-.detect.html.tags.attributes.and.attribute.values/detect.html.tags.attributes.and.attribute.values.py
+@@ -13,7 +13,7 @@ for _ in range(int(input())):
+         if m:
+             s2 = s2[:m.start()]
+             attribs = False
+-        for m2 in re.finditer('([a-zA-Z0-9]+)="([^"]*)"', s2):
++        for m2 in re.finditer('([a-zA-Z][a-zA-Z0-9-]+)="([^"]*)"', s2):
+             print("->", m2.group(1), ">", m2.group(2))
+ 
+     m = re.search('<!--.*-->', s)
+@@ -41,7 +41,7 @@ for _ in range(int(input())):
+         print(m.group(1))
+         if m.group(2) != '':
+             # print attributes
+-            for m2 in re.finditer('([a-zA-Z0-9]+)="([^"]*)"' , m.group(2)):
++            for m2 in re.finditer('([a-zA-Z][a-zA-Z0-9-]+)="([^"]*)"' , m.group(2)):
+                 print("->", m2.group(1), ">", m2.group(2))
+         if m.group(3) == '':
+             # multi-line attribute set
+-- 
+2.23.0
+
