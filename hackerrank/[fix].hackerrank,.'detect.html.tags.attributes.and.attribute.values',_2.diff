@@ -1,0 +1,83 @@
+From 880fa3638e34dafa0cc71b1f82c6cdc5877baaa9 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 17 Aug 2018 08:38:55 +0100
+Subject: [fix] hackerrank, 'detect html tags attributes and attribute values',
+ python solution
+
+-use re.search for partial string matching
+-support inline comments
+-break on multi-line attribute match
+---
+ ...ml.tags.attributes.and.attribute.values.py | 38 +++++++++++--------
+ 1 file changed, 22 insertions(+), 16 deletions(-)
+
+diff --git a/hackerrank/python.-.regex.and.parsing.-.easy.-.detect.html.tags.attributes.and.attribute.values/detect.html.tags.attributes.and.attribute.values.py b/hackerrank/python.-.regex.and.parsing.-.easy.-.detect.html.tags.attributes.and.attribute.values/detect.html.tags.attributes.and.attribute.values.py
+index 00b9f20..44777bd 100644
+--- a/hackerrank/python.-.regex.and.parsing.-.easy.-.detect.html.tags.attributes.and.attribute.values/detect.html.tags.attributes.and.attribute.values.py
++++ b/hackerrank/python.-.regex.and.parsing.-.easy.-.detect.html.tags.attributes.and.attribute.values/detect.html.tags.attributes.and.attribute.values.py
+@@ -6,31 +6,38 @@ attribs = False
+ for _ in range(int(input())):
+     s = input()
+ 
+-    if comment:
+-        m = re.match('-->', s)
+-        if m:
+-            s = s[m.end():]
+-            comment = False
+-        else:
+-            continue
+-    m = re.match('<!--', s)
+-    if m:
+-        s = s[:m.start()]
+-        comment = True
+-
+     if attribs:
+         # continue printing attributes over this next line(s)
+         s2 = s
+-        m = re.match('>', s)
++        m = re.search('>', s)
+         if m:
+             s2 = s2[:m.start()]
+             attribs = False
+-        for m2 in re.finditer('([a-zA-Z0-9]+)="([^"]*)"' , s2):
++        for m2 in re.finditer('([a-zA-Z0-9]+)="([^"]*)"', s2):
+             print("->", m2.group(1), ">", m2.group(2))
+ 
++    m = re.search('<!--.*-->', s)
++    if m:
++        # remove inline comment
++        s = s[:m.start()]
++    else:
++        m = re.search('<!--', s)
++        if m:
++            # multiline comment
++            s = s[:m.start()]
++            comment = True
++    if comment:
++        m = re.search('-->', s)
++        if m:
++            s = s[m.end():]
++            comment = False
++        else:
++            continue
++
+     # print nodes
+     m = re.search('<([a-zA-Z][a-zA-Z0-9]*)[ ]?(.*?)(/>|>|$)', s)
+     while m:
++        #print("match: ", m)
+         print(m.group(1))
+         if m.group(2) != '':
+             # print attributes
+@@ -39,8 +46,7 @@ for _ in range(int(input())):
+         if m.group(3) == '':
+             # multi-line attribute set
+             attribs = True
+-            continue
+-
++            break
+         s = s[m.end():]
+         #print("testing:", s)
+         m = re.search('<([a-zA-Z][a-zA-Z0-9]*)[ ]?(.*?)(/>|>|$)', s)
+-- 
+2.23.0
+
