@@ -1,0 +1,33 @@
+From 7dd0abc7c32acf8a9530f1d40d265377e5c77b48 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 18 Aug 2018 09:49:31 +0100
+Subject: [add] hackerrank, 'minimum absolute difference in an array',
+ javascript port
+
+---
+ .../minimum.absolute.difference.in.an.array.js           | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/interview.preparation.kit.-.greedy.algorithms.-.easy.-.minimum.absolute.difference.in.an.array/minimum.absolute.difference.in.an.array.js b/hackerrank/interview.preparation.kit.-.greedy.algorithms.-.easy.-.minimum.absolute.difference.in.an.array/minimum.absolute.difference.in.an.array.js
+index 647ed84..6204f53 100644
+--- a/hackerrank/interview.preparation.kit.-.greedy.algorithms.-.easy.-.minimum.absolute.difference.in.an.array/minimum.absolute.difference.in.an.array.js
++++ b/hackerrank/interview.preparation.kit.-.greedy.algorithms.-.easy.-.minimum.absolute.difference.in.an.array/minimum.absolute.difference.in.an.array.js
+@@ -26,8 +26,13 @@ function readLine() {
+ 
+ // Complete the minimumAbsoluteDifference function below.
+ function minimumAbsoluteDifference(arr) {
+-
+-
++    arr.sort();
++    var res = Math.abs(arr[1] - arr[0]);
++    for (var idx = 0; idx < arr.length - 1; idx++) {
++        res = Math.min(res, Math.abs(arr[idx + 1] - arr[idx]));
++        //console.log(`res: ${res}`);
++    }
++    return res;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
