@@ -1,0 +1,32 @@
+From 0114db6f61d699866ac99878319c71026df7438c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 18 Aug 2018 08:00:25 +0100
+Subject: [fix] hackerrank, 'minimum absolute difference in an array', python
+ solution
+
+-re-write nested comprehensions as simple for loops and calculate min
+'on-the-fly'
+---
+ .../minimum.absolute.difference.in.an.array.py              | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/interview.preparation.kit.-.greedy.algorithms.-.easy.-.minimum.absolute.difference.in.an.array/minimum.absolute.difference.in.an.array.py b/hackerrank/interview.preparation.kit.-.greedy.algorithms.-.easy.-.minimum.absolute.difference.in.an.array/minimum.absolute.difference.in.an.array.py
+index 0be771c..5a1f9fd 100644
+--- a/hackerrank/interview.preparation.kit.-.greedy.algorithms.-.easy.-.minimum.absolute.difference.in.an.array/minimum.absolute.difference.in.an.array.py
++++ b/hackerrank/interview.preparation.kit.-.greedy.algorithms.-.easy.-.minimum.absolute.difference.in.an.array/minimum.absolute.difference.in.an.array.py
+@@ -8,7 +8,11 @@ import sys
+ 
+ # Complete the minimumAbsoluteDifference function below.
+ def minimumAbsoluteDifference(arr):
+-    return min([abs(arr[idx] - arr[idx2]) for idx in range(len(arr)) for idx2 in range(idx + 1, len(arr))])
++    res = arr[1] - arr[0]
++    for idx in range(len(arr)):
++        for idx2 in range(idx + 1, len(arr)):
++            res = min([res, abs(arr[idx2] - arr[idx])])
++    return res
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
