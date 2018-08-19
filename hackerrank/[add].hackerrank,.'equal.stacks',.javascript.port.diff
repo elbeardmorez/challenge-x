@@ -1,0 +1,55 @@
+From 9c520f05beda1d80b09de508aafd50e305a8345a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 19 Aug 2018 10:57:49 +0100
+Subject: [add] hackerrank, 'equal stacks', javascript port
+
+---
+ .../equal.stacks.js                           | 32 +++++++++++++++++++
+ 1 file changed, 32 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.stacks.-.easy.-.equal.stacks/equal.stacks.js b/hackerrank/data.structures.-.stacks.-.easy.-.equal.stacks/equal.stacks.js
+index 1db0b79..37eb38d 100644
+--- a/hackerrank/data.structures.-.stacks.-.easy.-.equal.stacks/equal.stacks.js
++++ b/hackerrank/data.structures.-.stacks.-.easy.-.equal.stacks/equal.stacks.js
+@@ -29,6 +29,38 @@ function equalStacks(h1, h2, h3) {
+     /*
+      * Write your code here.
+      */
++    var cumulative_heights = [];
++    [h1, h2, h3].forEach((cylinder) => {
++        var last = 0;
++        var accumulated = [];
++        cylinder.reverse();
++        cylinder.forEach((x) => {
++            last += x;
++            accumulated.push(last);
++        });
++        //console.log("%j", accumulated);
++        cumulative_heights = cumulative_heights.concat(accumulated);
++    });
++    var count = 0;
++    var last = 0;
++    //var s = "";
++    cumulative_heights.sort();
++    cumulative_heights.reverse();
++    //console.log("%j", cumulative_heights);
++    for (var idx = 0; idx < cumulative_heights.length; idx++) {
++        var x = cumulative_heights[idx];
++        count = x != last ? 1 : count + 1;
++        last = x;
++        //s += x.toString();
++        if (count == 3)
++            break;
++    }
++
++    //console.log(s);
++    if (count == 3)
++        return last;
++    else
++        return 0;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
