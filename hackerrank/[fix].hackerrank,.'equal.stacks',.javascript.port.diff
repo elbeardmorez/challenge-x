@@ -1,0 +1,26 @@
+From 70f9525b281072a8a1bae773b6189214ec214654 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 19 Aug 2018 11:10:47 +0100
+Subject: [fix] hackerrank, 'equal stacks', javascript port
+
+-numeric not lexographic sort
+---
+ .../equal.stacks.js                                             | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/data.structures.-.stacks.-.easy.-.equal.stacks/equal.stacks.js b/hackerrank/data.structures.-.stacks.-.easy.-.equal.stacks/equal.stacks.js
+index 37eb38d..d330547 100644
+--- a/hackerrank/data.structures.-.stacks.-.easy.-.equal.stacks/equal.stacks.js
++++ b/hackerrank/data.structures.-.stacks.-.easy.-.equal.stacks/equal.stacks.js
+@@ -44,7 +44,7 @@ function equalStacks(h1, h2, h3) {
+     var count = 0;
+     var last = 0;
+     //var s = "";
+-    cumulative_heights.sort();
++    cumulative_heights.sort((a, b) => a - b);
+     cumulative_heights.reverse();
+     //console.log("%j", cumulative_heights);
+     for (var idx = 0; idx < cumulative_heights.length; idx++) {
+-- 
+2.23.0
+
