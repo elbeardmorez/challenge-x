@@ -1,0 +1,32 @@
+From 29a004bbe139da6f415c7b3646dfb511e59e50a5 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 19 Aug 2018 07:46:21 +0100
+Subject: [add] hackerrank, 'minimum absolute difference in an array', c# port
+
+---
+ .../minimum.absolute.difference.in.an.array.cs           | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/interview.preparation.kit.-.greedy.algorithms.-.easy.-.minimum.absolute.difference.in.an.array/minimum.absolute.difference.in.an.array.cs b/hackerrank/interview.preparation.kit.-.greedy.algorithms.-.easy.-.minimum.absolute.difference.in.an.array/minimum.absolute.difference.in.an.array.cs
+index 6d3ebb8..599ac1c 100644
+--- a/hackerrank/interview.preparation.kit.-.greedy.algorithms.-.easy.-.minimum.absolute.difference.in.an.array/minimum.absolute.difference.in.an.array.cs
++++ b/hackerrank/interview.preparation.kit.-.greedy.algorithms.-.easy.-.minimum.absolute.difference.in.an.array/minimum.absolute.difference.in.an.array.cs
+@@ -16,8 +16,13 @@ class Solution {
+ 
+     // Complete the minimumAbsoluteDifference function below.
+     static int minimumAbsoluteDifference(int[] arr) {
+-
+-
++        arr = arr.OrderBy(x => x).ToArray();
++        var res = Math.Abs(arr[1] - arr[0]);
++        for (var idx = 0; idx < arr.Length - 1; idx++) {
++            res = Math.Min(res, Math.Abs(arr[idx + 1] - arr[idx]));
++            //Console.WriteLine($"res: {res}");
++        }
++        return res;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
