@@ -1,0 +1,51 @@
+From 48adf0bf9b16e6e68e2df2a28df29ae93955a732 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 20 Aug 2018 08:18:24 +0100
+Subject: [add] hackerrank, 'equal stacks', c# port
+
+---
+ .../equal.stacks.cs                           | 28 +++++++++++++++++++
+ 1 file changed, 28 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.stacks.-.easy.-.equal.stacks/equal.stacks.cs b/hackerrank/data.structures.-.stacks.-.easy.-.equal.stacks/equal.stacks.cs
+index 7ecb1cc..71e8077 100644
+--- a/hackerrank/data.structures.-.stacks.-.easy.-.equal.stacks/equal.stacks.cs
++++ b/hackerrank/data.structures.-.stacks.-.easy.-.equal.stacks/equal.stacks.cs
+@@ -12,6 +12,34 @@ class Solution {
+         /*
+          * Write your code here.
+          */
++        int last;
++        var cumulative_heights = new List<int>();
++        var cylinders = new List<int[]>() { h1, h2, h3 };
++        cylinders.ForEach((cylinder) => {
++            last = 0;
++            var accumulated = new List<int>();
++            foreach(var x in cylinder.Reverse()) {
++                last += x;
++                accumulated.Add(last);
++            }
++            cumulative_heights.AddRange(accumulated);
++        });
++        var count = 0;
++        last = 0;
++        //var s = "";
++        foreach(var x in cumulative_heights.OrderBy(x => x).Reverse()) {
++            count = x != last ? 1 : count + 1;
++            last = x;
++            //s += x.ToString();
++            if (count == 3)
++                break;
++        }
++        //Console.WriteLine(s);
++
++        if (count == 3)
++            return last;
++        else
++            return 0;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
