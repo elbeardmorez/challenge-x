@@ -1,0 +1,57 @@
+From ed97457847afb5c309b01004da4763720f0fedb1 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 21 Aug 2018 08:04:02 +0100
+Subject: [add] hackerrank, 'equal stacks', c++ port
+
+---
+ .../equal.stacks.cpp                          | 34 +++++++++++++++++++
+ 1 file changed, 34 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.stacks.-.easy.-.equal.stacks/equal.stacks.cpp b/hackerrank/data.structures.-.stacks.-.easy.-.equal.stacks/equal.stacks.cpp
+index 49d4102..37a14a2 100644
+--- a/hackerrank/data.structures.-.stacks.-.easy.-.equal.stacks/equal.stacks.cpp
++++ b/hackerrank/data.structures.-.stacks.-.easy.-.equal.stacks/equal.stacks.cpp
+@@ -11,6 +11,40 @@ int equalStacks(vector<int> h1, vector<int> h2, vector<int> h3) {
+     /*
+      * Write your code here.
+      */
++    int last;
++    vector<int> cumulative_heights;
++    vector<vector<int>> cylinders;
++    cylinders.push_back(h1);
++    cylinders.push_back(h2);
++    cylinders.push_back(h3);
++    for (vector<vector<int>>::iterator iter = cylinders.begin(); iter != cylinders.end(); iter++) {
++        vector<int> cylinder = *iter;
++        last = 0;
++        vector<int> accumulated;
++        for (vector<int>::reverse_iterator iter2 = cylinder.rbegin(); iter2 != cylinder.rend(); iter2++) {
++            int x = *iter2;
++            last += x;
++            accumulated.push_back(last);
++        }
++        cumulative_heights.insert(cumulative_heights.end(), accumulated.begin(), accumulated.end());
++    }
++    int count = 0;
++    last = 0;
++    //stringstream s("");
++    sort(cumulative_heights.begin(), cumulative_heights.end());
++    for (vector<int>::reverse_iterator iter = cumulative_heights.rbegin(); iter != cumulative_heights.rend(); iter++) {
++        int x = *iter;
++        count = x != last ? 1 : count + 1;
++        last = x;
++        //s << x;
++        if (count == 3)
++            break;
++    }
++    //cout << s.str() << endl;
++    if (count == 3)
++        return last;
++    else
++        return 0;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
