@@ -1,0 +1,51 @@
+From 0fb1cae0f532154f93224e84cef1936ed54732fa Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 22 Aug 2018 10:12:26 +0100
+Subject: [add] hackerrank, 'maximum element', c++ solution
+
+---
+ .../maximum.element.cpp                       | 27 +++++++++++++++++--
+ 1 file changed, 25 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.stacks.-.easy.-.maximum.element/maximum.element.cpp b/hackerrank/data.structures.-.stacks.-.easy.-.maximum.element/maximum.element.cpp
+index db5e8ea..47b8d0f 100644
+--- a/hackerrank/data.structures.-.stacks.-.easy.-.maximum.element/maximum.element.cpp
++++ b/hackerrank/data.structures.-.stacks.-.easy.-.maximum.element/maximum.element.cpp
+@@ -5,9 +5,32 @@
+ #include <algorithm>
+ using namespace std;
+ 
+-
+ int main() {
+     /* Enter your code here. Read input from STDIN. Print output to STDOUT */
++
++    int n;
++    cin >> n;
++    string s;
++    vector<int> stack;
++    int type;
++    for (int i = 0; i < n; i++) {
++        cin >> s;
++        type = stoi(s);
++        switch (type) {
++            case 1:
++                cin >> s;
++                stack.push_back(stoi(s));
++                break;
++            case 2:
++                stack.pop_back();
++                break;
++            case 3:
++                int max = stack[0];
++                for (auto iter = stack.begin(); iter != stack.end(); iter++)
++                    max = std::max(max, *iter);
++                cout << max << endl;
++                break;
++        }
++    }
+     return 0;
+ }
+-
+-- 
+2.23.0
+
