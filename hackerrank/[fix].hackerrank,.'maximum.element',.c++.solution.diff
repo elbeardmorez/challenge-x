@@ -1,0 +1,56 @@
+From 04d4debf2b5d7c70993fdf2a5cd93c786857f707 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 22 Aug 2018 10:32:00 +0100
+Subject: [fix] hackerrank, 'maximum element', c++ solution
+
+-maintain max state regardless of operation
+---
+ .../maximum.element.cpp                       | 23 +++++++++++++------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.stacks.-.easy.-.maximum.element/maximum.element.cpp b/hackerrank/data.structures.-.stacks.-.easy.-.maximum.element/maximum.element.cpp
+index 47b8d0f..8887cfa 100644
+--- a/hackerrank/data.structures.-.stacks.-.easy.-.maximum.element/maximum.element.cpp
++++ b/hackerrank/data.structures.-.stacks.-.easy.-.maximum.element/maximum.element.cpp
+@@ -12,22 +12,31 @@ int main() {
+     cin >> n;
+     string s;
+     vector<int> stack;
+-    int type;
++    int type, max;
+     for (int i = 0; i < n; i++) {
+         cin >> s;
+         type = stoi(s);
+         switch (type) {
+-            case 1:
++            case 1: {
+                 cin >> s;
+-                stack.push_back(stoi(s));
++                int x = stoi(s);
++                if (stack.size() == 0 || x > max)
++                    max = x;
++                stack.push_back(x);
+                 break;
++            }
+             case 2:
+-                stack.pop_back();
++                if (stack.back() == max) {
++                    stack.pop_back();
++                    if (stack.size() > 0) {
++                        max = stack[0];
++                        for (auto iter = stack.begin(); iter != stack.end(); iter++)
++                            max = std::max(max, *iter);
++                    }
++                } else
++                    stack.pop_back();
+                 break;
+             case 3:
+-                int max = stack[0];
+-                for (auto iter = stack.begin(); iter != stack.end(); iter++)
+-                    max = std::max(max, *iter);
+                 cout << max << endl;
+                 break;
+         }
+-- 
+2.23.0
+
