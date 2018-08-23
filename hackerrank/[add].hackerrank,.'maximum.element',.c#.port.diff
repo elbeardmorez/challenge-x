@@ -1,0 +1,53 @@
+From 3b802033cbde5d64f976e5a7f6bf7973c23921cb Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 23 Aug 2018 08:33:24 +0100
+Subject: [add] hackerrank, 'maximum element', c# port
+
+---
+ .../maximum.element.cs                        | 31 +++++++++++++++++++
+ 1 file changed, 31 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.stacks.-.easy.-.maximum.element/maximum.element.cs b/hackerrank/data.structures.-.stacks.-.easy.-.maximum.element/maximum.element.cs
+index 2d767f7..2545b12 100644
+--- a/hackerrank/data.structures.-.stacks.-.easy.-.maximum.element/maximum.element.cs
++++ b/hackerrank/data.structures.-.stacks.-.easy.-.maximum.element/maximum.element.cs
+@@ -4,5 +4,36 @@ using System.IO;
+ class Solution {
+     static void Main(String[] args) {
+         /* Enter your code here. Read input from STDIN. Print output to STDOUT. Your class should be named Solution */
++        string s;
++        int type, max = -1;
++        var stack = new Stack<int>();
++        var n = Int32.Parse(Console.ReadLine());
++        for (var i = 0; i < n; i++) {
++            args = Console.ReadLine().Split(' ');
++            type = int.Parse(args[0]);
++            switch (type) {
++                case 1: {
++                    var x = int.Parse(args[1]);
++                    if (stack.Count == 0 || x > max)
++                        max = x;
++                    stack.Push(x);
++                    break;
++                }
++                case 2:
++                    if (stack.Peek() == max) {
++                        stack.Pop();
++                        if (stack.Count > 0) {
++                            max = stack.Peek();
++                            foreach(var x in stack)
++                                max = Math.Max(max, x);
++                        }
++                    } else
++                        stack.Pop();
++                    break;
++                case 3:
++                    Console.WriteLine(max);
++                    break;
++            }
++        }
+     }
+ }
+-- 
+2.23.0
+
