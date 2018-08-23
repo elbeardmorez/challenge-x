@@ -1,0 +1,41 @@
+From c840c747ae836ce57ae1f75f2a1357282746e35c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 23 Aug 2018 09:19:28 +0100
+Subject: [add] hackerrank, 'maximum element', python port
+
+---
+ .../maximum.element.py                        | 23 +++++++++++++++++++
+ 1 file changed, 23 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.stacks.-.easy.-.maximum.element/maximum.element.py b/hackerrank/data.structures.-.stacks.-.easy.-.maximum.element/maximum.element.py
+index 7c60a68..1ef4351 100644
+--- a/hackerrank/data.structures.-.stacks.-.easy.-.maximum.element/maximum.element.py
++++ b/hackerrank/data.structures.-.stacks.-.easy.-.maximum.element/maximum.element.py
+@@ -1 +1,24 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
++from collections import deque
++max_ = None
++stack = deque()
++n = int(input())
++for _ in range(n):
++    #print(line);
++    #print("%s" % (stack))
++    args = input().split(' ')
++    type = int(args[0])
++    if type == 1:
++        x = int(args[1])
++        if len(stack) == 0 or x > max_:
++            max_ = x
++        stack.append(x)
++    elif type == 2:
++        if stack[-1] == max_:
++            stack.pop();
++            if len(stack) > 0:
++                max_ = max(stack)
++        else:
++            stack.pop()
++    elif type == 3:
++        print(max_);
+-- 
+2.23.0
+
