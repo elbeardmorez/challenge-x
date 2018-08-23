@@ -1,0 +1,55 @@
+From b45e5f27d4541e749221a2a67f7df538c2c9c573 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 23 Aug 2018 08:46:40 +0100
+Subject: [add] hackerrank, 'maximum element', javascript port
+
+---
+ .../maximum.element.js                        | 33 +++++++++++++++++++
+ 1 file changed, 33 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.stacks.-.easy.-.maximum.element/maximum.element.js b/hackerrank/data.structures.-.stacks.-.easy.-.maximum.element/maximum.element.js
+index fee5b46..e4b9e91 100644
+--- a/hackerrank/data.structures.-.stacks.-.easy.-.maximum.element/maximum.element.js
++++ b/hackerrank/data.structures.-.stacks.-.easy.-.maximum.element/maximum.element.js
+@@ -1,5 +1,38 @@
+ function processData(input) {
+     //Enter your code here
++    var s, type, max;
++    var stack = [];
++    var lines = input.split('\n');
++
++    var n = parseInt(lines[0]);
++    lines.shift();
++    lines.forEach((line) => {
++        //console.log(line);
++        args = line.split(' ');
++        type = parseInt(args[0]);
++        switch (type) {
++            case 1: {
++                var x = parseInt(args[1]);
++                if (stack.length == 0 || x > max)
++                    max = x;
++                stack.push(x);
++                break;
++            }
++            case 2:
++                if (stack[stack.length - 1] == max) {
++                    stack.pop();
++                    if (stack.Count > 0) {
++                        max = stack[0];
++                        stack.forEach((x) => { max = Math.max(max, x); });
++                    }
++                } else
++                    stack.pop();
++                break;
++            case 3:
++                console.log(max);
++                break;
++        }
++    });
+ }
+ 
+ process.stdin.resume();
+-- 
+2.23.0
+
