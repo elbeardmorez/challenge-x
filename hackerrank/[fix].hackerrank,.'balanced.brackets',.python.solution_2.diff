@@ -1,0 +1,26 @@
+From 5f1a6707302ff35086a7968fce8b67e14f36b9bd Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 24 Aug 2018 07:58:09 +0100
+Subject: [fix] hackerrank, 'balanced brackets', python solution
+
+-catch corner case of non matched sets
+---
+ .../balanced.brackets.py                                        | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/data.structures.-.stacks.-.medium.-.balanced.brackets/balanced.brackets.py b/hackerrank/data.structures.-.stacks.-.medium.-.balanced.brackets/balanced.brackets.py
+index fb9ebac..082f3f5 100644
+--- a/hackerrank/data.structures.-.stacks.-.medium.-.balanced.brackets/balanced.brackets.py
++++ b/hackerrank/data.structures.-.stacks.-.medium.-.balanced.brackets/balanced.brackets.py
+@@ -23,7 +23,7 @@ def isBalanced(s):
+                 break
+             else:
+                 q.pop()
+-    return "YES" if balanced else "NO"
++    return "YES" if balanced and len(q) == 0 else "NO"
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
