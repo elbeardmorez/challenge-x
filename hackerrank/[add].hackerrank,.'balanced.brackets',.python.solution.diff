@@ -1,0 +1,51 @@
+From 65fdcc49758079891e40de2e62e8ff825ef522e4 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 24 Aug 2018 07:56:02 +0100
+Subject: [add] hackerrank, 'balanced brackets', python solution
+
+---
+ .../balanced.brackets.py                      | 25 +++++++++++++++++++
+ 1 file changed, 25 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.stacks.-.medium.-.balanced.brackets/balanced.brackets.py b/hackerrank/data.structures.-.stacks.-.medium.-.balanced.brackets/balanced.brackets.py
+index 7888e86..62da23f 100644
+--- a/hackerrank/data.structures.-.stacks.-.medium.-.balanced.brackets/balanced.brackets.py
++++ b/hackerrank/data.structures.-.stacks.-.medium.-.balanced.brackets/balanced.brackets.py
+@@ -5,9 +5,34 @@ import os
+ import random
+ import re
+ import sys
++from collections import deque
+ 
+ # Complete the isBalanced function below.
+ def isBalanced(s):
++    q = deque()
++    balanced = True
++    for c in list(s):
++        if c == ')':
++            if len(q) > 0 and q[-1] != '(':
++                balanced = False
++                break
++            else:
++                q.pop()
++        elif c == ']':
++            if len(q) > 0 and q[-1] != '[':
++                balanced = False
++                break
++            else:
++                q.pop()
++        elif c == '}':
++            if len(q) > 0 and q[-1] != '{':
++                balanced = False
++                break
++            else:
++                q.pop()
++        else:
++            q.append(c)
++    return "YES" if balanced else "NO"
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
