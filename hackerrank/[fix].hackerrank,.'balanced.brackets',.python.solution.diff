@@ -1,0 +1,52 @@
+From 932926ae63f775dfdffdac83f85b8b05bd69a530 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 24 Aug 2018 07:56:36 +0100
+Subject: [fix] hackerrank, 'balanced brackets', python solution
+
+-use a bracket set to deduce nest or un-nest match
+---
+ .../balanced.brackets.py                      | 23 ++++++-------------
+ 1 file changed, 7 insertions(+), 16 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.stacks.-.medium.-.balanced.brackets/balanced.brackets.py b/hackerrank/data.structures.-.stacks.-.medium.-.balanced.brackets/balanced.brackets.py
+index 62da23f..fb9ebac 100644
+--- a/hackerrank/data.structures.-.stacks.-.medium.-.balanced.brackets/balanced.brackets.py
++++ b/hackerrank/data.structures.-.stacks.-.medium.-.balanced.brackets/balanced.brackets.py
+@@ -11,27 +11,18 @@ from collections import deque
+ def isBalanced(s):
+     q = deque()
+     balanced = True
++    brackets = ['(', '[', '{', ')', ']', '}']
+     for c in list(s):
+-        if c == ')':
+-            if len(q) > 0 and q[-1] != '(':
+-                balanced = False
+-                break
+-            else:
+-                q.pop()
+-        elif c == ']':
+-            if len(q) > 0 and q[-1] != '[':
+-                balanced = False
+-                break
+-            else:
+-                q.pop()
+-        elif c == '}':
+-            if len(q) > 0 and q[-1] != '{':
++        idx = brackets.index(c)
++        if idx < 3:
++            q.append(c)
++        else:
++            match = brackets[idx - 3]
++            if len(q) == 0 or q[-1] != match:
+                 balanced = False
+                 break
+             else:
+                 q.pop()
+-        else:
+-            q.append(c)
+     return "YES" if balanced else "NO"
+ 
+ if __name__ == '__main__':
+-- 
+2.23.0
+
