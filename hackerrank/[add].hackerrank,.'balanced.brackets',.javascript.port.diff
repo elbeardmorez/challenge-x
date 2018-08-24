@@ -1,0 +1,44 @@
+From f46cba2c0ea941468437a4eb811e10b763de8429 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 24 Aug 2018 08:24:48 +0100
+Subject: [add] hackerrank, 'balanced brackets', javascript port
+
+---
+ .../balanced.brackets.js                      | 21 +++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.stacks.-.medium.-.balanced.brackets/balanced.brackets.js b/hackerrank/data.structures.-.stacks.-.medium.-.balanced.brackets/balanced.brackets.js
+index df176bd..7f11083 100644
+--- a/hackerrank/data.structures.-.stacks.-.medium.-.balanced.brackets/balanced.brackets.js
++++ b/hackerrank/data.structures.-.stacks.-.medium.-.balanced.brackets/balanced.brackets.js
+@@ -26,6 +26,27 @@ function readLine() {
+ 
+ // Complete the isBalanced function below.
+ function isBalanced(s) {
++    var q = [];
++    var balanced = true;
++    var brackets = ['(', '[', '{', ')', ']', '}'];
++    for (var i = 0; i < s.length; i++) {
++        var c = s[i];
++        var idx = brackets.indexOf(c);
++        //console.log(`c: ${c}, idx: ${idx}`);
++        if (idx < 3)
++            q.push(c);
++        else {
++            var match = brackets[idx - 3];
++            //console.log(`length: ${q.length}, match: ${match}`)
++            if (q.length == 0 || q[q.length - 1] != match) {
++                balanced = false;
++                break;
++            } else
++                q.pop();
++            //console.log("%j", q)
++        }
++    }
++    return balanced && q.length == 0 ? "YES" : "NO";
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
