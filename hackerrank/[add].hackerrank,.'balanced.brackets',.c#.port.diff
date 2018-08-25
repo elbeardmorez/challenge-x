@@ -1,0 +1,44 @@
+From 5d9281dc44428c63e47df80767d356f75fa3471f Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 25 Aug 2018 12:41:05 +0100
+Subject: [add] hackerrank, 'balanced brackets', c# port
+
+---
+ .../balanced.brackets.cs                      | 21 +++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.stacks.-.medium.-.balanced.brackets/balanced.brackets.cs b/hackerrank/data.structures.-.stacks.-.medium.-.balanced.brackets/balanced.brackets.cs
+index 692136e..334f182 100644
+--- a/hackerrank/data.structures.-.stacks.-.medium.-.balanced.brackets/balanced.brackets.cs
++++ b/hackerrank/data.structures.-.stacks.-.medium.-.balanced.brackets/balanced.brackets.cs
+@@ -16,6 +16,27 @@ class Solution {
+ 
+     // Complete the isBalanced function below.
+     static string isBalanced(string s) {
++        var q = new Stack<char>();
++        var balanced = true;
++        var brackets = new List<char>() { '(', '[', '{', ')', ']', '}' };
++        for (var i = 0; i < s.Length; i++) {
++            var c = s[i];
++            var idx = brackets.IndexOf(c);
++            //Console.WriteLine($"c: {c}, idx: {idx}");
++            if (idx < 3)
++                q.Push(c);
++            else {
++                var match = brackets[idx - 3];
++                //Console.WriteLine($"length: {q.Count}, match: {match}");
++                if (q.Count == 0 || q.Peek() != match) {
++                    balanced = false;
++                    break;
++                } else
++                    q.Pop();
++                //Console.WriteLine(q);
++            }
++        }
++        return balanced && q.Count == 0 ? "YES" : "NO";
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
