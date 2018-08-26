@@ -1,0 +1,47 @@
+From 2af8fe49ab15830e534c77f29188df1df209f9ee Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 26 Aug 2018 10:21:23 +0100
+Subject: [add] hackerrank, 'balanced brackets', c++ port
+
+---
+ .../balanced.brackets.cpp                     | 24 +++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.stacks.-.medium.-.balanced.brackets/balanced.brackets.cpp b/hackerrank/data.structures.-.stacks.-.medium.-.balanced.brackets/balanced.brackets.cpp
+index 177e181..e617719 100644
+--- a/hackerrank/data.structures.-.stacks.-.medium.-.balanced.brackets/balanced.brackets.cpp
++++ b/hackerrank/data.structures.-.stacks.-.medium.-.balanced.brackets/balanced.brackets.cpp
+@@ -5,6 +5,30 @@ using namespace std;
+ 
+ // Complete the isBalanced function below.
+ string isBalanced(string s) {
++    vector<char> q;
++    bool balanced = true;
++    char brackets[6] = {'(', '[', '{', ')', ']', '}'};
++    for (int i = 0; i < s.size(); i++) {
++        char c = s[i];
++        int idx = find(brackets, brackets + 6, c) - brackets;
++        //cout << "c: " << c << ", idx:" << idx << endl;
++        if (idx < 3)
++            q.push_back(c);
++        else {
++            char match = brackets[idx - 3];
++            //cout << "length: " << q.size() << ", match: " << match << endl;
++            if (q.size() == 0 || q[q.size() - 1] != match) {
++                balanced = false;
++                break;
++            } else
++                q.pop_back();
++            //cout << "q:";
++            //for (auto iter = q.begin(); iter != q.end(); iter++)
++            //    cout << " " << *iter;
++            //cout << endl;
++        }
++    }
++    return balanced && q.size() == 0 ? "YES" : "NO";
+ }
+ 
+ int main()
+-- 
+2.23.0
+
