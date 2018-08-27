@@ -1,0 +1,79 @@
+From aec479451f12dc138812cbc59e3571e7d55eff6b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 27 Aug 2018 12:37:57 +0100
+Subject: [add] hackerrank, 'game of two stacks', python solution
+
+---
+ .../game.of.two.stacks.py                     | 56 +++++++++++++++++++
+ 1 file changed, 56 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.stacks.-.medium.-.game.of.two.stacks/game.of.two.stacks.py b/hackerrank/data.structures.-.stacks.-.medium.-.game.of.two.stacks/game.of.two.stacks.py
+index 185b1c0..0ce1b10 100644
+--- a/hackerrank/data.structures.-.stacks.-.medium.-.game.of.two.stacks/game.of.two.stacks.py
++++ b/hackerrank/data.structures.-.stacks.-.medium.-.game.of.two.stacks/game.of.two.stacks.py
+@@ -11,6 +11,62 @@ def twoStacks(x, a, b):
+     #
+     # Write your code here.
+     #
++    maxed_paths = {}
++    sum_ = 0
++    for idx in range(len(a)):
++        if sum_ + a[idx] > x:
++            a = a[0:idx]
++            #print(a)
++            break
++        sum_ += a[idx]
++    sum_ = 0
++    for idx in range(len(b)):
++        if sum_ + b[idx] > x:
++            b = b[0:idx]
++            #print(b)
++            break
++        sum_ += b[idx]
++    paths = list(set(permutations('a' * len(a) + 'b' * len(b), len(a) + len(b))))
++    #print("paths: %d" % len(paths))
++    #for path in paths[:15]:
++        #print(''.join(path))
++    stacks = {'a': a, 'b': b}
++    max_subpath = ""
++    max_subpath_nos = ""
++    max_subpath_items = 0
++    idx = 0
++    for idx in range(len(paths)):
++        path = ''.join(paths[idx])
++        #print("path: %s" % (path))
++        if path in maxed_paths:
++            continue
++        subpath = ""
++        subpath_nos = ""
++        total = 0
++        idxs = {'a': 0, 'b': 0}
++        for c in list(path):
++            #print(c)
++            item = stacks[c][idxs[c]]
++            subpath += c
++            subpath_nos += str(item)
++            if total + item >= x:
++                #max hit, remove/mark common
++                for idx2 in range(idx, len(paths)):
++                    path_ = ''.join(paths[idx2])
++                    #print("testing idx2: %d, %s vs %s" % (idx2, path_[0:len(subpath)], subpath))
++                    if path_[0:len(subpath)] == subpath:
++                        #print("adding: %s to maxed_paths, due to subpath: %s" % (path_, subpath))
++                        maxed_paths[path_] = 1
++                break
++            total += item
++            idxs[c] += 1
++            if sum(idxs.values()) > max_subpath_items:
++                max_subpath_items = sum(idxs.values())
++                max_subpath = subpath
++                max_subpath_nos = subpath_nos
++
++    #print("max: %d, path: %s|%s" % (max_subpath_items, max_subpath, max_subpath_nos))
++    return max_subpath_items
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
