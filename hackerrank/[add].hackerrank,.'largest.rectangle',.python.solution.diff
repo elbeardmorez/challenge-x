@@ -1,0 +1,74 @@
+From 0c659e877978a5c1184d8e157523bc7f674c5ddb Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 1 Apr 2019 23:54:42 +0100
+Subject: [add] hackerrank, 'largest rectangle', python solution
+
+---
+ .../largest.rectangle.py                      | 46 +++++++++++++++++--
+ 1 file changed, 43 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.stacks.-.medium.-.largest.rectangle/largest.rectangle.py b/hackerrank/data.structures.-.stacks.-.medium.-.largest.rectangle/largest.rectangle.py
+index 775522b..932513e 100644
+--- a/hackerrank/data.structures.-.stacks.-.medium.-.largest.rectangle/largest.rectangle.py
++++ b/hackerrank/data.structures.-.stacks.-.medium.-.largest.rectangle/largest.rectangle.py
+@@ -1,14 +1,54 @@
+-#!/bin/python3
+-
+-import math
++mport math
+ import os
+ import random
+ import re
+ import sys
++from collections import OrderedDict
+ 
+ # Complete the largestRectangle function below.
+ def largestRectangle(h):
+ 
++    # horizontal 'run' per vertical height (hpv)
++    # current 'run' map    
++    hpv_cur = OrderedDict()
++    # max 'run' map
++    hpv_max = OrderedDict()
++
++    # iterate heights
++    last = 0
++    for x in h:
++        if x not in hpv_cur:            
++            if x > last:
++                hpv_cur[x] = 0
++            else:             
++                # sum of all higher open runs
++                hpv_cur[x] = sum(hpv_cur[l] for l in hpv_cur.keys() if l > x) 
++
++        for xx in list(hpv_cur.keys()):
++            if xx <= x:
++                hpv_cur[xx] += 1
++            elif xx > x:
++                # close run
++                if xx not in hpv_max or \
++                    hpv_max[xx] < hpv_cur[xx]:
++                    hpv_max[xx] = hpv_cur[xx]
++                del hpv_cur[xx]
++        last=x
++
++    # finalise all remaining runs
++    for xx in hpv_cur.keys(): 
++        if xx not in hpv_max or \
++            hpv_max[xx] < hpv_cur[xx]:
++            hpv_max[xx] = hpv_cur[xx]
++
++    # calc max          
++    max_ = 0
++    for k,v in hpv_max.items():
++        if k * v > max_:
++            max_ = k * v
++             
++    return max_
++
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+ 
+-- 
+2.23.0
+
