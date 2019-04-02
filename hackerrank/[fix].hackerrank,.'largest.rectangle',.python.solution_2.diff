@@ -1,0 +1,26 @@
+From 0aefb7276e6d65f83830f9a9f65ee98a77275e1a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 2 Apr 2019 13:42:59 +0100
+Subject: [fix] hackerrank, 'largest rectangle', python solution
+
+-fix comment
+---
+ .../largest.rectangle.py                                        | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/data.structures.-.stacks.-.medium.-.largest.rectangle/largest.rectangle.py b/hackerrank/data.structures.-.stacks.-.medium.-.largest.rectangle/largest.rectangle.py
+index 5cd8e2a..89ccb27 100644
+--- a/hackerrank/data.structures.-.stacks.-.medium.-.largest.rectangle/largest.rectangle.py
++++ b/hackerrank/data.structures.-.stacks.-.medium.-.largest.rectangle/largest.rectangle.py
+@@ -21,7 +21,7 @@ def largestRectangle(h):
+             if x > last:
+                 hpv_cur[x] = 0
+             else:
+-                # sum of all higher open runs
++                # max of all higher open runs
+                 hpv_cur[x] = max(hpv_cur[l] for l in hpv_cur.keys() if l > x)
+                 #print("x: %d, hpv_cur[x]: %d" % (x, hpv_cur[x]))
+ 
+-- 
+2.23.0
+
