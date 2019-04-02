@@ -1,0 +1,74 @@
+From d9e35087a917852d4eae92594d786f32f353a1cb Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 2 Apr 2019 13:47:11 +0100
+Subject: [add] hackerrank, 'largest rectangle', javascript port
+
+---
+ .../largest.rectangle.js                      | 51 ++++++++++++++++++-
+ 1 file changed, 50 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/data.structures.-.stacks.-.medium.-.largest.rectangle/largest.rectangle.js b/hackerrank/data.structures.-.stacks.-.medium.-.largest.rectangle/largest.rectangle.js
+index 6ea524d..f0e208d 100644
+--- a/hackerrank/data.structures.-.stacks.-.medium.-.largest.rectangle/largest.rectangle.js
++++ b/hackerrank/data.structures.-.stacks.-.medium.-.largest.rectangle/largest.rectangle.js
+@@ -27,7 +27,56 @@ function readLine() {
+ // Complete the largestRectangle function below.
+ function largestRectangle(h) {
+ 
+-
++    // horizontal 'run' per vertical height (hpv)
++    // current 'run' map
++    var hpv_cur = {};
++    // max 'run' map
++    var hpv_max = {};
++
++    // iterate heights
++    var last = 0
++    h.forEach(x => {
++        if (!(x in hpv_cur)) {
++            if (x > last)
++                hpv_cur[x] = 0;
++            else {
++                // max of higher open runs
++                for (var l in hpv_cur) {
++                    if (l <= x)
++                        continue;
++                    if (!(x in hpv_cur) || hpv_cur[l] > hpv_cur[x])
++                        hpv_cur[x] = hpv_cur[l];
++                }
++                //console.log("x: %d, hpv_cur[x]: %d", x, hpv_cur[x]);
++            }
++        }
++        for (var xx in hpv_cur) {
++            if (xx <= x)
++                hpv_cur[xx] += 1;
++            else if (xx > x) {
++                // close run
++                if (!(xx in hpv_max) || hpv_max[xx] < hpv_cur[xx])
++                    hpv_max[xx] = hpv_cur[xx];
++                delete hpv_cur[xx];
++            }
++        }
++        last = x;
++    });
++
++    // finalise all remaining runs
++    for (var x in hpv_cur) {
++        if (!(x in hpv_max) || hpv_max[x] < hpv_cur[x])
++            hpv_max[x] = hpv_cur[x];
++    }
++
++    // calc max
++    var max_ = 0
++    for (x in hpv_max) {
++        if (x * hpv_max[x] > max_)
++            max_ = x * hpv_max[x];
++    }
++
++    return max_
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
