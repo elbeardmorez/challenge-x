@@ -1,0 +1,79 @@
+From e22b6029037f18ef7ffec1a237bf7bdac83bc50e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 3 Apr 2019 09:38:44 +0100
+Subject: [add] hackerrank, 'largest rectangle', c++ port
+
+---
+ .../largest.rectangle.cpp                     | 55 +++++++++++++++++++
+ 1 file changed, 55 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.stacks.-.medium.-.largest.rectangle/largest.rectangle.cpp b/hackerrank/data.structures.-.stacks.-.medium.-.largest.rectangle/largest.rectangle.cpp
+index 7aff482..2cea92e 100644
+--- a/hackerrank/data.structures.-.stacks.-.medium.-.largest.rectangle/largest.rectangle.cpp
++++ b/hackerrank/data.structures.-.stacks.-.medium.-.largest.rectangle/largest.rectangle.cpp
+@@ -7,7 +7,62 @@ vector<string> split_string(string);
+ // Complete the largestRectangle function below.
+ long largestRectangle(vector<int> h) {
+ 
++    // horizontal 'run' per vertical height (hpv)
++    // current 'run' map
++    map<int, int> hpv_cur;
++    // hont> hpv_cur;
++    // max 'run' map
++    map<int, int> hpv_max;
++
++    // iterate heights
++    int last = 0;
++    for (auto itr = h.begin(); itr != h.end(); ++itr) {
++        int x = *itr;
++        if (hpv_cur.find(x) == hpv_cur.end()) {
++            if (x > last)
++                hpv_cur[x] = 0;
++            else {
++                // max of higher open runs
++                for (auto itr2=hpv_cur.begin(); itr2 != hpv_cur.end(); ++itr2) {
++                    int xx = itr2->first;
++                    if (xx <= x)
++                        continue;
++                    if (hpv_cur.find(x) == hpv_cur.end() || hpv_cur[xx] > hpv_cur[x])
++                        hpv_cur[x] = itr2->second;
++                }
++                //cout << "x: " << x << ", hpv_cur[x]: " << hpv_cur[x] << endl;
++            }
++        }
++        for (auto itr2 = hpv_cur.begin(); itr2 != hpv_cur.end(); ++itr2) {
++            int xx = itr2->first;
++            if (xx <= x)
++                itr2->second++;
++            else if (xx > x) {
++                // close run
++                if (hpv_max.find(xx) == hpv_max.end() || hpv_max[xx] < itr2->second)
++                    hpv_max[xx] = itr2->second;
++                hpv_cur.erase(xx);
++            }
++        }
++        last = x;
++    }
++
++    // finalise all remaining runs
++    for (auto itr = hpv_cur.begin(); itr != hpv_cur.end(); ++itr) {
++        int x = itr->first;
++        if (hpv_max.find(x) == hpv_max.end() || hpv_max[x] < itr->second)
++            hpv_max[x] = itr->second;
++    }
++
++    // calc max
++    int max_ = 0;
++    for (auto itr = hpv_max.begin(); itr != hpv_max.end(); ++itr) {
++        int x = itr->first;
++        if (x * itr->second > max_)
++            max_ = x * itr->second;
++    }
+ 
++    return max_;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
