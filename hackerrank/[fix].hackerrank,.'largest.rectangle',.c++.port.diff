@@ -1,0 +1,39 @@
+From 61fbe0c388b07461063a0af4f3df1d7d81fb4ace Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 3 Apr 2019 10:27:33 +0100
+Subject: [fix] hackerrank, 'largest rectangle', c++ port
+
+-map element removal whilst iterating
+---
+ .../largest.rectangle.cpp                             | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.stacks.-.medium.-.largest.rectangle/largest.rectangle.cpp b/hackerrank/data.structures.-.stacks.-.medium.-.largest.rectangle/largest.rectangle.cpp
+index 2cea92e..cc604f5 100644
+--- a/hackerrank/data.structures.-.stacks.-.medium.-.largest.rectangle/largest.rectangle.cpp
++++ b/hackerrank/data.structures.-.stacks.-.medium.-.largest.rectangle/largest.rectangle.cpp
+@@ -33,15 +33,16 @@ long largestRectangle(vector<int> h) {
+                 //cout << "x: " << x << ", hpv_cur[x]: " << hpv_cur[x] << endl;
+             }
+         }
+-        for (auto itr2 = hpv_cur.begin(); itr2 != hpv_cur.end(); ++itr2) {
++        for (auto itr2 = hpv_cur.begin(); itr2 != hpv_cur.end();) {
+             int xx = itr2->first;
+-            if (xx <= x)
+-                itr2->second++;
+-            else if (xx > x) {
++            if (xx > x) {
+                 // close run
+                 if (hpv_max.find(xx) == hpv_max.end() || hpv_max[xx] < itr2->second)
+                     hpv_max[xx] = itr2->second;
+-                hpv_cur.erase(xx);
++                hpv_cur.erase(itr2++);
++            } else {
++                itr2->second++;
++                ++itr2;
+             }
+         }
+         last = x;
+-- 
+2.23.0
+
