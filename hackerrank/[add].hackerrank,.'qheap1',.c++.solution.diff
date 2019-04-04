@@ -1,0 +1,47 @@
+From 4e337ec6b725adb0b1e0f1fcee27a1389ab85e8d Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 4 Apr 2019 22:47:09 +0100
+Subject: [add] hackerrank, 'qheap1', c++ solution
+
+---
+ .../qheap1.cpp                                | 25 +++++++++++++++++--
+ 1 file changed, 23 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.cpp b/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.cpp
+index e1e99ec..57c1f77 100644
+--- a/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.cpp
++++ b/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.cpp
+@@ -7,7 +7,28 @@ using namespace std;
+ 
+ 
+ int main() {
+-    /* Enter your code here. Read input from STDIN. Print output to STDOUT */   
++    /* Enter your code here. Read input from STDIN. Print output to STDOUT */
++
++    vector<long> h;
++    string s;
++    cin >> s;
++    while (cin >> s) {
++        switch (stol(s)) {
++            case 1:
++                cin >> s;
++                h.push_back(stol(s));
++                break;
++            case 2:
++                cin >> s;
++                h.erase(std::find(h.begin(), h.end(), stol(s)));
++                break;
++            case 3:
++                long min_ = h[0];
++                for(auto itr = h.begin(); itr != h.end(); ++itr)
++                    min_ = fmin(*itr, min_);
++                cout << min_ << endl;
++                break;
++        }
++    }
+     return 0;
+ }
+-
+-- 
+2.23.0
+
