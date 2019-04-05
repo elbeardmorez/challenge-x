@@ -1,0 +1,50 @@
+From 921397c6fad2d871edbe740230566f1171d64e56 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 5 Apr 2019 10:26:19 +0100
+Subject: [add] hackerrank, 'qheap1', c# port
+
+---
+ .../qheap1.cs                                 | 25 +++++++++++++++++++
+ 1 file changed, 25 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.cs b/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.cs
+index 2d767f7..742bd13 100644
+--- a/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.cs
++++ b/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.cs
+@@ -1,8 +1,33 @@
+ using System;
+ using System.Collections.Generic;
++using System.Linq;
+ using System.IO;
+ class Solution {
+     static void Main(String[] args) {
+         /* Enter your code here. Read input from STDIN. Print output to STDOUT. Your class should be named Solution */
++
++        var h = new SortedDictionary<long, long>();
++        long[] in_;
++        string s;
++        while (true) {
++            s = Console.ReadLine();
++            if (s == null)
++                break;
++            in_ = s.Split().AsEnumerable().Select(x => Convert.ToInt64(x)).ToArray();
++            switch (in_[0]) {
++                case 1: {
++                    h.Add(in_[1], in_[1]);
++                    break;
++                }
++                case 2: {
++                    h.Remove(in_[1]);
++                    break;
++                }
++                case 3: {
++                    Console.WriteLine(h.First().Key);
++                    break;
++                }
++            }
++        }
+     }
+ }
+-- 
+2.23.0
+
