@@ -1,0 +1,48 @@
+From 8df7fbeb551ab03763be7b51664b3b5f4af0b5d8 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 5 Apr 2019 13:39:40 +0100
+Subject: [fix] hackerrank, 'qheap1', javascript port
+
+-differences between node v10 and v11 due to the implementation of
+the v8 engine spec results in quicksort (unstable old) vs timsort
+(stable new) for the Array.sort implementation. somewhere this
+translates to implicit numeric type conversion of the keys and hence
+the search 'worked' (node v11.12.0 local vs node v10.15.0 on
+hackerrank's servers). hence now explicitly convert keys to ints.
+-correct inconsistent comparison function, adding the equality case
+---
+ .../data.structures.-.heap.-.easy.-.qheap1/qheap1.js   | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.js b/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.js
+index 1854d2e..c4c8a5f 100644
+--- a/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.js
++++ b/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.js
+@@ -4,19 +4,19 @@ function processData(input) {
+     var min = 0;
+     var h = {};
+     input.split('\n').forEach((line) => {
+-        in_ = line.split(' ').map((x) => parseInt(x));
++        var in_ = line.split(' ');
+         switch (in_[0]) {
+-            case 1:
++            case "1":
+                 //console.log("adding: %d", in_[1]);
+                 h[in_[1]] = 1
+                 //console.log('%q', h);
+                 break;
+-            case 2:
++            case "2":
+                 //console.log("removing: %d", in_[1]);
+                 delete h[in_[1]];
+                 break;
+-            case 3:
+-                min = Object.keys(h).sort((x, y) => x > y ? 1 : 0)[0];
++            case "3":
++                min = Object.keys(h).map((x) => parseInt(x)).sort((x, y) => x > y ? 1 : (x == y ? 0 : -1))[0];
+                 //console.log("heap min: %d", min);
+                 console.log("%d", min);
+                 break;
+-- 
+2.23.0
+
