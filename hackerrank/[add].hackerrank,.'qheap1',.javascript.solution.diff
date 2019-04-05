@@ -1,0 +1,43 @@
+From dd04a268735675f0df753f8671725b27761055b4 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 5 Apr 2019 11:33:00 +0100
+Subject: [add] hackerrank, 'qheap1', javascript solution
+
+---
+ .../qheap1.js                                 | 21 +++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.js b/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.js
+index 6d6acc8..6a28825 100644
+--- a/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.js
++++ b/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.js
+@@ -1,5 +1,26 @@
+ function processData(input) {
+     //Enter your code here
++    //console.log("chunk type: %s", typeof (input));
++    var min = 0;
++    var h = {};
++    input.split('\n').forEach((line) => {
++        in_ = line.split(' ').map((x) => parseInt(x));
++        switch (in_[0]) {
++            case 1:
++                //console.log("adding: %d", in_[1]);
++                h[in_[1]] = 1
++                break;
++            case 2:
++                //console.log("removing: %d", in_[1]);
++                delete h[in_[1]];
++                break;
++            case 3:
++                min = Object.keys(h).sort()[0];
++                //console.log("heap min: %d", min);
++                console.log("%d", min);
++                break;
++        }
++    })
+ } 
+ 
+ process.stdin.resume();
+-- 
+2.23.0
+
