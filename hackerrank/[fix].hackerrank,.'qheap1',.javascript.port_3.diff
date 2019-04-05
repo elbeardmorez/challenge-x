@@ -1,0 +1,35 @@
+From 0fb301bd6bf4f4daafe20921273d11373e832b91 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 5 Apr 2019 14:54:40 +0100
+Subject: [fix] hackerrank, 'qheap1', javascript port
+
+-failed when min array became empty
+---
+ hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.js | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.js b/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.js
+index 3f652ce..2822ee3 100644
+--- a/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.js
++++ b/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.js
+@@ -1,7 +1,7 @@
+ function processData(input) {
+     //Enter your code here
+     //console.log("chunk type: %s", typeof (input));
+-    var min_ = [1000000000];
++    var min_ = [];
+     var h = {};
+     input.split('\n').forEach((line) => {
+         var in_ = line.split(' ').map((x) => parseInt(x));
+@@ -9,7 +9,7 @@ function processData(input) {
+             case 1:
+                 //console.log("adding: %d", in_[1]);
+                 h[in_[1]] = 1;
+-                if (in_[1] < min_[min_.length-1])
++                if (min_.length == 0 || in_[1] < min_[min_.length-1])
+                     min_.push(in_[1]);
+                 break;
+             case 2:
+-- 
+2.23.0
+
