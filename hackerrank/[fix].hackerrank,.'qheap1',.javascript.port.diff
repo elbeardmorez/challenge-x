@@ -1,0 +1,40 @@
+From 171c75fec40e6232f7e295e7eb38d51d89b83d88 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 5 Apr 2019 11:54:08 +0100
+Subject: [fix] hackerrank, 'qheap1', javascript port
+
+-given there's no typing, sort compares key lexographically.
+providing a comparison function appears to fix this
+---
+ hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.js | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.js b/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.js
+index 6a28825..1854d2e 100644
+--- a/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.js
++++ b/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.js
+@@ -9,18 +9,19 @@ function processData(input) {
+             case 1:
+                 //console.log("adding: %d", in_[1]);
+                 h[in_[1]] = 1
++                //console.log('%q', h);
+                 break;
+             case 2:
+                 //console.log("removing: %d", in_[1]);
+                 delete h[in_[1]];
+                 break;
+             case 3:
+-                min = Object.keys(h).sort()[0];
++                min = Object.keys(h).sort((x, y) => x > y ? 1 : 0)[0];
+                 //console.log("heap min: %d", min);
+                 console.log("%d", min);
+                 break;
+         }
+-    })
++    });
+ } 
+ 
+ process.stdin.resume();
+-- 
+2.23.0
+
