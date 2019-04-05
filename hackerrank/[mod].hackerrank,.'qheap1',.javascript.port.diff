@@ -1,0 +1,61 @@
+From d3954a6a42b2f65cf0bd71725786fa949b5289c7 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 5 Apr 2019 14:48:49 +0100
+Subject: [mod] hackerrank, 'qheap1', javascript port
+
+-avoid sorting where possible. append to a new 'min' array iff
+new min is added. if the current min is removed, then require
+a new min array from the sorted object (map) keys
+-infinitely faster..
+---
+ .../qheap1.js                                 | 24 +++++++++++--------
+ 1 file changed, 14 insertions(+), 10 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.js b/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.js
+index c4c8a5f..3f652ce 100644
+--- a/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.js
++++ b/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.js
+@@ -1,26 +1,30 @@
+ function processData(input) {
+     //Enter your code here
+     //console.log("chunk type: %s", typeof (input));
+-    var min = 0;
++    var min_ = [1000000000];
+     var h = {};
+     input.split('\n').forEach((line) => {
+-        var in_ = line.split(' ');
++        var in_ = line.split(' ').map((x) => parseInt(x));
+         switch (in_[0]) {
+-            case "1":
++            case 1:
+                 //console.log("adding: %d", in_[1]);
+-                h[in_[1]] = 1
+-                //console.log('%q', h);
++                h[in_[1]] = 1;
++                if (in_[1] < min_[min_.length-1])
++                    min_.push(in_[1]);
+                 break;
+-            case "2":
++            case 2:
+                 //console.log("removing: %d", in_[1]);
+                 delete h[in_[1]];
++                if (min_[min_.length-1] == in_[1])
++                    min_ = Object.keys(h).map((x) => parseInt(x)).sort((x, y) => x < y ? 1 : (x == y ? 0 : -1));
+                 break;
+-            case "3":
+-                min = Object.keys(h).map((x) => parseInt(x)).sort((x, y) => x > y ? 1 : (x == y ? 0 : -1))[0];
+-                //console.log("heap min: %d", min);
+-                console.log("%d", min);
++            case 3:
++                //console.log("heap min: %d", min_[min_.length-1]);
++                console.log("%d", min_[min_.length-1]);
+                 break;
+         }
++        //console.log('%j', h);
++        //console.log('%j', min_);
+     });
+ } 
+ 
+-- 
+2.23.0
+
