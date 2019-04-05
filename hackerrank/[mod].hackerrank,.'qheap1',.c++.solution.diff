@@ -1,0 +1,62 @@
+From ecc16e5fea4f5fb4ed7ed706ce9bfd8b073f8518 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 5 Apr 2019 08:15:02 +0100
+Subject: [mod] hackerrank, 'qheap1', c++ solution
+
+-try ordering vector for sufficient performance
+---
+ .../qheap1.cpp                                | 29 ++++++++++++++-----
+ 1 file changed, 21 insertions(+), 8 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.cpp b/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.cpp
+index 57c1f77..f2d6baf 100644
+--- a/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.cpp
++++ b/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.cpp
+@@ -11,23 +11,36 @@ int main() {
+ 
+     vector<long> h;
+     string s;
++    long l;
+     cin >> s;
+     while (cin >> s) {
+         switch (stol(s)) {
+-            case 1:
++            case 1: {
+                 cin >> s;
+-                h.push_back(stol(s));
++                l=stol(s);
++                int i = 0;
++                int set = 0;
++                for (auto itr = h.begin(); itr != h.end();) {
++                    if (l > *itr) {
++                        h.emplace(itr, l);
++                        set = 1;
++                        break;
++                    }
++                    ++itr;
++                }
++                if (set == 0)
++                    h.push_back(l);
+                 break;
+-            case 2:
++            }
++            case 2: {
+                 cin >> s;
+                 h.erase(std::find(h.begin(), h.end(), stol(s)));
+                 break;
+-            case 3:
+-                long min_ = h[0];
+-                for(auto itr = h.begin(); itr != h.end(); ++itr)
+-                    min_ = fmin(*itr, min_);
+-                cout << min_ << endl;
++            }
++            case 3: {
++                cout << h.back() << endl;
+                 break;
++            }
+         }
+     }
+     return 0;
+-- 
+2.23.0
+
