@@ -1,0 +1,65 @@
+From 1c08edcb27a3f24f748811b01530234e22bc09ea Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 5 Apr 2019 09:28:47 +0100
+Subject: [mod] hackerrank, 'qheap1', c++ solution
+
+-give up on the vector based implementation and switch to an ordered
+map. test #9 equivalent 5.6s -> 0.1s
+---
+ .../qheap1.cpp                                | 20 +++++--------------
+ 1 file changed, 5 insertions(+), 15 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.cpp b/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.cpp
+index f2d6baf..0528f59 100644
+--- a/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.cpp
++++ b/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.cpp
+@@ -1,6 +1,6 @@
+ #include <cmath>
+ #include <cstdio>
+-#include <vector>
++#include <map>
+ #include <iostream>
+ #include <algorithm>
+ using namespace std;
+@@ -9,7 +9,7 @@ using namespace std;
+ int main() {
+     /* Enter your code here. Read input from STDIN. Print output to STDOUT */
+ 
+-    vector<long> h;
++    auto h = multimap<long, long>();
+     string s;
+     long l;
+     cin >> s;
+@@ -19,26 +19,16 @@ int main() {
+                 cin >> s;
+                 l=stol(s);
+                 int i = 0;
+-                int set = 0;
+-                for (auto itr = h.begin(); itr != h.end();) {
+-                    if (l > *itr) {
+-                        h.emplace(itr, l);
+-                        set = 1;
+-                        break;
+-                    }
+-                    ++itr;
+-                }
+-                if (set == 0)
+-                    h.push_back(l);
++                h.insert(std::pair<long, long>(l, l));
+                 break;
+             }
+             case 2: {
+                 cin >> s;
+-                h.erase(std::find(h.begin(), h.end(), stol(s)));
++                h.erase(stol(s));
+                 break;
+             }
+             case 3: {
+-                cout << h.back() << endl;
++                cout << h.begin()->first << endl;
+                 break;
+             }
+         }
+-- 
+2.23.0
+
