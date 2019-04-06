@@ -1,0 +1,44 @@
+From c4020ca925c507249c9d732933f73252b03629c8 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 7 Apr 2019 00:32:41 +0100
+Subject: [add] hackerrank, 'qheap1', python port
+
+---
+ .../qheap1.py                                 | 25 +++++++++++++++++++
+ 1 file changed, 25 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.py b/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.py
+index 4f28f4b..c05d995 100644
+--- a/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.py
++++ b/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.py
+@@ -1,2 +1,27 @@
+ # Enter your code here. Read input from STDIN. Print output to STDOUT
+ 
++import sys
++import io
++
++#input()
++min_ = []
++h = {}
++
++for line in sys.stdin.readlines():
++    #print("%s" % (line.rstrip('\n')))
++    in_ = [ int(x) for x in line.rstrip('\n').split(' ') ]
++    if in_[0] == 1:
++        #print("adding: %d" % (in_[1]))
++        h[in_[1]] = 1
++        if len(min_) == 0 or in_[1] < min_[-1]:
++            min_.append(in_[1])
++    elif in_[0] == 2:
++        #print("removing: %d" % (in_[1]))
++        h.pop(in_[1])
++        if min_[len(min_)-1] == in_[1]:
++            min_ = sorted(h.keys())
++    elif in_[0] == 3:
++        #print("heap min: %d" % (min_[-1]))
++        print("%d" % (min_[-1]))
++    #print(h)
++    #print(min_)
+-- 
+2.23.0
+
