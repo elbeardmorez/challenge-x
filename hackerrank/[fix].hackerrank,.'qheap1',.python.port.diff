@@ -1,0 +1,27 @@
+From 16e28be75e40cec4c2514cdc0c3f226f17d4061a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 7 Apr 2019 02:10:59 +0100
+Subject: [fix] hackerrank, 'qheap1', python port
+
+-original implementation reverses the min array to avoid O(n)
+insertion time complexity
+---
+ hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.py b/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.py
+index c05d995..3765f66 100644
+--- a/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.py
++++ b/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.py
+@@ -19,7 +19,7 @@ for line in sys.stdin.readlines():
+         #print("removing: %d" % (in_[1]))
+         h.pop(in_[1])
+         if min_[len(min_)-1] == in_[1]:
+-            min_ = sorted(h.keys())
++            min_ = sorted(h.keys(), reverse=True)
+     elif in_[0] == 3:
+         #print("heap min: %d" % (min_[-1]))
+         print("%d" % (min_[-1]))
+-- 
+2.23.0
+
