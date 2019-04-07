@@ -1,0 +1,26 @@
+From 8523751dac293114f79f077d7cddbddd0f140611 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 7 Apr 2019 02:12:28 +0100
+Subject: [fix] hackerrank, 'qheap1', python port
+
+-ignore first input line for implementation 'correctness'
+---
+ hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.py b/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.py
+index 3765f66..a0b69fe 100644
+--- a/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.py
++++ b/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.py
+@@ -3,7 +3,7 @@
+ import sys
+ import io
+ 
+-#input()
++input()
+ min_ = []
+ h = {}
+ 
+-- 
+2.23.0
+
