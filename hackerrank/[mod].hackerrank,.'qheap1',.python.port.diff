@@ -1,0 +1,43 @@
+From 64cb3f7f4b2806b7216ccfa3a794b5229d1359b8 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 7 Apr 2019 02:13:33 +0100
+Subject: [mod] hackerrank, 'qheap1', python port
+
+-improve debug messages
+---
+ .../data.structures.-.heap.-.easy.-.qheap1/qheap1.py  | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.py b/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.py
+index a0b69fe..6a5850d 100644
+--- a/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.py
++++ b/hackerrank/data.structures.-.heap.-.easy.-.qheap1/qheap1.py
+@@ -8,20 +8,19 @@ min_ = []
+ h = {}
+ 
+ for line in sys.stdin.readlines():
+-    #print("%s" % (line.rstrip('\n')))
+     in_ = [ int(x) for x in line.rstrip('\n').split(' ') ]
+     if in_[0] == 1:
+-        #print("adding: %d" % (in_[1]))
++#        print("# adding: %d" % (in_[1]))
+         h[in_[1]] = 1
+         if len(min_) == 0 or in_[1] < min_[-1]:
+             min_.append(in_[1])
+     elif in_[0] == 2:
+-        #print("removing: %d" % (in_[1]))
++#        print("# removing: %d" % (in_[1]))
+         h.pop(in_[1])
+         if min_[len(min_)-1] == in_[1]:
+             min_ = sorted(h.keys(), reverse=True)
+     elif in_[0] == 3:
+-        #print("heap min: %d" % (min_[-1]))
++#        print("# heap: %s" % h)
++#        print("# min_: %s" % min_)
++#        print("# heap min: ", end="")
+         print("%d" % (min_[-1]))
+-    #print(h)
+-    #print(min_)
+-- 
+2.23.0
+
