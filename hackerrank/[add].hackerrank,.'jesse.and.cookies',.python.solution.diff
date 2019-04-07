@@ -1,0 +1,40 @@
+From 865b87205e4d7079c2efe40b18c5655e0e9b140e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 7 Apr 2019 09:08:09 +0100
+Subject: [add] hackerrank, 'jesse and cookies', python solution
+
+---
+ .../jesse.and.cookies.py                        | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.heap.-.easy.-.jesse.and.cookies/jesse.and.cookies.py b/hackerrank/data.structures.-.heap.-.easy.-.jesse.and.cookies/jesse.and.cookies.py
+index 68278d8..84cdd35 100644
+--- a/hackerrank/data.structures.-.heap.-.easy.-.jesse.and.cookies/jesse.and.cookies.py
++++ b/hackerrank/data.structures.-.heap.-.easy.-.jesse.and.cookies/jesse.and.cookies.py
+@@ -10,6 +10,23 @@ def cookies(k, A):
+     #
+     # Write your code here.
+     #
++    A.sort()
++    ops = 0
++    while len(A) >= 2 and A[0] < k:
++        combined = A[0] + A[1]*2
++        l = 0
++        while l < len(A) and A[l] < combined:
++            l += 1
++        A.insert(l, combined)
++        A = A[2:]
++        #print(A)
++        ops += 1
++
++    if A[0] < k:
++        ops = -1
++
++    return ops
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
