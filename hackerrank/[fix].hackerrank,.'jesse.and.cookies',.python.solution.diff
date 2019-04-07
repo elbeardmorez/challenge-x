@@ -1,0 +1,61 @@
+From cd259286e000aefe67910cffd64c8f56e1b7472d Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 7 Apr 2019 11:18:31 +0100
+Subject: [fix] hackerrank, 'jesse and cookies', python solution
+
+-avoid O(n) insertion in the O(n^2) nested loop. make timsort
+prove its worth with its use of sorted 'runs'
+-resort the new items into the main list as late as possible
+---
+ .../jesse.and.cookies.py                      | 32 +++++++++++++------
+ 1 file changed, 22 insertions(+), 10 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.heap.-.easy.-.jesse.and.cookies/jesse.and.cookies.py b/hackerrank/data.structures.-.heap.-.easy.-.jesse.and.cookies/jesse.and.cookies.py
+index 84cdd35..b60db29 100644
+--- a/hackerrank/data.structures.-.heap.-.easy.-.jesse.and.cookies/jesse.and.cookies.py
++++ b/hackerrank/data.structures.-.heap.-.easy.-.jesse.and.cookies/jesse.and.cookies.py
+@@ -10,19 +10,31 @@ def cookies(k, A):
+     #
+     # Write your code here.
+     #
++
++    #print(f"len A: {len(A)}")
+     A.sort()
+     ops = 0
+-    while len(A) >= 2 and A[0] < k:
+-        combined = A[0] + A[1]*2
+-        l = 0
+-        while l < len(A) and A[l] < combined:
+-            l += 1
+-        A.insert(l, combined)
+-        A = A[2:]
+-        #print(A)
++    idx = 0
++    added = []
++    while len(A) >= idx + 2 and A[idx] < k:
++        combined = A[idx] + A[idx+1]*2
++        added.append(combined)
++        idx += 2
+         ops += 1
+-
+-    if A[0] < k:
++        if len(A) < idx + 2 or added[0] <= A[idx + 1]:
++            # merge, reset
++            #print("# merging and resetting")
++            added.extend(A[idx:])
++            A = sorted(added) # let timsort shine
++            added = []
++            idx = 0
++
++    #print(f"len A: {len(A)}")
++    #print(f"target: {k}")
++    #print(f"idx: {idx}")
++    #print(f"ops: {ops}")
++    #print(A[idx:idx + 20])
++    if A[idx] < k:
+         ops = -1
+ 
+     return ops
+-- 
+2.23.0
+
