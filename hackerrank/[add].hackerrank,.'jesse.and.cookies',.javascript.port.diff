@@ -1,0 +1,59 @@
+From cdf755de09a7c51a5db8503c716e269a2979b8e0 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 8 Apr 2019 21:52:47 +0100
+Subject: [add] hackerrank, 'jesse and cookies', javascript port
+
+---
+ .../jesse.and.cookies.js                      | 36 +++++++++++++++++++
+ 1 file changed, 36 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.heap.-.easy.-.jesse.and.cookies/jesse.and.cookies.js b/hackerrank/data.structures.-.heap.-.easy.-.jesse.and.cookies/jesse.and.cookies.js
+index a594872..9b9c9a0 100644
+--- a/hackerrank/data.structures.-.heap.-.easy.-.jesse.and.cookies/jesse.and.cookies.js
++++ b/hackerrank/data.structures.-.heap.-.easy.-.jesse.and.cookies/jesse.and.cookies.js
+@@ -30,6 +30,42 @@ function cookies(k, A) {
+      * Write your code here.
+      */
+ 
++    //console.log(`len A: ${A.length}`);
++    //console.log(A.slice(0, 20));
++    A = A.map((x) => parseInt(x))
++    A.sort((x, y) => x < y ? -1 : ( x == y ? 0 : 1 ));
++    //console.log(A.slice(0, 20));
++    var ops = 0;
++    var idx = 0;
++    var added = [];
++    var combined;
++    //var j = 0
++    while (A.length >= idx + 2 && A[idx] < k) {
++        combined = A[idx] + A[idx+1] * 2;
++        added.push(combined);
++        idx += 2;
++        ops += 1;
++        if (A.length < idx + 2 || added[0] <= A[idx + 1]) {
++            // merge, reset
++            //console.log("# merging and resetting");
++            A = added.concat(A.slice(idx))
++            A.sort((x, y) => x < y ? -1 : ( x == y ? 0 : 1 ));
++            added = [];
++            idx = 0;
++        }
++        //if (j > 20)
++        //    break;
++    }
++
++    //console.log(`# len A: ${A.length}`);
++    //console.log(`# target: ${k}`);
++    //console.log(`# idx: ${idx}`);
++    //console.log(`# ops: ${ops}`);
++    //console.log(A.slice(idx, idx + 20));
++    if (A[idx] < k)
++        ops = -1
++
++    return ops
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
