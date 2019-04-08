@@ -1,0 +1,47 @@
+From 8a61ad55c40c1bc225ad3581f4637abfd0c625bb Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 8 Apr 2019 22:32:19 +0100
+Subject: [mod] hackerrank, 'jesse and cookies', javascript port
+
+-6x speed increase for large arrays by only sorting their heads
+---
+ .../jesse.and.cookies.js                              | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.heap.-.easy.-.jesse.and.cookies/jesse.and.cookies.js b/hackerrank/data.structures.-.heap.-.easy.-.jesse.and.cookies/jesse.and.cookies.js
+index 9b9c9a0..3aca85c 100644
+--- a/hackerrank/data.structures.-.heap.-.easy.-.jesse.and.cookies/jesse.and.cookies.js
++++ b/hackerrank/data.structures.-.heap.-.easy.-.jesse.and.cookies/jesse.and.cookies.js
+@@ -32,12 +32,13 @@ function cookies(k, A) {
+ 
+     //console.log(`len A: ${A.length}`);
+     //console.log(A.slice(0, 20));
+-    A = A.map((x) => parseInt(x))
+     A.sort((x, y) => x < y ? -1 : ( x == y ? 0 : 1 ));
+     //console.log(A.slice(0, 20));
+     var ops = 0;
+     var idx = 0;
++    var idx2;
+     var added = [];
++    var mixed;
+     var combined;
+     //var j = 0
+     while (A.length >= idx + 2 && A[idx] < k) {
+@@ -48,8 +49,12 @@ function cookies(k, A) {
+         if (A.length < idx + 2 || added[0] <= A[idx + 1]) {
+             // merge, reset
+             //console.log("# merging and resetting");
+-            A = added.concat(A.slice(idx))
+-            A.sort((x, y) => x < y ? -1 : ( x == y ? 0 : 1 ));
++            idx2 = idx;
++            while(idx2 < A.length && A[idx] < combined)
++                idx2+=5;
++            mixed = added.concat(A.slice(idx, idx2));
++            mixed.sort((x, y) => x < y ? -1 : ( x == y ? 0 : 1 ));
++            A = mixed.concat(A.slice(idx2));
+             added = [];
+             idx = 0;
+         }
+-- 
+2.23.0
+
