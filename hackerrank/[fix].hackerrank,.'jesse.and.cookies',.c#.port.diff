@@ -1,0 +1,78 @@
+From 051f3f5d139b2cd2511697d1e301704bedd2e22b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 10 Apr 2019 00:32:09 +0100
+Subject: [fix] hackerrank, 'jesse and cookies', c# port
+
+-in place adding was following by a referencial copy of the object
+(as is default) as opposed to the intended clone of the subset.
+constructing a new List object using the subset fixes this
+---
+ .../jesse.and.cookies.cs                      | 25 ++++++++++---------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.heap.-.easy.-.jesse.and.cookies/jesse.and.cookies.cs b/hackerrank/data.structures.-.heap.-.easy.-.jesse.and.cookies/jesse.and.cookies.cs
+index 66e68c6..d124ff5 100644
+--- a/hackerrank/data.structures.-.heap.-.easy.-.jesse.and.cookies/jesse.and.cookies.cs
++++ b/hackerrank/data.structures.-.heap.-.easy.-.jesse.and.cookies/jesse.and.cookies.cs
+@@ -13,17 +13,17 @@ class Solution {
+          * Write your code here.
+          */
+         var L = new List<int>(A);
+-        //Console.Log($"len L: {L.Count}");
+-        //Console.Log(L.Take(20));
++        //Console.WriteLine($"len L: {L.Count}");
++        //Console.WriteLine(L.Take(20));
+         L.Sort((x, y) => x < y ? -1 : ( x == y ? 0 : 1 ));
+-        //Console.Log(L.Take(20));
++        //Console.WriteLine(L.Take(20));
+         var ops = 0;
+         var idx = 0;
+         int idx2;
+         List<int> added = new List<int>();
+         List<int> mixed;
+         int combined;
+-        //var j = 0
++        //var j = 0;
+         while (L.Count >= idx + 2 && L[idx] < k) {
+             combined = L[idx] + L[idx+1] * 2;
+             added.Add(combined);
+@@ -31,27 +31,28 @@ class Solution {
+             ops += 1;
+             if (L.Count < idx + 2 || added[0] <= L[idx + 1]) {
+                 // merge, reset
+-                //Console.Log("# merging and resetting");
++                //Console.WriteLine("# merging and resetting");
+                 idx2 = idx;
+                 while(idx2 < L.Count && L[idx] < combined)
+                     idx2+=5;
+-                added.AddRange(L.Skip(idx).Take(idx2-idx).ToArray());
+-                mixed = added;
++                added.AddRange(L.Skip(idx).Take(idx2-idx));
++                mixed = new List<int>(added);
+                 mixed.Sort((x, y) => x < y ? -1 : ( x == y ? 0 : 1 ));
+                 mixed.AddRange(L.Skip(idx2));
+                 L = mixed;
+                 added.Clear();
+                 idx = 0;
+             }
++            //j += 1;
+             //if (j > 20)
+             //    break;
+         }
+ 
+-        //Console.Log($"# len L: {L.length}");
+-        //Console.Log($"# target: {k}");
+-        //Console.Log($"# idx: {idx}");
+-        //Console.Log($"# ops: {ops}");
+-        //Console.Log(L.Skip(idx).Take(20));
++        //Console.WriteLine($"# len L: {L.Count}");
++        //Console.WriteLine($"# target: {k}");
++        //Console.WriteLine($"# idx: {idx}");
++        //Console.WriteLine($"# ops: {ops}");
++        //Console.WriteLine(L.Skip(idx).Take(20));
+         if (L[idx] < k)
+             ops = -1;
+ 
+-- 
+2.23.0
+
