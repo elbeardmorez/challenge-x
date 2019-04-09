@@ -1,0 +1,67 @@
+From 4bff6bab71670f22aaf470b08045a842b8029f4e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 9 Apr 2019 23:59:46 +0100
+Subject: [add] hackerrank, 'jesse and cookies', c# port
+
+---
+ .../jesse.and.cookies.cs                      | 43 +++++++++++++++++++
+ 1 file changed, 43 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.heap.-.easy.-.jesse.and.cookies/jesse.and.cookies.cs b/hackerrank/data.structures.-.heap.-.easy.-.jesse.and.cookies/jesse.and.cookies.cs
+index 39d9907..66e68c6 100644
+--- a/hackerrank/data.structures.-.heap.-.easy.-.jesse.and.cookies/jesse.and.cookies.cs
++++ b/hackerrank/data.structures.-.heap.-.easy.-.jesse.and.cookies/jesse.and.cookies.cs
+@@ -12,7 +12,50 @@ class Solution {
+         /*
+          * Write your code here.
+          */
++        var L = new List<int>(A);
++        //Console.Log($"len L: {L.Count}");
++        //Console.Log(L.Take(20));
++        L.Sort((x, y) => x < y ? -1 : ( x == y ? 0 : 1 ));
++        //Console.Log(L.Take(20));
++        var ops = 0;
++        var idx = 0;
++        int idx2;
++        List<int> added = new List<int>();
++        List<int> mixed;
++        int combined;
++        //var j = 0
++        while (L.Count >= idx + 2 && L[idx] < k) {
++            combined = L[idx] + L[idx+1] * 2;
++            added.Add(combined);
++            idx += 2;
++            ops += 1;
++            if (L.Count < idx + 2 || added[0] <= L[idx + 1]) {
++                // merge, reset
++                //Console.Log("# merging and resetting");
++                idx2 = idx;
++                while(idx2 < L.Count && L[idx] < combined)
++                    idx2+=5;
++                added.AddRange(L.Skip(idx).Take(idx2-idx).ToArray());
++                mixed = added;
++                mixed.Sort((x, y) => x < y ? -1 : ( x == y ? 0 : 1 ));
++                mixed.AddRange(L.Skip(idx2));
++                L = mixed;
++                added.Clear();
++                idx = 0;
++            }
++            //if (j > 20)
++            //    break;
++        }
+ 
++        //Console.Log($"# len L: {L.length}");
++        //Console.Log($"# target: {k}");
++        //Console.Log($"# idx: {idx}");
++        //Console.Log($"# ops: {ops}");
++        //Console.Log(L.Skip(idx).Take(20));
++        if (L[idx] < k)
++            ops = -1;
++
++        return ops;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
