@@ -1,0 +1,26 @@
+From 547f081047af2fe2638783f38b3c6bf389938846 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 10 Apr 2019 01:16:21 +0100
+Subject: [fix] hackerrank, 'jesse and cookies', c# port
+
+-testing wrong index for short-circuiting min subset bounds
+---
+ .../jesse.and.cookies.cs                                        | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/data.structures.-.heap.-.easy.-.jesse.and.cookies/jesse.and.cookies.cs b/hackerrank/data.structures.-.heap.-.easy.-.jesse.and.cookies/jesse.and.cookies.cs
+index d124ff5..c3560fb 100644
+--- a/hackerrank/data.structures.-.heap.-.easy.-.jesse.and.cookies/jesse.and.cookies.cs
++++ b/hackerrank/data.structures.-.heap.-.easy.-.jesse.and.cookies/jesse.and.cookies.cs
+@@ -33,7 +33,7 @@ class Solution {
+                 // merge, reset
+                 //Console.WriteLine("# merging and resetting");
+                 idx2 = idx;
+-                while(idx2 < L.Count && L[idx] < combined)
++                while(idx2 < L.Count && L[idx2] < combined)
+                     idx2+=5;
+                 added.AddRange(L.Skip(idx).Take(idx2-idx));
+                 mixed = new List<int>(added);
+-- 
+2.23.0
+
