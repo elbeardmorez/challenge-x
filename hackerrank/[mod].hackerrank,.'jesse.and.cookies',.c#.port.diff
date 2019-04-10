@@ -1,0 +1,133 @@
+From 9c50e5c265746f07cacd831c5e2398dadd1de160 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 10 Apr 2019 12:08:20 +0100
+Subject: [mod] hackerrank, 'jesse and cookies', c# port
+
+-speed-up on remaining failure case (test 11) 7 seconds -> 0.01 seconds
+-short-circuit zeros subset
+-implement bisect search for end index of subset to merge with new
+combinations for sorting
+-fix logging of list subsets
+-improve logging
+---
+ .../jesse.and.cookies.cs                      | 80 +++++++++++++++----
+ 1 file changed, 65 insertions(+), 15 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.heap.-.easy.-.jesse.and.cookies/jesse.and.cookies.cs b/hackerrank/data.structures.-.heap.-.easy.-.jesse.and.cookies/jesse.and.cookies.cs
+index c3560fb..94bb10d 100644
+--- a/hackerrank/data.structures.-.heap.-.easy.-.jesse.and.cookies/jesse.and.cookies.cs
++++ b/hackerrank/data.structures.-.heap.-.easy.-.jesse.and.cookies/jesse.and.cookies.cs
+@@ -14,9 +14,9 @@ class Solution {
+          */
+         var L = new List<int>(A);
+         //Console.WriteLine($"len L: {L.Count}");
+-        //Console.WriteLine(L.Take(20));
++        //Console.WriteLine($"[{String.Join(", ", L.Take(20))}]");
+         L.Sort((x, y) => x < y ? -1 : ( x == y ? 0 : 1 ));
+-        //Console.WriteLine(L.Take(20));
++        //Console.WriteLine($"[{String.Join(", ", L.Take(20))}]");
+         var ops = 0;
+         var idx = 0;
+         int idx2;
+@@ -24,7 +24,20 @@ class Solution {
+         List<int> mixed;
+         int combined;
+         //var j = 0;
++        var zeros = 0;
++        int pairs;
+         while (L.Count >= idx + 2 && L[idx] < k) {
++            // skip zeros
++            while (idx + zeros < L.Count && L[idx + zeros] == 0)
++                zeros += 1;
++            if (zeros > 0) {
++                while (zeros > 1) {
++                   pairs = zeros / 2;
++                   ops += pairs;
++                   idx += pairs;
++                   zeros -= pairs;
++                }
++            }
+             combined = L[idx] + L[idx+1] * 2;
+             added.Add(combined);
+             idx += 2;
+@@ -32,27 +45,64 @@ class Solution {
+             if (L.Count < idx + 2 || added[0] <= L[idx + 1]) {
+                 // merge, reset
+                 //Console.WriteLine("# merging and resetting");
++                // find idx2, the end index of the subset of L which needs combining with the added set in order to sort and form the new L set
+                 idx2 = idx;
+-                while(idx2 < L.Count && L[idx2] < combined)
+-                    idx2+=5;
+-                added.AddRange(L.Skip(idx).Take(idx2-idx));
+-                mixed = new List<int>(added);
++                int bounce = 1000;
++                //Console.WriteLine($"added.Count: {added.Count}, L.Count: {L.Count}, idx: {idx}");
++
++                if (idx2 + bounce < L.Count && L[idx2 + bounce] < combined) {
++                    //Console.WriteLine("# bisecting");
++                    // bisect search for correct insertion position
++                    //Console.WriteLine($"# target: >{combined}, start: [{idx2}]: {L[idx2]}, bounce: {bounce}");
++                    while (bounce >= 1) {
++                        while (idx2 + bounce > L.Count)
++                            bounce /= 2;
++                        if (L[idx2] < combined) {
++                            while (idx2 + bounce < L.Count && L[idx2] < combined)
++                                idx2 += bounce;
++                        } else {
++                            while (idx2 - bounce > idx && L[idx2] > combined)
++                                idx2 -= bounce;
++                        }
++                        bounce /= 2;
++                        //Console.WriteLine($"# target: >{combined}, current: [{idx2}]: {L[idx2]}, bounce: {bounce}");
++                    }
++                    if (idx2 == L.Count - 1 && L[idx2] < combined)
++                        idx2 = L.Count;
++                    //j += 1;
++                } else if (idx2 + bounce < L.Count) {
++                    // take the hit
++                    //Console.WriteLine("# adding");
++                    idx2 += bounce;
++                } else {
++                    // remainder
++                    //Console.WriteLine("# remainder");
++                    idx2 = L.Count;
++                }
++/*
++                if (idx2 == L.Count)
++                    Console.WriteLine($"added[0]: {added[0]}, added.Count: {added.Count}, L[0]: {L[0]}, L.Count: {L.Count} combined: {combined}, idx: {idx}, L[idx]: -, idx2: {idx2}, L[idx2]: -, L.Count: {L.Count}, bounce: {bounce}");
++                else
++                    Console.WriteLine($"added[0]: {added[0]}, added.Count: {added.Count}, L[0]: {L[0]}, L.Count: {L.Count} combined: {combined}, idx: {idx}, L[idx]: {L[idx]}, idx2: {idx2}, L[idx2]: {L[idx2]}, L.Count: {L.Count}, bounce: {bounce}");
++*/
++                mixed = added.Concat(L.Skip(idx).Take(idx2 - idx)).ToList();
+                 mixed.Sort((x, y) => x < y ? -1 : ( x == y ? 0 : 1 ));
+-                mixed.AddRange(L.Skip(idx2));
+-                L = mixed;
++                L = mixed.Concat(L.Skip(idx2)).ToList();
+                 added.Clear();
+                 idx = 0;
+             }
+-            //j += 1;
+             //if (j > 20)
+             //    break;
+         }
+-
+-        //Console.WriteLine($"# len L: {L.Count}");
+-        //Console.WriteLine($"# target: {k}");
+-        //Console.WriteLine($"# idx: {idx}");
+-        //Console.WriteLine($"# ops: {ops}");
+-        //Console.WriteLine(L.Skip(idx).Take(20));
++/*
++        Console.WriteLine($"# len L: {L.Count}");
++        Console.WriteLine($"# len added: {added.Count}");
++        Console.WriteLine($"# target: {k}");
++        Console.WriteLine($"# idx: {idx}");
++        Console.WriteLine($"# ops: {ops}");
++        Console.WriteLine($"[{String.Join(", ", L.Skip(idx).Take(20))}]");
++        Console.WriteLine(L.Skip(idx).Take(20));
++*/
+         if (L[idx] < k)
+             ops = -1;
+ 
+-- 
+2.23.0
+
