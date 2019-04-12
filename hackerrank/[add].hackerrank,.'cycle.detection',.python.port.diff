@@ -1,0 +1,56 @@
+From fe76f66537521f0bd193b3a13c309f06106601e7 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 12 Apr 2019 08:10:25 +0100
+Subject: [add] hackerrank, 'cycle detection', python port
+
+---
+ .../cycle.detection.py                        | 21 ++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.medium.-.cycle.detection/cycle.detection.py b/hackerrank/data.structures.-.linked.lists.-.medium.-.cycle.detection/cycle.detection.py
+index 99d5a61..cea2f12 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.medium.-.cycle.detection/cycle.detection.py
++++ b/hackerrank/data.structures.-.linked.lists.-.medium.-.cycle.detection/cycle.detection.py
+@@ -47,6 +47,17 @@ def print_singly_linked_list(node, sep, fptr):
+ #
+ #
+ def has_cycle(head):
++    # index the node object and fail on 'next is in index'
++    res = False
++    d = {}
++    n = head
++    while n != None:
++        if n in d:
++            res = True
++            break
++        d[n] = 1
++        n = n.next
++    return res
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+@@ -63,16 +74,16 @@ if __name__ == '__main__':
+         for _ in range(llist_count):
+             llist_item = int(input())
+             llist.insert_node(llist_item)
+-            
++
+         extra = SinglyLinkedListNode(-1);
+         temp = llist.head;
+ 
+         for _ in range(llist_count):
+-          	if i == index:
+-              	extra = temp
+-            
++            if i == index:
++                extra = temp
++
+             if i != llist_count-1:
+-              	temp = temp.next
++                temp = temp.next
+ 
+         temp.next = extra
+ 
+-- 
+2.23.0
+
