@@ -1,0 +1,46 @@
+From b014ef8a299f2b3584a668f8d8a534341ff62a95 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 12 Apr 2019 08:14:16 +0100
+Subject: [add] hackerrank, 'cycle detection', javascript port
+
+---
+ .../cycle.detection.js                           | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.medium.-.cycle.detection/cycle.detection.js b/hackerrank/data.structures.-.linked.lists.-.medium.-.cycle.detection/cycle.detection.js
+index 2fcacec..beb406e 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.medium.-.cycle.detection/cycle.detection.js
++++ b/hackerrank/data.structures.-.linked.lists.-.medium.-.cycle.detection/cycle.detection.js
+@@ -74,7 +74,19 @@ function printSinglyLinkedList(node, sep, ws) {
+  *
+  */
+ function hasCycle(head) {
+-
++    // index the node object and fail on 'next is in index'
++    var res = "0";
++    var d = {};
++    var n = head;
++    while (n != null) {
++        if (n in d) {
++            res = "1";
++            break;
++        }
++        d[n] = 1;
++        n = n.next;
++    }
++    console.log(res);
+ }
+ 
+ function main() {
+@@ -97,7 +109,7 @@ function main() {
+       	const extra = new SinglyLinkedListNode(-1);
+         const temp = llist.head;
+ 
+-        for (int i = 0; i < llistCount; i++) {
++        for (let i = 0; i < llistCount; i++) {
+           	if (i == index) {
+             	extra = temp;
+           	}
+-- 
+2.23.0
+
