@@ -1,0 +1,26 @@
+From b1aa24caad8f5110487fd4882591ffc5ad40821a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 13 Apr 2019 16:03:39 +0100
+Subject: [add] hackerrank, 'pointers in c', c solution
+
+---
+ .../c.-.introduction.-.easy.-.pointers.in.c/pointers.in.c.c    | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/hackerrank/c.-.introduction.-.easy.-.pointers.in.c/pointers.in.c.c b/hackerrank/c.-.introduction.-.easy.-.pointers.in.c/pointers.in.c.c
+index d207556..4bd0c7c 100644
+--- a/hackerrank/c.-.introduction.-.easy.-.pointers.in.c/pointers.in.c.c
++++ b/hackerrank/c.-.introduction.-.easy.-.pointers.in.c/pointers.in.c.c
+@@ -2,6 +2,9 @@
+ 
+ void update(int *a,int *b) {
+     // Complete this function
++    int aa = *a;
++    *a += *b;
++    *b = aa - *b >= 0 ? aa - *b : -1 * (aa - *b);
+ }
+ 
+ int main() {
+-- 
+2.23.0
+
