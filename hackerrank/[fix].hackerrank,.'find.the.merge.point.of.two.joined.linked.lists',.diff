@@ -1,0 +1,75 @@
+From b79d3ed6f5422a5eca197f022304aee7d79ddb5c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 15 Apr 2019 09:03:22 +0100
+Subject: [fix] hackerrank, 'find the merge point of two joined linked lists',
+ javascript solution
+
+-switch to ES2016's WeakMap'
+---
+ ....merge.point.of.two.joined.linked.lists.js | 41 +++++++++----------
+ 1 file changed, 19 insertions(+), 22 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.find.the.merge.point.of.two.joined.linked.lists/find.the.merge.point.of.two.joined.linked.lists.js b/hackerrank/data.structures.-.linked.lists.-.easy.-.find.the.merge.point.of.two.joined.linked.lists/find.the.merge.point.of.two.joined.linked.lists.js
+index e97eccd..d24444e 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.find.the.merge.point.of.two.joined.linked.lists/find.the.merge.point.of.two.joined.linked.lists.js
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.find.the.merge.point.of.two.joined.linked.lists/find.the.merge.point.of.two.joined.linked.lists.js
+@@ -76,37 +76,34 @@ function printSinglyLinkedList(node, sep, ws) {
+ // You only need to complete this method.
+ 
+ function findMergeNode(headA, headB) {
+-    //console.log(`headA: ${JSON.stringify(headA)}`);
+-    //console.log(`headB: ${JSON.stringify(headB)}`);
+-    //console.log(`headA: ${headA}`);
+-    //console.log(`headB: ${headB}`);
+     var res = -1;
+-    var n = headA;
+-    var n2;
+     var serial;
+-    var serial2;
++
+     // cannot build a map for first list using objects
+     // property names are implicitly converted to valid strings. no
+     // serialisation will work here as the paths pre merge point might look
+     // itentical
+     // thus loops and the === operator
++
++    // === n2 approach too slow
++    var d = new WeakMap();  // ES2015
++
++    var n = headA;
+     while (n) {
+-        serial = JSON.stringify(n);
+-        //console.log(`headB | serial: ${serial}`);
+-        // if (n in d) {
+-        n2 = headB;
+-        while (n2) {
+-            serial2 = JSON.stringify(n2);
+-            //console.log(`testing | serial: ${serial2}`);
+-            if (n === n2) {
+-                res = n.data;
+-                //console.log(`matched serial: ${serial2}`);
+-                break;
+-            }
+-            n2 = n2.next;
+-        }
+-        if (res != -1)
++        d.set(n, 1);
++        n = n.next;
++    }
++    n = headB;
++    while (n) {
++        var v = 0;
++        v = d.get(n);
++        //console.log(`retrieved value: ${v}`);
++        if (v) {
++            //serial = JSON.stringify(n);
++            //console.log(`matched serial: ${serial}`);
++            res = n.data;
+             break;
++        }
+         n = n.next;
+     }
+     return res;
+-- 
+2.23.0
+
