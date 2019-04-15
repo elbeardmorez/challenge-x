@@ -1,0 +1,59 @@
+From d6fd2c2b20c3ab249af53270a6208f2a7aa0e744 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 15 Apr 2019 08:41:14 +0100
+Subject: [add] hackerrank, 'find the merge point of two joined linked lists',
+ javascript solution
+
+---
+ ....merge.point.of.two.joined.linked.lists.js | 35 ++++++++++++++++++-
+ 1 file changed, 34 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.find.the.merge.point.of.two.joined.linked.lists/find.the.merge.point.of.two.joined.linked.lists.js b/hackerrank/data.structures.-.linked.lists.-.easy.-.find.the.merge.point.of.two.joined.linked.lists/find.the.merge.point.of.two.joined.linked.lists.js
+index c8d32c0..e97eccd 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.find.the.merge.point.of.two.joined.linked.lists/find.the.merge.point.of.two.joined.linked.lists.js
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.find.the.merge.point.of.two.joined.linked.lists/find.the.merge.point.of.two.joined.linked.lists.js
+@@ -76,7 +76,40 @@ function printSinglyLinkedList(node, sep, ws) {
+ // You only need to complete this method.
+ 
+ function findMergeNode(headA, headB) {
+-
++    //console.log(`headA: ${JSON.stringify(headA)}`);
++    //console.log(`headB: ${JSON.stringify(headB)}`);
++    //console.log(`headA: ${headA}`);
++    //console.log(`headB: ${headB}`);
++    var res = -1;
++    var n = headA;
++    var n2;
++    var serial;
++    var serial2;
++    // cannot build a map for first list using objects
++    // property names are implicitly converted to valid strings. no
++    // serialisation will work here as the paths pre merge point might look
++    // itentical
++    // thus loops and the === operator
++    while (n) {
++        serial = JSON.stringify(n);
++        //console.log(`headB | serial: ${serial}`);
++        // if (n in d) {
++        n2 = headB;
++        while (n2) {
++            serial2 = JSON.stringify(n2);
++            //console.log(`testing | serial: ${serial2}`);
++            if (n === n2) {
++                res = n.data;
++                //console.log(`matched serial: ${serial2}`);
++                break;
++            }
++            n2 = n2.next;
++        }
++        if (res != -1)
++            break;
++        n = n.next;
++    }
++    return res;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
