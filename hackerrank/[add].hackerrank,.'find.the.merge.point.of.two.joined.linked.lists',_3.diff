@@ -1,0 +1,42 @@
+From 858e8909e5adad3a07a9aca03cc84553d69217af Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 15 Apr 2019 09:05:15 +0100
+Subject: [add] hackerrank, 'find the merge point of two joined linked lists',
+ python solution
+
+---
+ ...e.merge.point.of.two.joined.linked.lists.py | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.linked.lists.-.easy.-.find.the.merge.point.of.two.joined.linked.lists/find.the.merge.point.of.two.joined.linked.lists.py b/hackerrank/data.structures.-.linked.lists.-.easy.-.find.the.merge.point.of.two.joined.linked.lists/find.the.merge.point.of.two.joined.linked.lists.py
+index 1f3a46f..c5578e8 100644
+--- a/hackerrank/data.structures.-.linked.lists.-.easy.-.find.the.merge.point.of.two.joined.linked.lists/find.the.merge.point.of.two.joined.linked.lists.py
++++ b/hackerrank/data.structures.-.linked.lists.-.easy.-.find.the.merge.point.of.two.joined.linked.lists/find.the.merge.point.of.two.joined.linked.lists.py
+@@ -47,6 +47,24 @@ def print_singly_linked_list(node, sep, fptr):
+ #
+ #
+ def findMergeNode(head1, head2):
++    #print(f"headA: ${head1}")
++    #print(f"headB: ${head2}")
++    res = -1
++    n = head1
++    d = {}
++    while n:
++        #print(f"head1 | ${n}")
++        d[n] = 1
++        n = n.next
++    n = head2
++    while n:
++        #print(f"head2 | ${n}");
++        if n in d:
++            #print(f"matched: ${n}")
++            res = n.data
++            break
++        n = n.next
++    return res
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
