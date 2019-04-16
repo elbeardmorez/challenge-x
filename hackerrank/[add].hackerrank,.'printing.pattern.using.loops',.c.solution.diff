@@ -1,0 +1,57 @@
+From 3c538dd68ddf8c2c98ca08ede3f7619c1159d965 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 16 Apr 2019 23:22:57 +0100
+Subject: [add] hackerrank, 'printing pattern using loops', c solution
+
+---
+ .../printing.pattern.using.loops.c            | 30 ++++++++++++++++++-
+ 1 file changed, 29 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/c.-.conditionals.and.loops.-.medium.-.printing.pattern.using.loops/printing.pattern.using.loops.c b/hackerrank/c.-.conditionals.and.loops.-.medium.-.printing.pattern.using.loops/printing.pattern.using.loops.c
+index 9cee366..42aa55e 100644
+--- a/hackerrank/c.-.conditionals.and.loops.-.medium.-.printing.pattern.using.loops/printing.pattern.using.loops.c
++++ b/hackerrank/c.-.conditionals.and.loops.-.medium.-.printing.pattern.using.loops/printing.pattern.using.loops.c
+@@ -3,11 +3,39 @@
+ #include <math.h>
+ #include <stdlib.h>
+ 
+-int main() 
++int main()
+ {
+ 
+     int n;
+     scanf("%d", &n);
+     // Complete the code to print the pattern.
++
++    char sn[5];
++    sprintf(sn, "%d", n);
++    int i = 0;
++    while (sn[i] != '\0')
++        i++;
++    int unit_length = i;
++    char fmt[4];
++    sprintf(fmt, "%%%dd", unit_length);
++    //printf("unit length: '%d'", unit_length);
++    char buf[(unit_length + 1) * ((n - 1) * 2 + 1)];
++    int l, l2, pos, d;
++    for (l = -(n - 1); l <= (n - 1); l++) {
++        pos = 0;
++        for (l2 = -(n - 1); l2 <= (n - 1); l2++) {
++            d = fmax(abs(l), abs(l2)) + 1;
++            sprintf(buf + pos, fmt, d);
++            pos += unit_length;
++            if (l2 < n - 1) {
++                buf[pos] = ' ';
++                pos += 1;
++            }
++            //printf("%d", pos);
++        }
++        buf[pos] = '\0';
++        printf("%s\n", buf);
++    }
++
+     return 0;
+ }
+-- 
+2.23.0
+
