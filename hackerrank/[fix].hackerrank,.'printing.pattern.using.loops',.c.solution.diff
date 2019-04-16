@@ -1,0 +1,53 @@
+From ed0087573991b29808747b76b134af4e0a44e738 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 16 Apr 2019 23:36:16 +0100
+Subject: [fix] hackerrank, 'printing pattern using loops', c solution
+
+-regress (original looks better!) to no consideration of digit width
+in padding
+---
+ .../printing.pattern.using.loops.c            | 22 +++++++++----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
+
+diff --git a/hackerrank/c.-.conditionals.and.loops.-.medium.-.printing.pattern.using.loops/printing.pattern.using.loops.c b/hackerrank/c.-.conditionals.and.loops.-.medium.-.printing.pattern.using.loops/printing.pattern.using.loops.c
+index 42aa55e..3aab782 100644
+--- a/hackerrank/c.-.conditionals.and.loops.-.medium.-.printing.pattern.using.loops/printing.pattern.using.loops.c
++++ b/hackerrank/c.-.conditionals.and.loops.-.medium.-.printing.pattern.using.loops/printing.pattern.using.loops.c
+@@ -10,23 +10,23 @@ int main()
+     scanf("%d", &n);
+     // Complete the code to print the pattern.
+ 
+-    char sn[5];
+-    sprintf(sn, "%d", n);
+-    int i = 0;
+-    while (sn[i] != '\0')
+-        i++;
+-    int unit_length = i;
+-    char fmt[4];
+-    sprintf(fmt, "%%%dd", unit_length);
++    //char sn[5];
++    //sprintf(sn, "%d", n);
++    //int i = 0;
++    //while (sn[i] != '\0')
++    //   i++;
++    //int unit_length = i;
++    //char fmt[4];
++    //sprintf(fmt, "%%%dd", unit_length);
+     //printf("unit length: '%d'", unit_length);
+-    char buf[(unit_length + 1) * ((n - 1) * 2 + 1)];
++    char* fmt = "%d";
++    char buf[5 * ((n - 1) * 2 + 1)];
+     int l, l2, pos, d;
+     for (l = -(n - 1); l <= (n - 1); l++) {
+         pos = 0;
+         for (l2 = -(n - 1); l2 <= (n - 1); l2++) {
+             d = fmax(abs(l), abs(l2)) + 1;
+-            sprintf(buf + pos, fmt, d);
+-            pos += unit_length;
++            pos += sprintf(buf + pos, fmt, d);
+             if (l2 < n - 1) {
+                 buf[pos] = ' ';
+                 pos += 1;
+-- 
+2.23.0
+
