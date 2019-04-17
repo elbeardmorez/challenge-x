@@ -1,0 +1,33 @@
+From 8088257f0540a92f397b8bab0efc675a309ea4de Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 17 Apr 2019 19:22:47 +0100
+Subject: [add] hackerrank, 'array reversal', c solution
+
+---
+ .../array.reversal.c                                   | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/hackerrank/c.-.arrays.and.strings.-.medium.-.array.reversal/array.reversal.c b/hackerrank/c.-.arrays.and.strings.-.medium.-.array.reversal/array.reversal.c
+index 31560b7..6e35e7d 100644
+--- a/hackerrank/c.-.arrays.and.strings.-.medium.-.array.reversal/array.reversal.c
++++ b/hackerrank/c.-.arrays.and.strings.-.medium.-.array.reversal/array.reversal.c
+@@ -11,6 +11,16 @@ int main()
+     }
+ 
+     /* Write the logic to reverse the array. */
++    int num_x;
++    int l, l2;
++    l2 = num - 1;
++    for (l = 0; l < l2; l++) {
++        num_x = arr[l];
++        //printf("%d", num_x);
++        arr[l] = arr[l2];
++        arr[l2] = num_x;
++        l2--;
++    }
+ 
+     for(i = 0; i < num; i++)
+         printf("%d ", *(arr + i));
+-- 
+2.23.0
+
