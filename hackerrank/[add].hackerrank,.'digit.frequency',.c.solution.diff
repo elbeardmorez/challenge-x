@@ -1,0 +1,44 @@
+From 7510f9962ee0fe4edf0546cded2d3552ea5e8208 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 19 Apr 2019 12:19:08 +0100
+Subject: [add] hackerrank, 'digit frequency', c solution
+
+---
+ .../digit.frequency.c                         | 22 +++++++++++++++++++
+ 1 file changed, 22 insertions(+)
+
+diff --git a/hackerrank/c.-.arrays.and.strings.-.medium.-.digit.frequency/digit.frequency.c b/hackerrank/c.-.arrays.and.strings.-.medium.-.digit.frequency/digit.frequency.c
+index 131a273..cef6ee8 100644
+--- a/hackerrank/c.-.arrays.and.strings.-.medium.-.digit.frequency/digit.frequency.c
++++ b/hackerrank/c.-.arrays.and.strings.-.medium.-.digit.frequency/digit.frequency.c
+@@ -6,5 +6,27 @@
+ int main() {
+ 
+     /* Enter your code here. Read input from STDIN. Print output to STDOUT */
++    int l, x, count[10] = {0};
++    char abyss[100];
++    while (1) {
++        l = 0;
++        l = scanf("%1d", &x);
++        if (l > 0 && x >= 0 && x <= 9) {
++            //printf("l: %d\n", l);
++            (count[x])++;
++            continue;
++        }
++        // discard
++        l = scanf("%c", abyss);
++        //printf("l2: %d\n", l);
++        if (l < 0)
++            break;
++    }
++    for (l = 0; l <= 9; l++) {
++        if (l == 9 )
++            printf("%d\n", count[l]);
++        else
++            printf("%d ", count[l]);
++    }
+     return 0;
+ }
+-- 
+2.23.0
+
