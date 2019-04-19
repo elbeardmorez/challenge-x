@@ -1,0 +1,30 @@
+From bf26856ec123197d1799a98461f9040e5e3b7bab Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 19 Apr 2019 10:01:13 +0100
+Subject: [add] hackerrank, 'sum and difference of two numbers', c solution
+
+---
+ .../sum.and.difference.of.two.numbers.c                    | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/c.-.introduction.-.easy.-.sum.and.difference.of.two.numbers/sum.and.difference.of.two.numbers.c b/hackerrank/c.-.introduction.-.easy.-.sum.and.difference.of.two.numbers/sum.and.difference.of.two.numbers.c
+index 5686c60..a962157 100644
+--- a/hackerrank/c.-.introduction.-.easy.-.sum.and.difference.of.two.numbers/sum.and.difference.of.two.numbers.c
++++ b/hackerrank/c.-.introduction.-.easy.-.sum.and.difference.of.two.numbers/sum.and.difference.of.two.numbers.c
+@@ -5,7 +5,12 @@
+ 
+ int main()
+ {
+-
++    int i1, i2;
++    float f1, f2;
++    scanf("%d %d\n", &i1, &i2);
++    scanf("%f %f\n", &f1, &f2);
++    printf("%d %d\n", i1 + i2, i1 - i2);
++    printf("%.1f %.1f\n", f1 + f2, f1 - f2);
+ 
+     return 0;
+ }
+-- 
+2.23.0
+
