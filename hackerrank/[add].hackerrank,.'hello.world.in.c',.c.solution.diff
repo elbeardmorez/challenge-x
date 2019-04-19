@@ -1,0 +1,24 @@
+From 1d60bfd4df3862bab4b70584873f53ad9156f702 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 19 Apr 2019 09:35:42 +0100
+Subject: [add] hackerrank, 'hello world in c', c solution
+
+---
+ .../hello.world.in.c.c                                          | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/hackerrank/c.-.introduction.-.easy.-.hello.world.in.c/hello.world.in.c.c b/hackerrank/c.-.introduction.-.easy.-.hello.world.in.c/hello.world.in.c.c
+index 107a383..8d985ee 100644
+--- a/hackerrank/c.-.introduction.-.easy.-.hello.world.in.c/hello.world.in.c.c
++++ b/hackerrank/c.-.introduction.-.easy.-.hello.world.in.c/hello.world.in.c.c
+@@ -10,5 +10,7 @@ int main()
+     scanf("%[^\n]%*c", &s);
+ 
+     /* Enter your code here. Read input from STDIN. Print output to STDOUT */
++    char* s0 = "Hello, World!";
++    printf("%s\n%s", s0, s);
+     return 0;
+ }
+-- 
+2.23.0
+
