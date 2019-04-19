@@ -1,0 +1,65 @@
+From d8ca275bda1f168a478568b2b8301aed99b63b53 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 19 Apr 2019 13:48:11 +0100
+Subject: [add] hackerrank, 'dynamic array in c', c solution
+
+---
+ .../dynamic.array.in.c.c                      | 29 ++++++++++++++++++-
+ 1 file changed, 28 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/c.-.arrays.and.strings.-.medium.-.dynamic.array.in.c/dynamic.array.in.c.c b/hackerrank/c.-.arrays.and.strings.-.medium.-.dynamic.array.in.c/dynamic.array.in.c.c
+index d30e4b6..73dbdc3 100644
+--- a/hackerrank/c.-.arrays.and.strings.-.medium.-.dynamic.array.in.c/dynamic.array.in.c.c
++++ b/hackerrank/c.-.arrays.and.strings.-.medium.-.dynamic.array.in.c/dynamic.array.in.c.c
+@@ -1,5 +1,8 @@
++#define SHELF_SIZE 1100
++
+ #include <stdio.h>
+ #include <stdlib.h>
++#include <string.h>
+ 
+ /*
+  * This stores the total number of books in each shelf.
+@@ -17,6 +20,17 @@ int main()
+     int total_number_of_shelves;
+     scanf("%d", &total_number_of_shelves);
+ 
++    // allocate space for shelf book totals
++    total_number_of_books = malloc(total_number_of_shelves * sizeof(int));
++    memset(total_number_of_books, 0, total_number_of_shelves * sizeof(int));
++    // allocate space for shelf book page counts
++    total_number_of_pages = malloc(total_number_of_shelves * sizeof(int*));
++    memset(total_number_of_pages, 0, total_number_of_shelves * sizeof(int*));
++
++    // allocate something to mitigate problem impromentation
++    for (int i = 0; i < total_number_of_shelves; i++)
++        *(total_number_of_pages + i) = malloc(sizeof(int) * 1);
++
+     int total_number_of_queries;
+     scanf("%d", &total_number_of_queries);
+ 
+@@ -30,7 +44,20 @@ int main()
+              */
+             int x, y;
+             scanf("%d %d", &x, &y);
+-
++            // y pages
++            // x shelf
++            // insert book at end of shelf
++            //printf("x: %d, y: %d\n", x, y);
++            int bos = *(total_number_of_books + x);
++            if (bos == 0) {
++                // allocat space for book page counts
++                free(*(total_number_of_pages + x));
++                *(total_number_of_pages + x) = malloc(sizeof(int) * SHELF_SIZE);
++                memset(*(total_number_of_pages + x), 0, sizeof(int) * SHELF_SIZE);
++            }
++            // add book
++            (*(total_number_of_books + x))++;
++            *(*(total_number_of_pages + x) + bos) = y;
+         } else if (type_of_query == 2) {
+             int x, y;
+             scanf("%d %d", &x, &y);
+-- 
+2.23.0
+
