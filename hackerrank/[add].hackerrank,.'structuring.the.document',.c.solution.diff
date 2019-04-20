@@ -1,0 +1,156 @@
+From 372a652149fadd3498cc9cd185046223d75ab144 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 20 Apr 2019 11:07:02 +0100
+Subject: [add] hackerrank, 'structuring the document', c solution
+
+---
+ .../structuring.the.document.c                | 120 +++++++++++++++++-
+ 1 file changed, 116 insertions(+), 4 deletions(-)
+
+diff --git a/hackerrank/c.-.structs.and.enums.-.hard.-.structuring.the.document/structuring.the.document.c b/hackerrank/c.-.structs.and.enums.-.hard.-.structuring.the.document/structuring.the.document.c
+index e4c06c5..5d09b89 100644
+--- a/hackerrank/c.-.structs.and.enums.-.hard.-.structuring.the.document/structuring.the.document.c
++++ b/hackerrank/c.-.structs.and.enums.-.hard.-.structuring.the.document/structuring.the.document.c
+@@ -23,23 +23,135 @@ struct document {
+     struct paragraph* data;
+     int paragraph_count;//denotes number of paragraphs in a document
+ };
++
+ struct document get_document(char* text) {
+ 
++    int l, pos;
++    int *lp, *ls, *lw;
++    char buf[MAX_CHARACTERS];
++
++    const int s_batch = 10;
++    int s_size = s_batch;
++    const int w_batch = 50;
++    int w_size = w_batch;
++
++    typedef struct document DOCUMENT;
++    typedef struct paragraph PARAGRAPH;
++    typedef struct sentence SENTENCE;
++    typedef struct word WORD;
++
++    DOCUMENT* doc = malloc(sizeof(DOCUMENT));
++    PARAGRAPH* cp;
++    SENTENCE* cs;
++    WORD* cw;
++
++    PARAGRAPH* p = malloc(sizeof(PARAGRAPH) * MAX_PARAGRAPHS);
++    doc->data = p;
++    cp = doc->data;
++    lp = &(doc->paragraph_count);
++    *lp = 0;
++    SENTENCE* s = malloc(sizeof(SENTENCE) * s_size);
++    cp->data = s;
++    cs = cp->data;
++    ls = &(cp->sentence_count);
++    *ls = 0;
++    WORD* w = malloc(sizeof(WORD) * w_size);
++    cs->data = w;
++    cw = cs->data;
++    lw = &(cs->word_count);
++    *lw = 0;
++    pos = 0;
++    while (1) {
++        buf[0] = '\0';
++        l = sscanf(text + pos, "%c", buf);
++        if (buf[0] == '\n' || l <= 0) {
++            // end of paragraph
++            // push paragraph to doc
++            (*lp)++;
++            if (l <= 0)
++                break;
++
++            // not eof, set up next paragraph
++            cp = (cp + 1);
++            SENTENCE* s2 = malloc(sizeof(SENTENCE) * s_size);
++            cp->data = s2;
++            cs = cp->data;
++            ls = &(cp->sentence_count);
++            *ls = 0;
++            WORD* w2 = malloc(sizeof(WORD) * w_size);
++            cs->data = w2;
++            cw = cs->data;
++            lw = &(cs->word_count);
++            *lw = 0;
++        } else if (buf[0] == ' ') {
++            //buf[1] = '\0';
++            //printf("unsupported char: %s", buf);
++        } else {
++            l = sscanf(text + pos, "%s", buf);  // consumes whitespace prefix
++            if (l != 1)
++                assert(0);
++            int eos = 0;
++            // set word
++            l = strlen(buf);
++            if (buf[l - 1] == '.') {
++                eos = 1;
++                l--;
++            }
++            buf[l]='\0';
++            char* s_ = malloc(sizeof(char) * (l + 1));
++            strcpy(s_, buf);
++            cw->data = s_;
++            // push word to sentence
++            (*lw)++;
++            if (*lw > w_size) {
++                // expand words size
++                // w_size = w_size + w_batch;
++                printf("expand words array size to size: '%d'\n", w_size);
++            }
++            //cs->data[*lw] = *cw;
++            if (eos == 1) {
++                // end of sentence
++                l++; // skip period
++                // push sentence to paragraph
++                (*ls)++;
++                if (*ls + 1 > s_size) {
++                    // expand sentences size
++                    // s_size = s_size + s_batch;
++                    printf("expand sentences array size to size: '%d'\n", s_size);
++                }
++                // set up next sentence
++                cs = (cs + 1);
++                //WORD w2[w_size];
++                WORD* w2 = malloc(sizeof(WORD) * w_size);
++                cs->data = w2;
++                cw = cs->data;
++                lw = &(cs->word_count);
++                *lw = 0;
++            } else {
++              // set up next word
++              cw = (cw + 1);
++            }
++        }
++        //printf("read %d chars, word: '%s'\n", l, buf);
++        // move counter
++        pos = pos + l;
++    }
++
++    return *doc;
+ }
+ 
+ struct word kth_word_in_mth_sentence_of_nth_paragraph(struct document Doc, int k, int m, int n) {
+-
++    return Doc.data[n-1].data[m-1].data[k-1];
+ }
+ 
+ struct sentence kth_sentence_in_mth_paragraph(struct document Doc, int k, int m) {
+-
++    return Doc.data[m-1].data[k-1];
+ }
+ 
+ struct paragraph kth_paragraph(struct document Doc, int k) {
+-
++    return Doc.data[k-1];
+ }
+ 
+-
+ void print_word(struct word w) {
+     printf("%s", w.data);
+ }
+-- 
+2.23.0
+
