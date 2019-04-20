@@ -1,0 +1,46 @@
+From 76cf416b853d5da6fd700130a39bc90fe1d4550a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 20 Apr 2019 15:02:48 +0100
+Subject: [add] hackerrank, 'bitwise operators', c solution
+
+---
+ .../bitwise.operators.c                       | 21 +++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+diff --git a/hackerrank/c.-.conditionals.and.loops.-.easy.-.bitwise.operators/bitwise.operators.c b/hackerrank/c.-.conditionals.and.loops.-.easy.-.bitwise.operators/bitwise.operators.c
+index c3daebe..1f10cb2 100644
+--- a/hackerrank/c.-.conditionals.and.loops.-.easy.-.bitwise.operators/bitwise.operators.c
++++ b/hackerrank/c.-.conditionals.and.loops.-.easy.-.bitwise.operators/bitwise.operators.c
+@@ -4,8 +4,29 @@
+ #include <stdlib.h>
+ //Complete the following function.
+ 
++int max_operator_for_set(int n, int k, char* type) {
++
++    int l, l2, res, max_;
++    max_ = 0;
++    for (l = 1; l <= n; l++) {
++        for (l2 = l + 1; l2 <= n; l2++) {
++            switch(type[0]) {
++                case 'a': res = l & l2; break;
++                case 'o': res = l | l2; break;
++                case 'x': res = l ^ l2; break;
++            }
++            if (res < k && res > max_)
++                max_ = res;
++        }
++    }
++    return max_;
++}
++
+ void calculate_the_maximum(int n, int k) {
+     //Write your code here.
++    printf("%d\n", max_operator_for_set(n, k, "and"));
++    printf("%d\n", max_operator_for_set(n, k, "or"));
++    printf("%d\n", max_operator_for_set(n, k, "xor"));
+ }
+ 
+ int main() {
+-- 
+2.23.0
+
