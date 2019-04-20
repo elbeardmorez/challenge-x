@@ -1,0 +1,41 @@
+From a9ba95705bc943815cc86133768af6a3f27cb104 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 20 Apr 2019 16:37:41 +0100
+Subject: [add] hackerrank, 'boxes through a tunnel', c solution
+
+---
+ .../boxes.through.a.tunnel.c                                 | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/hackerrank/c.-.structs.and.enums.-.easy.-.boxes.through.a.tunnel/boxes.through.a.tunnel.c b/hackerrank/c.-.structs.and.enums.-.easy.-.boxes.through.a.tunnel/boxes.through.a.tunnel.c
+index 459ead9..79c0f9a 100644
+--- a/hackerrank/c.-.structs.and.enums.-.easy.-.boxes.through.a.tunnel/boxes.through.a.tunnel.c
++++ b/hackerrank/c.-.structs.and.enums.-.easy.-.boxes.through.a.tunnel/boxes.through.a.tunnel.c
+@@ -7,6 +7,9 @@ struct box
+     /**
+     * Define three fields of type int: length, width and height
+     */
++    int length;
++    int width;
++    int height;
+ };
+ 
+ typedef struct box box;
+@@ -15,12 +18,14 @@ int get_volume(box b) {
+     /**
+     * Return the volume of the box
+     */
++    return b.length * b.width * b.height;
+ }
+ 
+ int is_lower_than_max_height(box b) {
+     /**
+     * Return 1 if the box's height is lower than MAX_HEIGHT and 0 otherwise
+     */
++    return (b.height < MAX_HEIGHT) ? 1 : 0;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
