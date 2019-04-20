@@ -1,0 +1,28 @@
+From 4e559dd292a07fe1bc00f264ff6114ebad963fb1 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 20 Apr 2019 13:56:33 +0100
+Subject: [add] hackerrank, 'conditional statements in c', c solution
+
+---
+ .../conditional.statements.in.c.c                            | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/hackerrank/c.-.conditionals.and.loops.-.easy.-.conditional.statements.in.c/conditional.statements.in.c.c b/hackerrank/c.-.conditionals.and.loops.-.easy.-.conditional.statements.in.c/conditional.statements.in.c.c
+index b25f644..7e4f1fd 100644
+--- a/hackerrank/c.-.conditionals.and.loops.-.easy.-.conditional.statements.in.c/conditional.statements.in.c.c
++++ b/hackerrank/c.-.conditionals.and.loops.-.easy.-.conditional.statements.in.c/conditional.statements.in.c.c
+@@ -21,6 +21,11 @@ int main()
+     if (n_endptr == n_str || *n_endptr != '\0') { exit(EXIT_FAILURE); }
+ 
+     // Write Your Code Here
++    if (n >= 1 && n <= 9) {
++        char* numbers_as_words[10] = { "", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
++        printf("%s\n", numbers_as_words[n]);
++    } else if (n > 9)
++        printf("Greater than 9\n");
+ 
+     return 0;
+ }
+-- 
+2.23.0
+
