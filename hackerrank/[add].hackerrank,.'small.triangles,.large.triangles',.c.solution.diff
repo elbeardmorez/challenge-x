@@ -1,0 +1,42 @@
+From e0b832bdf2bf6233d15b244eed3d52beb7c39cb7 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 20 Apr 2019 18:02:23 +0100
+Subject: [add] hackerrank, 'small triangles, large triangles', c solution
+
+---
+ .../small.triangles,.large.triangles.c            | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/hackerrank/c.-.structs.and.enums.-.medium.-.small.triangles,.large.triangles/small.triangles,.large.triangles.c b/hackerrank/c.-.structs.and.enums.-.medium.-.small.triangles,.large.triangles/small.triangles,.large.triangles.c
+index 4a1141a..c270595 100644
+--- a/hackerrank/c.-.structs.and.enums.-.medium.-.small.triangles,.large.triangles/small.triangles,.large.triangles.c
++++ b/hackerrank/c.-.structs.and.enums.-.medium.-.small.triangles,.large.triangles/small.triangles,.large.triangles.c
+@@ -10,10 +10,25 @@ struct triangle
+ };
+ 
+ typedef struct triangle triangle;
++float area_of_triangle(triangle* tr) {
++    float p;
++    p = 0.5 * (tr->a + tr->b + tr->c);
++    return sqrt(p * (p - tr->a) * (p - tr->b) * (p - tr->c));
++}
++
++int cmp_triangles(const void* a, const void* b) {
++    float area_a, area_b;
++    area_a = area_of_triangle((triangle*)a);
++    area_b = area_of_triangle((triangle*)b);
++    return area_a > area_b ? 1 : (area_a == area_b ? 0 : -1);
++}
++
+ void sort_by_area(triangle* tr, int n) {
+     /**
+     * Sort an array a of the length n
+     */
++    int l;
++    qsort(tr, n, sizeof(struct triangle), &cmp_triangles);
+ }
+ 
+ int main()
+-- 
+2.23.0
+
