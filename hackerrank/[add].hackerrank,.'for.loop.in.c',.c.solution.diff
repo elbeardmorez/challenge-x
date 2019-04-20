@@ -1,0 +1,32 @@
+From f130722093c285d9679aec7522e8c7d0c1744af1 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 20 Apr 2019 14:16:37 +0100
+Subject: [add] hackerrank, 'for loop in c', c solution
+
+---
+ .../for.loop.in.c.c                                      | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/hackerrank/c.-.conditionals.and.loops.-.easy.-.for.loop.in.c/for.loop.in.c.c b/hackerrank/c.-.conditionals.and.loops.-.easy.-.for.loop.in.c/for.loop.in.c.c
+index 72805ad..5c556b5 100644
+--- a/hackerrank/c.-.conditionals.and.loops.-.easy.-.for.loop.in.c/for.loop.in.c.c
++++ b/hackerrank/c.-.conditionals.and.loops.-.easy.-.for.loop.in.c/for.loop.in.c.c
+@@ -8,6 +8,15 @@ int main()
+     int a, b;
+     scanf("%d\n%d", &a, &b);
+     // Complete the code.
++    char* numbers_as_words[10] = { "", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
++    for (int n = a; n <= b; n++) {
++        if (n >= 1 && n <= 9) {
++            printf("%s\n", numbers_as_words[n]);
++        } else if (n % 2 == 0)
++            printf("even\n");
++        else if (n % 2 == 1)
++            printf("odd\n");
++    }
+ 
+     return 0;
+ }
+-- 
+2.23.0
+
