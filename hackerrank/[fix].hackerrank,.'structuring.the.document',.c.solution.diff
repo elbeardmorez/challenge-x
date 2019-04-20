@@ -1,0 +1,89 @@
+From 05671e340b1c6d78687ef7d51c93d02bcfd9b24d Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 20 Apr 2019 11:30:19 +0100
+Subject: [fix] hackerrank, 'structuring the document', c solution
+
+-give up on sscanf '%s', the input test that failed was poorly
+formatted, with no whitespace delimiting sentences
+---
+ .../structuring.the.document.c                | 49 ++++++++-----------
+ 1 file changed, 20 insertions(+), 29 deletions(-)
+
+diff --git a/hackerrank/c.-.structs.and.enums.-.hard.-.structuring.the.document/structuring.the.document.c b/hackerrank/c.-.structs.and.enums.-.hard.-.structuring.the.document/structuring.the.document.c
+index 5d09b89..dfbf4e1 100644
+--- a/hackerrank/c.-.structs.and.enums.-.hard.-.structuring.the.document/structuring.the.document.c
++++ b/hackerrank/c.-.structs.and.enums.-.hard.-.structuring.the.document/structuring.the.document.c
+@@ -83,20 +83,32 @@ struct document get_document(char* text) {
+             cw = cs->data;
+             lw = &(cs->word_count);
+             *lw = 0;
++        } else if (buf[0] == '.') {
++            // end of sentence
++            // push sentence to paragraph
++            (*ls)++;
++            if (*ls + 1 > s_size) {
++                // expand sentences size
++                // s_size = s_size + s_batch;
++                printf("expand sentences array size to size: '%d'\n", s_size);
++            }
++            // set up next sentence
++            cs = (cs + 1);
++            //WORD w2[w_size];
++            WORD* w2 = malloc(sizeof(WORD) * w_size);
++            cs->data = w2;
++            cw = cs->data;
++            lw = &(cs->word_count);
++            *lw = 0;
+         } else if (buf[0] == ' ') {
+             //buf[1] = '\0';
+             //printf("unsupported char: %s", buf);
+         } else {
+-            l = sscanf(text + pos, "%s", buf);  // consumes whitespace prefix
++            l = sscanf(text + pos, "%[^\n. ]", buf);  // consumes whitespace prefix
+             if (l != 1)
+                 assert(0);
+-            int eos = 0;
+             // set word
+             l = strlen(buf);
+-            if (buf[l - 1] == '.') {
+-                eos = 1;
+-                l--;
+-            }
+             buf[l]='\0';
+             char* s_ = malloc(sizeof(char) * (l + 1));
+             strcpy(s_, buf);
+@@ -108,29 +120,8 @@ struct document get_document(char* text) {
+                 // w_size = w_size + w_batch;
+                 printf("expand words array size to size: '%d'\n", w_size);
+             }
+-            //cs->data[*lw] = *cw;
+-            if (eos == 1) {
+-                // end of sentence
+-                l++; // skip period
+-                // push sentence to paragraph
+-                (*ls)++;
+-                if (*ls + 1 > s_size) {
+-                    // expand sentences size
+-                    // s_size = s_size + s_batch;
+-                    printf("expand sentences array size to size: '%d'\n", s_size);
+-                }
+-                // set up next sentence
+-                cs = (cs + 1);
+-                //WORD w2[w_size];
+-                WORD* w2 = malloc(sizeof(WORD) * w_size);
+-                cs->data = w2;
+-                cw = cs->data;
+-                lw = &(cs->word_count);
+-                *lw = 0;
+-            } else {
+-              // set up next word
+-              cw = (cw + 1);
+-            }
++            // set up next word
++            cw = (cw + 1);
+         }
+         //printf("read %d chars, word: '%s'\n", l, buf);
+         // move counter
+-- 
+2.23.0
+
