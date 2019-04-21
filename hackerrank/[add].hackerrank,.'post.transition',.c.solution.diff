@@ -1,0 +1,94 @@
+From 429746b2850792eaa5aee2107784451a7979df43 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 21 Apr 2019 16:29:12 +0100
+Subject: [add] hackerrank, 'post transition', c solution
+
+---
+ .../post.transition.c                         | 55 ++++++++++++++++++-
+ 1 file changed, 53 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/c.-.structs.and.enums.-.hard.-.post.transition/post.transition.c b/hackerrank/c.-.structs.and.enums.-.hard.-.post.transition/post.transition.c
+index 5d8781a..79770ba 100644
+--- a/hackerrank/c.-.structs.and.enums.-.hard.-.post.transition/post.transition.c
++++ b/hackerrank/c.-.structs.and.enums.-.hard.-.post.transition/post.transition.c
+@@ -1,5 +1,6 @@
+ #include <stdio.h>
+ #include <stdlib.h>
++#include <string.h>
+ #define MAX_STRING_LENGTH 6
+ 
+ struct package
+@@ -29,18 +30,68 @@ struct town
+ 
+ typedef struct town town;
+ 
+-
+-
+ void print_all_packages(town t) {
++    printf("%s:\n", t.name);
++    for (int l = 0; l < t.offices_count; l++) {
++        post_office o = t.offices[l];
++        printf("\t%d:\n", l);
++        for (int l2 = 0; l2 < o.packages_count; l2++) {
++            package p = o.packages[l2];
++            printf("\t\t%s\n", p.id);
++        }
++    }
+ }
+ 
+ void send_all_acceptable_packages(town* source, int source_office_index, town* target, int target_office_index) {
++    post_office *o_s = &(source->offices[source_office_index]), *o_t = &(target->offices[target_office_index]);
++    int c_s = 0, c_t = o_t->packages_count;
++    package* ps_s = malloc(sizeof(package) * o_s->packages_count);
++    package* ps_t = malloc(sizeof(package) * (o_s->packages_count + o_t->packages_count));
++    memcpy(ps_t, o_t->packages, sizeof(package) * c_t);
++    int *min_ = &(o_t->min_weight), *max_ = &(o_t->max_weight);
++    package p;
++    for (int l = 0; l < o_s->packages_count; l++) {
++        p = o_s->packages[l];
++        if (p.weight >= *min_ && p.weight <= *max_) {
++            // re-distribute
++            ps_t[c_t] = p;
++            c_t++;
++        } else {
++            ps_s[c_s] = p;
++            c_s++;
++        }
++    }
++    // update package sets
++    //free(o_s.packages);
++    o_s->packages = ps_s;
++    o_s->packages_count = c_s;
++    //free(o_t.packages);
++    o_t->packages = ps_t;
++    o_t->packages_count = c_t;
+ }
+ 
+ town town_with_most_packages(town* towns, int towns_count) {
++    int max_[2] = {-1, -1};
++    int l = 0, l2, total;
++    while (l < towns_count) {
++        total = 0;
++        for (l2 = 0; l2 < towns[l].offices_count; l2++) {
++            total = total + towns[l].offices[l2].packages_count;
++            if (total > max_[0]) {
++                max_[0] = total;
++                max_[1] = l;
++            }
++        }
++        l++;
++    }
++    return towns[max_[1]];
+ }
+ 
+ town* find_town(town* towns, int towns_count, char* name) {
++    int l = 0;
++    while (strcmp(towns[l].name, name) != 0)
++        l++;
++    return &(towns[l]);
+ }
+ 
+ int main()
+-- 
+2.23.0
+
