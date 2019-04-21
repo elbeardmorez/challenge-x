@@ -1,0 +1,30 @@
+From d560310f2ba56319cabded36d81804e09f1fda21 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 21 Apr 2019 16:46:21 +0100
+Subject: [add] hackerrank, 'students marks sum', c solution
+
+---
+ .../students.marks.sum.c                                   | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/hackerrank/c.-.functions.-.easy.-.students.marks.sum/students.marks.sum.c b/hackerrank/c.-.functions.-.easy.-.students.marks.sum/students.marks.sum.c
+index 4a767ed..0930712 100644
+--- a/hackerrank/c.-.functions.-.easy.-.students.marks.sum/students.marks.sum.c
++++ b/hackerrank/c.-.functions.-.easy.-.students.marks.sum/students.marks.sum.c
+@@ -7,6 +7,13 @@
+ 
+ int marks_summation(int* marks, int number_of_students, char gender) {
+     //Write your code here.
++    int offset = strcmp(&gender, "b") == 0 ? 0 : 1;
++    int l = 0, total = 0;
++    while (2 * l + offset < number_of_students) {
++        total = total + marks[2 * l + offset];
++        l++;
++    }
++    return total;
+ }
+ 
+ int main() {
+-- 
+2.23.0
+
