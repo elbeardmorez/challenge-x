@@ -1,0 +1,101 @@
+From 00c0304b6797e3f3f47c2f04360a771d2c8429b2 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 22 Apr 2019 23:52:16 +0100
+Subject: [mod] hackerrank, 'permutations of strings', c solution
+
+-speed-up, memset the double char pointer chunk in one
+-speed-up, utilise last iteration's guess and simply swap l-1 <-> l
+indexes to avoid difficult (and slightly more costly) segment copying
+-speed-up, add 'is_sorted_ascending' routine to determine whether or
+not we have to use the expensive sorting algorithm
+---
+ .../permutations.of.strings.c                 | 39 ++++++++++---------
+ 1 file changed, 21 insertions(+), 18 deletions(-)
+
+diff --git a/hackerrank/c.-.functions.-.medium.-.permutations.of.strings/permutations.of.strings.c b/hackerrank/c.-.functions.-.medium.-.permutations.of.strings/permutations.of.strings.c
+index 5f02016..46e29c6 100644
+--- a/hackerrank/c.-.functions.-.medium.-.permutations.of.strings/permutations.of.strings.c
++++ b/hackerrank/c.-.functions.-.medium.-.permutations.of.strings/permutations.of.strings.c
+@@ -29,6 +29,13 @@ int compare_strings_(const void* a, const void* b) {
+     //return strcmp(*(char**)a, *(char**)b) < 0 ? -1 : 1;  // unbalanced, non-stable
+ }
+ 
++int is_sorted_ascending(char** a_s, int n) {
++    int l = 0;
++    while (l < n - 1 && compare_strings(a_s[l], a_s[l + 1]) < 0)
++        l++;
++    return l == n - 1 ? 1 : 0;
++}
++
+ void sort_strings(char** a_s, int n) {
+     //quick insertion sort for mostly sorted array
+     char* tmp[n];
+@@ -46,8 +53,7 @@ void sort_strings(char** a_s, int n) {
+         // insert
+         tmp[l2] = a_s[l];
+     }
+-    for (int l = 0; l < n; l++)
+-        memcpy(a_s + l, tmp + l, sizeof(char *));
++    memcpy(a_s, tmp, n * sizeof(char *));
+ }
+ 
+ int compare_sets(int n, char** a, char** b) {
+@@ -77,26 +83,25 @@ int next_permutation(int n, char **s)
+     //char guess[100];
+     char* guess_ts_[10];
+     //char guess_ts[100];
++    char* last_[10];
++    char* tmp;
+     char res;
+-    int pos = 0;
+     int set = 0;
+     int ts_set;
+     for (int el = n - 1; el >= 1; el--) {
+         // test element 'el' in all positions earlier than itself e.g. 0-(el-1)
+-        for (int l = el - 1; l >= 0; l--) {
+-            if (l > 0)
+-                memcpy(guess_, s, l * sizeof(char*));  // 0 to l-1
+-            memcpy(guess_ + l, s + el, sizeof(char*));  // el
+-            if (el - l > 0)
+-                memcpy(guess_ + (l + 1), s + l, (el - l) * sizeof(char*));  // l+1-(el-1)
+-            if (n - (el + 1) > 0)
+-                memcpy(guess_ + (el + 1), s + (el + 1), (n - (el + 1)) * sizeof(char*));  // (el+1)-n
++        memcpy(last_, s, n * sizeof(char*));
++        for (int l = el; l > 0; l--) {
++            memcpy(guess_, last_, n * sizeof(char*));
++            tmp = guess_[l - 1];
++            guess_[l - 1] = guess_[l];
++            guess_[l] = tmp;
+             // try sorted tail first
+             ts_set = 0;
+-            if (n - (l + 1) >= 2) {
++            if (n - l >= 2 && is_sorted_ascending(guess_ + l, n - l) == 0) {
+                 memcpy(guess_ts_, guess_, n * sizeof(char*));
+-                //qsort(guess_ts_ + (l + 1), n - (l + 1), sizeof(char*), &compare_strings_);
+-                sort_strings(guess_ts_ + (l + 1), n - (l + 1));
++                //qsort(guess_ts_ + l, n - l, sizeof(char*), &compare_strings_);
++                sort_strings(guess_ts_ + l, n - l);
+                 //merge_strings(guess_ts_, n, guess_ts);
+                 if (compare_sets(n, guess_ts_, s) > 0) {
+                     // use tail ordered set first
+@@ -114,15 +119,13 @@ int next_permutation(int n, char **s)
+                     //printf("next set as '%s'\n", next);
+                 }
+             }
++            memcpy(last_, guess_, n * sizeof(char*));
+         }
+     }
+     if (set == 0)
+         return 0;
+     else {
+-        //s = next_;
+-        //memcpy(s, next_, n * sizeof(char *));
+-        for (int l = 0; l < n; l++)
+-            memcpy(s + l, next_ + l, sizeof(char *));
++        memcpy(s, next_, n * sizeof(char *));
+         return 1;
+     }
+ }
+-- 
+2.23.0
+
