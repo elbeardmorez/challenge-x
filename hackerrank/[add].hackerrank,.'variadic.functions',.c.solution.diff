@@ -1,0 +1,69 @@
+From 243db015998c6d2e468692aa877d4ecbadd99260 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 22 Apr 2019 09:28:31 +0100
+Subject: [add] hackerrank, 'variadic functions', c solution
+
+---
+ .../variadic.functions.c                      | 39 +++++++++++++++++--
+ 1 file changed, 36 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/c.-.functions.-.medium.-.variadic.functions/variadic.functions.c b/hackerrank/c.-.functions.-.medium.-.variadic.functions/variadic.functions.c
+index cb5fe57..e6695b9 100644
+--- a/hackerrank/c.-.functions.-.medium.-.variadic.functions/variadic.functions.c
++++ b/hackerrank/c.-.functions.-.medium.-.variadic.functions/variadic.functions.c
+@@ -5,16 +5,49 @@
+ 
+ #define MIN_ELEMENT 1
+ #define MAX_ELEMENT 1000000
+-int  sum (int count,...) {
+ 
++/* varaiadic macros
++va_list args
++va_start(args, n)
++val = va_arg(args, type)
++va_end(args)
++va_copy
++*/
++
++int sum (int count,...) {
++    int res = 0;
++    va_list args;
++    va_start(args, count);
++    for (int l = 0; l < count; l++)
++        res = res + va_arg(args, int);
++    va_end(args);
++    return res;
+ }
+ 
+ int min(int count,...) {
+-
++    int arg, res = MAX_ELEMENT;
++    va_list args;
++    va_start(args, count);
++    for (int l = 0; l < count; l++) {
++        arg = va_arg(args, int);
++        if (arg < res)
++            res = arg;
++    }
++    va_end(args);
++    return res;
+ }
+ 
+ int max(int count,...) {
+-
++    int arg, res = MIN_ELEMENT;
++    va_list args;
++    va_start(args, count);
++    for (int l = 0; l < count; l++) {
++        arg = va_arg(args, int);
++        if (arg > res)
++            res = arg;
++    }
++    va_end(args);
++    return res;
+ }
+ 
+ int test_implementations_by_sending_three_elements() {
+-- 
+2.23.0
+
