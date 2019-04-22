@@ -1,0 +1,82 @@
+From 54b3b981f2c471114c85bf20f3dfded04c155614 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 22 Apr 2019 13:16:42 +0100
+Subject: [add] hackerrank, 'permutations of strings', c solution
+
+---
+ .../permutations.of.strings.c                 | 52 +++++++++++++++++++
+ 1 file changed, 52 insertions(+)
+
+diff --git a/hackerrank/c.-.functions.-.medium.-.permutations.of.strings/permutations.of.strings.c b/hackerrank/c.-.functions.-.medium.-.permutations.of.strings/permutations.of.strings.c
+index 5ce4823..0c38abe 100644
+--- a/hackerrank/c.-.functions.-.medium.-.permutations.of.strings/permutations.of.strings.c
++++ b/hackerrank/c.-.functions.-.medium.-.permutations.of.strings/permutations.of.strings.c
+@@ -2,6 +2,15 @@
+ #include <stdlib.h>
+ #include <string.h>
+ 
++int merge_strings(char **s, int n, char *t) {
++    int pos = 0;
++    for (int l = 0; l < n; l++) {
++        strcpy(t + pos, *(s + l));
++        pos += strlen(*(s + l));
++    }
++    return pos;
++}
++
+ int next_permutation(int n, char **s)
+ {
+     /**
+@@ -9,6 +18,49 @@ int next_permutation(int n, char **s)
+     * Return 0 when there is no next permutation and 1 otherwise
+     * Modify array s to its next permutation
+     */
++    char last[100];
++    merge_strings(s, n, last);
++    // find the single element rotation which is lexographically
++    // mininally greater than last
++    char* next_[10];
++    //char** next_ = malloc(10 * sizeof(char *));
++    char next[100];
++    next[0]='\0';
++    char* guess_[10];
++    //char** guess_ = malloc(10 * sizeof(char *));
++    char guess[100];
++    char res;
++    int pos = 0;
++    for (int el = n - 1; el >= 1; el--) {
++        // test element 'el' in all positions earlier than itself e.g. 0-(el-1)
++        for (int l = el - 1; l >= 0; l--) {
++            if (l > 0)
++                memcpy(guess_, s, l * sizeof(char*));  // 0 to l-1
++            memcpy(guess_ + l, s + el, 1 * sizeof(char*));  // el
++            if (el - l > 0)
++                memcpy(guess_ + (l + 1), s + l, (el - l) * sizeof(char*));  // l+1-(el-1)
++            if (n - (el + 1) > 0)
++                memcpy(guess_ + (el + 1), s + (el + 1), (n - (el + 1)) * sizeof(char*));  // (el+1)-n
++            merge_strings(guess_, n, guess);
++            //printf("comparing last '%s' with '%s'\n", last, guess);
++            if (strcmp(guess, last) > 0) {
++                if (strlen(next) == 0 || strcmp(guess, next) < 0) {
++                    memcpy(next_, guess_, n * sizeof(char*));
++                    strcpy(next, guess);
++                    //printf("next set as '%s'\n", next);
++                }
++            }
++        }
++    }
++    if (strlen(next) == 0)
++        return 0;
++    else {
++        //s = next_;
++        //memcpy(s, next_, n * sizeof(char *));
++        for (int l = 0; l < n; l++)
++            memcpy(s + l, next_ + l, 1 * sizeof(char *));
++        return 1;
++    }
+ }
+ 
+ int main()
+-- 
+2.23.0
+
