@@ -1,0 +1,80 @@
+From 62eee9e01336dea2b03d4d920722f272d6ade986 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 22 Apr 2019 20:04:49 +0100
+Subject: [mod] hackerrank, 'permutations of strings', c solution
+
+-speed-up, less assigments
+-speed-up, fewer calls to compare_sets
+---
+ .../permutations.of.strings.c                 | 28 ++++++++++---------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
+
+diff --git a/hackerrank/c.-.functions.-.medium.-.permutations.of.strings/permutations.of.strings.c b/hackerrank/c.-.functions.-.medium.-.permutations.of.strings/permutations.of.strings.c
+index 6b79573..84fcd5d 100644
+--- a/hackerrank/c.-.functions.-.medium.-.permutations.of.strings/permutations.of.strings.c
++++ b/hackerrank/c.-.functions.-.medium.-.permutations.of.strings/permutations.of.strings.c
+@@ -16,22 +16,20 @@ int merge_strings(char **s, int n, char *t) {
+ }
+ 
+ int compare_strings(const void* a, const void* b) {
+-    char *item1 = *(char**)a;
+-    char *item2 = *(char**)b;
+-    int res = strcmp(item1, item2) < 0 ? -1 : 1;  // unbalanced, non-stable
+-    return res;
++    return strcmp(*(char**)a, *(char**)b) < 0 ? -1 : 1;  // unbalanced, non-stable
+ }
+ 
+ int compare_sets(int n, char** a, char** b) {
+-    char a1, b1;
++//    char a1, b1;
+     int res;
+     for (int l = 0; l < n; l++) {
+-       a1 = a[l][0];
+-       b1 = b[l][0];
+-       if (a1 != b1)
+-          return a1 < b1 ? -1 : 1;
++//       a1 = a[l][0];
++//       b1 = b[l][0];
++//       if (a1 != b1)
++       if ((res = a[l][0] - b[l][0]) != 0)
++           return res < 0 ? -1 : 1;
+        if ((res = strcmp(a[l], b[l])) != 0)
+-          return res < 0 ? -1 : 1;
++           return res < 0 ? -1 : 1;
+     }
+     return 0;
+ }
+@@ -57,6 +55,7 @@ int next_permutation(int n, char **s)
+     char res;
+     int pos = 0;
+     int set = 0;
++    int ts_set;
+     for (int el = n - 1; el >= 1; el--) {
+         // test element 'el' in all positions earlier than itself e.g. 0-(el-1)
+         for (int l = el - 1; l >= 0; l--) {
+@@ -68,16 +67,19 @@ int next_permutation(int n, char **s)
+             if (n - (el + 1) > 0)
+                 memcpy(guess_ + (el + 1), s + (el + 1), (n - (el + 1)) * sizeof(char*));  // (el+1)-n
+             // try sorted tail first
+-            memcpy(guess_ts_, guess_, n * sizeof(char*));
++            ts_set = 0;
+             if (n - (l + 1) >= 2) {
++                memcpy(guess_ts_, guess_, n * sizeof(char*));
+                 qsort(guess_ts_ + (l + 1), n - (l + 1), sizeof(char*), &compare_strings);
+                 //merge_strings(guess_ts_, n, guess_ts);
+-                if (compare_sets(n, guess_ts_, s) > 0)
++                if (compare_sets(n, guess_ts_, s) > 0) {
+                     // use tail ordered set first
++                    ts_set = 1;
+                     memcpy(guess_, guess_ts_, n * sizeof(char*));
++                }
+             }
+             //merge_strings(guess_, n, guess);
+-            if (compare_sets(n, guess_, s) > 0) {
++            if (ts_set || compare_sets(n, guess_, s) > 0) {
+                 //printf("comparing last '%s' with '%s'\n", last, guess);
+                 if (set == 0 || compare_sets(n, guess_, next_) < 0) {
+                     set = 1;
+-- 
+2.23.0
+
