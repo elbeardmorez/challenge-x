@@ -1,0 +1,42 @@
+From 1ba260c9d95dfae521861bd49931b8b13e18d431 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 22 Apr 2019 08:26:00 +0100
+Subject: [add] hackerrank, 'printing tokens', c solution
+
+---
+ .../printing.tokens.c                         | 20 +++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+diff --git a/hackerrank/c.-.arrays.and.strings.-.medium.-.printing.tokens/printing.tokens.c b/hackerrank/c.-.arrays.and.strings.-.medium.-.printing.tokens/printing.tokens.c
+index f3c6619..21289ea 100644
+--- a/hackerrank/c.-.arrays.and.strings.-.medium.-.printing.tokens/printing.tokens.c
++++ b/hackerrank/c.-.arrays.and.strings.-.medium.-.printing.tokens/printing.tokens.c
+@@ -10,5 +10,25 @@ int main() {
+     scanf("%[^\n]", s);
+     s = realloc(s, strlen(s) + 1);
+     //Write your logic to print the tokens of the sentence here.
++    char buf[1025];
++    int l, wc = 0, pos = 0;
++    while (1) {
++        buf[0] = '\0';
++        l = sscanf(s + pos, "%[^\n\t .,:;]", buf);
++        if (l > 0) {
++            l = strlen(buf);
++            if (wc == 0)
++                printf("%s", buf);
++            else
++                printf("\n%s", buf);
++            wc++;
++        } else {
++            l = sscanf(s + pos, "%[\n\t .,:;]", buf);
++            if (l < 0)
++                break;
++            l = strlen(buf);
++        }
++        pos = pos + l;
++    }
+     return 0;
+ }
+-- 
+2.23.0
+
