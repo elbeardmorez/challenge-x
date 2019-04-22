@@ -1,0 +1,33 @@
+From aabab9bb37715895547717a3d8bf404d6ccac233 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 22 Apr 2019 08:52:22 +0100
+Subject: [add] hackerrank, '1d arrays in c', c solution
+
+---
+ .../1d.arrays.in.c.c                                  | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/hackerrank/c.-.arrays.and.strings.-.easy.-.1d.arrays.in.c/1d.arrays.in.c.c b/hackerrank/c.-.arrays.and.strings.-.easy.-.1d.arrays.in.c/1d.arrays.in.c.c
+index 131a273..c4e20d7 100644
+--- a/hackerrank/c.-.arrays.and.strings.-.easy.-.1d.arrays.in.c/1d.arrays.in.c.c
++++ b/hackerrank/c.-.arrays.and.strings.-.easy.-.1d.arrays.in.c/1d.arrays.in.c.c
+@@ -6,5 +6,16 @@
+ int main() {
+ 
+     /* Enter your code here. Read input from STDIN. Print output to STDOUT */
++    int n, sum_ = 0;
++    scanf("%d\n", &n);
++    int numbers[n];
++    char buf[2];
++    //int* numbers = malloc(sizeof(int) * n);
++    for (int l = 0; l < n; l++) {
++        scanf("%d", numbers + l);
++        sum_ = sum_ + *(numbers + l);
++        scanf("%[ ]", buf);
++    }
++    printf("%d", sum_);
+     return 0;
+ }
+-- 
+2.23.0
+
