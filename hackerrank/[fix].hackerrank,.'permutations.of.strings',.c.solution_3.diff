@@ -1,0 +1,62 @@
+From b8e403f21a403a65b0f35957c1eead09da3a44e8 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 22 Apr 2019 19:20:44 +0100
+Subject: [fix] hackerrank, 'permutations of strings', c solution
+
+-incorrect set comparison as merged strings, which fails when sets
+contain strings of different lengths
+---
+ .../permutations.of.strings.c                 | 22 +++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/c.-.functions.-.medium.-.permutations.of.strings/permutations.of.strings.c b/hackerrank/c.-.functions.-.medium.-.permutations.of.strings/permutations.of.strings.c
+index cd96bc0..c19ba4a 100644
+--- a/hackerrank/c.-.functions.-.medium.-.permutations.of.strings/permutations.of.strings.c
++++ b/hackerrank/c.-.functions.-.medium.-.permutations.of.strings/permutations.of.strings.c
+@@ -7,6 +7,10 @@ int merge_strings(char **s, int n, char *t) {
+     for (int l = 0; l < n; l++) {
+         strcpy(t + pos, *(s + l));
+         pos += strlen(*(s + l));
++        if (l < n - 1) {
++            t[pos] = ' ';
++            pos++;
++        }
+     }
+     return pos;
+ }
+@@ -18,6 +22,20 @@ int compare_strings(const void* a, const void* b) {
+     return res;
+ }
+ 
++int compare_sets(int n, char** a, char** b) {
++    char a1, b1;
++    int res;
++    for (int l = 0; l < n; l++) {
++       a1 = a[l][0];
++       b1 = b[l][0];
++       if (a1 != b1)
++          return a1 < b1 ? -1 : 1;
++       if ((res = strcmp(a[l], b[l])) != 0)
++          return res < 0 ? -1 : 1;
++    }
++    return 0;
++}
++
+ int next_permutation(int n, char **s)
+ {
+     /**
+@@ -58,9 +76,9 @@ int next_permutation(int n, char **s)
+                     memcpy(guess_, guess_ts_, n * sizeof(char*));
+             }
+             merge_strings(guess_, n, guess);
+-            if (strcmp(guess, last) > 0) {
++            if (compare_sets(n, guess_, s) > 0) {
+                 //printf("comparing last '%s' with '%s'\n", last, guess);
+-                if (strlen(next) == 0 || strcmp(guess, next) < 0) {
++                if (strlen(next) == 0 || compare_sets(n, guess_, next_) < 0) {
+                     memcpy(next_, guess_, n * sizeof(char*));
+                     strcpy(next, guess);
+                     //printf("next set as '%s'\n", next);
+-- 
+2.23.0
+
