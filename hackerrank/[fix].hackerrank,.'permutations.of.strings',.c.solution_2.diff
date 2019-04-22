@@ -1,0 +1,68 @@
+From ea7cfac2c2bd3d797a04b3b9dde4331465495cc6 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 22 Apr 2019 17:10:14 +0100
+Subject: [fix] hackerrank, 'permutations of strings', c solution
+
+-pointer corruption in qsort comparison function for strings
+-only use tail sorted set if simple permutation doesn't fit
+criteria
+---
+ .../permutations.of.strings.c                 | 22 ++++++++++++++-----
+ 1 file changed, 16 insertions(+), 6 deletions(-)
+
+diff --git a/hackerrank/c.-.functions.-.medium.-.permutations.of.strings/permutations.of.strings.c b/hackerrank/c.-.functions.-.medium.-.permutations.of.strings/permutations.of.strings.c
+index 82cdf8b..cd96bc0 100644
+--- a/hackerrank/c.-.functions.-.medium.-.permutations.of.strings/permutations.of.strings.c
++++ b/hackerrank/c.-.functions.-.medium.-.permutations.of.strings/permutations.of.strings.c
+@@ -12,7 +12,10 @@ int merge_strings(char **s, int n, char *t) {
+ }
+ 
+ int compare_strings(const void* a, const void* b) {
+-    return (char *)a > (char *)b ? 0 : 1;  // unbalanced, non-stable
++    char *item1 = *(char**)a;
++    char *item2 = *(char**)b;
++    int res = strcmp(item1, item2) < 0 ? -1 : 1;  // unbalanced, non-stable
++    return res;
+ }
+ 
+ int next_permutation(int n, char **s)
+@@ -27,12 +30,12 @@ int next_permutation(int n, char **s)
+     // find the single element rotation which is lexographically
+     // mininally greater than last
+     char* next_[10];
+-    //char** next_ = malloc(10 * sizeof(char *));
+     char next[100];
+     next[0]='\0';
+     char* guess_[10];
+-    //char** guess_ = malloc(10 * sizeof(char *));
+     char guess[100];
++    char* guess_ts_[10];
++    char guess_ts[100];
+     char res;
+     int pos = 0;
+     for (int el = n - 1; el >= 1; el--) {
+@@ -45,11 +48,18 @@ int next_permutation(int n, char **s)
+                 memcpy(guess_ + (l + 1), s + l, (el - l) * sizeof(char*));  // l+1-(el-1)
+             if (n - (el + 1) > 0)
+                 memcpy(guess_ + (el + 1), s + (el + 1), (n - (el + 1)) * sizeof(char*));  // (el+1)-n
+-            // sort tail
+-            qsort(guess_ + el, n - el, sizeof(char*), &compare_strings);
++            // try sorted tail first
++            memcpy(guess_ts_, guess_, n * sizeof(char*));
++            if (n - (l + 1) >= 2) {
++                qsort(guess_ts_ + (l + 1), n - (l + 1), sizeof(char*), &compare_strings);
++                merge_strings(guess_ts_, n, guess_ts);
++                if (strcmp(guess_ts, last) > 0)
++                    // use tail ordered set first
++                    memcpy(guess_, guess_ts_, n * sizeof(char*));
++            }
+             merge_strings(guess_, n, guess);
+-            //printf("comparing last '%s' with '%s'\n", last, guess);
+             if (strcmp(guess, last) > 0) {
++                //printf("comparing last '%s' with '%s'\n", last, guess);
+                 if (strlen(next) == 0 || strcmp(guess, next) < 0) {
+                     memcpy(next_, guess_, n * sizeof(char*));
+                     strcpy(next, guess);
+-- 
+2.23.0
+
