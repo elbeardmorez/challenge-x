@@ -1,0 +1,75 @@
+From 44b48a10476e0dcb3f0c5e7aab6873b52bb82a0a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 22 Apr 2019 19:29:44 +0100
+Subject: [mod] hackerrank, 'permutations of strings', c solution
+
+-speed-up, remove debug strings
+---
+ .../permutations.of.strings.c                 | 26 ++++++++++---------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
+
+diff --git a/hackerrank/c.-.functions.-.medium.-.permutations.of.strings/permutations.of.strings.c b/hackerrank/c.-.functions.-.medium.-.permutations.of.strings/permutations.of.strings.c
+index c19ba4a..6b79573 100644
+--- a/hackerrank/c.-.functions.-.medium.-.permutations.of.strings/permutations.of.strings.c
++++ b/hackerrank/c.-.functions.-.medium.-.permutations.of.strings/permutations.of.strings.c
+@@ -43,19 +43,20 @@ int next_permutation(int n, char **s)
+     * Return 0 when there is no next permutation and 1 otherwise
+     * Modify array s to its next permutation
+     */
+-    char last[100];
+-    merge_strings(s, n, last);
++    //char last[100];
++    //merge_strings(s, n, last);
+     // find the single element rotation which is lexographically
+     // mininally greater than last
+     char* next_[10];
+-    char next[100];
+-    next[0]='\0';
++    //char next[100];
++    //next[0]='\0';
+     char* guess_[10];
+-    char guess[100];
++    //char guess[100];
+     char* guess_ts_[10];
+-    char guess_ts[100];
++    //char guess_ts[100];
+     char res;
+     int pos = 0;
++    int set = 0;
+     for (int el = n - 1; el >= 1; el--) {
+         // test element 'el' in all positions earlier than itself e.g. 0-(el-1)
+         for (int l = el - 1; l >= 0; l--) {
+@@ -70,23 +71,24 @@ int next_permutation(int n, char **s)
+             memcpy(guess_ts_, guess_, n * sizeof(char*));
+             if (n - (l + 1) >= 2) {
+                 qsort(guess_ts_ + (l + 1), n - (l + 1), sizeof(char*), &compare_strings);
+-                merge_strings(guess_ts_, n, guess_ts);
+-                if (strcmp(guess_ts, last) > 0)
++                //merge_strings(guess_ts_, n, guess_ts);
++                if (compare_sets(n, guess_ts_, s) > 0)
+                     // use tail ordered set first
+                     memcpy(guess_, guess_ts_, n * sizeof(char*));
+             }
+-            merge_strings(guess_, n, guess);
++            //merge_strings(guess_, n, guess);
+             if (compare_sets(n, guess_, s) > 0) {
+                 //printf("comparing last '%s' with '%s'\n", last, guess);
+-                if (strlen(next) == 0 || compare_sets(n, guess_, next_) < 0) {
++                if (set == 0 || compare_sets(n, guess_, next_) < 0) {
++                    set = 1;
+                     memcpy(next_, guess_, n * sizeof(char*));
+-                    strcpy(next, guess);
++                    //strcpy(next, guess);
+                     //printf("next set as '%s'\n", next);
+                 }
+             }
+         }
+     }
+-    if (strlen(next) == 0)
++    if (set == 0)
+         return 0;
+     else {
+         //s = next_;
+-- 
+2.23.0
+
