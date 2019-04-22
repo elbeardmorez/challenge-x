@@ -1,0 +1,104 @@
+From fcd5e640b495948e60993672f4c54ea9638e4a0d Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 22 Apr 2019 22:29:33 +0100
+Subject: [mod] hackerrank, 'permutations of strings', c solution
+
+-speed-up, insertion sort for slight improvement over qsort
+-speed-up, custom 'compare_strings' everywhere to gain from the first
+char match short-circuit
+---
+ .../permutations.of.strings.c                 | 52 ++++++++++++++-----
+ 1 file changed, 39 insertions(+), 13 deletions(-)
+
+diff --git a/hackerrank/c.-.functions.-.medium.-.permutations.of.strings/permutations.of.strings.c b/hackerrank/c.-.functions.-.medium.-.permutations.of.strings/permutations.of.strings.c
+index 84fcd5d..5f02016 100644
+--- a/hackerrank/c.-.functions.-.medium.-.permutations.of.strings/permutations.of.strings.c
++++ b/hackerrank/c.-.functions.-.medium.-.permutations.of.strings/permutations.of.strings.c
+@@ -15,21 +15,46 @@ int merge_strings(char **s, int n, char *t) {
+     return pos;
+ }
+ 
+-int compare_strings(const void* a, const void* b) {
+-    return strcmp(*(char**)a, *(char**)b) < 0 ? -1 : 1;  // unbalanced, non-stable
++int compare_strings(char* a, char* b) {
++   int res;
++   if ((res = (a[0] - b[0])) != 0)
++       return res < 0 ? -1 : 1;
++   if ((res = strcmp(a, b)) != 0)
++       return res < 0 ? -1 : 1;
++   return 0;
++}
++
++int compare_strings_(const void* a, const void* b) {
++    return compare_strings(*(char**)a, *(char**)b);
++    //return strcmp(*(char**)a, *(char**)b) < 0 ? -1 : 1;  // unbalanced, non-stable
++}
++
++void sort_strings(char** a_s, int n) {
++    //quick insertion sort for mostly sorted array
++    char* tmp[n];
++    int l2;
++    tmp[0] = a_s[0];
++    for (int l = 1; l < n; l++) {
++        l2 = l;
++        while (l2 > 0 && compare_strings(a_s[l], tmp[l2 - 1]) < 0) // ascending order
++            l2--;
++        if (l2 < 0)
++            l2 = 0;
++        if (l2 < l)
++            // shift
++            memmove(tmp + l2 + 1, tmp + l2, (l - l2) * sizeof(char *));
++        // insert
++        tmp[l2] = a_s[l];
++    }
++    for (int l = 0; l < n; l++)
++        memcpy(a_s + l, tmp + l, sizeof(char *));
+ }
+ 
+ int compare_sets(int n, char** a, char** b) {
+-//    char a1, b1;
+     int res;
+     for (int l = 0; l < n; l++) {
+-//       a1 = a[l][0];
+-//       b1 = b[l][0];
+-//       if (a1 != b1)
+-       if ((res = a[l][0] - b[l][0]) != 0)
+-           return res < 0 ? -1 : 1;
+-       if ((res = strcmp(a[l], b[l])) != 0)
+-           return res < 0 ? -1 : 1;
++       if ((res = compare_strings(a[l], b[l])) != 0)
++           return res;;
+     }
+     return 0;
+ }
+@@ -61,7 +86,7 @@ int next_permutation(int n, char **s)
+         for (int l = el - 1; l >= 0; l--) {
+             if (l > 0)
+                 memcpy(guess_, s, l * sizeof(char*));  // 0 to l-1
+-            memcpy(guess_ + l, s + el, 1 * sizeof(char*));  // el
++            memcpy(guess_ + l, s + el, sizeof(char*));  // el
+             if (el - l > 0)
+                 memcpy(guess_ + (l + 1), s + l, (el - l) * sizeof(char*));  // l+1-(el-1)
+             if (n - (el + 1) > 0)
+@@ -70,7 +95,8 @@ int next_permutation(int n, char **s)
+             ts_set = 0;
+             if (n - (l + 1) >= 2) {
+                 memcpy(guess_ts_, guess_, n * sizeof(char*));
+-                qsort(guess_ts_ + (l + 1), n - (l + 1), sizeof(char*), &compare_strings);
++                //qsort(guess_ts_ + (l + 1), n - (l + 1), sizeof(char*), &compare_strings_);
++                sort_strings(guess_ts_ + (l + 1), n - (l + 1));
+                 //merge_strings(guess_ts_, n, guess_ts);
+                 if (compare_sets(n, guess_ts_, s) > 0) {
+                     // use tail ordered set first
+@@ -96,7 +122,7 @@ int next_permutation(int n, char **s)
+         //s = next_;
+         //memcpy(s, next_, n * sizeof(char *));
+         for (int l = 0; l < n; l++)
+-            memcpy(s + l, next_ + l, 1 * sizeof(char *));
++            memcpy(s + l, next_ + l, sizeof(char *));
+         return 1;
+     }
+ }
+-- 
+2.23.0
+
