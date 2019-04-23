@@ -1,0 +1,147 @@
+From 7e8867c836133404ccb1483bb7e37dbcd507b8b7 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 23 Apr 2019 09:59:23 +0100
+Subject: [fix] hackerrank, 'game of two stacks', python solution
+
+-complete re-write of algorithm, generation of all possible paths
+was utterly flawed given the quantity of superfluous paths created
+-instead, start with a max tally set and work backwards to seek
+improvement
+---
+ .../game.of.two.stacks.py                     | 83 +++++++++++++++++--
+ 1 file changed, 76 insertions(+), 7 deletions(-)
+
+diff --git a/hackerrank/data.structures.-.stacks.-.medium.-.game.of.two.stacks/game.of.two.stacks.py b/hackerrank/data.structures.-.stacks.-.medium.-.game.of.two.stacks/game.of.two.stacks.py
+index 0ce1b10..cf39e21 100644
+--- a/hackerrank/data.structures.-.stacks.-.medium.-.game.of.two.stacks/game.of.two.stacks.py
++++ b/hackerrank/data.structures.-.stacks.-.medium.-.game.of.two.stacks/game.of.two.stacks.py
+@@ -11,23 +11,91 @@ def twoStacks(x, a, b):
+     #
+     # Write your code here.
+     #
++    print(f"searching for game sums <= {x}");
++
++    # order of when items are taken from either stack doesn't matter, hence
++    # 'max of some from A + some from B'
++
++    # tallies < x for each lists steps
++    a_tally = [0]
++    b_tally = [0]
++    tally = 0
++    l = 0
++
++    while l < len(a) and tally + a[l] <= x:
++        tally += a[l]
++        a_tally.append(tally)
++        l += 1
++    a_idx = len(a_tally) - 1
++    print(f"max stack a only path of {a_idx} | {a_tally}")
++    tally = 0
++    l = 0
++    while l < len(b) and tally + b[l] <= x:
++        tally += b[l]
++        b_tally.append(tally)
++        l += 1
++    b_idx = len(b_tally) - 1
++    print(f"max stack b only path of {b_idx} | {b_tally}")
++
++    # start with all from longest list and adjust from there..
++    # e.g. if all from A is 4, test, all but one from A, plus the
++    # rest from B ..is that > 4?
++
++    max_tally = None
++    max_idx = -1
++    other_tally = None
++    other_idx = -1
++    max_ = max(a_idx, b_idx)
++    if a_idx > b_idx:
++        b_idx = 0
++        max_tally = a_tally
++        max_idx = a_idx
++        other_tally = b_tally
++        other_idx = b_idx
++    else:
++        a_idx = 0
++        max_tally = b_tally
++        max_idx = b_idx
++        other_tally = a_tally
++        other_idx = a_idx
++
++    print(f"max_idx: {max_idx}, other_idx: {other_idx}")
++    while (other_idx + 1 < len(other_tally) and
++           max_tally[max_idx] + other_tally[other_idx + 1] <= x):
++        other_idx += 1
++    if max_idx + other_idx > max_:
++        max_ = max_idx + other_idx
++    print(f"max_idx: {max_idx}, other_idx: {other_idx}")
++    while (max_idx > 0 and
++           max_tally[max_idx] + other_tally[other_idx] <= x):
++        max_idx -= 1
++        while (other_idx + 1 < len(other_tally) and
++               max_tally[max_idx] + other_tally[other_idx + 1] <= x):
++            other_idx += 1
++            print(f"max_idx: {max_idx}, other_idx: {other_idx}")
++        if max_idx + other_idx > max_:
++            max_ = max_idx + other_idx
++    print(f"max_: {max_}")
++    return max_
++
++'''
+     maxed_paths = {}
+     sum_ = 0
+     for idx in range(len(a)):
+         if sum_ + a[idx] > x:
+             a = a[0:idx]
+-            #print(a)
++            print(f"stack a only path max: '${b}'")
+             break
+         sum_ += a[idx]
+     sum_ = 0
+     for idx in range(len(b)):
+         if sum_ + b[idx] > x:
+             b = b[0:idx]
+-            #print(b)
++            print(f"stack b only path max: '${b}'")
+             break
+         sum_ += b[idx]
+     paths = list(set(permutations('a' * len(a) + 'b' * len(b), len(a) + len(b))))
+-    #print("paths: %d" % len(paths))
++    print("paths: %d" % len(paths))
+     #for path in paths[:15]:
+         #print(''.join(path))
+     stacks = {'a': a, 'b': b}
+@@ -37,7 +105,7 @@ def twoStacks(x, a, b):
+     idx = 0
+     for idx in range(len(paths)):
+         path = ''.join(paths[idx])
+-        #print("path: %s" % (path))
++        print("path: %s" % (path))
+         if path in maxed_paths:
+             continue
+         subpath = ""
+@@ -53,9 +121,9 @@ def twoStacks(x, a, b):
+                 #max hit, remove/mark common
+                 for idx2 in range(idx, len(paths)):
+                     path_ = ''.join(paths[idx2])
+-                    #print("testing idx2: %d, %s vs %s" % (idx2, path_[0:len(subpath)], subpath))
++                    print("testing idx2: %d, %s vs %s" % (idx2, path_[0:len(subpath)], subpath))
+                     if path_[0:len(subpath)] == subpath:
+-                        #print("adding: %s to maxed_paths, due to subpath: %s" % (path_, subpath))
++                        print("adding: %s to maxed_paths, due to subpath: %s" % (path_, subpath))
+                         maxed_paths[path_] = 1
+                 break
+             total += item
+@@ -65,8 +133,9 @@ def twoStacks(x, a, b):
+                 max_subpath = subpath
+                 max_subpath_nos = subpath_nos
+ 
+-    #print("max: %d, path: %s|%s" % (max_subpath_items, max_subpath, max_subpath_nos))
++    print("max: %d, path: %s|%s" % (max_subpath_items, max_subpath, max_subpath_nos))
+     return max_subpath_items
++'''
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
