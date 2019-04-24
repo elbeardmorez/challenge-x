@@ -1,0 +1,93 @@
+From fe657bd82725ca111e9d4a5762b0261f35b59ff8 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 24 Apr 2019 22:49:34 +0100
+Subject: [add] hackerrank, 'game of two stacks', c# port
+
+---
+ .../game.of.two.stacks.cs                     | 70 +++++++++++++++++++
+ 1 file changed, 70 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.stacks.-.medium.-.game.of.two.stacks/game.of.two.stacks.cs b/hackerrank/data.structures.-.stacks.-.medium.-.game.of.two.stacks/game.of.two.stacks.cs
+index 614a7cf..36189ea 100644
+--- a/hackerrank/data.structures.-.stacks.-.medium.-.game.of.two.stacks/game.of.two.stacks.cs
++++ b/hackerrank/data.structures.-.stacks.-.medium.-.game.of.two.stacks/game.of.two.stacks.cs
+@@ -12,6 +12,76 @@ class Solution {
+         /*
+          * Write your code here.
+          */
++        //Console.WriteLine($"searching for game sums <= {x}");
++
++        // order of when items are taken from either stack doesn't matter, hence;
++        // 'max of some from A + some from B';
++
++        // tallies < x for each lists steps;
++        var a_tally = new List<int>(new int[] {0});
++        var b_tally = new List<int>(new int[] {0});
++        var tally = 0;
++        var l = 0;
++
++        while (l < a.Count() && tally + a[l] <= x) {
++            tally += a[l];
++            a_tally.Add(tally);
++            l += 1;
++        }
++        var a_idx = a_tally.Count() - 1;
++        //Console.WriteLine($"max stack a only path of {a_idx} | {a_tally}");
++        tally = 0;
++        l = 0;
++        while (l < b.Count() && tally + b[l] <= x) {
++            tally += b[l];
++            b_tally.Add(tally);
++            l += 1;
++        }
++        var b_idx = b_tally.Count() - 1;
++        //Console.WriteLine($"max stack b only path of {b_idx} | {b_tally}");
++
++        // start with all from longest list and adjust from there..;
++        // e.g. if all from A is 4, test, all but one from A, plus the;
++        // rest from B ..is that > 4?;
++
++        var max_tally = new List<int>();
++        var max_idx = -1;
++        var other_tally = new List<int>();
++        var other_idx = -1;
++        var max_ = Math.Max(a_idx, b_idx);
++        if (a_idx > b_idx) {
++            b_idx = 0;
++            max_tally = a_tally;
++            max_idx = a_idx;
++            other_tally = b_tally;
++            other_idx = b_idx;
++        } else {
++            a_idx = 0;
++            max_tally = b_tally;
++            max_idx = b_idx;
++            other_tally = a_tally;
++            other_idx = a_idx;
++        }
++        //Console.WriteLine($"max_idx: {max_idx}, other_idx: {other_idx}");
++        while (other_idx + 1 < other_tally.Count() &&
++               max_tally[max_idx] + other_tally[other_idx + 1] <= x)
++            other_idx += 1;
++        if (max_idx + other_idx > max_)
++            max_ = max_idx + other_idx;
++        //Console.WriteLine($"max_idx: {max_idx}, other_idx: {other_idx}");
++        while (max_idx > 0 &&
++               max_tally[max_idx] + other_tally[other_idx] <= x) {
++            max_idx -= 1;
++            while (other_idx + 1 < other_tally.Count() &&
++                   max_tally[max_idx] + other_tally[other_idx + 1] <= x) {
++                other_idx += 1;
++                //Console.WriteLine($"max_idx: {max_idx}, other_idx: {other_idx}");
++            }
++            if (max_idx + other_idx > max_)
++                max_ = max_idx + other_idx;
++        }
++        //Console.WriteLine($"max_: {max_}");
++        return max_;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
