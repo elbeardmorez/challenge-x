@@ -1,0 +1,95 @@
+From 39768d4bc4490e4d1c3dda8aac23f815db664fdb Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 25 Apr 2019 13:08:46 +0100
+Subject: [add] hackerrank, 'game of two stacks', javascript port
+
+---
+ .../game.of.two.stacks.js                     | 71 +++++++++++++++++++
+ 1 file changed, 71 insertions(+)
+
+diff --git a/hackerrank/data.structures.-.stacks.-.medium.-.game.of.two.stacks/game.of.two.stacks.js b/hackerrank/data.structures.-.stacks.-.medium.-.game.of.two.stacks/game.of.two.stacks.js
+index 3f5cbae..1d7bc9c 100644
+--- a/hackerrank/data.structures.-.stacks.-.medium.-.game.of.two.stacks/game.of.two.stacks.js
++++ b/hackerrank/data.structures.-.stacks.-.medium.-.game.of.two.stacks/game.of.two.stacks.js
+@@ -29,7 +29,78 @@ function twoStacks(x, a, b) {
+     /*
+      * Write your code here.
+      */
++    var max = (x, y) => { return x > y ? x : y; };
+ 
++    //console.log(`searching for game sums <= ${x}`);
++
++    // order of when items are taken from either stack doesn't matter, hence;
++    // 'max of some from A + some from B';
++
++    // tallies < x for each lists steps;
++    var a_tally = [0];
++    var b_tally = [0];
++    var tally = 0;
++    var l = 0;
++
++    while (l < a.length && tally + a[l] <= x) {
++        tally += a[l];
++        a_tally.push(tally);
++        l += 1;
++    }
++    var a_idx = a_tally.length - 1;
++    //console.log(`max stack a only path of ${a_idx} | ${a_tally}`);
++    tally = 0;
++    l = 0;
++    while (l < b.length && tally + b[l] <= x) {
++        tally += b[l];
++        b_tally.push(tally);
++        l += 1;
++    }
++    var b_idx = b_tally.length - 1;
++    //console.log(`max stack b only path of ${b_idx} | ${b_tally}`);
++
++    // start with all from longest list and adjust from there..;
++    // e.g. if all from A is 4, test, all but one from A, plus the;
++    // rest from B ..is that > 4?;
++
++    var max_tally = [];
++    var max_idx = -1;
++    var other_tally = [];
++    var other_idx = -1;
++    var max_ = max(a_idx, b_idx);
++    if (a_idx > b_idx) {
++        b_idx = 0;
++        max_tally = a_tally;
++        max_idx = a_idx;
++        other_tally = b_tally;
++        other_idx = b_idx;
++    } else {
++        a_idx = 0;
++        max_tally = b_tally;
++        max_idx = b_idx;
++        other_tally = a_tally;
++        other_idx = a_idx;
++    }
++    //console.log(`max_idx: ${max_idx}, other_idx: ${other_idx}`);
++    while (other_idx + 1 < other_tally.length &&
++           max_tally[max_idx] + other_tally[other_idx + 1] <= x)
++        other_idx += 1;
++    if (max_idx + other_idx > max_)
++        max_ = max_idx + other_idx;
++    //console.log(`max_idx: ${max_idx}, other_idx: ${other_idx}`);
++    while (max_idx > 0 &&
++           max_tally[max_idx] + other_tally[other_idx] <= x) {
++        max_idx -= 1;
++        while (other_idx + 1 < other_tally.length &&
++               max_tally[max_idx] + other_tally[other_idx + 1] <= x) {
++            other_idx += 1;
++            //console.log(`max_idx: ${max_idx}, other_idx: ${other_idx}`);
++        }
++        if (max_idx + other_idx > max_)
++            max_ = max_idx + other_idx;
++    }
++    //console.log(`max_: ${max_}`);
++    return max_;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
