@@ -1,0 +1,106 @@
+From d5c5eb3074b44b354b0f73da86f36b49d9bdf2a9 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 26 Apr 2019 12:47:56 +0100
+Subject: [add] hackerrank, 'game of two stacks', c++ port
+
+-note, in spite of being sub 1 second for the longest / cpu intensive
+test 10, and thus 3-4 times faster than its python / c# / javascript
+counterparts, this port timed out. first on tests 9 and 10, then on test
+10 only ..and then.. it passed. i retried in disbelief and thus learnt
+that hackerrank is NOT consistent in its timeouts which seems absolutely
+insane - time to start looking at the alternatives!
+---
+ .../game.of.two.stacks.cpp                    | 77 ++++++++++++++++++-
+ 1 file changed, 76 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/data.structures.-.stacks.-.medium.-.game.of.two.stacks/game.of.two.stacks.cpp b/hackerrank/data.structures.-.stacks.-.medium.-.game.of.two.stacks/game.of.two.stacks.cpp
+index 0e4e23a..4e5d774 100644
+--- a/hackerrank/data.structures.-.stacks.-.medium.-.game.of.two.stacks/game.of.two.stacks.cpp
++++ b/hackerrank/data.structures.-.stacks.-.medium.-.game.of.two.stacks/game.of.two.stacks.cpp
+@@ -11,7 +11,82 @@ int twoStacks(int x, vector<int> a, vector<int> b) {
+     /*
+      * Write your code here.
+      */
+-
++    //cout << "searching for game sums <= " << x << "" << endl;
++
++    // order of when items are taken from either stack doesn't matter, hence;
++    // 'max of some from A + some from B';
++
++    // tallies < x for each lists steps;
++    vector<int> a_tally;
++    a_tally.push_back(0);
++    vector<int> b_tally;
++    b_tally.push_back(0);
++    auto tally = 0;
++    auto l = 0;
++
++    while (l < a.size() && tally + a[l] <= x) {
++        tally += a[l];
++        a_tally.push_back(tally);
++        l++;
++    }
++    auto a_idx = a_tally.size() - 1;
++    //cout << "max stack a only path of " << a_idx << " | [";
++    //for (auto itr = a_tally.begin(); itr < a_tally.end(); itr++) //cout << " " << *itr;
++    //cout << " ]" << endl;
++    tally = 0;
++    l = 0;
++    while (l < b.size() && tally + b[l] <= x) {
++        tally += b[l];
++        b_tally.push_back(tally);
++        l++;
++    }
++    auto b_idx = b_tally.size() - 1;
++    //cout << "max stack b only path of " << b_idx << " | [";
++    //for (auto itr = b_tally.begin(); itr < b_tally.end(); itr++) //cout << " " << *itr;
++    //cout << " ]" << endl;
++
++    // start with all from longest list and adjust from there..;
++    // e.g. if all from A is 4, test, all but one from A, plus the;
++    // rest from B ..is that > 4?;
++
++    vector<int> *max_tally;
++    auto max_idx = -1;
++    vector<int> *other_tally;
++    auto other_idx = -1;
++    auto max_ = max(a_idx, b_idx);
++    if (a_idx > b_idx) {
++        b_idx = 0;
++        max_tally = &a_tally;
++        max_idx = a_idx;
++        other_tally = &b_tally;
++        other_idx = b_idx;
++    } else {
++        a_idx = 0;
++        max_tally = &b_tally;
++        max_idx = b_idx;
++        other_tally = &a_tally;
++        other_idx = a_idx;
++    }
++    //cout << "max_idx: " << max_idx << ", other_idx: " << other_idx << "" << endl;
++    while (other_idx + 1 < other_tally->size() &&
++           (*max_tally)[max_idx] + (*other_tally)[other_idx + 1] <= x)
++        other_idx++;
++    if (max_idx + other_idx > max_)
++        max_ = max_idx + other_idx;
++    //cout << "max_idx: " << max_idx << ", other_idx: " << other_idx << "" << endl;
++    while (max_idx > 0 &&
++           (*max_tally)[max_idx] + (*other_tally)[other_idx] <= x) {
++        max_idx--;
++        while (other_idx + 1 < other_tally->size() &&
++               (*max_tally)[max_idx] + (*other_tally)[other_idx + 1] <= x) {
++            other_idx++;
++            //cout << "max_idx: " << max_idx << ", other_idx: " << other_idx << "" << endl;
++        }
++        if (max_idx + other_idx > max_)
++            max_ = max_idx + other_idx;
++    }
++    //cout << "max_: " << max_ << "" << endl;
++    return max_;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
