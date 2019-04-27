@@ -1,0 +1,90 @@
+From e896a950b10060a56b5087da7a5ed9c02bbf038a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 27 Apr 2019 13:21:54 +0100
+Subject: [add] hackerrank, 'common child', python solution
+
+---
+ .../common.child.py                           | 63 +++++++++++++++++++
+ 1 file changed, 63 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.common.child/common.child.py b/hackerrank/algorithms.-.strings.-.medium.-.common.child/common.child.py
+index d60c105..c69a4fa 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.common.child/common.child.py
++++ b/hackerrank/algorithms.-.strings.-.medium.-.common.child/common.child.py
+@@ -5,10 +5,73 @@ import os
+ import random
+ import re
+ import sys
++from itertools import groupby
++import pdb
++stdin = os.fdopen(3)
++
++def input():
++    return stdin.readline().rstrip('\n')
+ 
+ # Complete the commonChild function below.
+ def commonChild(s1, s2):
+ 
++    # map second string to key: char, val: idx(s)
++    # iterate first string
++    # "if current char IS included, what's the best we can do?
++    # but take e.g. ABC BCA, iff using A, match second A @_2, total can only be 1
++    # so ignore move to next
++    # algo is, we have char A, do we have an A at idx > last used idx, that we can use?
++
++    l1 = list(s1)
++
++    l2 = list(s2)
++    l2i = [(l2[idx], idx) for idx in range(len(l2))]
++    d2 = {k: [2, 3] + list(x[1] for x in g) for k, g in groupby(sorted(l2i), lambda x: x[0])}
++    # set idx counts per char
++    for v in d2.values():
++        v[1] = len(v)
++
++    run_max = ""
++    run_max_count = 0
++    pdb.set_trace()
++    l1len = len(l1)
++    for idx in range(l1len):
++        if run_max_count > l1len - idx:
++            break  # can't improve
++        c = l1[idx]
++        if c not in d2:
++            continue
++        # resets
++        last_used = -1
++        run = ""
++        for v in d2.values():
++            v[0] = 2
++        # algo
++        for idx2 in range(idx, len(l1)):
++            if run_max_count > len(run) + (l1len - idx2):
++                break  # can't improve
++            c = l1[idx2]
++            if (c in d2):
++                idx3 = d2[c][0]
++                if idx3 >= d2[c][1]:
++                    break  # instances of char all already used up
++                while idx3 < d2[c][1] and d2[c][idx3] < last_used:
++                    idx3 += 1
++                if idx3 < d2[c][1]:
++                    # use it
++                    run += c  # add to run
++                    last_used = d2[c][idx3]  # only match chars after this idx
++                    d2[c][0] = idx3 + 1  # ensure char not re-used
++                else:
++                    # ignore char from now on as its last idx is before our current char pos
++                    d2[c][0] = d2[c][1]
++        if len(run) > run_max_count:
++            run_max_count = len(run)
++            run_max = run
++    print("max common child: " + run_max)
++    return run_max_count
++
++
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+ 
+-- 
+2.23.0
+
