@@ -1,0 +1,219 @@
+From 62c3d62fe47916593e120c55aa2df85350ae0a2c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 28 Apr 2019 09:56:19 +0100
+Subject: [fix] hackerrank, 'common child', python solution
+
+-make algorithm consider all possible paths
+---
+ .../common.child.py                           | 188 +++++++++++++-----
+ 1 file changed, 140 insertions(+), 48 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.common.child/common.child.py b/hackerrank/algorithms.-.strings.-.medium.-.common.child/common.child.py
+index c69a4fa..8f6faab 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.common.child/common.child.py
++++ b/hackerrank/algorithms.-.strings.-.medium.-.common.child/common.child.py
+@@ -15,61 +15,153 @@ def input():
+ # Complete the commonChild function below.
+ def commonChild(s1, s2):
+ 
+-    # map second string to key: char, val: idx(s)
+-    # iterate first string
+-    # "if current char IS included, what's the best we can do?
+-    # but take e.g. ABC BCA, iff using A, match second A @_2, total can only be 1
+-    # so ignore move to next
+-    # algo is, we have char A, do we have an A at idx > last used idx, that we can use?
++    """
++    map second string to key: char, val: idx(s)
++    iterate first string
+ 
+-    l1 = list(s1)
++    e.g. ABC
++         BCA
++
++    if we use char A, what the biggest set we can acheive?
++    using A, match s2 @ A_2, total can only be 1 so this needs to be
++    ignored, move to next char
++
++    decision for next char:
++    given next s1 char A, do we have an A at idx > 'last used' idx that
++    we can use?
++
++    for the current idx, consider all next jumps?
++    e.g ABCD
++        ACDB
++
++    A->B gives two but with 0 potential remaining where as A->C also gives
++    two, but with 1 potential remaining hence A->B can be thrown away as
++    A->C is at least as good so just minimise the available to get the
++    next jump location?
++    no, as minimal jump may lead to skipping a letter required to reach the
++    max path
++
++    e.g. ABDCEXF
++         XACFFFBDEF
++
++    start with letter s1_1
++    first iteration add all potentional length 1 paths and the s2_idx_tally
++
++    create groups of paths by length
++
++    group 1
++    1: A_1, B_6, D_7, C_2, E_8, X_0, F_3
++
++    for each of these paths consider jumps for path size 2
++
++    A_1 -> B_6 .. but then the len 1 B_5 will necessarily be a subpath
++                  and hence can be dismissed in so far as 'separate branch
++                  required' goes
++    A_1 -> D_7 ..same
++    A_1 -> C_2 ..same
++    A_1 -> E_8 ..same
++    A_1 -> X_0 nope, cannot make this jump. so X_0 is a new path set that
++               needs tracking
++    A_1 -> F_3 ..same
++
++    iteration 2 thus has 5 paths of length 2, and one path of length 1
++    (X_0)
+ 
++    continue for all live paths, considering the next jumps until a
++    completed path is hit e.g.
++
++    X_0 -> F_3 ..complete path hit (end of s1!), ultimately dropped as
++               other paths of same length (2) exist but aren't complete,
++               thus still have potential maximal path
++
++    """
++
++    # strip non common
++    l1 = list(s1)
+     l2 = list(s2)
+-    l2i = [(l2[idx], idx) for idx in range(len(l2))]
+-    d2 = {k: [2, 3] + list(x[1] for x in g) for k, g in groupby(sorted(l2i), lambda x: x[0])}
++    m1 = {x: x for x in set(l1)}
++    m2 = {x: x for x in set(l2)}
++    xl1 = [c for c in l1 if c in m2];
++    xl2 = [c for c in l2 if c in m1];
++
++    print("xs1: " + ''.join(xl1))
++    print("xs2: " + ''.join(xl2))
++
++    xl2i = [(xl2[idx], idx) for idx in range(len(xl2))]
++    d2 = {k: [2, 3] + list(x[1] for x in g) for k, g in groupby(sorted(xl2i), lambda x: x[0])}
+     # set idx counts per char
+     for v in d2.values():
+         v[1] = len(v)
+ 
+-    run_max = ""
+-    run_max_count = 0
+-    pdb.set_trace()
+-    l1len = len(l1)
+-    for idx in range(l1len):
+-        if run_max_count > l1len - idx:
+-            break  # can't improve
+-        c = l1[idx]
+-        if c not in d2:
+-            continue
+-        # resets
+-        last_used = -1
+-        run = ""
+-        for v in d2.values():
+-            v[0] = 2
+-        # algo
+-        for idx2 in range(idx, len(l1)):
+-            if run_max_count > len(run) + (l1len - idx2):
+-                break  # can't improve
+-            c = l1[idx2]
+-            if (c in d2):
+-                idx3 = d2[c][0]
+-                if idx3 >= d2[c][1]:
+-                    break  # instances of char all already used up
+-                while idx3 < d2[c][1] and d2[c][idx3] < last_used:
+-                    idx3 += 1
+-                if idx3 < d2[c][1]:
+-                    # use it
+-                    run += c  # add to run
+-                    last_used = d2[c][idx3]  # only match chars after this idx
+-                    d2[c][0] = idx3 + 1  # ensure char not re-used
+-                else:
+-                    # ignore char from now on as its last idx is before our current char pos
+-                    d2[c][0] = d2[c][1]
+-        if len(run) > run_max_count:
+-            run_max_count = len(run)
+-            run_max = run
+-    print("max common child: " + run_max)
+-    return run_max_count
++    path_max = ""
++    path_max_count = 0
++    xl1_len = len(xl1)
++    xl2_len = len(xl2)
++    # resets
++    for v in d2.values():
++        v[0] = 2
++
++    idx = 0
++    paths = {}
++    # populate initial path set of length 1
++    for idx in range(xl1_len):
++        c = xl1[idx]
++        c_idx = c + str(idx)
++        subpath = c_idx
++        paths[c_idx] = { subpath: [1, idx, d2[c][2]]}
++
++    ignore = {}
++    iterations = 0
++    while len(paths) > len(ignore):
++        for path_root in list(paths.keys()):
++            if path_root in ignore:
++                continue
++            path_set = paths[path_root]
++            for path in list(path_set.keys()):
++                path_length, s1_idx, s2_idx = path_set[path]
++
++                c = xl1[s1_idx];
++                # next jumps from this paths last char
++                for idx2 in range(s1_idx + 1, len(xl1)):
++                    c_n = xl1[idx2]
++                    #idx3 = d2[c_n][0]
++                    #if idx3 >= d2[c_n][1]:
++                    #    continue  # instances of char all already used up
++                    idx3 = 2
++                    while idx3 < d2[c_n][1] and d2[c_n][idx3] < s2_idx:
++                        idx3 += 1
++                    if idx3 < d2[c_n][1]:
++                        # reachable so use it
++                        path2 = path + c_n + str(idx2)
++                        if idx2 == xl1_len - 1 or \
++                              d2[c_n][idx3] == xl2_len - 1:
++                            # complete path
++                            if path_length + 1 > path_max_count:
++                                path_max_count = path_length + 1
++                                path_max = path2
++                        else:
++                            # add new path?
++                            c_n_idx = c_n + str(idx2)
++                            if c_n_idx in paths:
++                                # merge all subpaths
++                                for path_x, paths_x in paths[c_n_idx].items():
++                                    path_set[path2] = [path_length + paths_x[0], *(paths_x[1:])]
++                                # set ignore subpaths set
++                                ignore[c_n_idx] = 1
++                            else:
++                                path_set[path2] = [path_length + 1, idx2, d2[c_n][idx3]]
++                # path processed, drop it
++                if path_length > path_max_count:
++                    # no more letters were available to be added to
++                    # this run, and no endpoints were hit
++                    path_max_count = path_length
++                    path_max = path
++                path_set.pop(path)
++            if len(path_set) == 0:
++                ignore[path_root] = 1
++
++    print("max common child: " + path_max)
++    return path_max_count
+ 
+ 
+ if __name__ == '__main__':
+-- 
+2.23.0
+
