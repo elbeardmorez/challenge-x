@@ -1,0 +1,197 @@
+From 67af8967dd4d2c23ded812e61bb9bee9cd7e2f06 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 28 Apr 2019 14:50:34 +0100
+Subject: [fix] hackerrank, 'common child', python solution
+
+-redux algorithm, work backwards
+-don't construct paths
+---
+ .../common.child.py                           | 157 ++++++++++--------
+ 1 file changed, 86 insertions(+), 71 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.common.child/common.child.py b/hackerrank/algorithms.-.strings.-.medium.-.common.child/common.child.py
+index 8f6faab..d1e0746 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.common.child/common.child.py
++++ b/hackerrank/algorithms.-.strings.-.medium.-.common.child/common.child.py
+@@ -74,6 +74,38 @@ def commonChild(s1, s2):
+                other paths of same length (2) exist but aren't complete,
+                thus still have potential maximal path
+ 
++    too slow..
++
++    persevere with top down approach, but work backwards and substitute
++    subpaths
++
++    create sets of valid jumps per s1 char, then determine max path by
++    simply looking up the max path count for each valid jump ..which
++    will necessarily exist given we're working backwards
++
++    e.g. CADBC
++         ACDBC
++
++    # consider C_4
++    possible jumps
++    none
++    s1c  : [ max paths ] : [ max path counts ]
++    C_4  : [ C_1, C_4 ]       : [ 1, 1 ]
++
++    # consider B_3
++    possible jumps
++    B_3 -> C-4
++    s1c  : [ max paths ] : [ max path counts ]
++    B_3  : [ B_3->C_4 ] : [ 2 ]  <- 1 + C_4 jump's max
++
++    # consider D_2
++    possible jumps
++    D_2 -> B_3, D_2 -> C_4
++    s1c  : [ max paths ] : [ max path counts ]
++    D_2  : [ D_2->B_3->C_4 ] : [ 3 ]
++
++    etc. etc.
++
+     """
+ 
+     # strip non common
+@@ -83,85 +115,68 @@ def commonChild(s1, s2):
+     m2 = {x: x for x in set(l2)}
+     xl1 = [c for c in l1 if c in m2];
+     xl2 = [c for c in l2 if c in m1];
++    xl1_len = len(xl1)
++    xl2_len = len(xl2)
++
++    print(f"xs1[{xl1_len}] : " + ''.join(xl1))
++    print(f"xs2[{xl2_len}] : " + ''.join(xl2))
+ 
+-    print("xs1: " + ''.join(xl1))
+-    print("xs2: " + ''.join(xl2))
++    if xl2_len == 0:
++        return 0
+ 
+     xl2i = [(xl2[idx], idx) for idx in range(len(xl2))]
+-    d2 = {k: [2, 3] + list(x[1] for x in g) for k, g in groupby(sorted(xl2i), lambda x: x[0])}
+-    # set idx counts per char
++    d2 = {k: [0] + list(x[1] for x in g) for k, g in groupby(sorted(xl2i), lambda x: x[0])}
+     for v in d2.values():
+-        v[1] = len(v)
++        v[0] = len(v)
+ 
+-    path_max = ""
+-    path_max_count = 0
+-    xl1_len = len(xl1)
+-    xl2_len = len(xl2)
+-    # resets
+-    for v in d2.values():
+-        v[0] = 2
++    # s1char_s1idx keyed maps of optimal solutions
++    paths_max_lengths = {}  # contains an array of s2 indexes correspending to max paths
++    paths_max = {}  # contains an array of length associated with each max path in the above
++
++    # set zero case
++    paths_max[xl1[-1] + str(xl1_len - 1)] = d2[xl1[-1]][1:]
++    paths_max_lengths[xl1[-1] + str(xl1_len - 1)] = d2[xl1[-1]][0] * [1]
+ 
+-    idx = 0
+-    paths = {}
+-    # populate initial path set of length 1
+-    for idx in range(xl1_len):
++    path_max = ""
++    path_max_length = 0
++    #pdb.set_trace()
++    for idx in range(xl1_len - 1 - 1, -1, -1):
+         c = xl1[idx]
+         c_idx = c + str(idx)
+-        subpath = c_idx
+-        paths[c_idx] = { subpath: [1, idx, d2[c][2]]}
+-
+-    ignore = {}
+-    iterations = 0
+-    while len(paths) > len(ignore):
+-        for path_root in list(paths.keys()):
+-            if path_root in ignore:
+-                continue
+-            path_set = paths[path_root]
+-            for path in list(path_set.keys()):
+-                path_length, s1_idx, s2_idx = path_set[path]
+-
+-                c = xl1[s1_idx];
+-                # next jumps from this paths last char
+-                for idx2 in range(s1_idx + 1, len(xl1)):
+-                    c_n = xl1[idx2]
+-                    #idx3 = d2[c_n][0]
+-                    #if idx3 >= d2[c_n][1]:
+-                    #    continue  # instances of char all already used up
+-                    idx3 = 2
+-                    while idx3 < d2[c_n][1] and d2[c_n][idx3] < s2_idx:
+-                        idx3 += 1
+-                    if idx3 < d2[c_n][1]:
+-                        # reachable so use it
+-                        path2 = path + c_n + str(idx2)
+-                        if idx2 == xl1_len - 1 or \
+-                              d2[c_n][idx3] == xl2_len - 1:
+-                            # complete path
+-                            if path_length + 1 > path_max_count:
+-                                path_max_count = path_length + 1
+-                                path_max = path2
+-                        else:
+-                            # add new path?
+-                            c_n_idx = c_n + str(idx2)
+-                            if c_n_idx in paths:
+-                                # merge all subpaths
+-                                for path_x, paths_x in paths[c_n_idx].items():
+-                                    path_set[path2] = [path_length + paths_x[0], *(paths_x[1:])]
+-                                # set ignore subpaths set
+-                                ignore[c_n_idx] = 1
+-                            else:
+-                                path_set[path2] = [path_length + 1, idx2, d2[c_n][idx3]]
+-                # path processed, drop it
+-                if path_length > path_max_count:
+-                    # no more letters were available to be added to
+-                    # this run, and no endpoints were hit
+-                    path_max_count = path_length
+-                    path_max = path
+-                path_set.pop(path)
+-            if len(path_set) == 0:
+-                ignore[path_root] = 1
+-
+-    print("max common child: " + path_max)
+-    return path_max_count
++
++        paths_max[c_idx] = []
++        paths_max_lengths[c_idx] = []
++
++         # s2 matches
++        matches = d2[c][1:]
++        # compatible jumps per match
++        for s2_idx in matches:
++            subpath_max = s2_idx  # default
++            subpath_max_length = 1  # default
++            for s1_idx in range(idx + 1, len(xl1)):
++                c_n = xl1[s1_idx]
++                c_n_idx = c_n + str(s1_idx)
++                # given our c match to s2_idx, is jumping to c_n (at
++                # s1_idx) valid? look at c_n's paths to determine
++                idx3 = 0
++                for c_n_s2_idx in paths_max[c_n_idx]:
++                    if c_n_s2_idx > s2_idx:
++                        # valid, we could take this path, but it
++                        # should only be considered if we know it's
++                        # not sub-optimal
++                        if subpath_max_length < 1 + paths_max_lengths[c_n_idx][idx3]:
++                            subpath_max_length = 1 + paths_max_lengths[c_n_idx][idx3]
++                    idx3 += 1
++            # valid jump and max set should we be able to take this s2_idx version of c
++            paths_max[c_idx].append(subpath_max)
++            paths_max_lengths[c_idx].append(subpath_max_length)
++            # and thus we'll know now that if we want to take 'c' ot s1, then regardless
++            # of which s2 idx match of c we are able to consider, we already have the
++            # answer as to its maximum subpath
++        path_max_length = max(path_max_length, max(paths_max_lengths[c_idx]))
++
++    print(f"max common child: [{path_max_length}] {path_max}")
++    return path_max_length
+ 
+ 
+ if __name__ == '__main__':
+-- 
+2.23.0
+
