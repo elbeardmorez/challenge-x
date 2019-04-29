@@ -1,0 +1,200 @@
+From 05a5600d262e91655c489fcdee7d5f0f8038117f Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 29 Apr 2019 21:43:26 +0100
+Subject: [mod] hackerrank, 'common child', python solution
+
+-algorithm redux
+-use a spacial map to quickly access next char position
+---
+ .../common.child.py                           | 159 ++++++++++++------
+ 1 file changed, 108 insertions(+), 51 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.common.child/common.child.py b/hackerrank/algorithms.-.strings.-.medium.-.common.child/common.child.py
+index d1e0746..dc16f77 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.common.child/common.child.py
++++ b/hackerrank/algorithms.-.strings.-.medium.-.common.child/common.child.py
+@@ -6,9 +6,8 @@ import random
+ import re
+ import sys
+ from itertools import groupby
+-import pdb
+-stdin = os.fdopen(3)
+ 
++stdin = os.fdopen(3)
+ def input():
+     return stdin.readline().rstrip('\n')
+ 
+@@ -106,6 +105,29 @@ def commonChild(s1, s2):
+ 
+     etc. etc.
+ 
++    # next
++    e.g. ABCDE
++         DCABDCE
++
++    s1_1 C
++    what's the max? ..depends which C is taken.. so all have to be considered
++
++    C5 -> E6 gives us 2
++    C1 -> D4 -> E6 gives us 3 but then we're at s2_1 ..not s2_5 for that gain of 1
++
++    so our max at s1_C is ? ..multiple paths ..no fixed answer.. because look what happens next
++
++    s1_1 B
++    C1 -> D4 -> E6 cannot be taken
++    B3 -> D4 -> E6 gives us an equal max of 3
++
++    s1_0 A
++    C1 -> D4 -> E6 cannot be taken
++    A2 -> B3 -> D4 -> E6 gives us a max of 4 > than the other 'max path' and at a lower cost (e.g,
++                         ends at s2_2 > s2_1 ..hence the other path can be dropped
++
++    so this shows we need a pool of max paths that is considered each time ..until such time that
++    there exists another longer path that has been acheived at a lower cost
+     """
+ 
+     # strip non common
+@@ -127,56 +149,91 @@ def commonChild(s1, s2):
+     xl2i = [(xl2[idx], idx) for idx in range(len(xl2))]
+     d2 = {k: [0] + list(x[1] for x in g) for k, g in groupby(sorted(xl2i), lambda x: x[0])}
+     for v in d2.values():
+-        v[0] = len(v)
+-
+-    # s1char_s1idx keyed maps of optimal solutions
+-    paths_max_lengths = {}  # contains an array of s2 indexes correspending to max paths
+-    paths_max = {}  # contains an array of length associated with each max path in the above
+-
+-    # set zero case
+-    paths_max[xl1[-1] + str(xl1_len - 1)] = d2[xl1[-1]][1:]
+-    paths_max_lengths[xl1[-1] + str(xl1_len - 1)] = d2[xl1[-1]][0] * [1]
+-
+-    path_max = ""
+-    path_max_length = 0
+-    #pdb.set_trace()
+-    for idx in range(xl1_len - 1 - 1, -1, -1):
++        v[0] = len(v) - 1
++    d2x = {}
++    # A = [3, 3, 5, 12]  : [-1, -1, -1, 3, 3, 5, 5, 5, 5, 5, 5, 5, 12, 12 ..]
++    for k, v in d2.items():
++        amap = []
++        marks = [0, *v[1:], xl2_len]
++        last = -1
++        for idx in range(len(marks) - 1):
++            amap += ((marks[idx + 1] - marks[idx]) * [last])
++            last = marks[idx + 1]
++        d2x[k] = amap
++
++    # key on id
++    path_pool = {}  # A4B5D10: 3, C6C7: 2
++    path_pool_s2idx_start = {} # e.g. 4: A4B5D10
++
++    paths_max_for_s2idx = {}
++    for idx in range(xl2_len):
++        paths_max_for_s2idx[idx] = 0
++
++    global_max_subpath = xl1[-1] + str(xl1_len - 1)
++    global_max_subpath_length = 1
++
++    for idx in range(xl1_len - 1, -1, -1):
+         c = xl1[idx]
+-        c_idx = c + str(idx)
+-
+-        paths_max[c_idx] = []
+-        paths_max_lengths[c_idx] = []
+-
+-         # s2 matches
+-        matches = d2[c][1:]
+-        # compatible jumps per match
+-        for s2_idx in matches:
+-            subpath_max = s2_idx  # default
+-            subpath_max_length = 1  # default
+-            for s1_idx in range(idx + 1, len(xl1)):
+-                c_n = xl1[s1_idx]
+-                c_n_idx = c_n + str(s1_idx)
+-                # given our c match to s2_idx, is jumping to c_n (at
+-                # s1_idx) valid? look at c_n's paths to determine
+-                idx3 = 0
+-                for c_n_s2_idx in paths_max[c_n_idx]:
+-                    if c_n_s2_idx > s2_idx:
+-                        # valid, we could take this path, but it
+-                        # should only be considered if we know it's
+-                        # not sub-optimal
+-                        if subpath_max_length < 1 + paths_max_lengths[c_n_idx][idx3]:
+-                            subpath_max_length = 1 + paths_max_lengths[c_n_idx][idx3]
+-                    idx3 += 1
+-            # valid jump and max set should we be able to take this s2_idx version of c
+-            paths_max[c_idx].append(subpath_max)
+-            paths_max_lengths[c_idx].append(subpath_max_length)
+-            # and thus we'll know now that if we want to take 'c' ot s1, then regardless
+-            # of which s2 idx match of c we are able to consider, we already have the
+-            # answer as to its maximum subpath
+-        path_max_length = max(path_max_length, max(paths_max_lengths[c_idx]))
+-
+-    print(f"max common child: [{path_max_length}] {path_max}")
+-    return path_max_length
++
++        matches_x = d2[c][1:]  # this could be 100s
++        for s2_idx in matches_x:
++            c2_idx = c + str(s2_idx)
++            max_subpath = ''
++            max_subpath_data = []
++            max_subpath_length = 1
++            # consider paths greater than s2_idx
++            idx2 = s2_idx + 1
++            while idx2 < xl2_len:
++                if not idx2 in path_pool_s2idx_start:
++                    idx2 += 1
++                    continue
++                for p, [*d] in path_pool_s2idx_start[idx2].values():
++                    if max_subpath_length < 1 + path_pool[p]:
++                        # great, current max jump target
++                        max_subpath = p
++                        max_subpath_data = d
++                        max_subpath_length = 1 + path_pool[p]
++                idx2 += 1
++
++            if max_subpath_length > paths_max_for_s2idx[s2_idx]:
++                paths_max_for_s2idx[s2_idx] = max_subpath_length
++                # consider paths less than s2_idx
++                # paths with a lower, more costly s2idx, with the same
++                # or less max path length can be safely dropped
++                idx2 = s2_idx - 1
++                while idx2 >= 0:
++                    if not idx2 in path_pool_s2idx_start:
++                        idx2 -= 1
++                        continue
++                    for p, *d in list(path_pool_s2idx_start[idx2].values()):
++                        if path_pool[p] <= max_subpath_length:
++                            path_pool.pop(p)
++                            path_pool_s2idx_start[idx2].pop(p)
++                            if len(path_pool_s2idx_start[idx2]) == 0:
++                                path_pool_s2idx_start.pop(idx2)
++                    idx2 -= 1
++            path_pool[c2_idx + max_subpath] = max_subpath_length
++            if not s2_idx in path_pool_s2idx_start:
++                 path_pool_s2idx_start[s2_idx] = {}
++            path_pool_s2idx_start[s2_idx][c2_idx + max_subpath] = [c2_idx + max_subpath, [s2_idx, *max_subpath_data]]
++            if len(max_subpath_data) > 0 and \
++               s2_idx == max_subpath_data[0] - 1:
++                #print(f"contiguous optimal path {c2_idx} <- {xl2[max_subpath_data[0]]}{max_subpath_data[0]}, dropping old run path '{max_subpath}'")
++                path_pool.pop(max_subpath)
++                path_pool_s2idx_start[max_subpath_data[0]].pop(max_subpath)
++            if max_subpath_length > paths_max_for_s2idx[s2_idx]:
++                paths_max_for_s2idx[s2_idx] = max_subpath_length
++
++            if max_subpath_length > global_max_subpath_length:
++                global_max_subpath = c2_idx + max_subpath
++                global_max_subpath_length = max_subpath_length
++
++        #print(f"[{idx}|{c}] max: [{global_max_subpath_length}] {global_max_subpath}, pool size: {len(path_pool.items())}, pool: {path_pool}")
++        #if idx % 100 == 0:
++        #print(f"[{idx}|{c}] max: [{global_max_subpath_length}] pool size: {len(path_pool.items())}")
++
++    #print(f"max common child: [{global_max_subpath_length}] {global_max_subpath}")
++    return global_max_subpath_length
+ 
+ 
+ if __name__ == '__main__':
+-- 
+2.23.0
+
