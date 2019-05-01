@@ -1,0 +1,34 @@
+From 210dc45721f5f88b4486a7524788803d2aceb089 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 1 May 2019 23:58:14 +0100
+Subject: [add] hackerrank, 'caesar cipher', python solution
+
+---
+ .../caesar.cipher.py                                  | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.caesar.cipher/caesar.cipher.py b/hackerrank/algorithms.-.strings.-.easy.-.caesar.cipher/caesar.cipher.py
+index bb35483..59a6560 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.caesar.cipher/caesar.cipher.py
++++ b/hackerrank/algorithms.-.strings.-.easy.-.caesar.cipher/caesar.cipher.py
+@@ -8,6 +8,17 @@ import sys
+ 
+ # Complete the caesarCipher function below.
+ def caesarCipher(s, k):
++    def offset(c, k):
++        if bool(re.search("[A-Z]", c)):
++            base = ord('A')
++            return chr((ord(c) - base + offset) % 26 + base)
++        elif bool(re.search("[A-Z]", c)):
++            base = ord('A')
++            return chr((ord(c) - base + offset) % 26 + base)
++        return c
++    k2 = k % 26
++    return ''.join([offset(c, k2) for c in list(s)])
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
