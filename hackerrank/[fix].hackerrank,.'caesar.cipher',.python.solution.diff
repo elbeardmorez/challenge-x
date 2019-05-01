@@ -1,0 +1,38 @@
+From 55c8a9db9296abf2fe52544bf9d5ecdc999904a5 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 2 May 2019 00:08:44 +0100
+Subject: [fix] hackerrank, 'caesar cipher', python solution
+
+-case duplication mistake
+---
+ .../caesar.cipher.py                                   | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.caesar.cipher/caesar.cipher.py b/hackerrank/algorithms.-.strings.-.easy.-.caesar.cipher/caesar.cipher.py
+index 59a6560..d8b9dac 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.caesar.cipher/caesar.cipher.py
++++ b/hackerrank/algorithms.-.strings.-.easy.-.caesar.cipher/caesar.cipher.py
+@@ -8,14 +8,16 @@ import sys
+ 
+ # Complete the caesarCipher function below.
+ def caesarCipher(s, k):
++
+     def offset(c, k):
+         if bool(re.search("[A-Z]", c)):
+             base = ord('A')
+-            return chr((ord(c) - base + offset) % 26 + base)
+-        elif bool(re.search("[A-Z]", c)):
+-            base = ord('A')
+-            return chr((ord(c) - base + offset) % 26 + base)
++            return chr((ord(c) - base + k) % 26 + base)
++        elif bool(re.search("[a-z]", c)):
++            base = ord('a')
++            return chr((ord(c) - base + k) % 26 + base)
+         return c
++
+     k2 = k % 26
+     return ''.join([offset(c, k2) for c in list(s)])
+ 
+-- 
+2.23.0
+
