@@ -1,0 +1,38 @@
+From f923ff9c1ca1e2d818951e59f34ab74bc6a11e9b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 2 May 2019 14:29:23 +0100
+Subject: [add] hackerrank, 'caesar cipher', javascript port
+
+---
+ .../caesar.cipher.js                              | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.caesar.cipher/caesar.cipher.js b/hackerrank/algorithms.-.strings.-.easy.-.caesar.cipher/caesar.cipher.js
+index 004b1f4..ce6625f 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.caesar.cipher/caesar.cipher.js
++++ b/hackerrank/algorithms.-.strings.-.easy.-.caesar.cipher/caesar.cipher.js
+@@ -26,8 +26,19 @@ function readLine() {
+ 
+ // Complete the caesarCipher function below.
+ function caesarCipher(s, k) {
+-
+-
++    var offset = (c, k) => {
++        var base;
++        if (c.search("[A-Z]") > -1) {
++            base = 'A'.charCodeAt(0);
++            return String.fromCharCode((c.charCodeAt(0) - base + k) % 26 + base);
++        } else if (c.search("[a-z]") > -1) {
++            base = 'a'.charCodeAt(0);
++            return String.fromCharCode((c.charCodeAt(0) - base + k) % 26 + base);
++        }
++        return c;
++    };
++    var k2 = k % 26;
++    return s.split('').map(c => offset(c, k2)).join('');
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
