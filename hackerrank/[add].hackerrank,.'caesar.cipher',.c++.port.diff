@@ -1,0 +1,45 @@
+From 8ca3edbaa0057f3fe5206c1ed5d56f81321bfba9 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 2 May 2019 10:56:00 +0100
+Subject: [add] hackerrank, 'caesar cipher', c++ port
+
+---
+ .../caesar.cipher.cpp                         | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.caesar.cipher/caesar.cipher.cpp b/hackerrank/algorithms.-.strings.-.easy.-.caesar.cipher/caesar.cipher.cpp
+index df0162c..4e3fa76 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.caesar.cipher/caesar.cipher.cpp
++++ b/hackerrank/algorithms.-.strings.-.easy.-.caesar.cipher/caesar.cipher.cpp
+@@ -1,11 +1,26 @@
+ #include <bits/stdc++.h>
++#include <regex>
+ 
+ using namespace std;
+ 
++char offset(char c, int k) {
++    if (regex_match(&c, regex("[A-Z]+"))) {
++        auto base = int('A');
++        return static_cast<char>((int(c) - base + k) % 26 + base);
++    } else if (regex_match(&c, basic_regex<char>("[a-z]+"))) {
++        auto base = int('a');
++        return static_cast<char>((int(c) - base + k) % 26 + base);
++    }
++    return c;
++}
++
+ // Complete the caesarCipher function below.
+ string caesarCipher(string s, int k) {
+-
+-
++    auto k2 = k % 26;
++    string s2 = "";
++    for (auto itr = s.begin(); itr < s.end(); ++itr)
++        s2 += offset(*itr, k2);
++    return s2;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
