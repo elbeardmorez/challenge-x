@@ -1,0 +1,95 @@
+From 36389251d1b57ea1eac39db7257f5c594ef3b53e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 3 May 2019 10:27:37 +0100
+Subject: [add] hackerrank, 'caesar cipher', c# port
+
+---
+ .../caesar.cipher.cs                          | 61 +++++++++++++++++--
+ 1 file changed, 56 insertions(+), 5 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.caesar.cipher/caesar.cipher.cs b/hackerrank/algorithms.-.strings.-.easy.-.caesar.cipher/caesar.cipher.cs
+index 6432c63..63b7808 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.caesar.cipher/caesar.cipher.cs
++++ b/hackerrank/algorithms.-.strings.-.easy.-.caesar.cipher/caesar.cipher.cs
+@@ -12,22 +12,73 @@ using System.Text.RegularExpressions;
+ using System.Text;
+ using System;
+ 
++using System.Diagnostics;
++using Mono.Unix;
++
+ class Solution {
+ 
++    static char offset(char c, int k) {
++        int base_;
++        if (Regex.IsMatch(c.ToString(), @"[A-Z]")) {
++            base_ = Convert.ToInt32('A');
++            return Convert.ToChar((Convert.ToInt32(c) - base_ + k) % 26 + base_);
++        } else if (Regex.IsMatch(c.ToString(), @"[a-z]")) {
++            base_ = Convert.ToInt32('a');
++            return Convert.ToChar((Convert.ToInt32(c) - base_ + k) % 26 + base_);
++        }
++        return c;
++    }
++
+     // Complete the caesarCipher function below.
+     static string caesarCipher(string s, int k) {
+-
+-
++        var k2 = k % 26;
++        return String.Join("", s.ToCharArray().Select(c => offset(c, k2)));
+     }
+ 
+     static void Main(string[] args) {
+         TextWriter textWriter = new StreamWriter(@System.Environment.GetEnvironmentVariable("OUTPUT_PATH"), true);
+ 
+-        int n = Convert.ToInt32(Console.ReadLine());
++        int fd;
++        fd = (args.Length > 0) ? Convert.ToInt32(args[0]) : 5;
++        Console.WriteLine($"args: fd: '{fd}'");
++        UnixStream us = new UnixStream(fd, false);
++        Console.WriteLine($"us.CanRead: {us.CanRead}");
++        Debugger.Break();
++        string s_n = "";
++        string s_s = "";
++        string s_k = "";
++        if (us.CanRead) {
++            Console.WriteLine("# 'nix fd read");
++            byte[] buf = new byte[100];
++            //var x = us.ReadLine(buf, 0, 5);
++            //Console.WriteLine($"read: [{x}] {Encoding.UTF8.GetString(buf)}");
++            StreamReader r = new StreamReader(us, System.Text.Encoding.UTF8);
++            s_n = r.ReadLine();
++            s_s = r.ReadLine();
++            s_k = r.ReadLine();
++        } else {
++            Console.WriteLine("# fs read");
++            FileStream fs = File.Open("input/input05.txt", FileMode.Open);
++            StreamReader r = new StreamReader(fs, System.Text.Encoding.UTF8);
++            s_n = r.ReadLine();
++            s_s = r.ReadLine();
++            s_k = r.ReadLine();
++        }
++        us.Close();
++
++        Console.WriteLine($"s_n: {s_n}");
++        Console.WriteLine($"s_s: {s_s}");
++        Console.WriteLine($"s_k: {s_k}");
++
++        string s = s_s;
++        int n = Convert.ToInt32(s_n);
++        int k = Convert.ToInt32(s_k);
++
++        //int n = Convert.ToInt32(s_n);
+ 
+-        string s = Console.ReadLine();
++        //string s = r.ReadLine();
+ 
+-        int k = Convert.ToInt32(Console.ReadLine());
++        //int k = Convert.ToInt32(r.ReadLine());
+ 
+         string result = caesarCipher(s, k);
+ 
+-- 
+2.23.0
+
