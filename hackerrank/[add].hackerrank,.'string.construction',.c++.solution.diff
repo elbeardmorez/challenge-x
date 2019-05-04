@@ -1,0 +1,36 @@
+From 8c2fa603f3f7c8658d6f0f76079c87c02cc58520 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 4 May 2019 22:20:33 +0100
+Subject: [add] hackerrank, 'string construction', c++ solution
+
+---
+ .../string.construction.cpp                         | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.string.construction/string.construction.cpp b/hackerrank/algorithms.-.strings.-.easy.-.string.construction/string.construction.cpp
+index b7c85c4..cac7e0b 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.string.construction/string.construction.cpp
++++ b/hackerrank/algorithms.-.strings.-.easy.-.string.construction/string.construction.cpp
+@@ -4,8 +4,17 @@ using namespace std;
+ 
+ // Complete the stringConstruction function below.
+ int stringConstruction(string s) {
+-
+-
++    int cost = 0;
++    int cidx = 0;
++    int idx = 0;
++    map<char, int> zmap;
++    for (auto itr = s.begin(); itr < s.end(); ++itr) {
++        if (zmap.find(*itr) == zmap.end()) {
++            zmap[*itr] = 1;
++            cost++;
++        }
++    }
++    return cost;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
