@@ -1,0 +1,27 @@
+From 35114f6c9a3b685a3fa5572b48c3696d6eb1d10f Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 5 May 2019 23:15:53 +0100
+Subject: [add] hackerrank, 'string construction', javascript port
+
+---
+ .../string.construction.js                                    | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.string.construction/string.construction.js b/hackerrank/algorithms.-.strings.-.easy.-.string.construction/string.construction.js
+index edb1c73..e8f18e6 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.string.construction/string.construction.js
++++ b/hackerrank/algorithms.-.strings.-.easy.-.string.construction/string.construction.js
+@@ -26,8 +26,8 @@ function readLine() {
+ 
+ // Complete the stringConstruction function below.
+ function stringConstruction(s) {
+-
+-
++  var x = new Set(s.split(''));
++  return x.size;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
