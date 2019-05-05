@@ -1,0 +1,26 @@
+From f45a65f6a98097fcb84ae6a29cd8395f76a80966 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 5 May 2019 22:47:19 +0100
+Subject: [add] hackerrank, 'string construction', c# port
+
+---
+ .../string.construction.cs                                     | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.string.construction/string.construction.cs b/hackerrank/algorithms.-.strings.-.easy.-.string.construction/string.construction.cs
+index 1c746b7..b368a1c 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.string.construction/string.construction.cs
++++ b/hackerrank/algorithms.-.strings.-.easy.-.string.construction/string.construction.cs
+@@ -16,8 +16,7 @@ class Solution {
+ 
+     // Complete the stringConstruction function below.
+     static int stringConstruction(string s) {
+-
+-
++        return s.ToCharArray().GroupBy(x => x).Count();
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
