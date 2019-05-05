@@ -1,0 +1,28 @@
+From df027a095157d061ea64e137a8e5eb3af8579a6b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 5 May 2019 22:51:33 +0100
+Subject: [add] hackerrank, 'string construction', python port
+
+---
+ .../string.construction.py                                      | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.string.construction/string.construction.py b/hackerrank/algorithms.-.strings.-.easy.-.string.construction/string.construction.py
+index ad52d92..3a97b14 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.string.construction/string.construction.py
++++ b/hackerrank/algorithms.-.strings.-.easy.-.string.construction/string.construction.py
+@@ -5,9 +5,11 @@ import os
+ import random
+ import re
+ import sys
++from itertools import groupby
+ 
+ # Complete the stringConstruction function below.
+ def stringConstruction(s):
++    return len(list(groupby(sorted(list(s)))))
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
