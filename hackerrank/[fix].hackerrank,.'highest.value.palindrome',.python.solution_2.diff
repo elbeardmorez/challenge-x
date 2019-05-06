@@ -1,0 +1,41 @@
+From 460c7eb889d21bf314dfe64d120d4fe2b486e099 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 6 May 2019 22:45:08 +0100
+Subject: [fix] hackerrank, 'highest value palindrome', python solution
+
+-add 0, 1 edge case handling
+---
+ .../highest.value.palindrome.py                 | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.py b/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.py
+index 9bbdd22..db1510c 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.py
++++ b/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.py
+@@ -21,10 +21,19 @@ def highestValuePalindrome(s, n, k):
+     """
+     a_s = [int(c) for c in s]
+     l_s = len(a_s)
+-    mid = int(l_s / 2)
+-    rem = [] if l_s % 2 == 0 else [a_s[mid+1]]
+-    a_s1 = a_s[0:mid]
+-    a_s2 = list(reversed(a_s[-mid:]))
++    a_s1 = []
++    a_s2 = []
++    mid = 0
++    if l_s == 0:
++        return "-1"
++    elif l_s == 1:
++        rem = a_s
++        return "9" if k > 0 else "-1"
++    else:
++        mid = int(l_s / 2)
++        a_s1 = a_s[0:mid]
++        a_s2 = list(reversed(a_s[-mid:]))
++        rem = [] if l_s % 2 == 0 else [a_s[mid+1]]
+     print(f"a_s1 len: {len(a_s1)}, a_s2 len: {len(a_s2)}")
+     print(f"a_s1: {a_s1}, a_s2: {a_s2}")
+     m_mods = {}
+-- 
+2.23.0
+
