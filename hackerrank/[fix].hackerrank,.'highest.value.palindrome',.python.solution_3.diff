@@ -1,0 +1,46 @@
+From b450a7547a77fae848a0f77ba328f1cbce142a21 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 6 May 2019 22:58:55 +0100
+Subject: [fix] hackerrank, 'highest value palindrome', python solution
+
+-incorrect idx used for setting k=1 remaining case after full run
+-don't re-use idxs where max 9 already achieved on first iteration
+---
+ .../highest.value.palindrome.py                        | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.py b/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.py
+index db1510c..23f5ec7 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.py
++++ b/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.py
+@@ -39,6 +39,7 @@ def highestValuePalindrome(s, n, k):
+     m_mods = {}
+     a_mods = []
+     for idx in range(mid):
++        print(f"idx: {idx}, k: {k}")
+         if a_s1[idx] != a_s2[idx]:
+             max_ = -1
+             if a_s1[idx] < a_s2[idx]:
+@@ -53,14 +54,15 @@ def highestValuePalindrome(s, n, k):
+     # here we have a palindrome
+     if k > 0:
+         for idx in range(mid):
+-            print(idx)
++            print(f"idx: {idx}, k: {k}")
+             if a_s1[idx] < 9:
+                 a_s1[idx] = a_s2[idx] = 9
+                 k = k - 1 if idx in m_mods else k - 2
+             if k == 1:
+-                for x in a_mods:
+-                    if x > idx:
+-                        a_s1[idx] = a_s2[idx] = 9
++                for idx2 in a_mods:
++                    print(f"idx: {idx}, idx2: {idx2}")
++                    if idx2 > idx and m_mods[idx2] < 9:
++                        a_s1[idx2] = a_s2[idx2] = 9
+                         k = 0
+                         break
+             if k == 0:
+-- 
+2.23.0
+
