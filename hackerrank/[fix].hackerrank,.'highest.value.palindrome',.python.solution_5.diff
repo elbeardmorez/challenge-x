@@ -1,0 +1,26 @@
+From 53546caf6d9ba71f7a11a62a44a9f16ef4a0b33b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 6 May 2019 23:30:59 +0100
+Subject: [fix] hackerrank, 'highest value palindrome', python solution
+
+-incorrect mid value idx, off-by-one bug
+---
+ .../highest.value.palindrome.py                                 | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.py b/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.py
+index 43393b9..c7b8b8a 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.py
++++ b/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.py
+@@ -33,7 +33,7 @@ def highestValuePalindrome(s, n, k):
+         mid = int(l_s / 2)
+         a_s1 = a_s[0:mid]
+         a_s2 = list(reversed(a_s[-mid:]))
+-        rem = [] if l_s % 2 == 0 else [a_s[mid+1]]
++        rem = [] if l_s % 2 == 0 else [a_s[mid]]
+     #print(f"a_s1 len: {len(a_s1)}, a_s2 len: {len(a_s2)}")
+     #print(f"a_s1: {a_s1}, a_s2: {a_s2}")
+     m_mods = {}
+-- 
+2.23.0
+
