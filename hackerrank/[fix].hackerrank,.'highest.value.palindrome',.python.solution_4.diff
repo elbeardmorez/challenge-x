@@ -1,0 +1,67 @@
+From dda8ddec0d5e9a403b66de201043c04ca9e4038b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 6 May 2019 23:20:13 +0100
+Subject: [fix] hackerrank, 'highest value palindrome', python solution
+
+-bad logic, don't force k - 2 change and go negative when a k - 1 is
+available
+---
+ .../highest.value.palindrome.py               | 29 ++++++++++---------
+ 1 file changed, 16 insertions(+), 13 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.py b/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.py
+index 23f5ec7..43393b9 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.py
++++ b/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.py
+@@ -34,12 +34,12 @@ def highestValuePalindrome(s, n, k):
+         a_s1 = a_s[0:mid]
+         a_s2 = list(reversed(a_s[-mid:]))
+         rem = [] if l_s % 2 == 0 else [a_s[mid+1]]
+-    print(f"a_s1 len: {len(a_s1)}, a_s2 len: {len(a_s2)}")
+-    print(f"a_s1: {a_s1}, a_s2: {a_s2}")
++    #print(f"a_s1 len: {len(a_s1)}, a_s2 len: {len(a_s2)}")
++    #print(f"a_s1: {a_s1}, a_s2: {a_s2}")
+     m_mods = {}
+     a_mods = []
+     for idx in range(mid):
+-        print(f"idx: {idx}, k: {k}")
++        #print(f"idx: {idx}, k: {k}")
+         if a_s1[idx] != a_s2[idx]:
+             max_ = -1
+             if a_s1[idx] < a_s2[idx]:
+@@ -54,19 +54,22 @@ def highestValuePalindrome(s, n, k):
+     # here we have a palindrome
+     if k > 0:
+         for idx in range(mid):
+-            print(f"idx: {idx}, k: {k}")
++            #print(f"idx: {idx}, k: {k}")
+             if a_s1[idx] < 9:
+-                a_s1[idx] = a_s2[idx] = 9
+-                k = k - 1 if idx in m_mods else k - 2
+-            if k == 1:
+-                for idx2 in a_mods:
+-                    print(f"idx: {idx}, idx2: {idx2}")
+-                    if idx2 > idx and m_mods[idx2] < 9:
+-                        a_s1[idx2] = a_s2[idx2] = 9
+-                        k = 0
+-                        break
++                if k >= 2:
++                    a_s1[idx] = a_s2[idx] = 9
++                    k = k - 1 if idx in m_mods else k - 2
++                elif k == 1:
++                    for idx2 in a_mods:
++                        #print(f"idx: {idx}, idx2: {idx2}")
++                        if idx2 >= idx and m_mods[idx2] < 9:
++                            a_s1[idx2] = a_s2[idx2] = 9
++                            k = 0
++                            break
+             if k == 0:
+                 break
++    if k > 0 and len(rem) == 1 and rem[0] < 9:
++        rem[0] = 9
+ 
+     return ''.join([str(i) for i in (a_s1 + rem + list(reversed(a_s2)))])
+ 
+-- 
+2.23.0
+
