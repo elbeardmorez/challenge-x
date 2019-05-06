@@ -1,0 +1,73 @@
+From fd374582338a71a8c0a6ee46a5c2b3c822097834 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 6 May 2019 22:25:34 +0100
+Subject: [add] hackerrank, 'highest value palindrome', python solution
+
+---
+ .../highest.value.palindrome.py               | 50 +++++++++++++++++++
+ 1 file changed, 50 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.py b/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.py
+index 104d931..795cd2b 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.py
++++ b/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.py
+@@ -8,6 +8,56 @@ import sys
+ 
+ # Complete the highestValuePalindrome function below.
+ def highestValuePalindrome(s, n, k):
++    """
++    split array in half, ignore middle item if length odd
++    reverse latter half
++    iterate array counting matches
++    on non match reduce k by 1, change min of two considered items to max
++    remember idx of changed
++    if k reaches -1, return -1
++    if we get to end and k > 0, re-iterate left-to-right, exchanging any non 9s, reducing k by 2, unless that idx was
++    already modified, then reduce by 1. if only k=1 remaining, change next idx which was already changed
++    reassemble array
++    """
++    a_s = [int(c) for c in s]
++    l_s = len(a_s)
++    mid = int(l_s / 2)
++    rem = [] if l_s % 2 == 0 else [a_s[mid+1]]
++    a_s1 = a_s[0:mid]
++    a_s2 = list(reversed(a_s[mid:]))
++    print(f"a_s1 len: {len(a_s1)}, a_s2 len: {len(a_s2)}")
++    print(f"a_s1: {a_s1}, a_s2: {a_s2}")
++    m_mods = {}
++    a_mods = []
++    for idx in range(mid):
++        if a_s1[idx] != a_s2[idx]:
++            max_ = -1
++            if a_s1[idx] < a_s2[idx]:
++                a_s1[idx] = max_ = a_s2[idx]
++            else:
++                a_s2[idx] = max_ = a_s1[idx]
++            k -= 1
++            m_mods[idx] = max_
++            a_mods.append(idx)
++        if k < 0:
++            return str(-1)
++    # here we have a palindrome
++    if k > 0:
++        for idx in range(mid):
++            print(idx)
++            if a_s1[idx] < 9:
++                a_s1[idx] = a_s2[idx] = 9
++                k = k - 1 if idx in m_mods else k - 2
++            if k == 1:
++                for x in a_mods:
++                    if x > idx:
++                        a_s1[idx] = a_s2[idx] = 9
++                        k = 0
++                        break
++            if k == 0:
++                break
++
++    return ''.join([str(i) for i in (a_s1 + rem + list(reversed(a_s2)))])
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
