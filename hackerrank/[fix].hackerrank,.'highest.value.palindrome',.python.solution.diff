@@ -1,0 +1,26 @@
+From d810a828f994665d2fec8575d1999b23f3fdb44d Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 6 May 2019 22:35:01 +0100
+Subject: [fix] hackerrank, 'highest value palindrome', python solution
+
+-bad back end slice
+---
+ .../highest.value.palindrome.py                                 | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.py b/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.py
+index 795cd2b..9bbdd22 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.py
++++ b/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.py
+@@ -24,7 +24,7 @@ def highestValuePalindrome(s, n, k):
+     mid = int(l_s / 2)
+     rem = [] if l_s % 2 == 0 else [a_s[mid+1]]
+     a_s1 = a_s[0:mid]
+-    a_s2 = list(reversed(a_s[mid:]))
++    a_s2 = list(reversed(a_s[-mid:]))
+     print(f"a_s1 len: {len(a_s1)}, a_s2 len: {len(a_s2)}")
+     print(f"a_s1: {a_s1}, a_s2: {a_s2}")
+     m_mods = {}
+-- 
+2.23.0
+
