@@ -1,0 +1,196 @@
+From 615c510551f6431e8cda4d0ae639bdc5f1767122 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 7 May 2019 19:48:59 +0100
+Subject: [mod] hackerrank, 'common child', python solution
+
+-speed-up, remove all remaining fat, hold onto only the necessary
+information
+-speed-up, switch remaining maps to arrays
+---
+ .../common.child.py                           | 92 ++++++++-----------
+ 1 file changed, 39 insertions(+), 53 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.common.child/common.child.py b/hackerrank/algorithms.-.strings.-.medium.-.common.child/common.child.py
+index 8073064..c431010 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.common.child/common.child.py
++++ b/hackerrank/algorithms.-.strings.-.medium.-.common.child/common.child.py
+@@ -126,7 +126,7 @@ def commonChild(s1, s2):
+     there exists another longer path that has been acheived at a lower cost
+     """
+ 
+-    #debug = -1
++    #debug = 2
+ 
+     # strip non common
+     l1 = list(s1)
+@@ -140,18 +140,14 @@ def commonChild(s1, s2):
+ 
+     """
+     if debug > -1:
+-        print(f"xs1[{xl1_len}] : {''.join(xl1[0:min(25, xl1_len)]) + ('...' if xl1_len > 25 else '')}")
+-        print(f"xs2[{xl2_len}] : {''.join(xl2[0:min(25, xl2_len)]) + ('...' if xl2_len > 25 else '')}")
++        max_ = 50
++        print(f"xs1[{xl1_len}] : {''.join(xl1[0:min(max_, xl1_len)]) + ('...' if xl1_len > max_ else '')}")
++        print(f"xs2[{xl2_len}] : {''.join(xl2[0:min(max_, xl2_len)]) + ('...' if xl2_len > max_ else '')}")
+     """
+ 
+     if xl2_len == 0:
+         return 0
+ 
+-    #xl1i = [(xl1[idx], idx) for idx in range(len(xl1))]
+-    #d1 = {k: [0] + list(x[1] for x in g) for k, g in groupby(sorted(xl1i), lambda x: x[0])}
+-    #for v in d1.values():
+-    #    v[0] = len(v) - 1
+-
+     xl2i = [(xl2[idx], idx) for idx in range(len(xl2))]
+     d2 = {k: [0] + list(x[1] for x in g) for k, g in groupby(sorted(xl2i), lambda x: x[0])}
+     for v in d2.values():
+@@ -167,25 +163,17 @@ def commonChild(s1, s2):
+             last = marks[idx + 1]
+         d2x[k] = amap
+ 
+-    #char_hits={}
+-    #for idx in range(xl1_len):
+-    #    char_hits[xl1[idx]]=0
+-
+-    path_pool_s2idx_start = {} # e.g. 4: A4B5D10
+-    max_s2idx = {}
+-    max_s2idx_length = {}
+-    for idx in range(xl2_len):
+-        max_s2idx_length[idx] = 0
++    #path_pool_x = [False] * xl2_len
++    path_pool = [False] * xl2_len
++    max_s2idx_length = [1] * xl2_len
+ 
+-    global_max_subpath = ''
++    #global_max_subpath = ''
+     global_max_subpath_length = 0
+ 
+     for idx in range(xl1_len - 1, -1, -1):
+         c = xl1[idx]
+-        #char_hits[c] += 1
+         s2_idx = -1
+         ignore = {}
+-        matches = d2[c][1:]  # correct but too slow
+         if d2[c][0] > 0:
+             # more char maps left
+             #matches = [d2[c][d2[c][0]]]  # this curtails paths being created for ealier starting char maps which then may
+@@ -195,48 +183,40 @@ def commonChild(s1, s2):
+             matches = d2[c][1:]  # correct but too slow
+             d2[c][0] = 0  # all added
+             for s2_idx in matches:
+-                path_pool_s2idx_start[s2_idx] = [c + str(s2_idx), 1, [s2_idx]]
+-                max_s2idx[s2_idx] = c + str(s2_idx)
+-                max_s2idx_length[s2_idx] = 1
++                #path_pool_x[s2_idx] = [c + str(s2_idx), 1, [s2_idx]]
++                path_pool[s2_idx] = 1
+             if 1 > global_max_subpath_length:
+-                global_max_subpath = c + str(s2_idx)
++                #global_max_subpath = c + str(s2_idx)
+                 global_max_subpath_length = 1
+             ignore = {x: x for x in matches}  # ignore 'starter' paths
+-            s2_idx = d2[c][d2[c][0]]
+-            idx2 = s2_idx
+-        else:
+-            #s2_idx = 0 if len(d2[c]) < 1 else d2[c][1]
+-            #s2_idx = 0 if char_hits[c] >= len(d2[c]) - 1 else d2[c][-char_hits[c]]
+-            #s2_idx = 0 if len(d1[c]) - 1 > len(d2[c]) else s2_idx
+-            idx2 = 0  # all
+-
+-        # for a given set of s2 match char idxs, which pool sets need to be considered for potential
+-        # extension?
+-        # it's more than just the s2 idxs themselves
+-        # it's hopefully less than the entire set of s2idx pools which is very slow
++
+         """
+         if debug == 0 or debug == 1:
+             print(f"@ s1idx {idx}|{xl1[idx]} considering its {len(matches)} s2idx matches")
+         """
+-        for idx2 in range(idx2, xl2_len): # while idx2 < xl2_len:
+-            if not idx2 in path_pool_s2idx_start:
++        for idx2 in range(d2[c][1], xl2_len):
++            #if not path_pool_x[idx2]:
++            if not path_pool[idx2]:
+                 continue
+-            [subpath, subpath_length, subpath_data] = path_pool_s2idx_start[idx2]
++            #[subpath, subpath_length, subpath_data] = path_pool_x[idx2]
++            subpath_length = path_pool[idx2]
+             """
+             if debug == 0 or debug == 1:
+-                print(f"considering pool set for s2idx: '{idx2}', path_pool_length: [{subpath}]")
++                print(f"considering pool set for s2idx: '{idx2}', sub_path: [{subpath}]")
+             """
+ 
+             s2_idx_last = idx2
+             if idx + subpath_length < global_max_subpath_length:
+                 # even if remaining idx chars all match, this subpath cannot be the
+                 # optimal path
+-                del path_pool_s2idx_start[idx2]
++                #path_pool_x[s2_idx_last] = False
++                path_pool[s2_idx_last] = False
+                 continue
+             if s2_idx_last + subpath_length < global_max_subpath_length:
+                 # even if remaining idx chars all match, this subpath cannot be the
+                 # optimal path
+-                del path_pool_s2idx_start[idx2]
++                #path_pool_x[s2_idx_last] = False
++                path_pool[s2_idx_last] = False
+                 continue
+             if s2_idx_last in ignore:
+                 # path stub, already considered by above addition
+@@ -251,35 +231,41 @@ def commonChild(s1, s2):
+ 
+             c2_idx_next = c + str(s2_idx_next)
+             if 1 + subpath_length > max_s2idx_length[s2_idx_next]:
+-                max_s2idx[s2_idx_next] = c2_idx_next + subpath
+                 max_s2idx_length[s2_idx_next] = 1 + subpath_length
+-                path_pool_s2idx_start[s2_idx_next] = [c2_idx_next + subpath, 1 + subpath_length, [s2_idx_next, *subpath_data]]
++                #path_pool_x[s2_idx_next] = [c2_idx_next + subpath, 1 + subpath_length, [s2_idx_next, *subpath_data]]
++                path_pool[s2_idx_next] = 1 + subpath_length
+                 if 1 + subpath_length > global_max_subpath_length:
+-                    global_max_subpath = c2_idx_next + subpath
++                    #global_max_subpath = c2_idx_next + subpath
+                     global_max_subpath_length = 1 + subpath_length
+ 
+             if s2_idx_next == s2_idx_last - 1:
+                 #print(f"contiguous optimal path {c2_idx_next} <- {xl2[subpath_data[0]]}{subpath_data[0]}, dropping old run path '{subpath}'")
+-                del path_pool_s2idx_start[idx2]
+-                continue
++                #path_pool_x[idx2] = False
++                path_pool[idx2] = False
++
+         """
+         if debug == 0:
+-            path_pool_length = sum([len(x) for x in path_pool_s2idx_start.values()])
++            #path_pool_length = len(path_pool_x)
++            path_pool_length = len(path_pool)
+             print(f"[{idx}|{c}] max: [{global_max_subpath_length}] pool size: {path_pool_length}")
+         elif debug == 1:
+-            #path_pool = [list(x.keys()) for x in path_pool_s2idx_start.values()]
+-            path_pool = [x[0] for x in path_pool_s2idx_start.values()]
+-            print(f"[{idx}|{c}] max: [{global_max_subpath_length}] {global_max_subpath}, pool size: {len(path_pool)}, pool: {path_pool}")
++            #path_pool = [x[0] for x in path_pool_x]
++            path_pool_length = len(path_pool)
++            print(f"[{idx}|{c}] max: [{global_max_subpath_length}] {global_max_subpath}, pool size: {path_pool_length}, pool: {path_pool}")
++            #path_pool_x = [x[0] for x in path_pool]
++            #path_pool_length = len(path_pool)
++            #print(f"[{idx}|{c}] max: [{global_max_subpath_length}] {global_max_subpath}, pool size: {path_pool_length}, pool: {path_pool_x}")
+         elif debug == 2:
+             if idx % 100 == 0:
+-                path_pool_length = sum([len(x) for x in path_pool_s2idx_start.values()])
++                #path_pool_length = len(path_pool_x)
++                path_pool_length = len(path_pool)
+                 print(f"[{idx}|{c}] max: [{global_max_subpath_length}] pool size: {path_pool_length}")
+             #if idx % 1000 == 0:
+             #    exit()
+             #    #return global_max_subpath_length
+         """
+ 
+-    print(f"max common child: [{global_max_subpath_length}] {global_max_subpath}")
++    #print(f"max common child: [{global_max_subpath_length}] {global_max_subpath}")
+     return global_max_subpath_length
+ 
+ 
+-- 
+2.23.0
+
