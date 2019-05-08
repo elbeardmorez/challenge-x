@@ -1,0 +1,97 @@
+From 5ea9ef7bf5bec5bc3a2c1e7131a49e58ae59b395 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 8 May 2019 23:58:16 +0100
+Subject: [add] hackerrank, 'highest value palindrone', c++ port
+
+---
+ .../highest.value.palindrome.cpp              | 73 ++++++++++++++++++-
+ 1 file changed, 72 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.cpp b/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.cpp
+index e3e75b3..cd9835b 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.cpp
++++ b/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.cpp
+@@ -6,8 +6,79 @@ vector<string> split_string(string);
+ 
+ // Complete the highestValuePalindrome function below.
+ string highestValuePalindrome(string s, int n, int k) {
++    vector<int> a_s1;
++    vector<int> a_s2;
++    int l_s = s.length();
++    int rem = -1;
++    int mid = 0;
++    if (l_s == 0)
++        return "-1";
++    else if (l_s == 1)
++        return k > 0 ? "9" : "-1";
++    else {
++        mid = (int)(l_s / 2);
++        for (int l = 0; l < mid; l++) {
++            a_s1.push_back(stoi(s.substr(l, 1)));
++            a_s2.push_back(stoi(s.substr(l_s - l - 1, 1)));
++        }
++        if (l_s % 2 == 1)
++            rem = stoi(s.substr(mid, 1));
++    }
++    cout << "a_s1 len: " << a_s1.size() << ", a_s2 len: " << a_s2.size() << endl;
++    cout << "a_s1: [ "; for (auto itr = a_s1.begin(); itr != a_s1.end(); ++itr) cout << *itr << " "; cout << "]" << endl;
++    cout << "a_s2: [ "; for (auto itr = a_s2.begin(); itr != a_s2.end(); ++itr) cout << *itr << " "; cout << "]" << endl;
++    map<int, int> m_mods;
++    vector<int> a_mods;
++    for (int idx = 0; idx < mid; idx++) {
++        cout << "idx: " << idx << ", k: " << k << endl;
++        if (a_s1[idx] != a_s2[idx]) {
++            int max_ = -1;
++            if (a_s1[idx] < a_s2[idx])
++                a_s1[idx] = max_ = a_s2[idx];
++            else
++                a_s2[idx] = max_ = a_s1[idx];
++            k -= 1;
++            m_mods[idx] = max_;
++            a_mods.push_back(idx);
++        }
++        if (k < 0)
++            return "-1";
++    }
++    // here we have a palindrome!
++    if (k > 0) {
++        for (int idx = 0; idx < mid; idx++) {
++            cout << "idx: " << idx << ", k: " << k << endl;
++            if (a_s1[idx] < 9) {
++                if (k >= 2) {
++                    a_s1[idx] = a_s2[idx] = 9;
++                    k = (m_mods.find(idx) != m_mods.end()) ? k - 1 : k - 2;
++                } else if (k == 1) {
++                    for (auto itr = a_mods.begin(); itr != a_mods.end(); ++itr) {
++                        int idx2 = *itr;
++                        cout << "idx: " << idx << ", idx2: " << idx2 << endl;
++                        if (idx2 >= idx && m_mods[idx2] < 9) {
++                            a_s1[idx2] = a_s2[idx2] = 9;
++                            k = 0;
++                            break;
++                        }
++                    }
++                }
++            }
++            if (k == 0)
++                break;
++        }
++    }
++    if (k > 0 && rem > -1 && rem < 9)
++        rem = 9;
++
++    string s1 = "";
++    string s2 = rem > -1 ? to_string(rem) : "";
++    for (int l = 0; l < mid; l++) {
++        s1 += to_string(a_s1[l]);
++        s2 += to_string(a_s1[mid - l - 1]);
++    }
+ 
+-
++    return s1 + s2;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
