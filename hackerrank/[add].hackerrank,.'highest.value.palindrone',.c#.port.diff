@@ -1,0 +1,100 @@
+From 4dd748278b33adb5c68790314f78b7768bb089cc Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 9 May 2019 14:57:46 +0100
+Subject: [add] hackerrank, 'highest value palindrone', c# port
+
+---
+ .../highest.value.palindrome.cs               | 75 +++++++++++++++++++
+ 1 file changed, 75 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.cs b/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.cs
+index c9bacfa..bc373f5 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.cs
++++ b/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.cs
+@@ -16,8 +16,83 @@ class Solution {
+ 
+     // Complete the highestValuePalindrome function below.
+     static string highestValuePalindrome(string s, int n, int k) {
++        var a_s = s.ToCharArray();
++        var a_s1 = new List<int>();
++        var a_s2 = new List<int>();
++        var l_s = s.Count();
++        var rem = -1;
++        var mid = 0;
++        if (l_s == 0)
++            return "-1";
++        else if (l_s == 1)
++            return k > 0 ? "9" : "-1";
++        else {
++            mid = Convert.ToInt32(l_s / 2);
++            for (var l = 0; l < mid; l++) {
++                a_s1.Add(Convert.ToInt32(a_s[l].ToString()));
++                a_s2.Add(Convert.ToInt32(a_s[l_s - l - 1].ToString()));
++            }
++            if (l_s % 2 == 1)
++                rem = Convert.ToInt32(s[mid].ToString());
++        }
++        //Console.WriteLine($"a_s len: {a_s.Count()}, a_s1 len: {a_s1.Count()}, a_s2 len: {a_s2.Count()}");
++        //Console.WriteLine($"a_s: [{String.Join(" ", a_s)}]");
++        //Console.WriteLine($"a_s1: [{String.Join(" ", a_s1)}]");
++        //Console.WriteLine($"a_s2: [{String.Join(" ", a_s2)}]");
++        var m_mods = new Dictionary<int, int>();
++        var a_mods = new List<int>();
++        //Console.WriteLine("creating palindrome");
++        for (var idx = 0; idx < mid; idx++) {
++            //Console.WriteLine($"idx: {idx}, k: {k}");
++            if (a_s1[idx] != a_s2[idx]) {
++                var max_ = -1;
++                if (a_s1[idx] < a_s2[idx])
++                    a_s1[idx] = max_ = a_s2[idx];
++                else
++                    a_s2[idx] = max_ = a_s1[idx];
++                k -= 1;
++                m_mods[idx] = max_;
++                a_mods.Add(idx);
++            }
++            if (k < 0)
++                return "-1";
++        }
++        // here we have a palindrome!
++        if (k > 0) {
++            //Console.WriteLine("enlarging palindrome");
++            for (var idx = 0; idx < mid; idx++) {
++                //Console.WriteLine($"idx: {idx}, k: {k}");
++                if (a_s1[idx] < 9) {
++                    if (k >= 2) {
++                        a_s1[idx] = a_s2[idx] = 9;
++                        k = m_mods.ContainsKey(idx) ? k - 1 : k - 2;
++                    } else if (k == 1) {
++                        for (var l = 0; l < a_mods.Count(); l++) {
++                            var idx2 = a_mods[l];
++                            //Console.WriteLine($"idx: {idx}, idx2: {idx2}");
++                            if (idx2 >= idx && m_mods[idx2] < 9) {
++                                a_s1[idx2] = a_s2[idx2] = 9;
++                                k = 0;
++                                break;
++                            }
++                        }
++                    }
++                }
++                if (k == 0)
++                    break;
++            }
++        }
++        if (k > 0 && rem > -1 && rem < 9)
++            rem = 9;
+ 
++        var s1 = "";
++        var s2 = rem > -1 ? rem.ToString() : "";
++        for (var l = 0; l < mid; l++) {
++            s1 += a_s1[l].ToString();
++            s2 += a_s1[mid - l - 1].ToString();
++        }
+ 
++        return s1 + s2;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
