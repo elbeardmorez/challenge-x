@@ -1,0 +1,59 @@
+From 99fb2b3a3cb5ab48d2bd96813af3fddb93bc0c7e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 9 May 2019 15:13:21 +0100
+Subject: [mod] hackerrank, 'highest value palindrone', c# port
+
+-speed-up, 'int.Parse' over 'Convert.ToInt32'
+-speed-up, use 'StringBuilder' to reconstitute int arrays
+---
+ .../highest.value.palindrome.cs               | 22 ++++++++++---------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.cs b/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.cs
+index bc373f5..2f160fd 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.cs
++++ b/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.cs
+@@ -27,13 +27,13 @@ class Solution {
+         else if (l_s == 1)
+             return k > 0 ? "9" : "-1";
+         else {
+-            mid = Convert.ToInt32(l_s / 2);
++            mid = (int)(l_s / 2);
+             for (var l = 0; l < mid; l++) {
+-                a_s1.Add(Convert.ToInt32(a_s[l].ToString()));
+-                a_s2.Add(Convert.ToInt32(a_s[l_s - l - 1].ToString()));
++                a_s1.Add(int.Parse(a_s[l].ToString()));
++                a_s2.Add(int.Parse(a_s[l_s - l - 1].ToString()));
+             }
+             if (l_s % 2 == 1)
+-                rem = Convert.ToInt32(s[mid].ToString());
++                rem = int.Parse(s[mid].ToString());
+         }
+         //Console.WriteLine($"a_s len: {a_s.Count()}, a_s1 len: {a_s1.Count()}, a_s2 len: {a_s2.Count()}");
+         //Console.WriteLine($"a_s: [{String.Join(" ", a_s)}]");
+@@ -85,14 +85,16 @@ class Solution {
+         if (k > 0 && rem > -1 && rem < 9)
+             rem = 9;
+ 
+-        var s1 = "";
+-        var s2 = rem > -1 ? rem.ToString() : "";
++        var s1 = new StringBuilder();
++        var s2 = new StringBuilder();
++        if (rem > -1)
++            s2.Append(rem.ToString());
+         for (var l = 0; l < mid; l++) {
+-            s1 += a_s1[l].ToString();
+-            s2 += a_s1[mid - l - 1].ToString();
++            s1.Append(a_s1[l].ToString());
++            s2.Append(a_s1[mid - l - 1].ToString());
+         }
+-
+-        return s1 + s2;
++        s1.Append(s2);
++        return s1.ToString();
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
