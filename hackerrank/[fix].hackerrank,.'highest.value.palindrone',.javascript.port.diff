@@ -1,0 +1,44 @@
+From 11bfd72f366e398806706870dd2072bdccdc7538 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 9 May 2019 14:25:36 +0100
+Subject: [fix] hackerrank, 'highest value palindrone', javascript port
+
+-port bug, taking array idx position instead of its value (which perhaps
+misleadingly is itself an index of the array)
+---
+ .../highest.value.palindrome.js                              | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.js b/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.js
+index d439905..3e79e12 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.js
++++ b/hackerrank/algorithms.-.strings.-.medium.-.highest.value.palindrome/highest.value.palindrome.js
+@@ -49,6 +49,7 @@ function highestValuePalindrome(s, n, k) {
+     //console.log(`a_s2: ${a_s2}`);
+     var m_mods = new Map();
+     var a_mods = [];
++    //console.log("creating palindrome")
+     for (var idx = 0; idx < mid; idx++) {
+         //console.log(`idx: ${idx}, k: ${k}`);
+         if (a_s1[idx] != a_s2[idx]) {
+@@ -66,6 +67,7 @@ function highestValuePalindrome(s, n, k) {
+     }
+     // here we have a palindrome!
+     if (k > 0) {
++        //console.log("enlarging palindrome")
+         for (var idx = 0; idx < mid; idx++) {
+             //console.log(`idx: ${idx}, k: ${k}`);
+             if (a_s1[idx] < 9) {
+@@ -73,7 +75,8 @@ function highestValuePalindrome(s, n, k) {
+                     a_s1[idx] = a_s2[idx] = 9;
+                     k = m_mods.has(idx) ? k - 1 : k - 2;
+                 } else if (k == 1) {
+-                    for (var idx2 = 0; idx2 < a_mods.length; idx2++) {
++                    for (var l = 0; l < a_mods.length; l++) {
++                        var idx2 = a_mods[l];
+                         //console.log(`idx: ${idx}, idx2: ${idx2}`);
+                         if (idx2 >= idx && m_mods.get(idx2) < 9) {
+                             a_s1[idx2] = a_s2[idx2] = 9;
+-- 
+2.23.0
+
