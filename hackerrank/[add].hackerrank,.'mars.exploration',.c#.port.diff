@@ -1,0 +1,39 @@
+From 70edc34cb944b31112302260c0a849f68f765005 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 11 May 2019 00:15:53 +0100
+Subject: [add] hackerrank, 'mars exploration', c# port
+
+---
+ .../mars.exploration.cs                          | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.mars.exploration/mars.exploration.cs b/hackerrank/algorithms.-.strings.-.easy.-.mars.exploration/mars.exploration.cs
+index 21d5896..87b0055 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.mars.exploration/mars.exploration.cs
++++ b/hackerrank/algorithms.-.strings.-.easy.-.mars.exploration/mars.exploration.cs
+@@ -16,8 +16,20 @@ class Solution {
+ 
+     // Complete the marsExploration function below.
+     static int marsExploration(string s) {
+-
+-
++        var sb = new StringBuilder();
++        for (var l = 1; l <= (int)(s.Length / 3); l++)
++            sb.Append("SOS");
++        var s2 = sb.ToString();
++        Console.WriteLine($"orig: {s2}");
++        var diff = 0;
++        var a = s.ToCharArray();
++        var a2 = s2.ToCharArray();
++        Console.WriteLine($"a len: {a.Count()}, a2 len: {a2.Count()}");
++        for (var idx = 0; idx < s.Length; idx++) {
++            if (a[idx] != a2[idx])
++                diff++;
++        }
++        return diff;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
