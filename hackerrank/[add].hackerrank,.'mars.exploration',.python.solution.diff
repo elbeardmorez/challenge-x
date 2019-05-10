@@ -1,0 +1,29 @@
+From a79919bea451cfb4a785f13e4be0643f7ebfa9b1 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 11 May 2019 00:00:10 +0100
+Subject: [add] hackerrank, 'mars exploration', python solution
+
+---
+ .../mars.exploration.py                                     | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.mars.exploration/mars.exploration.py b/hackerrank/algorithms.-.strings.-.easy.-.mars.exploration/mars.exploration.py
+index 4ec7207..65721f9 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.mars.exploration/mars.exploration.py
++++ b/hackerrank/algorithms.-.strings.-.easy.-.mars.exploration/mars.exploration.py
+@@ -8,6 +8,12 @@ import sys
+ 
+ # Complete the marsExploration function below.
+ def marsExploration(s):
++    orig = list("SOS" * int(len(s) / 3))
++    diff = 0
++    for idx in range(len(s)):
++        if s[idx] != orig[idx]:
++            diff += 1
++    return diff
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
