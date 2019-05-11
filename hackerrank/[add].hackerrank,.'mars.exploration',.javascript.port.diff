@@ -1,0 +1,37 @@
+From a52ee8f0e91ad21a213375ff2ae97f9e454486a3 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 11 May 2019 20:05:25 +0100
+Subject: [add] hackerrank, 'mars exploration', javascript port
+
+---
+ .../mars.exploration.js                            | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.mars.exploration/mars.exploration.js b/hackerrank/algorithms.-.strings.-.easy.-.mars.exploration/mars.exploration.js
+index 40b26f8..568846a 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.mars.exploration/mars.exploration.js
++++ b/hackerrank/algorithms.-.strings.-.easy.-.mars.exploration/mars.exploration.js
+@@ -26,7 +26,19 @@ function readLine() {
+ 
+ // Complete the marsExploration function below.
+ function marsExploration(s) {
+-
++        var s2 = "";
++        for (var l = 1; l <= parseInt(s.length / 3); l++)
++            s2 = s2 + "SOS";
++        //console.log(`orig: ${s2}`);
++        var diff = 0;
++        var a = s.split('');
++        var a2 = s2.split('');
++        //console.log(`a len: ${a.length}, a2 len: ${a2.length}`);
++        for (var idx = 0; idx < s.length; idx++) {
++            if (a[idx] !== a2[idx])
++                diff++;
++        }
++        return diff;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
