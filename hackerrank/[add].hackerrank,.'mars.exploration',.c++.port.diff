@@ -1,0 +1,36 @@
+From a91c741295e0510b4fd8b4719dfd1cc9393f66c5 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 11 May 2019 20:22:46 +0100
+Subject: [add] hackerrank, 'mars exploration', c++ port
+
+---
+ .../mars.exploration.cpp                            | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.mars.exploration/mars.exploration.cpp b/hackerrank/algorithms.-.strings.-.easy.-.mars.exploration/mars.exploration.cpp
+index 15dbe9a..b72aeb6 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.mars.exploration/mars.exploration.cpp
++++ b/hackerrank/algorithms.-.strings.-.easy.-.mars.exploration/mars.exploration.cpp
+@@ -4,8 +4,17 @@ using namespace std;
+ 
+ // Complete the marsExploration function below.
+ int marsExploration(string s) {
+-
+-
++    string s2 = "";
++    for (int l = 1; l <= (int)(s.length() / 3); l++)
++        s2 += "SOS";
++    cout << "orig: " << s2 << endl;
++    int diff = 0;
++    for (int idx = 0; idx < s.length(); idx++) {
++        cout << s[idx] << " vs " << s2[idx] << endl;
++        if (s[idx] != s2[idx])
++            diff++;
++    }
++    return diff;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
