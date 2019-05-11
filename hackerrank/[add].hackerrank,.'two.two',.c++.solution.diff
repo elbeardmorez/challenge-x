@@ -1,0 +1,125 @@
+From 8784b5ba9319ea73d1659d41c55bad6b731d7f81 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 11 May 2019 23:18:36 +0100
+Subject: [add] hackerrank, 'two two', c++ solution
+
+---
+ .../two.two.cpp                               | 99 ++++++++++++++++++-
+ 1 file changed, 98 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.advanced.-.two.two/two.two.cpp b/hackerrank/algorithms.-.strings.-.advanced.-.two.two/two.two.cpp
+index e4a1c68..845d650 100644
+--- a/hackerrank/algorithms.-.strings.-.advanced.-.two.two/two.two.cpp
++++ b/hackerrank/algorithms.-.strings.-.advanced.-.two.two/two.two.cpp
+@@ -7,10 +7,107 @@ using namespace std;
+ /*
+  * Complete the twoTwo function below.
+  */
+-int twoTwo(string a) {
++map<string, int> m_powers;
++vector<string> a_powers;
++vector<int> a_powerl_sength;
++
++void get_next(string* ret, string s) {
++    bool carry = false;
++    int idx = s.length() - 1;
++    int dbl;
++    char buf[2];
++    buf[1] = '\0';
++    char s_n[idx + 1];
++    char c_n = '\0';
++    s_n[idx + 1] = c_n;
++    for (auto itr = s.rbegin(); itr != s.rend(); ++itr) {
++        memcpy(buf, &(*itr), 1 * sizeof(char));
++        dbl = atoi(buf) * 2;
++        if (carry)
++            dbl++;
++        carry = dbl > 9 ? true : false;
++        c_n = to_string(dbl % 10)[0];
++        s_n[idx] = c_n;
++        idx--;
++    } 
++    *ret = carry ? "1" + string(s_n) : string(s_n);
++    return;
++}
++
++static int l_max = 0;
++
++int twoTwo(string s) {
+     /*
+      * Write your code here.
+      */
++    if (l_max == 0) {
++        double d = pow(2.0, 800.0);
++        smatch matches;
++        string s_max = to_string(d);
++        l_max = s_max.length();//stoi(matches[0]) + 1;
++    }
++    //cout << l_max << endl;
++
++    int l_s = s.length();
++    int l_s_max = min(l_max, l_s);  // max substring we need to test
++
++    // zero case
++    m_powers["2"] = 1;
++    a_powers.push_back("2");
++    a_powerl_sength.push_back(1);
++
++    int l_n = a_powerl_sength.back();
++    string s_n;
++    while (l_n <= l_s_max) {
++        // extend pool beyond length of test
++        s_n = "";
++        get_next(&s_n, a_powers.back());
++        //cout << "extending map, add: " << s_n << endl;
++        l_n = s_n.length();
++        m_powers[s_n] = 1;  // lookup
++        a_powers.push_back(s_n);  // ordered
++        a_powerl_sength.push_back(l_n);  // optimisation
++    }
++    //cout << "map len: " << m_powers.size() << endl;
++
++    vector<int> a;
++    char buf[2];
++    buf[1] = '\0';
++    for (auto itr = s.begin(); itr != s.end(); ++itr) {
++        memcpy(buf, &(*itr), 1 * sizeof(char));
++        a.push_back(atoi(buf));
++    }
++
++    //cout << "students: '" << s << "'" << endl;
++    int l = 0;
++    int l2;
++    int count = 0;
++
++    while (l < l_s) {
++        // skip zero leading subsets
++        if (a[l] == 0) {
++            l++;
++            continue; // constraint
++        }
++        l2 = l;
++        while (l2 < l_s_max) {
++            // considers strengths (substrings) < ~2^800
++            if (a[l2] % 2 != 0) {
++                l2++;
++                continue; // odd
++            }
++            //cout << "  strength: '" << s.substr(l, l2 - l + 1) << "'" << endl;
++            if (m_powers.find(s.substr(l, l2 - l + 1)) != m_powers.end()) {
++                count++;
++                //cout << "    hit!" << endl;
++            }
++            l2++;
++        }
++        l++;
++    }
++
++    //cout << count << endl;
++    return count;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
