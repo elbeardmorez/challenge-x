@@ -1,0 +1,158 @@
+From 2f8c2ec6a1a7f8e1d21192bf1d516bd232218d64 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 12 May 2019 10:57:36 +0100
+Subject: [fix] hackerrank, 'two two', c++ solution
+
+-incorrect zero case 2^0
+-duplicated zero case array entries
+-missed mapping all 2^x that yielded a length between the first of
+length equal to that of 2^800, and 2^800 itself
+-reverse test set iteration to short-circuit complete zero leader sets
+---
+ .../two.two.cpp                               | 83 ++++++++++++-------
+ 1 file changed, 55 insertions(+), 28 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.advanced.-.two.two/two.two.cpp b/hackerrank/algorithms.-.strings.-.advanced.-.two.two/two.two.cpp
+index 845d650..b2daae9 100644
+--- a/hackerrank/algorithms.-.strings.-.advanced.-.two.two/two.two.cpp
++++ b/hackerrank/algorithms.-.strings.-.advanced.-.two.two/two.two.cpp
+@@ -9,7 +9,6 @@ using namespace std;
+  */
+ map<string, int> m_powers;
+ vector<string> a_powers;
+-vector<int> a_powerl_sength;
+ 
+ void get_next(string* ret, string s) {
+     bool carry = false;
+@@ -40,73 +39,101 @@ int twoTwo(string s) {
+     /*
+      * Write your code here.
+      */
+-    if (l_max == 0) {
++    if (m_powers.size() == 0) {
++        // zero case
++        m_powers["1"] = 0;
++        a_powers.push_back("1");
++        // considers strengths (substrings) < ~2^800
+         double d = pow(2.0, 800.0);
+         smatch matches;
+         string s_max = to_string(d);
+-        l_max = s_max.length();//stoi(matches[0]) + 1;
++        l_max = s_max.length();
+     }
+     //cout << l_max << endl;
+ 
+     int l_s = s.length();
+-    int l_s_max = min(l_max, l_s);  // max substring we need to test
+ 
+-    // zero case
+-    m_powers["2"] = 1;
+-    a_powers.push_back("2");
+-    a_powerl_sength.push_back(1);
++    vector<int> a;
++    char buf[2];
++    buf[1] = '\0';
++    for (auto itr = s.begin(); itr != s.end(); ++itr) {
++        memcpy(buf, &(*itr), 1 * sizeof(char));
++        a.push_back(atoi(buf));
++    }
+ 
+-    int l_n = a_powerl_sength.back();
++    int l_n = 1;
+     string s_n;
++    int l_s_max = min(l_max, l_s);  // max substring we need to test
+     while (l_n <= l_s_max) {
+         // extend pool beyond length of test
+         s_n = "";
+         get_next(&s_n, a_powers.back());
+         //cout << "extending map, add: " << s_n << endl;
++        if (l_n == l_s_max) {
++            if (s_n.length() > l_n)
++                break;
++            else {
++                // compare first digit
++                memcpy(buf, &s[0], 1 * sizeof(char));
++                int s1 = atoi(buf);
++                memcpy(buf, &s_n[0], 1 * sizeof(char));
++                int s_n1 = atoi(buf);
++                if (s_n1 > s1)
++                    break; // test set already complete
++            }
++        }
+         l_n = s_n.length();
+-        m_powers[s_n] = 1;  // lookup
++        m_powers[s_n] = 0;  // lookup
+         a_powers.push_back(s_n);  // ordered
+-        a_powerl_sength.push_back(l_n);  // optimisation
+     }
+     //cout << "map len: " << m_powers.size() << endl;
+-
+-    vector<int> a;
+-    char buf[2];
+-    buf[1] = '\0';
+-    for (auto itr = s.begin(); itr != s.end(); ++itr) {
+-        memcpy(buf, &(*itr), 1 * sizeof(char));
+-        a.push_back(atoi(buf));
+-    }
++    // reset hit counts
++    for (auto itr = m_powers.begin(); itr != m_powers.end(); ++itr)
++        (*itr).second = 0;
+ 
+     //cout << "students: '" << s << "'" << endl;
+     int l = 0;
+     int l2;
+     int count = 0;
+ 
++    int tests = 0;
+     while (l < l_s) {
+         // skip zero leading subsets
+         if (a[l] == 0) {
+             l++;
+             continue; // constraint
+         }
+-        l2 = l;
+-        while (l2 < l_s_max) {
+-            // considers strengths (substrings) < ~2^800
+-            if (a[l2] % 2 != 0) {
+-                l2++;
+-                continue; // odd
++        l2 = min(l + l_max - 1, l_s - 1);
++        while (l2 >= l) {
++            //cout << "  strength: '" << s.substr(l, l2 - l + 1) << "', l: " << l << ", l2: " << l2 << endl;
++            tests++;
++            if (a[l2] % 2 != 0 && a[l2] != 1) {
++                l2--;
++                continue; // 3, 5, 7, 9 ..odd and not 2^0 == 1
+             }
+-            //cout << "  strength: '" << s.substr(l, l2 - l + 1) << "'" << endl;
+             if (m_powers.find(s.substr(l, l2 - l + 1)) != m_powers.end()) {
+                 count++;
++                m_powers[s.substr(l, l2 - l + 1)]++;
+                 //cout << "    hit!" << endl;
+             }
+-            l2++;
++            l2--;
+         }
+         l++;
+     }
+ 
+-    //cout << count << endl;
++    static int test = 0;
++    /*
++    test++;
++    cout << "[" << test << "] total: " << count << ", tests: " << tests << endl;
++    cout << "[" << test << "] total: " << count << ", tests: " << tests << ", hits: ";
++    int hits;
++    for (auto itr = a_powers.begin(); itr != a_powers.end(); ++itr) {
++        hits = m_powers[*itr];
++        if (hits != 0)
++            cout << " " << *itr << " [" << hits << "]";
++    }
++    cout << endl;
++    */
+     return count;
+ }
+ 
+-- 
+2.23.0
+
