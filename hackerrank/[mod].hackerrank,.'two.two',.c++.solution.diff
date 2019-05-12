@@ -1,0 +1,154 @@
+From 02a7fb830b66bab427e167e2cb91af99ee0429be Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 12 May 2019 13:25:08 +0100
+Subject: [mod] hackerrank, 'two two', c++ solution
+
+-use string find as opposed to testing against a map, massively faster
+---
+ .../two.two.cpp                               | 82 ++++++-------------
+ 1 file changed, 26 insertions(+), 56 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.advanced.-.two.two/two.two.cpp b/hackerrank/algorithms.-.strings.-.advanced.-.two.two/two.two.cpp
+index b2daae9..6c6c2c7 100644
+--- a/hackerrank/algorithms.-.strings.-.advanced.-.two.two/two.two.cpp
++++ b/hackerrank/algorithms.-.strings.-.advanced.-.two.two/two.two.cpp
+@@ -7,18 +7,16 @@ using namespace std;
+ /*
+  * Complete the twoTwo function below.
+  */
+-map<string, int> m_powers;
+-vector<string> a_powers;
+-
+-void get_next(string* ret, string s) {
++void get_next(string s, string* res) {
+     bool carry = false;
+-    int idx = s.length() - 1;
++    int idx = s.length();
+     int dbl;
+     char buf[2];
+     buf[1] = '\0';
+     char s_n[idx + 1];
+     char c_n = '\0';
+-    s_n[idx + 1] = c_n;
++    s_n[idx] = c_n;
++    idx--;
+     for (auto itr = s.rbegin(); itr != s.rend(); ++itr) {
+         memcpy(buf, &(*itr), 1 * sizeof(char));
+         dbl = atoi(buf) * 2;
+@@ -28,20 +26,21 @@ void get_next(string* ret, string s) {
+         c_n = to_string(dbl % 10)[0];
+         s_n[idx] = c_n;
+         idx--;
+-    } 
+-    *ret = carry ? "1" + string(s_n) : string(s_n);
++    }
++    *res = carry ? "1" + string(s_n) : string(s_n);
+     return;
+ }
+ 
++vector<string> a_powers;
++
+ static int l_max = 0;
+ 
+ int twoTwo(string s) {
+     /*
+      * Write your code here.
+      */
+-    if (m_powers.size() == 0) {
++    if (a_powers.size() == 0) {
+         // zero case
+-        m_powers["1"] = 0;
+         a_powers.push_back("1");
+         // considers strengths (substrings) < ~2^800
+         double d = pow(2.0, 800.0);
+@@ -66,11 +65,10 @@ int twoTwo(string s) {
+     int l_s_max = min(l_max, l_s);  // max substring we need to test
+     while (l_n <= l_s_max) {
+         // extend pool beyond length of test
+-        s_n = "";
+-        get_next(&s_n, a_powers.back());
++        get_next(a_powers.back(), &s_n);
+         //cout << "extending map, add: " << s_n << endl;
+         if (l_n == l_s_max) {
+-            if (s_n.length() > l_n)
++            if ((int)s_n.length() > l_n)
+                 break;
+             else {
+                 // compare first digit
+@@ -83,58 +81,30 @@ int twoTwo(string s) {
+             }
+         }
+         l_n = s_n.length();
+-        m_powers[s_n] = 0;  // lookup
+         a_powers.push_back(s_n);  // ordered
+     }
+-    //cout << "map len: " << m_powers.size() << endl;
+-    // reset hit counts
+-    for (auto itr = m_powers.begin(); itr != m_powers.end(); ++itr)
+-        (*itr).second = 0;
++    //cout << "map len: " << a_powers.size() << endl;
+ 
+     //cout << "students: '" << s << "'" << endl;
+-    int l = 0;
+-    int l2;
+-    int count = 0;
+-
+-    int tests = 0;
+-    while (l < l_s) {
+-        // skip zero leading subsets
+-        if (a[l] == 0) {
+-            l++;
+-            continue; // constraint
+-        }
+-        l2 = min(l + l_max - 1, l_s - 1);
+-        while (l2 >= l) {
+-            //cout << "  strength: '" << s.substr(l, l2 - l + 1) << "', l: " << l << ", l2: " << l2 << endl;
+-            tests++;
+-            if (a[l2] % 2 != 0 && a[l2] != 1) {
+-                l2--;
+-                continue; // 3, 5, 7, 9 ..odd and not 2^0 == 1
+-            }
+-            if (m_powers.find(s.substr(l, l2 - l + 1)) != m_powers.end()) {
+-                count++;
+-                m_powers[s.substr(l, l2 - l + 1)]++;
+-                //cout << "    hit!" << endl;
+-            }
+-            l2--;
+-        }
+-        l++;
++    int total = 0;
++
++    int l_c;
++    for (auto itr = a_powers.begin(); itr != a_powers.end(); ++itr) {
++        l_c = itr->length();
++        if (l_c > l_s)
++            break;
++        int idx = -1;
++        //cout << "testing: " << *itr << endl;
++        while ((idx = s.find(itr->c_str(), idx + 1, l_c)) != (int)string::npos)
++            total++;
+     }
+ 
+-    static int test = 0;
+     /*
++    static int test = 0;
+     test++;
+-    cout << "[" << test << "] total: " << count << ", tests: " << tests << endl;
+-    cout << "[" << test << "] total: " << count << ", tests: " << tests << ", hits: ";
+-    int hits;
+-    for (auto itr = a_powers.begin(); itr != a_powers.end(); ++itr) {
+-        hits = m_powers[*itr];
+-        if (hits != 0)
+-            cout << " " << *itr << " [" << hits << "]";
+-    }
+-    cout << endl;
++    cout << "[" << test << "] total: " << total << ", tests: " << tests << endl;
+     */
+-    return count;
++    return total;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
