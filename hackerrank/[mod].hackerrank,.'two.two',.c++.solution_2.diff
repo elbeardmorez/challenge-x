@@ -1,0 +1,249 @@
+From 6b8ffaed2be1f6c475728aff58bf8df1f07723c5 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 13 May 2019 01:04:19 +0100
+Subject: [mod] hackerrank, 'two two', c++ solution
+
+-speed-up, create dependents map to short-circuit find loops
+---
+ .../two.two.cpp                               | 175 +++++++++++++++---
+ 1 file changed, 150 insertions(+), 25 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.advanced.-.two.two/two.two.cpp b/hackerrank/algorithms.-.strings.-.advanced.-.two.two/two.two.cpp
+index 6c6c2c7..4561de9 100644
+--- a/hackerrank/algorithms.-.strings.-.advanced.-.two.two/two.two.cpp
++++ b/hackerrank/algorithms.-.strings.-.advanced.-.two.two/two.two.cpp
+@@ -1,5 +1,6 @@
+ #include <bits/stdc++.h>
+ #include <math.h>
++//#include <regex>
+ #include <string>
+ 
+ using namespace std;
+@@ -31,7 +32,12 @@ void get_next(string s, string* res) {
+     return;
+ }
+ 
+-vector<string> a_powers;
++static vector<string> a_powers;
++static vector<int> a_powers_length;
++//static vector<string> a_s_rx;
++//static vector<regex> a_rx;
++static map<string, vector<string>> dependents;
++static map<string, bool> possible;
+ 
+ static int l_max = 0;
+ 
+@@ -39,9 +45,15 @@ int twoTwo(string s) {
+     /*
+      * Write your code here.
+      */
++    int debug = 0;
++    static int test = 0;
++    test++;
++    //if (test > 1)
++    //    exit(0);
+     if (a_powers.size() == 0) {
+         // zero case
+         a_powers.push_back("1");
++        a_powers_length.push_back(1);
+         // considers strengths (substrings) < ~2^800
+         double d = pow(2.0, 800.0);
+         smatch matches;
+@@ -52,57 +64,170 @@ int twoTwo(string s) {
+ 
+     int l_s = s.length();
+ 
+-    vector<int> a;
++    int l_n = 1;
+     char buf[2];
+     buf[1] = '\0';
+-    for (auto itr = s.begin(); itr != s.end(); ++itr) {
+-        memcpy(buf, &(*itr), 1 * sizeof(char));
+-        a.push_back(atoi(buf));
+-    }
+-
+-    int l_n = 1;
+     string s_n;
+     int l_s_max = min(l_max, l_s);  // max substring we need to test
+-    while (l_n <= l_s_max) {
++
++    while (l_n < l_s_max && a_powers.size() <= 800) {
+         // extend pool beyond length of test
+         get_next(a_powers.back(), &s_n);
+-        //cout << "extending map, add: " << s_n << endl;
+-        if (l_n == l_s_max) {
+-            if ((int)s_n.length() > l_n)
++        l_n = (int)s_n.length();
++        if (l_n >= l_s_max) {
++            //if (l_n > l_n_last)
++            if (l_n > l_s_max)
+                 break;
+             else {
+                 // compare first digit
+-                memcpy(buf, &s[0], 1 * sizeof(char));
++                memcpy(buf, &s[0], sizeof(char));
+                 int s1 = atoi(buf);
+-                memcpy(buf, &s_n[0], 1 * sizeof(char));
++                memcpy(buf, &s_n[0], sizeof(char));
+                 int s_n1 = atoi(buf);
+                 if (s_n1 > s1)
+                     break; // test set already complete
+             }
+         }
+-        l_n = s_n.length();
++        // in range, usuable ..
++        //cout << "extending map, add: " << s_n << endl;
+         a_powers.push_back(s_n);  // ordered
++        a_powers_length.push_back(l_n);  // optimisation
++        // empty dependants set
++        dependents[s_n] = vector<string>();
++        // set as dependant
++        if (debug > 0)
++            cout << "s_n [" << s_n << "] is dependent on: ";
++        for (auto itr = a_powers.begin(); itr != a_powers.end(); ++itr) {
++            if (s_n.find(*itr) != string::npos) {
++                dependents[*itr].push_back(s_n);
++                if (debug > 0)
++                    cout << " " << *itr;
++            }
++        }
++        if (debug > 0)
++            cout << endl;
+     }
+     //cout << "map len: " << a_powers.size() << endl;
+-
++    /*
++    // build regex(es)
++    //int l_rx_max = 10;
++    if (a_rx.size() == 0) {
++        string s_rx = "(";
++        int l_rx_cur = 1;
++        int l = 0;
++        int l_last = 1;
++        for (auto itr = a_powers.begin(); itr != a_powers.end(); ++itr) {
++            if (a_powers_length[l] == l_s) {
++                if (a_powers_length[l] > l_s)
++                    break;
++                // compare first digit
++                memcpy(buf, &s[0], sizeof(char));
++                int s1 = atoi(buf);
++                memcpy(buf, &s_n[0], sizeof(char));
++                int s_n1 = atoi(buf);
++                if (s_n1 > s1)
++                    break; // tests complete
++            }
++            // append
++            //if (l_rx_cur + a_powers_length[l] > l_rx_max) {
++            if (a_powers_length[l] != l_last) {
++                //cout << "s_rx len: " << s_rx.length() << endl;
++                s_rx[s_rx.length() - 1] = ')';
++                a_s_rx.push_back(s_rx);
++                a_rx.push_back(regex(s_rx));
++                s_rx = "(";
++                l_rx_cur = 1;
++            }
++            s_rx += *itr + "|";
++            l_rx_cur += a_powers_length[l] + 1;
++            l_last = a_powers_length[l];
++            l++;
++        }
++        s_rx[s_rx.length() - 1] = ')';
++        a_s_rx.push_back(s_rx);
++        a_rx.push_back(regex(s_rx));
++        cout << "s_rx len: " << s_rx.length() << endl;
++    }
++    regex rx;
++    smatch rx_matches;
+     //cout << "students: '" << s << "'" << endl;
+     int total = 0;
+-
+-    int l_c;
++    int l = 0;
++    for (auto itr = a_rx.begin(); itr != a_rx.end(); ++itr) {
++        //cout << "s_rx len: " << itr->length() << endl;
++        //cout << "s_rx: " << a_s_rx[l].substr(0, max((int)a_s_rx[l].length(), 100)) << (a_s_rx[l].length() > 100 ? "..." : "") << endl;
++        //rx = regex(*itr);
++        //regex_search(s, rx_matches, rx);
++        //regex_search(s, rx, regex_constants::match_any);
++        //regex_search(s, rx);
++        regex_iterator<string::iterator> itr2 (s.begin(), s.end(), *itr);
++        regex_iterator<string::iterator> end2;
++        while (itr2 != end2) {
++            total++;
++            itr2++;
++        }
++        //cout << "total: " << total << endl;
++        //total += rx_matches.size();
++        //if (l > 4)
++        //    break;
++        l++;
++    }
++    */
++    //if (debug > 0)
++    //    cout << "students: '" << s << "'" << endl;
++    int total = 0;
++    int l = 0;
++    int total_cur;
++    for (auto itr = a_powers.begin(); itr != a_powers.end(); ++itr)
++        possible[*itr] = true;
+     for (auto itr = a_powers.begin(); itr != a_powers.end(); ++itr) {
+-        l_c = itr->length();
+-        if (l_c > l_s)
+-            break;
++        if (!possible[*itr]) {
++            //if (debug > 0)
++            //    cout << "short-circuit: " << *itr << endl;
++            l++;
++            continue;
++        }
++        if (a_powers_length[l] >= l_s_max) {
++            if (a_powers_length[l] > l_s_max)
++                break;
++            // compare first digit
++            memcpy(buf, &s[0], sizeof(char));
++            int s1 = atoi(buf);
++            memcpy(buf, &s_n[0], sizeof(char));
++            int s_n1 = atoi(buf);
++            if (s_n1 > s1)
++                break; // tests complete
++        }
++        total_cur = 0;
+         int idx = -1;
+         //cout << "testing: " << *itr << endl;
+-        while ((idx = s.find(itr->c_str(), idx + 1, l_c)) != (int)string::npos)
+-            total++;
+-    }
++        while ((idx = s.find(itr->c_str(), ++idx, itr->length())) != (int)string::npos)
++            total_cur++;
++
++        if (total_cur > 0) {
++            //if (debug > 0 && test == 65)
++            //    cout << "cur: " << *itr << ", total: " << total_cur << endl;
++            total += total_cur;
++        } else {
++            if (dependents[*itr].size() > 0) {
++                //if (debug > 0)
++                //    cout << "no matches for '" << *itr << "', switching its " << dependents[*itr].size() << " dependents off! [";
++                for (auto itr2 = dependents[*itr].begin(); itr2 != dependents[*itr].end(); ++itr2) {
++                    //if (debug > 0)
++                    //    cout << " " << *itr2;
++                    possible[*itr2] = false;
++                }
++                //if (debug > 0)
++                //    cout << " ]" << endl;
++            }
++        }
+ 
++        l++;
++    }
+     /*
++    cout << "[" << test << "] total: " << total << ", powers: " << a_powers.size() << endl;
+     static int test = 0;
+     test++;
+-    cout << "[" << test << "] total: " << total << ", tests: " << tests << endl;
+     */
+     return total;
+ }
+-- 
+2.23.0
+
