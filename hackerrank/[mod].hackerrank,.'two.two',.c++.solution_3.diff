@@ -1,0 +1,203 @@
+From 82fb387693d7b7c8b0cd6f43562afbfcfa425fa0 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 13 May 2019 14:47:05 +0100
+Subject: [mod] hackerrank, 'two two', c++ solution
+
+-speed-up, build out a larger set of leading substring maps to store
+the expensive 'find' results
+-speeed-up, switch to 'unordered_map'
+-pre-allocate vector size - nearly doubled speed
+---
+ .../two.two.cpp                               | 143 +++++++++---------
+ 1 file changed, 68 insertions(+), 75 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.advanced.-.two.two/two.two.cpp b/hackerrank/algorithms.-.strings.-.advanced.-.two.two/two.two.cpp
+index 4561de9..ebeed43 100644
+--- a/hackerrank/algorithms.-.strings.-.advanced.-.two.two/two.two.cpp
++++ b/hackerrank/algorithms.-.strings.-.advanced.-.two.two/two.two.cpp
+@@ -90,8 +90,6 @@ int twoTwo(string s) {
+         }
+         // in range, usuable ..
+         //cout << "extending map, add: " << s_n << endl;
+-        a_powers.push_back(s_n);  // ordered
+-        a_powers_length.push_back(l_n);  // optimisation
+         // empty dependants set
+         dependents[s_n] = vector<string>();
+         // set as dependant
+@@ -106,73 +104,13 @@ int twoTwo(string s) {
+         }
+         if (debug > 0)
+             cout << endl;
++        a_powers.push_back(s_n);  // ordered
++        a_powers_length.push_back(l_n);  // optimisation
+     }
+     //cout << "map len: " << a_powers.size() << endl;
+-    /*
+-    // build regex(es)
+-    //int l_rx_max = 10;
+-    if (a_rx.size() == 0) {
+-        string s_rx = "(";
+-        int l_rx_cur = 1;
+-        int l = 0;
+-        int l_last = 1;
+-        for (auto itr = a_powers.begin(); itr != a_powers.end(); ++itr) {
+-            if (a_powers_length[l] == l_s) {
+-                if (a_powers_length[l] > l_s)
+-                    break;
+-                // compare first digit
+-                memcpy(buf, &s[0], sizeof(char));
+-                int s1 = atoi(buf);
+-                memcpy(buf, &s_n[0], sizeof(char));
+-                int s_n1 = atoi(buf);
+-                if (s_n1 > s1)
+-                    break; // tests complete
+-            }
+-            // append
+-            //if (l_rx_cur + a_powers_length[l] > l_rx_max) {
+-            if (a_powers_length[l] != l_last) {
+-                //cout << "s_rx len: " << s_rx.length() << endl;
+-                s_rx[s_rx.length() - 1] = ')';
+-                a_s_rx.push_back(s_rx);
+-                a_rx.push_back(regex(s_rx));
+-                s_rx = "(";
+-                l_rx_cur = 1;
+-            }
+-            s_rx += *itr + "|";
+-            l_rx_cur += a_powers_length[l] + 1;
+-            l_last = a_powers_length[l];
+-            l++;
+-        }
+-        s_rx[s_rx.length() - 1] = ')';
+-        a_s_rx.push_back(s_rx);
+-        a_rx.push_back(regex(s_rx));
+-        cout << "s_rx len: " << s_rx.length() << endl;
+-    }
+-    regex rx;
+-    smatch rx_matches;
+-    //cout << "students: '" << s << "'" << endl;
+-    int total = 0;
+-    int l = 0;
+-    for (auto itr = a_rx.begin(); itr != a_rx.end(); ++itr) {
+-        //cout << "s_rx len: " << itr->length() << endl;
+-        //cout << "s_rx: " << a_s_rx[l].substr(0, max((int)a_s_rx[l].length(), 100)) << (a_s_rx[l].length() > 100 ? "..." : "") << endl;
+-        //rx = regex(*itr);
+-        //regex_search(s, rx_matches, rx);
+-        //regex_search(s, rx, regex_constants::match_any);
+-        //regex_search(s, rx);
+-        regex_iterator<string::iterator> itr2 (s.begin(), s.end(), *itr);
+-        regex_iterator<string::iterator> end2;
+-        while (itr2 != end2) {
+-            total++;
+-            itr2++;
+-        }
+-        //cout << "total: " << total << endl;
+-        //total += rx_matches.size();
+-        //if (l > 4)
+-        //    break;
+-        l++;
+-    }
+-    */
++
++    unordered_map<string, vector<int>> pools;
++
+     //if (debug > 0)
+     //    cout << "students: '" << s << "'" << endl;
+     int total = 0;
+@@ -201,12 +139,65 @@ int twoTwo(string s) {
+         total_cur = 0;
+         int idx = -1;
+         //cout << "testing: " << *itr << endl;
+-        while ((idx = s.find(itr->c_str(), ++idx, itr->length())) != (int)string::npos)
+-            total_cur++;
+ 
++        // use the longest lead substring pool available
++        vector<int> pool;
++        int l_ss = 1;
++        string ss = "";
++        while (l_ss <= a_powers_length[l]) {
++            ss = itr->substr(0, l_ss);
++            if (pools.find(ss) != pools.end())
++                pool = pools[ss];
++            else {
++                pools[ss].reserve(1000);
++                break;
++            }
++            l_ss++;
++        }
++        // ss is the next substring to pos
++        if (pool.size() > 0) {
++            //cout << "using map search for '" << itr->substr(0, min((int)itr->length(), 50)) << (itr->length() > 50 ? "..." : "") << "'" << endl;
++            // cheaper search
++            for (vector<int>::iterator itr2 = pool.begin(); itr2 != pool.end(); ++itr2) {
++                if (l_ss < 4) {
++                   if (s.substr(*itr2, l_ss) == ss) {
++                        pools[ss].push_back(*itr2);
++                        if (s.substr(*itr2, a_powers_length[l]) == *itr)
++                            total_cur++;
++                    }
++                } else if (s.substr(*itr2, a_powers_length[l]) == *itr)
++                    total_cur++;
++            }
++        } else {
++            // expensive search find
++            if (a_powers_length[l] < 4) {
++                // cache short lead stubs for fast map lookup
++                while ((idx = s.find(ss.c_str(), ++idx, l_ss)) != (int)string::npos) {
++                        pools[ss].push_back(idx);
++                        if (l_ss == a_powers_length[l])
++                            total_cur++;
++                        else if (l_s - idx >= a_powers_length[l] &&
++                                s.substr(idx, a_powers_length[l]) == *itr) {
++                            pools[*itr].push_back(idx);
++                            total_cur++;
++                        }
++                }
++                //total_cur += pools[*itr].size();
++            } else {
++                while ((idx = s.find(itr->c_str(), ++idx, itr->length())) != (int)string::npos) {
++                    //pools[*itr].push_back(idx);
++                    total_cur++;
++                }
++            }
++            //if (ss == "16")
++            //    cout << "pushing search idx: " << idx << " for '" << ss << "' match" << endl;
++        }
++        string search = pool.size() > 0 ? "map" : "find";
++        //if (debug > 0)
++        //if (total_cur == 0 && search == "map")
++        //if (search == "map")
++        //    cout << "cur: " << *itr << ", total: " << total_cur << ", search: " << search << endl;
+         if (total_cur > 0) {
+-            //if (debug > 0 && test == 65)
+-            //    cout << "cur: " << *itr << ", total: " << total_cur << endl;
+             total += total_cur;
+         } else {
+             if (dependents[*itr].size() > 0) {
+@@ -214,7 +205,7 @@ int twoTwo(string s) {
+                 //    cout << "no matches for '" << *itr << "', switching its " << dependents[*itr].size() << " dependents off! [";
+                 for (auto itr2 = dependents[*itr].begin(); itr2 != dependents[*itr].end(); ++itr2) {
+                     //if (debug > 0)
+-                    //    cout << " " << *itr2;
++                //        cout << " " << *itr2;
+                     possible[*itr2] = false;
+                 }
+                 //if (debug > 0)
+@@ -224,10 +215,12 @@ int twoTwo(string s) {
+ 
+         l++;
+     }
++    //for (auto itr = pools.begin(); itr != pools.end(); ++itr) {
++    //    cout << "pool: " << itr->first << ", size: " << (itr->second).size() << endl; 
++    //}
++
++    //cout << "[" << test << "] total: " << total << ", powers: " << a_powers.size() << endl;
+     /*
+-    cout << "[" << test << "] total: " << total << ", powers: " << a_powers.size() << endl;
+-    static int test = 0;
+-    test++;
+     */
+     return total;
+ }
+-- 
+2.23.0
+
