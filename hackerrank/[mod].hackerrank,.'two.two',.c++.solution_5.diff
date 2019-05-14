@@ -1,0 +1,373 @@
+From c0af7315c937881769582aa496f5e0d73deceb5f Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 14 May 2019 15:17:25 +0100
+Subject: [mod] hackerrank, 'two two', c++ solution
+
+-speed-up, redux.. reverse iteration logic, iterate test looking
+for powers rather than iterating powers looking for matches in the
+test
+-group sets of 'same prefix' powers together to build a sort of
+forward looking dependency pool
+-reverse the strings to capitalise on the properties of powers of
+two, e.g. only ending in..
+-use pointers everywhere possible
+---
+ .../two.two.cpp                               | 285 +++++++++---------
+ 1 file changed, 143 insertions(+), 142 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.advanced.-.two.two/two.two.cpp b/hackerrank/algorithms.-.strings.-.advanced.-.two.two/two.two.cpp
+index 77c5c06..b01d8fb 100644
+--- a/hackerrank/algorithms.-.strings.-.advanced.-.two.two/two.two.cpp
++++ b/hackerrank/algorithms.-.strings.-.advanced.-.two.two/two.two.cpp
+@@ -1,6 +1,7 @@
+ #include <bits/stdc++.h>
+ #include <math.h>
+ #include <string>
++#include <regex>
+ 
+ using namespace std;
+ 
+@@ -32,13 +33,13 @@ void get_next(string s, string* res) {
+ }
+ 
+ vector<string> a_powers;
++vector<string> a_powers_reversed;
+ vector<int> a_powers_length;
+-vector<vector<int>> dependents;
+-vector<bool> possible;
+ 
+ bool init = false;
+ int l_s_max_powers;
+ int MAX_POWERS = 801;
++int MAX_POOL_DEPTH = 4;
+ 
+ int twoTwo(string s) {
+     /*
+@@ -50,12 +51,62 @@ int twoTwo(string s) {
+     //if (test > 1)
+     //    exit(0);
+ 
+-    int l_s = s.length();
++    /*
++    reverse the logic of matching short substrings of each power to the test string..
++    group the power string.. upto to a length ..say four
++    iterate main string only.. do it backwards and use regexp iterator to match next 0,1,2,4,8
++    it each match, test all powers ending with the current digit ..incrementally second to last etc.
++    until either full match is made (e.g. len <= 4) else if still possibly valid to a full substring
++    match
++    going to have to reconstruct (or modify) the power lookup pool for each specific test to avoid
++    testing longer power strings unecessarily
+ 
+-    // max idx in powers set we need to consider
+-    int l_idx_max;
+-    //int l_s_max;
++    other than 1, there's no other power of two that can end in 1.. so add (ending in) 1s and immediately
++    move along
++    */
+ 
++    /*
++    // ~20x times slower..
++    regex rx("[12468]");
++    regex_iterator<string::iterator> rxi(s.begin(), s.end(), rx);
++    regex_iterator<string::iterator> rend;
++    while (rxi != rend) {
++       //cout << "matched '" << rxi->str() << "' at pos: " << rxi->position() << endl;
++       total++;
++       ++rxi;
++    }
++    */
++
++    /*
++    // ~ 1.5x slower
++    int idx;
++    //char buf[2];
++    //buf[1]='\0';
++    for (int l = 0; l < l_s; l++) {
++        //memcpy(buf, &s[l], sizeof(char));
++        //idx = atoi(buf);
++        idx = atoi(s.substr(l, 1).c_str());
++        if (idx == 0 || (idx % 2 != 0 && idx != 1))
++            continue;
++        //cout << "matched '" << idx << "' at pos: " << idx << endl;
++        total++;
++    }
++    */
++
++    /*
++    // fastest
++    char valid_suffixes[] = {'1', '2', '4', '6', '8'};
++    int idx;
++    for (int l = 0; l < 5; l++) {
++        idx = -1;
++        while ((idx = s.find(&valid_suffixes[l], ++idx, 1)) != (int)string::npos) {
++           //cout << "matched '" << stubs[l] << "' at pos: " << idx << endl;
++           total++;
++        }
++    }
++    */
++
++    // create reversed set of powers of 2 strings up tp 2^800
+     if (!init) {
+         init = true;
+ 
+@@ -64,11 +115,9 @@ int twoTwo(string s) {
+         a_powers_length.reserve(MAX_POWERS);
+         // zero case
+         a_powers.push_back("1");
++        a_powers_reversed.push_back("1");
+         a_powers_length.push_back(1);
+ 
+-        dependents.reserve(MAX_POWERS);
+-        possible.reserve(MAX_POWERS);
+-
+         int l_n = 1;
+         string s_n;
+ 
+@@ -76,159 +125,111 @@ int twoTwo(string s) {
+             // extend pool
+             get_next(a_powers.back(), &s_n);
+             l_n = s_n.length();
+-            // in range, usuable ..
+-            //cout << "extending map, add: " << s_n << endl;
+-            // empty dependants set
+-            dependents[l].reserve(1000);
+-            // set as dependant
+-            //if (debug > 0)
+-            //    cout << "s_n [" << s_n << "] is dependent on: ";
+-            //for (auto itr = a_powers.begin(); itr != a_powers.end(); ++itr) {
+-            for (int l2 = 0; l2 < (int)a_powers.size(); l2++) {
+-                if (s_n.find(a_powers[l2]) != string::npos) {
+-                    dependents[l2].push_back(l);
+-            //        if (debug > 0)
+-            //            cout << " " << *itr;
+-                }
+-            }
+-            //if (debug > 0)
+-            //    cout << endl;
+             a_powers.push_back(s_n);  // ordered
++            reverse(s_n.begin(), s_n.end());
++            a_powers_reversed.push_back(s_n);  // ordered
+             a_powers_length.push_back(l_n);  // optimisation
+         }
+-        l_s_max_powers = a_powers_length.back();
+     }
+ 
+-    // set max string length and main power idx for specific test
+-    if (l_s > l_s_max_powers) {
+-        //l_s_max = l_s_max_powers;
+-        l_idx_max = MAX_POWERS - 1;
+-    } else {
+-        // search
+-        l_idx_max = 0;
+-        while (a_powers_length[l_idx_max] < l_s)
+-            l_idx_max++;
+-        // same length but..
+-        int l_s1 = atoi(s.substr(0, 1).c_str());
+-        while (atoi(a_powers[l_idx_max + 1].substr(0, 1).c_str()) <= l_s1)
+-            // first digit smaller
+-            l_idx_max++;
+-        //l_s_max = a_powers_length[l_idx_max];
+-    }
+-    //cout << "idx max: " << l_idx_max << ", len: " << l_s_max << ", power: " << a_powers[l_idx_max] << endl;
++    // create a lookup pool specific for this task's string length
++    int l_s = s.length();
++    int l_s1 = atoi(s.substr(l_s - 1, 1).c_str());
+ 
+-    // reset 'possible' set.. these get switched false when a substring it
+-    // depends on searched for and not found
+-    for (int l = 0; l < l_idx_max; l++)
+-        possible[l] = true;
++    typedef std::pair<string*, int*> np;
+ 
+-    // main 's' string positions lookup for known/pre-searched substrings
+-    unordered_map<string, vector<int>> pools;
++    typedef struct node {
++        bool match = false;
++        unordered_map<char, struct node*> next;
++        vector<np> others;
++    } node;
+ 
+-    //if (debug > 0)
+-    //    cout << "students: '" << s << "'" << endl;
+-    int total = 0;
+-    int idx;
+-    int idx2;
+-    int total_cur;
+-    string search;
+-    int l_search;
+-    for (int l = 0; l < l_idx_max; l++) {
+-        if (!possible[l]) {
+-            //if (debug > 0)
+-            //    cout << "short-circuit: " << a_powers[l] << endl;
++    node pool;
++    bool consider_power = true;
++    int* l_power;
++    string* s_power;
++    int l_idx_max = 0;
++    while (consider_power) {
++        if (l_idx_max == MAX_POWERS) {
++            consider_power = false;
+             continue;
+         }
+-
+-        search = a_powers[l];
+-        l_search = a_powers_length[l];
+-        total_cur = 0;
+-        //cout << "testing: " << search << endl;
+-
+-        // use the longest lead substring pool available
+-        vector<int> pool;
+-        int l_ss = 1;
+-        string ss = "";
+-        while (l_ss <= a_powers_length[l]) {
+-            ss = search.substr(0, l_ss);
+-            if (pools.find(ss) != pools.end())
+-                pool = pools[ss];
+-            else {
+-                pools[ss].reserve(1000);
+-                break;
++        a_powers_length[l_idx_max];
++        l_power = &(a_powers_length[l_idx_max]);
++        s_power = &(a_powers_reversed[l_idx_max]);
++        if (*l_power >= l_s) {
++            // break and back up 1 if current is either longer, or same length but first digit greater
++            // than our target
++            if (*l_power > l_s || atoi(s_power->substr(*l_power - 1, 1).c_str()) > l_s1) {
++                l_idx_max--;
++                consider_power = false;
++                continue;
+             }
+-            l_ss++;
+         }
+-        // ss is the next substring to pos
+-        if (pool.size() > 0) {
+-            //cout << "using map search for '" << search.substr(0, min(l_search, 50)) << (l_search > 50 ? "..." : "") << "'" << endl;
+-            // cheaper search
+-            for (int l2 = 0; l2 < (int)pool.size(); l2++) {
+-                idx2 = pool[l2];
+-                if (l_ss < 4) {
+-                    if (s.substr(idx2, l_ss) == ss) {
+-                        pools[ss].push_back(pool[l2]);
+-                        if (s.substr(idx2, l_search) == search)
+-                            total_cur++;
+-                    }
+-                } else if (s.substr(idx2, l_search) == search)
+-                    total_cur++;
+-            }
+-        } else {
+-            // expensive search find
+-            idx = -1;  // account for initial increment
+-            if (l_search < 4) {
+-                // cache short lead stubs for fast map lookup
+-                while ((idx = s.find(ss.c_str(), ++idx, l_ss)) != (int)string::npos) {
+-                    pools[ss].push_back(idx);
+-                    if (l_ss == l_search)
+-                        total_cur++;
+-                    else if (l_s - idx >= l_search &&
+-                             s.substr(idx, l_search) == search) {
+-                        pools[search].push_back(idx);
+-                        total_cur++;
+-                    }
+-                }
+-            } else {
+-                while ((idx = s.find(search.c_str(), ++idx, l_search)) != (int)string::npos) {
+-                    //pools[search].push_back(idx);
+-                    //if (ss == "16")
+-                    //    cout << "pushing search idx: " << idx << " for '" << ss << "' match" << endl;
+-                    total_cur++;
+-                }
++
++        // interested, add to lookup pool
++        int MAX_POOL_DEPTH = 4;
++        const char* c;
++        node* n = &pool;  // root
++        for (int l = 0; l < MAX_POOL_DEPTH; l++) {
++            c = s_power->substr(l, 1).c_str();
++            if (n->next.find(*c) == n->next.end())
++                n->next[*c] = new node();
++            n = n->next[*c];
++            if (l == *l_power - 1) {
++                n->match = true;
++                break;
+             }
++            if (l == MAX_POOL_DEPTH - 1)
++                n->others.push_back(np(s_power, l_power));
+         }
+-        //if (debug > 0)
+-        //if (total_cur == 0 && search == "map")
+-        string search_type = pool.size() > 0 ? "map" : "find";
+-        //if (search == "map")
+-        //    cout << "cur: " << search << ", total: " << total_cur << ", search_type: " << search_type << endl;
+-        if (total_cur > 0) {
+-            total += total_cur;
+-        } else {
+-            if (dependents[l].size() > 0) {
+-                //if (debug > 0)
+-                //    cout << "no matches for '" << search << "', switching its ";
+-                for (int l3 = 0; l3 < (int)dependents[l].size(); l3++) {
+-                    if (dependents[l][l3] > l_idx_max) {
+-                        //if (debug > 0)
+-                        //    cout << l3;
+-                        break;
++        l_idx_max++;
++    }
++
++    //cout << "students: '" << s << "'" << endl;
++    //cout << "students: '" << s.substr(0, min(l_s, 50)) << (l_s > 50 ? "..." : "") << "'" << endl;
++
++    // work backwards to skip invalid 'suffixes' quickly
++    reverse(s.begin(), s.end());
++    int total = 0;
++    node* n;
++
++    char valid_suffixes[] = {'1', '2', '4', '6', '8'};
++    int idx;
++    for (int l_idx_suffix = 0; l_idx_suffix < 5; l_idx_suffix++) {
++        idx = -1;
++        while ((idx = s.find(&valid_suffixes[l_idx_suffix], ++idx, 1)) != (int)string::npos) {
++           //cout << "matched '" << stubs[l] << "' at pos: " << idx << endl;
++
++           // match all possible powers from this location
++       
++           //cout << "using map search for '" << search.substr(0, min(l_search, 50)) << (l_search > 50 ? "..." : "") << "'" << endl;
++            const char* c;
++            n = &pool;  // root
++            for (int l = 0; l < MAX_POOL_DEPTH + 1; l++) { // + 1 ensures 'others' is processed after fast maps set node
++                c = s.substr(idx + l, 1).c_str();
++                if (n->next.find(*c) != n->next.end()) {
++                    n = n->next[*c];
++                    if (n->match)
++                        total++;
++                } else if (n->others.size() > 0) {
++                    for (int l2 = 0; l2 < (int)n->others.size(); l2++) {
++                        s_power = n->others[l2].first;
++                        l_power = n->others[l2].second;
++                        if (idx + *l_power <= l_s &&
++                            s.substr(idx, *l_power) == *s_power)
++                                total++;
+                     }
+-                    possible[dependents[l][l3]] = false;
+-                }
+-                //if (debug > 0)
+-                //    cout << " dependents off!" << endl;
++                } else
++                    break;
++                if (idx + l == l_s)
++                    break;  // search complete
+             }
+         }
+     }
+ 
+-    //for (auto itr = pools.begin(); itr != pools.end(); ++itr)
+-    //    cout << "pool: " << itr->first << ", size: " << (itr->second).size() << endl;
++    //cout << "[" << test << "] total: " << total << endl;
+ 
+-    //cout << "[" << test << "] total: " << total << ", powers: " << a_powers.size() << endl;
+-    /*
+-    */
+     return total;
+ }
+ 
+-- 
+2.23.0
+
