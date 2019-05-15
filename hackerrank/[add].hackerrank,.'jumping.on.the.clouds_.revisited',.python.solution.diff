@@ -1,0 +1,33 @@
+From e3f819691a65d7f432eaa4d337a0cf77b2a9d196 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 15 May 2019 10:00:58 +0100
+Subject: [add] hackerrank, 'jumping on the clouds: revisited', python solution
+
+---
+ .../jumping.on.the.clouds:.revisited.py                | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.jumping.on.the.clouds:.revisited/jumping.on.the.clouds:.revisited.py b/hackerrank/algorithms.-.implementation.-.easy.-.jumping.on.the.clouds:.revisited/jumping.on.the.clouds:.revisited.py
+index cfd6dcd..300ea2a 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.jumping.on.the.clouds:.revisited/jumping.on.the.clouds:.revisited.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.jumping.on.the.clouds:.revisited/jumping.on.the.clouds:.revisited.py
+@@ -8,6 +8,16 @@ import sys
+ 
+ # Complete the jumpingOnClouds function below.
+ def jumpingOnClouds(c, k):
++    def gen(k, l):
++        idx = k
++        print(idx)
++        yield idx
++        while idx != 0:
++            idx = min(l, (idx + k)) % l
++            print(idx)
++            yield idx
++
++    return 100 + sum([-(c[idx] * 2 + 1) for idx in gen(k, len(c))])
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
