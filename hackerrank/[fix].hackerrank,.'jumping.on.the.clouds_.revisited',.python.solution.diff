@@ -1,0 +1,31 @@
+From a261705cc078fefd1bdb87063468cd92f3e5e0fa Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 15 May 2019 10:03:01 +0100
+Subject: [fix] hackerrank, 'jumping on the clouds: revisited', python solution
+
+-edge case missing mod operator
+---
+ .../jumping.on.the.clouds:.revisited.py                       | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.jumping.on.the.clouds:.revisited/jumping.on.the.clouds:.revisited.py b/hackerrank/algorithms.-.implementation.-.easy.-.jumping.on.the.clouds:.revisited/jumping.on.the.clouds:.revisited.py
+index 300ea2a..8c4d244 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.jumping.on.the.clouds:.revisited/jumping.on.the.clouds:.revisited.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.jumping.on.the.clouds:.revisited/jumping.on.the.clouds:.revisited.py
+@@ -9,12 +9,10 @@ import sys
+ # Complete the jumpingOnClouds function below.
+ def jumpingOnClouds(c, k):
+     def gen(k, l):
+-        idx = k
+-        print(idx)
++        idx = k % l
+         yield idx
+         while idx != 0:
+             idx = min(l, (idx + k)) % l
+-            print(idx)
+             yield idx
+ 
+     return 100 + sum([-(c[idx] * 2 + 1) for idx in gen(k, len(c))])
+-- 
+2.23.0
+
