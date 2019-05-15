@@ -1,0 +1,41 @@
+From e599968b7ba0771fdfd8c0d4fc0f66fff2d4861d Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 15 May 2019 13:49:47 +0100
+Subject: [add] hackerrank, 'jumping on the clouds: revisited', c++ port
+
+---
+ .../jumping.on.the.clouds:.revisited.cpp            | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.jumping.on.the.clouds:.revisited/jumping.on.the.clouds:.revisited.cpp b/hackerrank/algorithms.-.implementation.-.easy.-.jumping.on.the.clouds:.revisited/jumping.on.the.clouds:.revisited.cpp
+index 93a06ba..df2dbd0 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.jumping.on.the.clouds:.revisited/jumping.on.the.clouds:.revisited.cpp
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.jumping.on.the.clouds:.revisited/jumping.on.the.clouds:.revisited.cpp
+@@ -1,4 +1,5 @@
+ #include <bits/stdc++.h>
++#include <math.h>
+ 
+ using namespace std;
+ 
+@@ -6,8 +7,16 @@ vector<string> split_string(string);
+ 
+ // Complete the jumpingOnClouds function below.
+ int jumpingOnClouds(vector<int> c, int k) {
+-
+-
++    vector<int> v; // idxs
++    auto l = c.size();
++    auto idx = k % l;
++    v.push_back(idx);
++    while (idx != 0) {
++        idx = min(l, (idx + k)) % l;
++        v.push_back(idx);
++    }
++    transform(v.begin(), v.end(), v.begin(), [&c](int idx) { return -(c[idx] * 2 + 1); });
++    return 100 + accumulate(v.begin(), v.end(), 0.0);
+ }
+ 
+ int main()
+-- 
+2.23.0
+
