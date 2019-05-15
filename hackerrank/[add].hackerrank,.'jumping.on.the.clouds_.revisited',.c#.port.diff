@@ -1,0 +1,37 @@
+From 158b8e3e85eca735f1a75145a39995b2ba893ce4 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 15 May 2019 11:15:31 +0100
+Subject: [add] hackerrank, 'jumping on the clouds: revisited', c# port
+
+---
+ .../jumping.on.the.clouds:.revisited.cs              | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.jumping.on.the.clouds:.revisited/jumping.on.the.clouds:.revisited.cs b/hackerrank/algorithms.-.implementation.-.easy.-.jumping.on.the.clouds:.revisited/jumping.on.the.clouds:.revisited.cs
+index 1862440..9b61ac6 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.jumping.on.the.clouds:.revisited/jumping.on.the.clouds:.revisited.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.jumping.on.the.clouds:.revisited/jumping.on.the.clouds:.revisited.cs
+@@ -14,10 +14,18 @@ using System;
+ 
+ class Solution {
+ 
++    static IEnumerable<int> generator(int k, int l) {
++        var idx = k % l;
++        yield return idx;
++        while (idx != 0) {
++            idx = Math.Min(l, (idx + k)) % l;
++            yield return idx;
++        }
++    }
++
+     // Complete the jumpingOnClouds function below.
+     static int jumpingOnClouds(int[] c, int k) {
+-
+-
++        return 100 + generator(k, c.Length).Sum(idx => -(c[idx] * 2 + 1));
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
