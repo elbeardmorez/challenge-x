@@ -1,0 +1,30 @@
+From ffb47ea96e2ba5b7602c3012aec047b145dbd178 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 17 May 2019 00:07:44 +0100
+Subject: [add] hackerrank, 'library fine', c++ port
+
+---
+ .../library.fine.cpp                                       | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.library.fine/library.fine.cpp b/hackerrank/algorithms.-.implementation.-.easy.-.library.fine/library.fine.cpp
+index 4461691..d1b6609 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.library.fine/library.fine.cpp
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.library.fine/library.fine.cpp
+@@ -6,6 +6,13 @@ vector<string> split_string(string);
+ 
+ // Complete the libraryFine function below.
+ int libraryFine(int d1, int m1, int y1, int d2, int m2, int y2) {
++    if (y1 > y2)
++        return 10000;
++    if (y1 == y2 && m1 > m2)
++        return 500 * (m1 - m2);
++    if (y1 == y2 && m1 == m2 && d1 > d2)
++        return 15 * (d1 - d2);
++    return 0;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
