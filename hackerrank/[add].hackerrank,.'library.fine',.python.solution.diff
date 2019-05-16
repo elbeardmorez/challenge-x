@@ -1,0 +1,30 @@
+From 008e3d6ab4b6183bdc250686b5a44bce692e858f Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 16 May 2019 23:46:27 +0100
+Subject: [add] hackerrank, 'library fine', python solution
+
+---
+ .../library.fine.py                                        | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.library.fine/library.fine.py b/hackerrank/algorithms.-.implementation.-.easy.-.library.fine/library.fine.py
+index 0401f39..d1fda2e 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.library.fine/library.fine.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.library.fine/library.fine.py
+@@ -7,6 +7,13 @@ import sys
+ 
+ # Complete the libraryFine function below.
+ def libraryFine(d1, m1, y1, d2, m2, y2):
++    if (y1 > y2):
++        return 10000
++    if (m1 > m2):
++        return 500 * (m1 - m2)
++    if (d1 > d2):
++        return 15 * (d1 - d2)
++    return 0
+ 
+ 
+ if __name__ == '__main__':
+-- 
+2.23.0
+
