@@ -1,0 +1,32 @@
+From e02f17e4748764f506717f9d5c4c1d37b5a7d4ec Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 17 May 2019 00:04:36 +0100
+Subject: [add] hackerrank, 'library fine', c# port
+
+---
+ .../library.fine.cs                                      | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.library.fine/library.fine.cs b/hackerrank/algorithms.-.implementation.-.easy.-.library.fine/library.fine.cs
+index 51fac0d..4bb15ca 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.library.fine/library.fine.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.library.fine/library.fine.cs
+@@ -16,8 +16,13 @@ class Solution {
+ 
+     // Complete the libraryFine function below.
+     static int libraryFine(int d1, int m1, int y1, int d2, int m2, int y2) {
+-
+-
++        if (y1 > y2)
++            return 10000;
++        if (y1 == y2 && m1 > m2)
++            return 500 * (m1 - m2);
++        if (y1 == y2 && m1 == m2 && d1 > d2)
++            return 15 * (d1 - d2);
++        return 0;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
