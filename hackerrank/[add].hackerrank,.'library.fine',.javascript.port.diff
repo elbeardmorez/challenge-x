@@ -1,0 +1,32 @@
+From d57a0d60421726dd867d27641bc9da08e5cd3391 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 17 May 2019 00:00:53 +0100
+Subject: [add] hackerrank, 'library fine', javascript port
+
+---
+ .../library.fine.js                                      | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.library.fine/library.fine.js b/hackerrank/algorithms.-.implementation.-.easy.-.library.fine/library.fine.js
+index dac5878..a35afbf 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.library.fine/library.fine.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.library.fine/library.fine.js
+@@ -26,8 +26,13 @@ function readLine() {
+ 
+ // Complete the libraryFine function below.
+ function libraryFine(d1, m1, y1, d2, m2, y2) {
+-
+-
++    if (y1 > y2)
++        return 10000;
++    if (y1 == y2 && m1 > m2)
++        return 500 * (m1 - m2);
++    if (y1 == y2 && m1 == m2 && d1 > d2)
++        return 15 * (d1 - d2);
++    return 0;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
