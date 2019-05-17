@@ -1,0 +1,51 @@
+From 665b3296574836125ba21f8899d7e0cff1cfdf9e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 17 May 2019 01:25:27 +0100
+Subject: [add] hackerrank, 'extra long factorials', c++ solution
+
+---
+ .../extra.long.factorials.cpp                 | 26 +++++++++++++++++--
+ 1 file changed, 24 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.extra.long.factorials/extra.long.factorials.cpp b/hackerrank/algorithms.-.implementation.-.medium.-.extra.long.factorials/extra.long.factorials.cpp
+index ff2e7b4..72020f9 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.extra.long.factorials/extra.long.factorials.cpp
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.extra.long.factorials/extra.long.factorials.cpp
+@@ -2,10 +2,32 @@
+ 
+ using namespace std;
+ 
++string multiply(string base, int factor) {
++    string res = "";
++    int carry = 0;
++    int cur;
++    string next;
++    char buf[2];
++    buf[1] = '\0';
++    for (auto itr = base.rbegin(); itr != base.rend(); ++itr) {
++        buf[0] = *itr;
++        cur = atoi(buf);
++        next = to_string(carry + cur * factor);
++        res += next.back();
++        carry = next.length() == 1 ? 0 : atoi(next.substr(0, next.length() - 1).c_str());
++    }
++    reverse(res.begin(), res.end());
++    return carry > 0 ? to_string(carry) + res : res;
++}
++
+ // Complete the extraLongFactorials function below.
+ void extraLongFactorials(int n) {
+-
+-
++    string res = "1";
++    while (n > 1) {
++        res = multiply(res, n);
++        n--;
++    }
++    cout << res << endl;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
