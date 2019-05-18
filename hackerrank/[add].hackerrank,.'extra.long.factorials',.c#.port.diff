@@ -1,0 +1,53 @@
+From 3a6c0de8f32384d079896a02a6da18c446405faa Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 18 May 2019 23:10:40 +0100
+Subject: [add] hackerrank, 'extra long factorials', c# port
+
+---
+ .../extra.long.factorials.cs                  | 28 +++++++++++++++++--
+ 1 file changed, 26 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.extra.long.factorials/extra.long.factorials.cs b/hackerrank/algorithms.-.implementation.-.medium.-.extra.long.factorials/extra.long.factorials.cs
+index 783b607..101d704 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.extra.long.factorials/extra.long.factorials.cs
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.extra.long.factorials/extra.long.factorials.cs
+@@ -14,10 +14,34 @@ using System;
+ 
+ class Solution {
+ 
++    static string multiply(string base_, int factor) {
++        string res = "";
++        int carry = 0;
++        int cur;
++        string next;
++        var rbase_ = base_.ToCharArray();
++        Array.Reverse(rbase_);
++        foreach (var c in rbase_) {
++            cur = Convert.ToInt32(c.ToString());
++            next = Convert.ToString(carry + cur * factor);
++            //Console.WriteLine($"cur: {cur}, next: {next}");
++            res = res + next.Substring(next.Length - 1);
++            carry = next.Length == 1 ? 0 : Convert.ToInt32(next.Substring(0, next.Length - 1));
++        }
++        var res_ = res.ToCharArray();
++        Array.Reverse(res_);
++        res = new string(res_);
++        return carry > 0 ? Convert.ToString(carry) + res : res;
++    }
++
+     // Complete the extraLongFactorials function below.
+     static void extraLongFactorials(int n) {
+-
+-
++        string res = "1";
++        while (n > 1) {
++            res = multiply(res, n);
++            n--;
++        }
++        Console.WriteLine(res);
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
