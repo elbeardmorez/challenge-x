@@ -1,0 +1,47 @@
+From 42426e6b0f886bee28516d8ff3a9436557bcfa04 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 19 May 2019 10:06:59 +0100
+Subject: [add] hackerrank, 'extra long factorials', python port
+
+---
+ .../extra.long.factorials.py                  | 24 +++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.extra.long.factorials/extra.long.factorials.py b/hackerrank/algorithms.-.implementation.-.medium.-.extra.long.factorials/extra.long.factorials.py
+index 0d7f6f5..2a60ab8 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.extra.long.factorials/extra.long.factorials.py
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.extra.long.factorials/extra.long.factorials.py
+@@ -8,6 +8,30 @@ import sys
+ 
+ # Complete the extraLongFactorials function below.
+ def extraLongFactorials(n):
++    def multiply(base_, factor):
++        #print(f"base_: {base_}, factor: {factor}")
++        res = ""
++        carry = 0
++        cur = ""
++        next = ""
++        for c in reversed(list(base_)):
++            cur = int(str(c))
++            #print(f"c: {c}, cur: {cur}")
++            next = str(carry + cur * factor)
++            res = res + next[-1]
++            carry = 0 if len(next) == 1 else int(next[0:len(next) - 1])
++            #print(f"next: {next}, res: {res}, carry: {carry}")
++
++        res = ''.join(reversed(list(res)))
++        return str(carry) + res if carry > 0 else res
++
++
++    res = "1"
++    while n > 1:
++        res = multiply(res, n)
++        n -= 1
++
++    print(res)
+ 
+ if __name__ == '__main__':
+     n = int(input())
+-- 
+2.23.0
+
