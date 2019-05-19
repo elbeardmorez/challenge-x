@@ -1,0 +1,49 @@
+From bc68fb1ef35e1d9f1dfffd800a14dedcbf98f4a4 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 19 May 2019 09:53:59 +0100
+Subject: [add] hackerrank, 'extra long factorials', javascript port
+
+---
+ .../extra.long.factorials.js                  | 26 +++++++++++++++++--
+ 1 file changed, 24 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.extra.long.factorials/extra.long.factorials.js b/hackerrank/algorithms.-.implementation.-.medium.-.extra.long.factorials/extra.long.factorials.js
+index 81d227c..47210ad 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.extra.long.factorials/extra.long.factorials.js
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.extra.long.factorials/extra.long.factorials.js
+@@ -24,8 +24,30 @@ function readLine() {
+ 
+ // Complete the extraLongFactorials function below.
+ function extraLongFactorials(n) {
+-
+-
++    var multiply = (base_, factor) => {
++        //console.log(`base_: ${base_}, factor: ${factor}`);
++        let res = "";
++        let carry = 0;
++        let cur;
++        let next;
++        base_.split('').reverse().forEach((c) => {
++            cur = parseInt(c.toString());
++            //console.log(`c: ${c}, cur: ${cur}`);
++            next = (carry + cur * factor).toString();
++            res = res + next.substring(next.length - 1);
++            carry = next.length === 1 ? 0 : parseInt(next.substring(0, next.length - 1));
++            //console.log(`next: ${next}, res: ${res}, carry: ${carry}`);
++        });
++        res = res.split('').reverse().join('');
++        return carry > 0 ? carry.toString() + res : res;
++    };
++
++    let res = "1";
++    while (n > 1) {
++        res = multiply(res, n);
++        n--;
++    }
++    console.log(res);
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
