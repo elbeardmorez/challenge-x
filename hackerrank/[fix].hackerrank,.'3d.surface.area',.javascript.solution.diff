@@ -1,0 +1,26 @@
+From c8912ffba88edb205ec14395ec0f54c38505e562 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 20 May 2019 18:12:52 +0100
+Subject: [fix] hackerrank, '3d surface area', javascript solution
+
+-initiated array fill to the the wrong dimension length
+---
+ .../3d.surface.area.js                                          | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.3d.surface.area/3d.surface.area.js b/hackerrank/algorithms.-.implementation.-.medium.-.3d.surface.area/3d.surface.area.js
+index ff58e4a..577714f 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.3d.surface.area/3d.surface.area.js
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.3d.surface.area/3d.surface.area.js
+@@ -43,7 +43,7 @@ function surfaceArea(A) {
+     let p3 = (dim1 * dim2) * 2;
+     let p1 = 0;
+     let p2 = 0;
+-    let d1last = new Array(dim1).fill(0);
++    let d1last = new Array(dim2).fill(0);
+     for (let l1 = 0; l1 < dim1; l1++) {
+        let d2last = 0;
+        for (let l2 = 0; l2 < dim2; l2++) {
+-- 
+2.23.0
+
