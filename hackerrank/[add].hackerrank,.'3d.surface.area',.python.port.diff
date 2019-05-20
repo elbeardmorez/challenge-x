@@ -1,0 +1,50 @@
+From 77d051ae628520aa87b997618f9696f020f11c54 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 20 May 2019 18:18:41 +0100
+Subject: [add] hackerrank, '3d surface area', python port
+
+---
+ .../3d.surface.area.py                        | 27 +++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.3d.surface.area/3d.surface.area.py b/hackerrank/algorithms.-.implementation.-.medium.-.3d.surface.area/3d.surface.area.py
+index 3c62d27..3567732 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.3d.surface.area/3d.surface.area.py
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.3d.surface.area/3d.surface.area.py
+@@ -8,6 +8,33 @@ import sys
+ 
+ # Complete the surfaceArea function below.
+ def surfaceArea(A):
++    dim1 = len(A)
++    dim2 = len(A[0])
++    p3 = (dim1 * dim2) * 2
++    p1 = 0
++    p2 = 0
++    d1last = [0] * dim2
++    for l1 in range(dim1):
++       d2last = 0
++       for l2 in range(dim2):
++           v = A[l1][l2]
++           if v == 0:
++                p3 -= 2
++           if v != d2last:
++                p2 += abs(d2last - v)
++           if v != d1last[l2]:
++                p1 += abs(d1last[l2] - v)
++           d1last[l2] = v
++           d2last = v
++
++       # end of dim
++       p2 += d2last
++
++    # end of dim
++    p1 += sum(d1last)
++
++    return p1 + p2 + p3
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
