@@ -1,0 +1,67 @@
+From ecb6d68ddcb89545cef21fba410b0b9337862e19 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 20 May 2019 18:05:41 +0100
+Subject: [add] hackerrank, '3d surface area', javascript solution
+
+---
+ .../3d.surface.area.js                        | 43 ++++++++++++++++++-
+ 1 file changed, 42 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.3d.surface.area/3d.surface.area.js b/hackerrank/algorithms.-.implementation.-.medium.-.3d.surface.area/3d.surface.area.js
+index 433789a..a360e85 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.3d.surface.area/3d.surface.area.js
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.3d.surface.area/3d.surface.area.js
+@@ -26,8 +26,49 @@ function readLine() {
+ 
+ // Complete the surfaceArea function below.
+ function surfaceArea(A) {
++    // simple block count of the 2d view from all axes, mulitplied by 2
++    // gives the answer
++
++    // cannot remember rotation transformation matrices
++   
++    // 3 3
++    // 1 3 4
++    // 2 2 3
++    // 1 2 4
++
++    // z plane
++    // no zero 'heights' so full dim^2 * 2 surface area
++
++    // x / y planes
++    // iterate dimension, increment on changes in height
++
++    let dim1 = A.length;
++    let dim2 = A[0].length;
++    let p3 = (dim1 * dim2) * 2;
++    let p1 = 0;
++    let p2 = 0;
++    let d1last = new Array(dim1).fill(0);
++    for (let l1 = 0; l1 < dim1; l1++) {
++       let d2last = 0;
++       for (let l2 = 0; l2 < dim2; l2++) {
++           let v = A[l1][l2];
++           if (v === 0)
++                p3 -= 2;
++           if (v !== d2last)
++                p2 += Math.abs(d2last - v);
++           if (v !== d1last[l2])
++                p1 += Math.abs(d1last[l2] - v);
++           d1last[l2] = v;
++           d2last = v;
++       }
++       // end of dim
++       p2 += d2last;
++    }
++    // end of dim
++    for (let idx in d1last)
++        p1 += d1last[idx];
+ 
+-
++    return p1 + p2 + p3;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
