@@ -1,0 +1,50 @@
+From 03ac4849de30758acb623e23b3bc415161781cf0 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 21 May 2019 22:14:50 +0100
+Subject: [add] hackerrank, '3d surface area', c# port
+
+---
+ .../3d.surface.area.cs                        | 26 ++++++++++++++++++-
+ 1 file changed, 25 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.3d.surface.area/3d.surface.area.cs b/hackerrank/algorithms.-.implementation.-.medium.-.3d.surface.area/3d.surface.area.cs
+index 621ff0a..a0e54bd 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.3d.surface.area/3d.surface.area.cs
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.3d.surface.area/3d.surface.area.cs
+@@ -16,8 +16,32 @@ class Solution {
+ 
+     // Complete the surfaceArea function below.
+     static int surfaceArea(int[][] A) {
++        var dim1 = A.Length;
++        var dim2 = A[0].Length;
++        var p3 = (dim1 * dim2) * 2;
++        var p1 = 0;
++        var p2 = 0;
++        var d1last = Enumerable.Repeat(0, dim2).ToArray();
++        for (var l1 = 0; l1 < dim1; l1++) {
++           var d2last = 0;
++           for (var l2 = 0; l2 < dim2; l2++) {
++               var v = A[l1][l2];
++               if (v == 0)
++                    p3 -= 2;
++               if (v != d2last)
++                    p2 += Math.Abs(d2last - v);
++               if (v != d1last[l2])
++                    p1 += Math.Abs(d1last[l2] - v);
++               d1last[l2] = v;
++               d2last = v;
++           }
++           // end of dim
++           p2 += d2last;
++        }
++        // end of dim
++        p1 += d1last.Sum(x => x);
+ 
+-
++        return p1 + p2 + p3;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
