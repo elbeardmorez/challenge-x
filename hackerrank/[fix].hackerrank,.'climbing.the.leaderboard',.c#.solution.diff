@@ -1,0 +1,26 @@
+From 7ddcfbb0c8a0d8474fe6a9e6f17efbe53170bae3 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 22 May 2019 18:28:35 +0100
+Subject: [fix] hackerrank, 'climbing the leaderboard', c# solution
+
+-off-by-one index error on setting max position
+---
+ .../climbing.the.leaderboard.cs                                 | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.climbing.the.leaderboard/climbing.the.leaderboard.cs b/hackerrank/algorithms.-.implementation.-.medium.-.climbing.the.leaderboard/climbing.the.leaderboard.cs
+index f42da35..a60f489 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.climbing.the.leaderboard/climbing.the.leaderboard.cs
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.climbing.the.leaderboard/climbing.the.leaderboard.cs
+@@ -34,7 +34,7 @@ class Solution {
+             }
+             pos -= 1;
+         }
+-        scores_nearest[score_max - 1] = 1;
++        scores_nearest[score_max] = 1;
+         int[] res = alice.AsEnumerable().Select(s => s >= score_max ? 1 : scores_nearest[s]).ToArray();
+         //Console.WriteLine($"res: {String.Join(' ', res.Select(x => x.ToString()))}");
+         return res;
+-- 
+2.23.0
+
