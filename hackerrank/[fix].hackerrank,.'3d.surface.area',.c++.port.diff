@@ -1,0 +1,45 @@
+From 4f7f8857cc314992fe0ca64ff712e842b22b9b3b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 22 May 2019 10:49:13 +0100
+Subject: [fix] hackerrank, '3d surface area', c++ port
+
+-off-by-one 'random access iterator' (pointer) mistake
+---
+ .../3d.surface.area.cpp                                    | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.3d.surface.area/3d.surface.area.cpp b/hackerrank/algorithms.-.implementation.-.medium.-.3d.surface.area/3d.surface.area.cpp
+index ea38e5c..f74556f 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.3d.surface.area/3d.surface.area.cpp
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.3d.surface.area/3d.surface.area.cpp
+@@ -15,7 +15,7 @@ int surfaceArea(vector<vector<int>> A) {
+     // ensure 0 initialised (as older standards don't require) using
+     // the 'random access iterator' nature of pointers and pointer
+     // arithmetic to feed std::fill its args
+-    fill(d1last, d1last + dim2 + 1, 0);
++    fill(d1last, d1last + dim2, 0);
+     for (int l1 = 0; l1 < dim1; l1++) {
+        int d2last = 0;
+        for (int l2 = 0; l2 < dim2; l2++) {
+@@ -34,15 +34,16 @@ int surfaceArea(vector<vector<int>> A) {
+     }
+     // end of dim
+ 
++    /*
+     cout << "p1:" << p1 << endl;
+     cout << "p2:" << p2 << endl;
+     cout << "p3:" << p3 << endl;
+     for (int l = 0; l < dim2; l++)
+         cout << l << ":" << d1last[l] << endl;
++    */
+ 
+     // rears p1
+-    //transform(d1last, d1last + dim2, d1last, [&p1](int x) {return p1 += x;}); // side effects :)
+-    p1 = accumulate(d1last, d1last + dim2 + 1, p1);
++    p1 = accumulate(d1last, d1last + dim2, p1);
+ 
+     return p1 + p2 + p3;
+ }
+-- 
+2.23.0
+
