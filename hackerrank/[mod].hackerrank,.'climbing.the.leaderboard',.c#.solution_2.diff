@@ -1,0 +1,51 @@
+From f433147f70b3653e12e6d87cae70099483ab9a01 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 22 May 2019 18:56:33 +0100
+Subject: [mod] hackerrank, 'climbing the leaderboard', c# solution
+
+-speed-up, avoid unnecessary sort, read backwards
+-longest test case now down to ~2s. still failure though, thus the
+tests must be memory constrained
+---
+ .../climbing.the.leaderboard.cs               | 20 +++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.climbing.the.leaderboard/climbing.the.leaderboard.cs b/hackerrank/algorithms.-.implementation.-.medium.-.climbing.the.leaderboard/climbing.the.leaderboard.cs
+index a60f489..bf01399 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.climbing.the.leaderboard/climbing.the.leaderboard.cs
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.climbing.the.leaderboard/climbing.the.leaderboard.cs
+@@ -16,21 +16,21 @@ class Solution {
+ 
+     // Complete the climbingLeaderboard function below.
+     static int[] climbingLeaderboard(int[] scores, int[] alice) {
+-        var grouped = scores.AsEnumerable().OrderBy(x => x).GroupBy(x => x).Select(g => g.Key).ToList();
++        var grouped = scores.AsEnumerable().GroupBy(x => x).Select(g => g.Key).ToList();
+         int dg = grouped.Count();
+-        int score_max = grouped[dg - 1];
++        int score_max = grouped[0];
+         //Console.WriteLine($"score_max: {score_max}");
+         int[] scores_nearest = new int[score_max + 1];
+-        int idx = 0;
++        int idx2 = 0;
+         int pos = dg + 1;
+-        //Console.WriteLine($"setting idx: {idx}, pos: {pos}");
++        //Console.WriteLine($"setting idx2: {idx2}, pos: {pos}");
+         scores_nearest[0] = pos;
+-        idx = 1;
+-        foreach(var score in grouped) {
+-            while (idx < score) {
+-                //Console.WriteLine($"score: {score}, setting idx: {idx}, pos: {pos}");
+-                scores_nearest[idx] = pos;
+-                idx++;
++        idx2 = 1;
++        for(int idx = dg - 1; idx >= 0; idx--) {
++            while (idx2 < grouped[idx]) {
++                //Console.WriteLine($"score: {grouped[idx]}, setting idx: {idx}, pos: {pos}");
++                scores_nearest[idx2] = pos;
++                idx2++;
+             }
+             pos -= 1;
+         }
+-- 
+2.23.0
+
