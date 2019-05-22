@@ -1,0 +1,62 @@
+From f04c3bdec8dd939672880c91c484e74012ad9b18 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 22 May 2019 10:44:57 +0100
+Subject: [add] hackerrank, '3d surface area', c++ port
+
+---
+ .../3d.surface.area.cpp                       | 37 +++++++++++++++++++
+ 1 file changed, 37 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.3d.surface.area/3d.surface.area.cpp b/hackerrank/algorithms.-.implementation.-.medium.-.3d.surface.area/3d.surface.area.cpp
+index 23b128e..ea38e5c 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.3d.surface.area/3d.surface.area.cpp
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.3d.surface.area/3d.surface.area.cpp
+@@ -6,8 +6,45 @@ vector<string> split_string(string);
+ 
+ // Complete the surfaceArea function below.
+ int surfaceArea(vector<vector<int>> A) {
++    int dim1 = A.size();
++    int dim2 = A[0].size();
++    int p3 = (dim1 * dim2) * 2;
++    int p1 = 0;
++    int p2 = 0;
++    int d1last[dim2];
++    // ensure 0 initialised (as older standards don't require) using
++    // the 'random access iterator' nature of pointers and pointer
++    // arithmetic to feed std::fill its args
++    fill(d1last, d1last + dim2 + 1, 0);
++    for (int l1 = 0; l1 < dim1; l1++) {
++       int d2last = 0;
++       for (int l2 = 0; l2 < dim2; l2++) {
++           int v = A[l1][l2];
++           if (v == 0)
++                p3 -= 2;
++           if (v != d2last)
++                p2 += abs(d2last - v);
++           if (v != d1last[l2])
++                p1 += abs(d1last[l2] - v);
++           d1last[l2] = v;
++           d2last = v;
++       }
++       // end of dim
++       p2 += d2last;  // rear p2
++    }
++    // end of dim
++
++    cout << "p1:" << p1 << endl;
++    cout << "p2:" << p2 << endl;
++    cout << "p3:" << p3 << endl;
++    for (int l = 0; l < dim2; l++)
++        cout << l << ":" << d1last[l] << endl;
+ 
++    // rears p1
++    //transform(d1last, d1last + dim2, d1last, [&p1](int x) {return p1 += x;}); // side effects :)
++    p1 = accumulate(d1last, d1last + dim2 + 1, p1);
+ 
++    return p1 + p2 + p3;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
