@@ -1,0 +1,107 @@
+From 3e225e35058559ba503f3e0954015b24dca40553 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 22 May 2019 23:30:55 +0100
+Subject: [mod] hackerrank, 'climbing the leaderboard', c# solution
+
+-speed-up, redux algorithm, base on a bisect search
+---
+ .../climbing.the.leaderboard.cs               | 80 +++++++++++++++----
+ 1 file changed, 63 insertions(+), 17 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.climbing.the.leaderboard/climbing.the.leaderboard.cs b/hackerrank/algorithms.-.implementation.-.medium.-.climbing.the.leaderboard/climbing.the.leaderboard.cs
+index bf01399..20a2521 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.climbing.the.leaderboard/climbing.the.leaderboard.cs
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.climbing.the.leaderboard/climbing.the.leaderboard.cs
+@@ -16,26 +16,72 @@ class Solution {
+ 
+     // Complete the climbingLeaderboard function below.
+     static int[] climbingLeaderboard(int[] scores, int[] alice) {
+-        var grouped = scores.AsEnumerable().GroupBy(x => x).Select(g => g.Key).ToList();
++        var grouped = scores.AsEnumerable().GroupBy(x => x).Select(g => g.Key).ToArray();
++        int da = alice.Count();
+         int dg = grouped.Count();
+-        int score_max = grouped[0];
+-        //Console.WriteLine($"score_max: {score_max}");
+-        int[] scores_nearest = new int[score_max + 1];
+-        int idx2 = 0;
+-        int pos = dg + 1;
+-        //Console.WriteLine($"setting idx2: {idx2}, pos: {pos}");
+-        scores_nearest[0] = pos;
+-        idx2 = 1;
+-        for(int idx = dg - 1; idx >= 0; idx--) {
+-            while (idx2 < grouped[idx]) {
+-                //Console.WriteLine($"score: {grouped[idx]}, setting idx: {idx}, pos: {pos}");
+-                scores_nearest[idx2] = pos;
+-                idx2++;
++        int idx2;
++        int score;
++        int[] res = new int[da];
++        int last = 0;
++        int last_pos = dg + 1;
++        var map = new Dictionary<int, int>();
++        map[last] = last_pos;
++        //Console.WriteLine($"grouped: {String.Join(' ', grouped.Select(x => x.ToString()))}");
++        for(int idx = 0; idx < da; idx++) {
++            score = alice[idx];
++            if (score == last) {
++                res[idx] = last_pos;
++                continue;
++            } else if (map.ContainsKey(score)) {
++                last = score;
++                last_pos = map[score];
++                res[idx] = last_pos;
++                continue;
++            } else {
++                idx2 = (dg - 1) / 2;
++                // bisect search
++                int bounce = idx2 / 2;
++                while (grouped[idx2] != score && bounce > 0)  {
++                    //Console.WriteLine($"score: {score}, considering idx2: {idx2} | {grouped[idx2]}, bounce: {bounce}");
++                    while (idx2 + bounce < dg && grouped[idx2] > score) {
++                        // increment
++                        idx2 += bounce;
++                        //Console.WriteLine($"idx2: {idx2}");
++                    }
++                    if (idx2 == dg - 1 && grouped[idx2] >= score)
++                        break;
++                    //Console.WriteLine($"score: {score}, considering idx2: {idx2} | {grouped[idx2]}, bounce: {bounce}");
++                    while (idx2 - bounce >= 0 && grouped[idx2] < score) {
++                        // decrement
++                        idx2 -= bounce;
++                        //Console.WriteLine($"idx2: {idx2}");
++                    }
++                    if (idx2 == 0 && grouped[idx2] <= score)
++                        break;
++                    if (bounce > 1 || ((grouped[idx2] >= score && grouped[idx2 + bounce] < score) ||
++                        (grouped[idx2] <= score && grouped[idx2 - bounce] > score))) {
++                        // stuck
++                        if (bounce == 1)
++                            break;
++                        else
++                            bounce /= 2;
++                    }
++                }
++                if (score == grouped[idx2])
++                    last_pos = idx2 + 1;
++                else if (score > grouped[idx2]) {
++                    if (idx2 == dg - 1)
++                        last_pos = dg + 1;
++                    else
++                        last_pos = idx2 + 1;
++                } else
++                    last_pos = idx2 + 2;
++                //Console.WriteLine($"score: {score}, nearest: {grouped[idx2]} [@idx2:{idx2}], set pos {last_pos}");
++                last = score;
++                res[idx] = last_pos;
++                map[score] = last_pos;
+             }
+-            pos -= 1;
+         }
+-        scores_nearest[score_max] = 1;
+-        int[] res = alice.AsEnumerable().Select(s => s >= score_max ? 1 : scores_nearest[s]).ToArray();
+         //Console.WriteLine($"res: {String.Join(' ', res.Select(x => x.ToString()))}");
+         return res;
+     }
+-- 
+2.23.0
+
