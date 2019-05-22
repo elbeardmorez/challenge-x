@@ -1,0 +1,44 @@
+From ee73910370aa27d1aea84044028d95c12f2ac5fe Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 22 May 2019 16:43:10 +0100
+Subject: [add] hackerrank, 'climbing the leaderboard', c# solution
+
+---
+ .../climbing.the.leaderboard.cs               | 21 +++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.climbing.the.leaderboard/climbing.the.leaderboard.cs b/hackerrank/algorithms.-.implementation.-.medium.-.climbing.the.leaderboard/climbing.the.leaderboard.cs
+index 2f33fa4..a2827d6 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.climbing.the.leaderboard/climbing.the.leaderboard.cs
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.climbing.the.leaderboard/climbing.the.leaderboard.cs
+@@ -16,6 +16,27 @@ class Solution {
+ 
+     // Complete the climbingLeaderboard function below.
+     static int[] climbingLeaderboard(int[] scores, int[] alice) {
++        var grouped = scores.AsEnumerable().OrderByDescending(x => x).GroupBy(x => x).Select(g => new int[]{g.Key, g.Count(), 0}).ToList();
++        var a = 0;
++        grouped.ForEach(t => { a += t[1]; t[2] = a; });
++        int da = alice.Count();
++        int dg = grouped.Count();
++        int[] res = Enumerable.Repeat(0, da).ToArray();
++        for(var idx = 0; idx < da; idx++) {
++            int score = alice[idx];
++            for(var idx2 = 0; idx2 < dg; idx2++) {
++                var g = grouped[idx2];
++                //Console.WriteLine($"score: {score}, g: {String.Join(' ', g.Select(x => x.ToString()))}");
++                if (score >= g[0]) {
++                    res[idx] = idx2 + 1;
++                    break;
++                }
++            }
++            if (res[idx] == 0)
++                res[idx] = grouped.Count + 1;
++        }
++        //Console.WriteLine(String.Join(' ', res.Select(x => x.ToString())));
++        return res;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
