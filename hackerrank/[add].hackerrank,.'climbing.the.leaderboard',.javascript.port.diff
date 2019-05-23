@@ -1,0 +1,94 @@
+From 304821750bd08f0e4f05d98c32e6e6098b0fa573 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 23 May 2019 23:36:07 +0100
+Subject: [add] hackerrank, 'climbing the leaderboard', javascript port
+
+---
+ .../climbing.the.leaderboard.js               | 71 ++++++++++++++++++-
+ 1 file changed, 69 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.climbing.the.leaderboard/climbing.the.leaderboard.js b/hackerrank/algorithms.-.implementation.-.medium.-.climbing.the.leaderboard/climbing.the.leaderboard.js
+index 383c23e..984c874 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.climbing.the.leaderboard/climbing.the.leaderboard.js
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.climbing.the.leaderboard/climbing.the.leaderboard.js
+@@ -26,8 +26,75 @@ function readLine() {
+ 
+ // Complete the climbingLeaderboard function below.
+ function climbingLeaderboard(scores, alice) {
+-
+-
++    let grouped = Array.from(new Set(scores));
++    let da = alice.length;
++    let dg = grouped.length;
++    let idx2;
++    let score;
++    let res = new Array(da);
++    let last = 0;
++    let last_pos = dg + 1;
++    let map = new Map();
++    map[last] = last_pos;
++    //console.log(`grouped len: ${grouped.length}`);
++    //console.log(`grouped: ${grouped}`);
++    for(let idx = 0; idx < da; idx++) {
++        score = alice[idx];
++        if (score == last) {
++            res[idx] = last_pos;
++            continue;
++        } else if (map.has(score)) {
++            last = score;
++            last_pos = map.get(score);
++            res[idx] = last_pos;
++            continue;
++        } else {
++            idx2 = parseInt((dg - 1) / 2);
++            // bisect search
++            let bounce = parseInt(idx2 / 2);
++            while (grouped[idx2] !== score && bounce > 0)  {
++                //console.log(`score: ${score}, considering idx2: ${idx2} | ${grouped[idx2]}, bounce: ${bounce}`);
++                while (idx2 + bounce < dg && grouped[idx2] > score) {
++                    // increment
++                    idx2 += bounce;
++                    //console.log(`idx2: ${idx2}`);
++                }
++                if (idx2 === dg - 1 && grouped[idx2] >= score)
++                    break;
++                //console.log(`score: ${score}, considering idx2: ${idx2} | ${grouped[idx2]}, bounce: ${bounce}`);
++                while (idx2 - bounce >= 0 && grouped[idx2] < score) {
++                    // decrement
++                    idx2 -= bounce;
++                    //console.log(`idx2: ${idx2}`);
++                }
++                if (idx2 === 0 && grouped[idx2] <= score)
++                    break;
++                if (bounce > 1 || ((grouped[idx2] >= score && grouped[idx2 + bounce] < score) ||
++                    (grouped[idx2] <= score && grouped[idx2 - bounce] > score))) {
++                    // stuck
++                    if (bounce === 1)
++                        break;
++                    else
++                        bounce = parseInt(bounce / 2);
++                }
++            }
++            if (score === grouped[idx2])
++                last_pos = idx2 + 1;
++            else if (score > grouped[idx2]) {
++                if (idx2 === dg - 1)
++                    last_pos = dg + 1;
++                else
++                    last_pos = idx2 + 1;
++            } else
++                last_pos = idx2 + 2;
++            //console.log(`score: ${score}, nearest: ${grouped[idx2]} [@idx2:${idx2}], set pos ${last_pos}`);
++            last = score;
++            res[idx] = last_pos;
++            map[score] = last_pos;
++        }
++    }
++    //console.log(`res: ${res}`);
++    return res;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
