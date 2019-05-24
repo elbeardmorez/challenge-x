@@ -1,0 +1,95 @@
+From a8fa92649d4be776538fd19b95c35d1571f630fe Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 24 May 2019 23:38:12 +0100
+Subject: [add] hackerrank, 'climbing the leaderboard', c++ port
+
+---
+ .../climbing.the.leaderboard.cpp              | 72 ++++++++++++++++++-
+ 1 file changed, 70 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.climbing.the.leaderboard/climbing.the.leaderboard.cpp b/hackerrank/algorithms.-.implementation.-.medium.-.climbing.the.leaderboard/climbing.the.leaderboard.cpp
+index dd53ba8..b60bd5d 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.climbing.the.leaderboard/climbing.the.leaderboard.cpp
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.climbing.the.leaderboard/climbing.the.leaderboard.cpp
+@@ -6,8 +6,76 @@ vector<string> split_string(string);
+ 
+ // Complete the climbingLeaderboard function below.
+ vector<int> climbingLeaderboard(vector<int> scores, vector<int> alice) {
+-
+-
++    vector<int> grouped;
++    set<int> unique(scores.begin(), scores.end());
++    copy(unique.rbegin(), unique.rend(), back_inserter(grouped));
++    int da = alice.size();
++    int dg = grouped.size();
++    int idx2;
++    int score;
++    vector<int> res(da);
++    int last = 0;
++    int last_pos = dg + 1;
++    map<int, int> map_;
++    map_[last] = last_pos;
++    //cout << "grouped:"; for (auto itr = grouped.begin(); itr != grouped.end(); ++itr) cout << " " << *itr; cout << endl;
++    for(int idx = 0; idx < da; idx++) {
++        score = alice[idx];
++        if (score == last) {
++            res[idx] = last_pos;
++            continue;
++        } else if (map_.find(score) != map_.end()) {
++            last = score;
++            last_pos = map_[score];
++            res[idx] = last_pos;
++            continue;
++        } else {
++            idx2 = (dg - 1) / 2;
++            // bisect search
++            int bounce = idx2 / 2;
++            while (grouped[idx2] != score && bounce > 0)  {
++                //cout << "score: " << score << ", considering idx2: " << idx2 << " | " << grouped[idx2] << ", bounce: " << bounce << endl;
++                while (idx2 + bounce < dg && grouped[idx2] > score) {
++                    // increment
++                    idx2 += bounce;
++                    //cout << "idx2: " << idx2 << endl;
++                }
++                if (idx2 == dg - 1 && grouped[idx2] >= score)
++                    break;
++                //cout << "score: " << score << ", considering idx2: " << idx2 << " | " << grouped[idx2] << ", bounce: " << bounce << endl;
++                while (idx2 - bounce >= 0 && grouped[idx2] < score) {
++                    // decrement
++                    idx2 -= bounce;
++                    //cout << "idx2: " << idx2 << endl;
++                }
++                if (idx2 == 0 && grouped[idx2] <= score)
++                    break;
++                if (bounce > 1 || ((grouped[idx2] >= score && grouped[idx2 + bounce] < score) ||
++                    (grouped[idx2] <= score && grouped[idx2 - bounce] > score))) {
++                    // stuck
++                    if (bounce == 1)
++                        break;
++                    else
++                        bounce /= 2;
++                }
++            }
++            if (score == grouped[idx2])
++                last_pos = idx2 + 1;
++            else if (score > grouped[idx2]) {
++                if (idx2 == dg - 1)
++                    last_pos = dg + 1;
++                else
++                    last_pos = idx2 + 1;
++            } else
++                last_pos = idx2 + 2;
++            //cout << "score: " << score << ", nearest: " << grouped[idx2] << "[@idx2:" << idx2 << "], set pos " << last_pos << endl;
++            last = score;
++            res[idx] = last_pos;
++            map_[score] = last_pos;
++        }
++    }
++    //cout << "res:"; for (auto itr = res.begin(); itr != res.end(); ++itr) cout << " " << *itr; cout << endl;
++    return res;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
