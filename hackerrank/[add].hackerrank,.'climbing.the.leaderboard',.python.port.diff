@@ -1,0 +1,92 @@
+From cdbb9993fb236f180b6282be284aa4cd447edbb9 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 25 May 2019 15:51:25 +0100
+Subject: [add] hackerrank, 'climbing the leaderboard', python port
+
+---
+ .../climbing.the.leaderboard.py               | 67 +++++++++++++++++++
+ 1 file changed, 67 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.climbing.the.leaderboard/climbing.the.leaderboard.py b/hackerrank/algorithms.-.implementation.-.medium.-.climbing.the.leaderboard/climbing.the.leaderboard.py
+index 090a78b..219068c 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.climbing.the.leaderboard/climbing.the.leaderboard.py
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.climbing.the.leaderboard/climbing.the.leaderboard.py
+@@ -6,8 +6,75 @@ import random
+ import re
+ import sys
+ 
++
+ # Complete the climbingLeaderboard function below.
+ def climbingLeaderboard(scores, alice):
++    grouped = list(reversed(sorted(list(set(scores)))))
++    da = len(alice)
++    dg = len(grouped)
++    res = [0] * da
++    last = 0
++    last_pos = dg + 1
++    map = {}
++    map[last] = last_pos
++    #print(f"grouped len: {len(grouped)}")
++    #print(f"grouped: {grouped}")
++    for idx in range(da):
++        score = alice[idx]
++        if score == last:
++            res[idx] = last_pos
++            continue
++        elif score in map:
++            last = score
++            last_pos = map[score]
++            res[idx] = last_pos
++            continue
++        else:
++            idx2 = int((dg - 1) / 2)
++            # bisect search
++            bounce = int(idx2 / 2)
++            while grouped[idx2] != score and bounce > 0:
++                #print(f"score: {score}, considering idx2: {idx2} | {grouped[idx2]}, bounce: {bounce}")
++                while idx2 + bounce < dg and grouped[idx2] > score:
++                    # increment
++                    idx2 += bounce
++                    #print(f"idx2: {idx2}")
++
++                if idx2 == dg - 1 and grouped[idx2] >= score:
++                    break
++                #print(f"score: {score}, considering idx2: {idx2} | {grouped[idx2]}, bounce: {bounce}")
++                while idx2 - bounce >= 0 and grouped[idx2] < score:
++                    # decrement
++                    idx2 -= bounce
++                    #print(f"idx2: {idx2}")
++
++                if idx2 == 0 and grouped[idx2] <= score:
++                    break
++                if bounce > 1 or ((grouped[idx2] >= score and grouped[idx2 + bounce] < score) or
++                                  (grouped[idx2] <= score and grouped[idx2 - bounce] > score)):
++                    # stuck
++                    if bounce == 1:
++                        break
++                    else:
++                        bounce = int(bounce / 2)
++
++            if score == grouped[idx2]:
++                last_pos = idx2 + 1
++            elif score > grouped[idx2]:
++                if idx2 == dg - 1:
++                    last_pos = dg + 1
++                else:
++                    last_pos = idx2 + 1
++            else:
++                last_pos = idx2 + 2
++            #print(f"score: {score}, nearest: {grouped[idx2]} [@idx2:{idx2}], set pos {last_pos}")
++            last = score
++            res[idx] = last_pos
++            map[score] = last_pos
++
++    #print(f"res: {res}")
++    return res
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
