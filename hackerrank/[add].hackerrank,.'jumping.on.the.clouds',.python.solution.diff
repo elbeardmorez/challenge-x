@@ -1,0 +1,33 @@
+From 113e72e3e448f5c4613da7b1806bbb14ea1e2407 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 26 May 2019 08:51:50 +0100
+Subject: [add] hackerrank, 'jumping on the clouds', python solution
+
+---
+ .../jumping.on.the.clouds.py                           | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.jumping.on.the.clouds/jumping.on.the.clouds.py b/hackerrank/algorithms.-.implementation.-.easy.-.jumping.on.the.clouds/jumping.on.the.clouds.py
+index 397fc3d..92a05ea 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.jumping.on.the.clouds/jumping.on.the.clouds.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.jumping.on.the.clouds/jumping.on.the.clouds.py
+@@ -8,8 +8,14 @@ import sys
+ 
+ # Complete the jumpingOnClouds function below.
+ def jumpingOnClouds(c):
+-    
+-
++    idx_last = len(c) - 1
++    jumps = 0
++    idx = 0
++    while idx < idx_last:
++        idx = idx + 2 if (idx + 2 <= idx_last and c[idx + 2] == 0) else idx + 1
++        jumps += 1
++        #print(f"idx: {idx}, jumps: {jumps}")
++    return jumps
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
