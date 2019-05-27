@@ -1,0 +1,34 @@
+From a34a66e351af9ec3d6ff42713a95aad49447d434 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 27 May 2019 10:55:02 +0100
+Subject: [add] hackerrank, 'jumping on the clouds', c# port
+
+---
+ .../jumping.on.the.clouds.cs                          | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.jumping.on.the.clouds/jumping.on.the.clouds.cs b/hackerrank/algorithms.-.implementation.-.easy.-.jumping.on.the.clouds/jumping.on.the.clouds.cs
+index 1f0cb7c..161dccc 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.jumping.on.the.clouds/jumping.on.the.clouds.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.jumping.on.the.clouds/jumping.on.the.clouds.cs
+@@ -16,8 +16,15 @@ class Solution {
+ 
+     // Complete the jumpingOnClouds function below.
+     static int jumpingOnClouds(int[] c) {
+-
+-
++        var idx_last = c.Length - 1;
++        var jumps = 0;
++        var idx = 0;
++        while (idx < idx_last) {
++            idx = (idx + 2 <= idx_last && c[idx + 2] == 0) ? idx + 2 : idx + 1;
++            jumps += 1;
++            Console.WriteLine($"idx: {idx}, jumps: {jumps}");
++        }
++        return jumps;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
