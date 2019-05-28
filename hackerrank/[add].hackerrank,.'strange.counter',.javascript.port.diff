@@ -1,0 +1,40 @@
+From 9d9def5283d84fe9151dd71d6d748c0857960366 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 28 May 2019 09:06:24 +0100
+Subject: [add] hackerrank, 'strange counter', javascript port
+
+---
+ .../strange.counter.js                          | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.strange.counter/strange.counter.js b/hackerrank/algorithms.-.implementation.-.easy.-.strange.counter/strange.counter.js
+index e174fdf..5664cd4 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.strange.counter/strange.counter.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.strange.counter/strange.counter.js
+@@ -26,8 +26,21 @@ function readLine() {
+ 
+ // Complete the strangeCounter function below.
+ function strangeCounter(t) {
+-
+-
++    // 0 1  2  3  4  // n
++    // 3 6 12 24 48  // 3 * 2 ^ n  // block initial value
++    // 1 4 10 22 46  // 3 * 2 ^ n - 2  // block initial time value
++    var n = 0;
++    var jump = 10;
++    while (jump >= 1) {
++        if (3 * Math.pow(2, n + jump) - 2 <= t)
++            n += jump;
++        else
++            jump = parseInt(jump / 2);
++        //console.log(`n: ${n}, current: ${3 * Math.pow(2, n + jump) - 2}, target: ${t}`);
++    }
++    var v_start = 3 * Math.pow(2, n);
++    var t_start = v_start - 2;
++    return v_start - (t - t_start);
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
