@@ -1,0 +1,39 @@
+From 73cd11fd8927df78beeb3646027fc4c5244e1ee1 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 28 May 2019 08:59:05 +0100
+Subject: [add] hackerrank, 'strange counter', python port
+
+---
+ .../strange.counter.py                           | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.strange.counter/strange.counter.py b/hackerrank/algorithms.-.implementation.-.easy.-.strange.counter/strange.counter.py
+index d485479..f6319d2 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.strange.counter/strange.counter.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.strange.counter/strange.counter.py
+@@ -8,6 +8,22 @@ import sys
+ 
+ # Complete the strangeCounter function below.
+ def strangeCounter(t):
++    # 0 1  2  3  4  // n
++    # 3 6 12 24 48  // 3 * 2 ^ n  // block initial value
++    # 1 4 10 22 46  // 3 * 2 ^ n - 2  // block initial time value
++    n = 0
++    jump = 10
++    while jump >= 1:
++        if 3 * pow(2, n + jump) - 2 <= t:
++            n += jump
++        else:
++            jump = int(jump / 2)
++        #print(f"n: {n}, current: {3 * pow(2, n + jump) - 2} target: {t}")
++
++    v_start = 3 * pow(2, n)
++    t_start = v_start - 2
++    return v_start - (t - t_start)
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
