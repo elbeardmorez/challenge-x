@@ -1,0 +1,46 @@
+From 130d7c852cbcd064e8e40d3edef610110fb4a4e5 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 28 May 2019 08:52:23 +0100
+Subject: [add] hackerrank, 'strange counter', c# port
+
+---
+ .../strange.counter.cs                         | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.strange.counter/strange.counter.cs b/hackerrank/algorithms.-.implementation.-.easy.-.strange.counter/strange.counter.cs
+index 5ef5ee8..6cbaa83 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.strange.counter/strange.counter.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.strange.counter/strange.counter.cs
+@@ -11,13 +11,27 @@ using System.Runtime.Serialization;
+ using System.Text.RegularExpressions;
+ using System.Text;
+ using System;
++using static System.Math;
+ 
+ class Solution {
+ 
+     // Complete the strangeCounter function below.
+     static long strangeCounter(long t) {
+-
+-
++        // 0 1  2  3  4  // n
++        // 3 6 12 24 48  // 3 * 2 ^ n  // block initial value
++        // 1 4 10 22 46  // 3 * 2 ^ n - 2  // block initial time value
++        int n = 0;
++        int jump = 10;
++        while (jump >= 1) {
++            if (3 * (long)Pow(2, n + jump) - 2 <= t)
++                n += jump;
++            else
++                jump /= 2;
++            //Console.WriteLine($"n: {n}, current: {3 * Pow(2, n + jump) - 2} target: {t}");
++        }
++        long v_start = 3 * (long)Pow(2, n);
++        long t_start = v_start - 2;
++        return v_start - (t - t_start);
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
