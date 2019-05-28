@@ -1,0 +1,44 @@
+From 32b83e3a1d3b65e808e071412612e39aae96ca91 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 28 May 2019 08:29:18 +0100
+Subject: [add] hackerrank, 'strange counter', c++ solution
+
+---
+ .../strange.counter.cpp                        | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.strange.counter/strange.counter.cpp b/hackerrank/algorithms.-.implementation.-.easy.-.strange.counter/strange.counter.cpp
+index 6f1b968..4cf7d62 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.strange.counter/strange.counter.cpp
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.strange.counter/strange.counter.cpp
+@@ -1,11 +1,25 @@
+ #include <bits/stdc++.h>
++#include <cmath>
+ 
+ using namespace std;
+ 
+ // Complete the strangeCounter function below.
+ long strangeCounter(long t) {
+-
+-
++    // 0 1  2  3  4  // n
++    // 3 6 12 24 48  // 3 * 2 ^ n  // block initial value
++    // 1 4 10 22 46  // 3 * 2 ^ n - 2  // block initial time value
++    int n = 0;
++    int jump = 10;
++    while (jump >= 1) {
++        if (3 * pow(2, n + jump) - 2 <= t)
++            n += jump;
++        else
++            jump /= 2;
++        //cout << "n: " << n << ", current: " << 3 * pow(2, n + jump) - 2 << ", target: " << t << endl;
++    }
++    long v_start = 3 * pow(2, n);
++    long t_start = v_start - 2;
++    return v_start - (t - t_start);
+ }
+ 
+ int main()
+-- 
+2.23.0
+
