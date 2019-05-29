@@ -1,0 +1,73 @@
+From 7d6d669dc49ac2a0d46772898a64931600b0f275 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 29 May 2019 08:54:27 +0100
+Subject: [add] hackerrank, 'encryption', c++ solution
+
+---
+ .../encryption.cpp                            | 47 ++++++++++++++++++-
+ 1 file changed, 45 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.encryption/encryption.cpp b/hackerrank/algorithms.-.implementation.-.medium.-.encryption/encryption.cpp
+index 444f918..ba5773b 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.encryption/encryption.cpp
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.encryption/encryption.cpp
+@@ -1,11 +1,54 @@
+ #include <bits/stdc++.h>
++#include <cmath>
++#include <sstream>
+ 
+ using namespace std;
+ 
+ // Complete the encryption function below.
+ string encryption(string s) {
+-
+-
++    stringstream ss;
++    int last = -1;
++    auto itr = s.find(" ", last + 1, 1);
++    while (itr != string::npos) {
++        if (itr - 1 - last > 0)
++            ss << s.substr(last + 1, itr - 1 - last);
++        last = itr;
++        itr = s.find(" ", last + 1, 1);
++    }
++    ss << s.substr(last + 1, s.length() - 1 - last);
++    string stripped = ss.str();
++    //cout << "stripped: " << stripped << endl;
++    int smax = stripped.length();
++    double sqrt_ = sqrt(smax);
++    int rows = int(sqrt_);
++    int cols = rows + 1;
++    if (rows * cols < (int)s.length())
++        rows++;
++    //cout << "sqrt: " << sqrt_ << ", rows: " << rows << ", cols: " << cols << endl;
++    int idx = 0;
++    int ridx = 0;
++    int cidx = 0;
++    int sidx;
++    ss.clear();
++    ss.str("");
++    while (idx < smax) {
++        sidx = ridx * cols + cidx;
++        //cout << "idx: " << idx << ", ridx: " << ridx << ", cidx: " << cidx << ", sidx: " << sidx << endl;
++        if (ridx == rows) {
++            ss << " ";
++            cidx++;
++            ridx = -1;
++            //cout << "res: " << ss.str() << endl;
++        } else {
++            if (sidx < smax) {
++                ss << stripped.substr(sidx, 1);
++                idx++;
++            }
++        }
++        ridx++;
++    }
++    //cout << "final: " << ss.str() << endl;
++    return ss.str();
+ }
+ 
+ int main()
+-- 
+2.23.0
+
