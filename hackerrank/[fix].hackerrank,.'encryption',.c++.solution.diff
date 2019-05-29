@@ -1,0 +1,33 @@
+From 6fe60ac979ab615e2c0e925cf12e935925e2c312 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 29 May 2019 09:01:01 +0100
+Subject: [fix] hackerrank, 'encryption', c++ solution
+
+-sqrt columns lower bound off-by-one bug
+---
+ .../encryption.cpp                                          | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.encryption/encryption.cpp b/hackerrank/algorithms.-.implementation.-.medium.-.encryption/encryption.cpp
+index ba5773b..fd707a9 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.encryption/encryption.cpp
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.encryption/encryption.cpp
+@@ -17,11 +17,13 @@ string encryption(string s) {
+     }
+     ss << s.substr(last + 1, s.length() - 1 - last);
+     string stripped = ss.str();
+-    //cout << "stripped: " << stripped << endl;
+     int smax = stripped.length();
++    //cout << "stripped: " << stripped << "[" << smax << "]" << endl;
+     double sqrt_ = sqrt(smax);
+     int rows = int(sqrt_);
+-    int cols = rows + 1;
++    int cols = rows;
++    if (rows * cols < (int)s.length())
++        cols++;
+     if (rows * cols < (int)s.length())
+         rows++;
+     //cout << "sqrt: " << sqrt_ << ", rows: " << rows << ", cols: " << cols << endl;
+-- 
+2.23.0
+
