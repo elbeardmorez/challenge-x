@@ -1,0 +1,58 @@
+From bbdd7ade3b5b3e49c02cd13a60da9f0ab70c1c77 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 30 May 2019 21:32:35 +0100
+Subject: [add] hackerrank, 'encryption', c# port
+
+---
+ .../encryption.cs                             | 35 ++++++++++++++++++-
+ 1 file changed, 34 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.encryption/encryption.cs b/hackerrank/algorithms.-.implementation.-.medium.-.encryption/encryption.cs
+index fc7b74d..b7cf5ff 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.encryption/encryption.cs
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.encryption/encryption.cs
+@@ -17,7 +17,40 @@ class Solution {
+     // Complete the encryption function below.
+     static string encryption(string s) {
+ 
+-
++        var stripped = s.Replace(" ", "");
++        var smax = stripped.Length;
++        //Console.WriteLine($"stripped: {stripped} [{smax}]");
++        var sqrt_ = Math.Pow(smax, 0.5);
++        var rows = Convert.ToInt32(sqrt_);
++        var cols = rows;
++        if (rows * cols < s.Length)
++            cols++;
++        if (rows * cols < s.Length)
++            rows++;
++        //Console.WriteLine($"sqrt: {sqrt_}, rows: {rows}, cols: {cols}");
++        var idx = 0;
++        var ridx = 0;
++        var cidx = 0;
++        var sidx = 0;
++        var ss = "";
++        while (idx < smax) {
++            sidx = ridx * cols + cidx;
++            //Console.WriteLine($"idx: {idx}, ridx: {ridx}, cidx: {cidx}, sidx: {sidx}");
++            if (ridx == rows) {
++                ss += " ";
++                cidx++;
++                ridx = -1;
++                //Console.WriteLine($"res: {ss}");
++            } else {
++                if (sidx < smax) {
++                    ss += stripped.Substring(sidx, 1);
++                    idx++;
++                }
++            }
++            ridx++;
++        }
++        //Console.WriteLine("final: {ss}");
++        return ss;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
