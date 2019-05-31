@@ -1,0 +1,55 @@
+From 8fa67704ac532e5f81a4f02ed918420a35413ed3 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 31 May 2019 08:05:12 +0100
+Subject: [add] hackerrank, 'encryption', python port
+
+---
+ .../encryption.py                             | 32 +++++++++++++++++++
+ 1 file changed, 32 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.encryption/encryption.py b/hackerrank/algorithms.-.implementation.-.medium.-.encryption/encryption.py
+index ce9bc11..5130d02 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.encryption/encryption.py
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.encryption/encryption.py
+@@ -8,6 +8,38 @@ import sys
+ 
+ # Complete the encryption function below.
+ def encryption(s):
++    stripped = s.replace(" ", "")
++    smax = len(stripped)
++    #print(f"stripped: {stripped} [{smax}]")
++    sqrt_ = math.pow(smax, 0.5)
++    rows = int(sqrt_)
++    cols = rows
++    if rows * cols < len(s):
++        cols += 1
++    if rows * cols < len(s):
++        rows += 1
++    #print(f"sqrt: {sqrt_}, rows: {rows}, cols: {cols}")
++    idx = 0
++    ridx = 0
++    cidx = 0
++    sidx = 0
++    ss = ""
++    while idx < smax:
++        sidx = ridx * cols + cidx
++        #print(f"idx: {idx}, ridx: {ridx}, cidx: {cidx}, sidx: {sidx}")
++        if ridx == rows:
++            ss += " "
++            cidx += 1
++            ridx = -1
++            #print(f"res: {ss}")
++        elif sidx < smax:
++            ss += stripped[sidx:sidx + 1]
++            #print(f"res: {ss}")
++            idx += 1
++        ridx += 1
++    #print(f"final: {ss}")
++    return ss
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
