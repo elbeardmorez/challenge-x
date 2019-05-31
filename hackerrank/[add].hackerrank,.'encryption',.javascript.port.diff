@@ -1,0 +1,58 @@
+From 0f08663e624871e54c1f50a857f50689b9ba34c1 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 31 May 2019 07:53:49 +0100
+Subject: [add] hackerrank, 'encryption', javascript port
+
+---
+ .../encryption.js                             | 35 +++++++++++++++++--
+ 1 file changed, 33 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.encryption/encryption.js b/hackerrank/algorithms.-.implementation.-.medium.-.encryption/encryption.js
+index 9b5e4ca..2167fd1 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.encryption/encryption.js
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.encryption/encryption.js
+@@ -26,8 +26,39 @@ function readLine() {
+ 
+ // Complete the encryption function below.
+ function encryption(s) {
+-
+-
++    var stripped = s.replace(" ", "");
++    var smax = stripped.length;
++    //console.log(`stripped: ${stripped} [${smax}]`);
++    var sqrt_ = Math.pow(smax, 0.5);
++    var rows = parseInt(sqrt_);
++    var cols = rows;
++    if (rows * cols < s.length)
++        cols++;
++    if (rows * cols < s.length)
++        rows++;
++    //console.log(`sqrt: ${sqrt_}, rows: ${rows}, cols: ${cols}`);
++    var idx = 0;
++    var ridx = 0;
++    var cidx = 0;
++    var sidx = 0;
++    var ss = "";
++    while (idx < smax) {
++        sidx = ridx * cols + cidx;
++        //console.log(`idx: ${idx}, ridx: ${ridx}, cidx: ${cidx}, sidx: ${sidx}`);
++        if (ridx === rows) {
++            ss += " ";
++            cidx++;
++            ridx = -1;
++            //console.log(`res: ${ss}`);
++        } else if (sidx < smax) {
++            ss += stripped.substr(sidx, 1);
++            //console.log(`res: ${ss}`);
++            idx++;
++        }
++        ridx++;
++    }
++    //console.log(`final: ${ss}`);
++    return ss;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
