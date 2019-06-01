@@ -1,0 +1,108 @@
+From 64953e78e27c59062fef82cfac793a8e10878ddf Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 1 Jun 2019 15:54:33 +0100
+Subject: [fix] hackerrank, 'the bomberman game', python solution
+
+-bug in length of 'bomb blankets' returned given the wrong dimension
+was used in its construction
+-speed-up, short-circuit all mod 2 0 ns a bomb blanket
+
+still in the region of 1500x too slow
+---
+ .../the.bomberman.game.py                     | 47 +++++++------------
+ 1 file changed, 18 insertions(+), 29 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.the.bomberman.game/the.bomberman.game.py b/hackerrank/algorithms.-.implementation.-.medium.-.the.bomberman.game/the.bomberman.game.py
+index 593a1f2..040cc5a 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.the.bomberman.game/the.bomberman.game.py
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.the.bomberman.game/the.bomberman.game.py
+@@ -38,6 +38,7 @@ def bomberMan(n, grid):
+         for i_row in i_grid:
+             s_grid.append(
+                 str(brep.format(i_row)).replace("0", ".").replace("1", "O"))
++        #print(f"rows: {len(s_grid)}, cols: {len(s_grid[0])}")
+         return s_grid
+ 
+     if n == 0:
+@@ -45,11 +46,18 @@ def bomberMan(n, grid):
+ 
+     lr = len(grid)
+     lc = len(grid[0])
++    #print(f"rows: {lr}, cols: {lc}")
++
+     rows = [int(row.replace("O", "1").replace(".", "0"), 2) for row in grid]
++
+     brep = "{0:0" + str(lc) + "b}"
+     max_ = pow(2, lc) - 1  # mask
++    blanket = [max_] * lr
+     last = rows
+ 
++    if n % 2 == 0:
++        return grid2s(blanket)
++
+     # game
+     n_ = 0
+     #print(f"> n = {n_}")
+@@ -66,49 +74,30 @@ def bomberMan(n, grid):
+     while n_ <= n:
+ 
+         # determine blast
+-        blast = []
++        blast = [x for x in last]
+         for l in range(lr):
+-            x = last[l]
+-            blast.append(x)
++            x = blast[l]
+             if x > 0:
+                 # current row
+                 blast[l] |= (x << 1 & max_) | (x >> 1)
+                 # append to previous row
+                 if l > 0:
+-                    blast[l - 1] |= last[l]
++                    blast[l - 1] |= x
+             # append from previous row
+             if l > 0:
+                 blast[l] |= last[l - 1]
+ 
+-        #print(f"> blast mask")
+-        #for i_row in blast:
+-        #    print(brep.format(i_row))
++        for l in range(lr):
++            blast[l] ^= max_  #  complement blanket
+ 
+-        # do work
+-        # fill grid
+-        #print(f"> n = {n_}")
+-        rows = [max_] * lc
+-        #for i_row in rows:
+-        #    print(brep.format(i_row))
++        last = blast
++        n_ += 2
+ 
+-        n_ += 1
+-        if n_ > n:
+-            last = rows
+-            break
+-        # explode
+-        #print(f"> n = {n_}")
+-        next_ = []
+-        for i_row in blast:
+-            next_.append(max_ ^ i_row)  # complement
+-        #print(f"> next")
+-        #for i_row in next_:
+-        #    print(brep.format(i_row))
+-
+-        last = next_
+-
+-        n_ += 1
+         if n_ > n:
+             break
++        #if n_ % 1000000 < 2:
++        #    print(f">n = {n_}")
++        #    exit(0)
+ 
+     return grid2s(last)
+ 
+-- 
+2.23.0
+
