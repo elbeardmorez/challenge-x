@@ -1,0 +1,130 @@
+From a9af19b4033374ed49797c20262dbcf44fa87835 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 1 Jun 2019 14:43:31 +0100
+Subject: [add] hackerrank, 'the bomberman game', python solution
+
+---
+ .../the.bomberman.game.py                     | 104 ++++++++++++++++++
+ 1 file changed, 104 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.the.bomberman.game/the.bomberman.game.py b/hackerrank/algorithms.-.implementation.-.medium.-.the.bomberman.game/the.bomberman.game.py
+index 2d2656c..593a1f2 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.the.bomberman.game/the.bomberman.game.py
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.the.bomberman.game/the.bomberman.game.py
+@@ -6,9 +6,113 @@ import random
+ import re
+ import sys
+ 
++"""
++
++000
++010
++000.
++
++build a destruction path
++
++010
++111
++010
++
++create via summing bitshifts
++
++>>> x = 0b1
++>>> x = 0b10
++>>> y = x | (x << 1) | (x >> 1)  # bitwise OR
++>>> y
++>>> '{0:b}'.format(y)
++'111'
++
++"""
++
++
+ # Complete the bomberMan function below.
+ def bomberMan(n, grid):
+ 
++    def grid2s(i_grid):
++        s_grid = []
++        for i_row in i_grid:
++            s_grid.append(
++                str(brep.format(i_row)).replace("0", ".").replace("1", "O"))
++        return s_grid
++
++    if n == 0:
++        return grid
++
++    lr = len(grid)
++    lc = len(grid[0])
++    rows = [int(row.replace("O", "1").replace(".", "0"), 2) for row in grid]
++    brep = "{0:0" + str(lc) + "b}"
++    max_ = pow(2, lc) - 1  # mask
++    last = rows
++
++    # game
++    n_ = 0
++    #print(f"> n = {n_}")
++    #for i_row in last:
++    #    print(brep.format(i_row))
++
++    n_ += 1
++    if n_ > n:
++        return grid2s(last)
++    # do nothing
++    #print(f"> n = {n_}")
++
++    n_ += 1
++    while n_ <= n:
++
++        # determine blast
++        blast = []
++        for l in range(lr):
++            x = last[l]
++            blast.append(x)
++            if x > 0:
++                # current row
++                blast[l] |= (x << 1 & max_) | (x >> 1)
++                # append to previous row
++                if l > 0:
++                    blast[l - 1] |= last[l]
++            # append from previous row
++            if l > 0:
++                blast[l] |= last[l - 1]
++
++        #print(f"> blast mask")
++        #for i_row in blast:
++        #    print(brep.format(i_row))
++
++        # do work
++        # fill grid
++        #print(f"> n = {n_}")
++        rows = [max_] * lc
++        #for i_row in rows:
++        #    print(brep.format(i_row))
++
++        n_ += 1
++        if n_ > n:
++            last = rows
++            break
++        # explode
++        #print(f"> n = {n_}")
++        next_ = []
++        for i_row in blast:
++            next_.append(max_ ^ i_row)  # complement
++        #print(f"> next")
++        #for i_row in next_:
++        #    print(brep.format(i_row))
++
++        last = next_
++
++        n_ += 1
++        if n_ > n:
++            break
++
++    return grid2s(last)
++
++
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+ 
+-- 
+2.23.0
+
