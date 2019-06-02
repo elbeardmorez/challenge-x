@@ -1,0 +1,118 @@
+From bec0e0d1670de4ad676627373e533c94156ebeb9 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 2 Jun 2019 21:04:12 +0100
+Subject: [mod] hackerrank, 'the bomberman game', c++ port
+
+-speed-up, single loop, incorporate blanket xor in main loop
+---
+ .../the.bomberman.game.cpp                    | 46 +++++++++----------
+ 1 file changed, 23 insertions(+), 23 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.the.bomberman.game/the.bomberman.game.cpp b/hackerrank/algorithms.-.implementation.-.medium.-.the.bomberman.game/the.bomberman.game.cpp
+index c45df9f..bda1881 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.the.bomberman.game/the.bomberman.game.cpp
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.the.bomberman.game/the.bomberman.game.cpp
+@@ -28,7 +28,6 @@ vector<string> bomberMan(int n, vector<string> grid) {
+ 
+     stringstream ss;
+     string s;
+-
+     if (n == 0)
+         return grid;
+ 
+@@ -36,14 +35,14 @@ vector<string> bomberMan(int n, vector<string> grid) {
+     int lc = grid[0].length();
+     //cout << "rows: " << lr << ", cols: " << lc << endl;
+ 
+-    vector<bitset<200>> last;
+-    last.reserve(lr * sizeof(string));
++    vector<bitset<200>> blast;
++    blast.reserve(lr);
+     regex rx1("O");
+     regex rx2("\\.");
+     for (auto itr = grid.begin(); itr != grid.end(); ++itr) {
+         bitset<200> bs(regex_replace(regex_replace(*itr, rx2, "0"), rx1, "1"));
+         //cout << "converted: " << *itr << " -> " << bs.to_string() << endl;
+-        last.push_back(bs);
++        blast.push_back(bs);
+     }
+ 
+ 
+@@ -62,7 +61,7 @@ vector<string> bomberMan(int n, vector<string> grid) {
+     int n_ = 0;
+     /*
+     cout << "> n = " << n_ << endl;
+-    for (auto itr = last.begin(); itr != last.end(); ++itr) {
++    for (auto itr = blast.begin(); itr != blast.end(); ++itr) {
+         ss.str("");
+         ss << setw(lc) << setfill('0') << bitset<200>(*itr);
+         s = ss.str();
+@@ -74,7 +73,7 @@ vector<string> bomberMan(int n, vector<string> grid) {
+ 
+     n_++;
+     if (n_ > n)
+-        return grid2s(last, lc);
++        return grid2s(blast, lc);
+ 
+     // do nothing
+     //cout << "> n = " << n_ << endl;
+@@ -83,30 +82,31 @@ vector<string> bomberMan(int n, vector<string> grid) {
+     while (n_ <= n) {
+ 
+         // determine blast
+-        vector<bitset<200>> blast;
+-        blast.reserve(lr * sizeof(string));
+-        for (auto itr = last.begin(); itr != last.end(); ++itr)
+-            blast.push_back(*itr);
++        bitset<200> x_1_pre;
+         for (int l = 0; l < lr; l++) {
+-            bitset<200> x = blast[l];
+-            //cout << "x: " << x << endl;
++            bitset<200> x_pre = blast[l];
++            //cout << "l: " << l << ", x_pre: " << x_pre.to_string() << endl;
+             // current row
+-            blast[l] |= (x << 1 & max_) | (x >> 1);
+-            // append to previous row
+-            if (l > 0)
+-                blast[l - 1] |= x;
+-            // append from previous row
+-            if (l > 0)
+-                blast[l] |= last[l - 1];
++            blast[l] |= (x_pre << 1 & max_) | (x_pre >> 1);
++            if (l > 0) {
++                // append to previous row
++                blast[l - 1] |= x_pre;
++                // append from previous row
++                blast[l] |= x_1_pre;
++            }
++            x_1_pre = x_pre;
++            //x_1_post = blast[l];
++            blast[l - 1] ^= max_;  // complement blanket (by way of xor!)
+         }
++        blast[lr - 1] ^= max_;  // complement blanket (by way of xor!)
++        /*
+         for (int l = 0; l < lr; l++)
+             blast[l] ^= max_;  // complement blanket (by way of xor!)
+-
+-        last = blast;
++        */
+ 
+         /*
+         cout << "> n = " << n_ << endl;
+-        for (auto itr = last.begin(); itr != last.end(); ++itr) {
++        for (auto itr = blast.begin(); itr != blast.end(); ++itr) {
+             ss.str("");
+             ss << setw(lc) << setfill('0') << bitset<200>(*itr);
+             s = ss.str();
+@@ -128,7 +128,7 @@ vector<string> bomberMan(int n, vector<string> grid) {
+         */
+     }
+ 
+-    return grid2s(last, lc);
++    return grid2s(blast, lc);
+ }
+ 
+ int main()
+-- 
+2.23.0
+
