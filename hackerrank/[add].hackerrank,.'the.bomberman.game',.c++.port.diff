@@ -1,0 +1,152 @@
+From cb8fe5dc9d3b2e4cee8fb9a28d102cafbc68ac6f Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 2 Jun 2019 11:05:15 +0100
+Subject: [add] hackerrank, 'the bomberman game', c++ port
+
+around 600x too slow
+---
+ .../the.bomberman.game.cpp                    | 121 ++++++++++++++++++
+ 1 file changed, 121 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.the.bomberman.game/the.bomberman.game.cpp b/hackerrank/algorithms.-.implementation.-.medium.-.the.bomberman.game/the.bomberman.game.cpp
+index 46bdaf7..c45df9f 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.the.bomberman.game/the.bomberman.game.cpp
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.the.bomberman.game/the.bomberman.game.cpp
+@@ -1,13 +1,134 @@
+ #include <bits/stdc++.h>
++#include <bitset>
++#include <regex>
++#include <cmath>
+ 
+ using namespace std;
+ 
+ vector<string> split_string(string);
+ 
++vector<string> grid2s(vector<bitset<200>> grid, int width) {
++    vector<string> s_grid;
++    stringstream ss;
++    string s;
++    regex rx1("1");
++    regex rx2("0");
++    for (auto itr = grid.begin(); itr != grid.end(); ++itr) {
++        s = itr->to_string();
++        if (s.length() > width)
++            s = s.substr(s.length() - width);
++        s_grid.push_back(regex_replace(regex_replace(s, rx2, "."), rx1, "O"));
++    }
++    //cout << "final grid length: " << s_grid.size() << endl;
++    return s_grid;
++}
++
+ // Complete the bomberMan function below.
+ vector<string> bomberMan(int n, vector<string> grid) {
+ 
++    stringstream ss;
++    string s;
++
++    if (n == 0)
++        return grid;
++
++    int lr = grid.size();
++    int lc = grid[0].length();
++    //cout << "rows: " << lr << ", cols: " << lc << endl;
++
++    vector<bitset<200>> last;
++    last.reserve(lr * sizeof(string));
++    regex rx1("O");
++    regex rx2("\\.");
++    for (auto itr = grid.begin(); itr != grid.end(); ++itr) {
++        bitset<200> bs(regex_replace(regex_replace(*itr, rx2, "0"), rx1, "1"));
++        //cout << "converted: " << *itr << " -> " << bs.to_string() << endl;
++        last.push_back(bs);
++    }
++
++
++    bitset<200> max_(0);
++    for (int l = 0; l < lc; l++)
++        max_.set(l);
++    vector<bitset<200>> blanket;
++    for (int l = 0; l < lr; l++)
++        blanket.push_back(max_);
++    //cout << "blanket: " << max_.to_string() << endl;
++
++    if (n % 2 == 0)
++        return grid2s(blanket, lc);
++
++    // game
++    int n_ = 0;
++    /*
++    cout << "> n = " << n_ << endl;
++    for (auto itr = last.begin(); itr != last.end(); ++itr) {
++        ss.str("");
++        ss << setw(lc) << setfill('0') << bitset<200>(*itr);
++        s = ss.str();
++        if (s.length() > lc)
++            s = s.substr(s.length() - lc);
++        cout << s << endl;
++    }
++    */
++
++    n_++;
++    if (n_ > n)
++        return grid2s(last, lc);
++
++    // do nothing
++    //cout << "> n = " << n_ << endl;
++
++    n_ += 1;
++    while (n_ <= n) {
++
++        // determine blast
++        vector<bitset<200>> blast;
++        blast.reserve(lr * sizeof(string));
++        for (auto itr = last.begin(); itr != last.end(); ++itr)
++            blast.push_back(*itr);
++        for (int l = 0; l < lr; l++) {
++            bitset<200> x = blast[l];
++            //cout << "x: " << x << endl;
++            // current row
++            blast[l] |= (x << 1 & max_) | (x >> 1);
++            // append to previous row
++            if (l > 0)
++                blast[l - 1] |= x;
++            // append from previous row
++            if (l > 0)
++                blast[l] |= last[l - 1];
++        }
++        for (int l = 0; l < lr; l++)
++            blast[l] ^= max_;  // complement blanket (by way of xor!)
++
++        last = blast;
++
++        /*
++        cout << "> n = " << n_ << endl;
++        for (auto itr = last.begin(); itr != last.end(); ++itr) {
++            ss.str("");
++            ss << setw(lc) << setfill('0') << bitset<200>(*itr);
++            s = ss.str();
++            if (s.length() > lc)
++                s = s.substr(s.length() - lc);
++            cout << s << endl;
++        }
++        */
++
++        n_ += 2;
++
++        if (n_ > n)
++            break;
++        /*
++        if (n_ % 1000000 < 2) {
++            cout << ">n = " << n_ << endl;
++            exit(0);
++        }
++        */
++    }
+ 
++    return grid2s(last, lc);
+ }
+ 
+ int main()
+-- 
+2.23.0
+
