@@ -1,0 +1,34 @@
+From 1e16856f965a35d6e7f6f964c19f1fce0dad93a9 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 3 Jun 2019 15:25:41 +0100
+Subject: [add] hackerrank, 'cut the sticks', python solution
+
+---
+ .../cut.the.sticks.py                                    | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easu.-.cut.the.sticks/cut.the.sticks.py b/hackerrank/algorithms.-.implementation.-.easu.-.cut.the.sticks/cut.the.sticks.py
+index 8ea3e34..18cacad 100644
+--- a/hackerrank/algorithms.-.implementation.-.easu.-.cut.the.sticks/cut.the.sticks.py
++++ b/hackerrank/algorithms.-.implementation.-.easu.-.cut.the.sticks/cut.the.sticks.py
+@@ -6,8 +6,17 @@ import random
+ import re
+ import sys
+ 
++
+ # Complete the cutTheSticks function below.
+ def cutTheSticks(arr):
++    res = []
++    while len(arr) > 0:
++        #print(f"[{len(arr)}] {arr}")
++        res.append(len(arr))
++        arr = sorted(arr)
++        arr = [x - arr[0] for x in arr if x > arr[0]]
++    return res
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
