@@ -1,0 +1,65 @@
+From cb00c7bdef538942908026eb11d6e86ff1ad93df Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 3 Jun 2019 18:25:07 +0100
+Subject: [fix] hackerrank, 'the bomberman game', c++ solution
+
+-vector destructor segfault
+-initially:
+
+  'munmap_chunk(): invalid pointer:'
+
+-after removing the reserving of vector memory, this became:
+
+   'mismatching next->prev_size (unsorted)
+
+-valgrind pointed to the merging of loops code, i was corrupting the
+stack writing to '-1' idx
+---
+ .../the.bomberman.game.cpp                         | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.the.bomberman.game/the.bomberman.game.cpp b/hackerrank/algorithms.-.implementation.-.medium.-.the.bomberman.game/the.bomberman.game.cpp
+index bda1881..bb0d36f 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.the.bomberman.game/the.bomberman.game.cpp
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.the.bomberman.game/the.bomberman.game.cpp
+@@ -36,7 +36,7 @@ vector<string> bomberMan(int n, vector<string> grid) {
+     //cout << "rows: " << lr << ", cols: " << lc << endl;
+ 
+     vector<bitset<200>> blast;
+-    blast.reserve(lr);
++    blast.reserve(200);
+     regex rx1("O");
+     regex rx2("\\.");
+     for (auto itr = grid.begin(); itr != grid.end(); ++itr) {
+@@ -45,7 +45,6 @@ vector<string> bomberMan(int n, vector<string> grid) {
+         blast.push_back(bs);
+     }
+ 
+-
+     bitset<200> max_(0);
+     for (int l = 0; l < lc; l++)
+         max_.set(l);
+@@ -93,16 +92,13 @@ vector<string> bomberMan(int n, vector<string> grid) {
+                 blast[l - 1] |= x_pre;
+                 // append from previous row
+                 blast[l] |= x_1_pre;
++                // complement blanket (by way of xor!)
++                blast[l - 1] ^= max_;
+             }
+             x_1_pre = x_pre;
+-            //x_1_post = blast[l];
+-            blast[l - 1] ^= max_;  // complement blanket (by way of xor!)
+         }
+-        blast[lr - 1] ^= max_;  // complement blanket (by way of xor!)
+-        /*
+-        for (int l = 0; l < lr; l++)
+-            blast[l] ^= max_;  // complement blanket (by way of xor!)
+-        */
++        // complement blanket (by way of xor!)
++        blast[lr - 1] ^= max_;  // last item
+ 
+         /*
+         cout << "> n = " << n_ << endl;
+-- 
+2.23.0
+
