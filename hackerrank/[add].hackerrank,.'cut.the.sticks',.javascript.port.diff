@@ -1,0 +1,33 @@
+From d55274c017b73480f48cb3f183168ff3f11042d3 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 4 Jun 2019 10:56:58 +0100
+Subject: [add] hackerrank, 'cut the sticks', javascript port
+
+---
+ .../cut.the.sticks.js                                  | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easu.-.cut.the.sticks/cut.the.sticks.js b/hackerrank/algorithms.-.implementation.-.easu.-.cut.the.sticks/cut.the.sticks.js
+index f3049a5..852caed 100644
+--- a/hackerrank/algorithms.-.implementation.-.easu.-.cut.the.sticks/cut.the.sticks.js
++++ b/hackerrank/algorithms.-.implementation.-.easu.-.cut.the.sticks/cut.the.sticks.js
+@@ -26,8 +26,14 @@ function readLine() {
+ 
+ // Complete the cutTheSticks function below.
+ function cutTheSticks(arr) {
+-
+-
++    arr.sort();
++    var res = [];
++    while (arr.length > 0) {
++        //console.log(`[${arr.length}] ${arr}`);
++        res.push(arr.length);
++        arr = arr.filter(x => x > arr[0]);
++    }
++    return res;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
