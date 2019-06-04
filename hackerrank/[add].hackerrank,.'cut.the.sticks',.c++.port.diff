@@ -1,0 +1,41 @@
+From fe753fa9356d9ea632191c6bc06acc148514d70a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 4 Jun 2019 10:45:12 +0100
+Subject: [add] hackerrank, 'cut the sticks', c++ port
+
+---
+ .../cut.the.sticks.cpp                         | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easu.-.cut.the.sticks/cut.the.sticks.cpp b/hackerrank/algorithms.-.implementation.-.easu.-.cut.the.sticks/cut.the.sticks.cpp
+index 3afcb16..b8d9cd8 100644
+--- a/hackerrank/algorithms.-.implementation.-.easu.-.cut.the.sticks/cut.the.sticks.cpp
++++ b/hackerrank/algorithms.-.implementation.-.easu.-.cut.the.sticks/cut.the.sticks.cpp
+@@ -6,8 +6,22 @@ vector<string> split_string(string);
+ 
+ // Complete the cutTheSticks function below.
+ vector<int> cutTheSticks(vector<int> arr) {
+-
+-
++    sort(arr.begin(), arr.end());
++    vector<int> res;
++    while (arr.size() > 0) {
++        //cout << "[" << arr.size() << "]";
++        //for (auto itr = arr.begin(); itr != arr.end(); ++itr) cout << " " << *itr;
++        //cout << endl;
++        res.push_back(arr.size());
++        int min_ = arr[0];
++        //cout << "removing: " << min_ << "s" << endl;
++        auto arr_ri_end = remove_if(arr.begin(), arr.end(), [min_](int x) { return x <= min_; });
++        vector<int> arr2;
++        for (auto itr = arr.begin(); itr != arr_ri_end; ++itr)
++            arr2.push_back(*itr);
++        arr = arr2;
++    }
++    return res;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
