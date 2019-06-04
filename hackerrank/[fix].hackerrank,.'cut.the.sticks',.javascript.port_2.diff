@@ -1,0 +1,32 @@
+From 039a22587d8c5e126ba2f43bceaf6a64074faba7 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 4 Jun 2019 11:33:04 +0100
+Subject: [fix] hackerrank, 'cut the sticks', javascript port
+
+-convert string to int after the sort which requires explicit
+un-casting
+---
+ .../cut.the.sticks.js                                         | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easu.-.cut.the.sticks/cut.the.sticks.js b/hackerrank/algorithms.-.implementation.-.easu.-.cut.the.sticks/cut.the.sticks.js
+index 7c570d1..96c4156 100644
+--- a/hackerrank/algorithms.-.implementation.-.easu.-.cut.the.sticks/cut.the.sticks.js
++++ b/hackerrank/algorithms.-.implementation.-.easu.-.cut.the.sticks/cut.the.sticks.js
+@@ -26,10 +26,12 @@ function readLine() {
+ 
+ // Complete the cutTheSticks function below.
+ function cutTheSticks(arr) {
++    // sort order is built upon converting the elements into strings
+     arr.sort((x, y) => parseInt(x) > parseInt(y));
++    arr = arr.map((x) => { return parseInt(x); });
+     var res = [];
+     while (arr.length > 0) {
+-        //console.log(`[${arr.length}] ${arr}`);
++        console.log(`[${arr.length}] ${arr}`);
+         res.push(arr.length);
+         arr = arr.filter(x => x > arr[0]);
+     }
+-- 
+2.23.0
+
