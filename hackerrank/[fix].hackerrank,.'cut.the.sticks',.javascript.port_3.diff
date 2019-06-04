@@ -1,0 +1,34 @@
+From 403254132a21411626bd137c6385bea48415ee80 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 4 Jun 2019 11:57:23 +0100
+Subject: [fix] hackerrank, 'cut the sticks', javascript port
+
+-sort requires a stable / balanced comparitor
+---
+ .../cut.the.sticks.js                                     | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easu.-.cut.the.sticks/cut.the.sticks.js b/hackerrank/algorithms.-.implementation.-.easu.-.cut.the.sticks/cut.the.sticks.js
+index 96c4156..90d625b 100644
+--- a/hackerrank/algorithms.-.implementation.-.easu.-.cut.the.sticks/cut.the.sticks.js
++++ b/hackerrank/algorithms.-.implementation.-.easu.-.cut.the.sticks/cut.the.sticks.js
+@@ -26,12 +26,12 @@ function readLine() {
+ 
+ // Complete the cutTheSticks function below.
+ function cutTheSticks(arr) {
+-    // sort order is built upon converting the elements into strings
+-    arr.sort((x, y) => parseInt(x) > parseInt(y));
+-    arr = arr.map((x) => { return parseInt(x); });
++    // sort order is built upon converting the elements into strings and requires a balanced / stable comparitor
++    arr.sort((x, y) => x === y ? 0 : (parseInt(x) > parseInt(y) ? 1 : -1));
++    arr = arr.map(x => parseInt(x));
+     var res = [];
+     while (arr.length > 0) {
+-        console.log(`[${arr.length}] ${arr}`);
++        //console.log(`[${arr.length}] ${arr}`);
+         res.push(arr.length);
+         arr = arr.filter(x => x > arr[0]);
+     }
+-- 
+2.23.0
+
