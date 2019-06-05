@@ -1,0 +1,36 @@
+From b6d9e7da4e49c95a537a429672a4a1fa075138c8 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 5 Jun 2019 23:31:02 +0100
+Subject: [add] hackerrank, 'hackerrank as a string!', c++ solution
+
+---
+ .../hackerrank.in.a.string!.cpp                     | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.hackerrank.in.a.string!/hackerrank.in.a.string!.cpp b/hackerrank/algorithms.-.strings.-.easy.-.hackerrank.in.a.string!/hackerrank.in.a.string!.cpp
+index ecded4d..814cd98 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.hackerrank.in.a.string!/hackerrank.in.a.string!.cpp
++++ b/hackerrank/algorithms.-.strings.-.easy.-.hackerrank.in.a.string!/hackerrank.in.a.string!.cpp
+@@ -4,6 +4,19 @@ using namespace std;
+ 
+ // Complete the hackerrankInString function below.
+ string hackerrankInString(string s) {
++    int l = 0;
++    string t = "hackerrank";
++    string res = "YES";
++    int itr = -1;
++    while (l < t.length()) {
++        itr = s.find(t.substr(l, 1),itr + 1);
++        if (itr == string::npos) {
++            res = "NO";
++            break;
++        }
++        l++;
++    }
++    return res;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
