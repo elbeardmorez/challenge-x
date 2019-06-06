@@ -1,0 +1,39 @@
+From 073abaf631aa09f6eae07d79e857a6ec04a3e581 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 6 Jun 2019 10:10:00 +0100
+Subject: [add] hackerrank, 'hackerrank as a string!', python port
+
+---
+ .../hackerrank.in.a.string!.py                     | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.hackerrank.in.a.string!/hackerrank.in.a.string!.py b/hackerrank/algorithms.-.strings.-.easy.-.hackerrank.in.a.string!/hackerrank.in.a.string!.py
+index d9763dd..67a135b 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.hackerrank.in.a.string!/hackerrank.in.a.string!.py
++++ b/hackerrank/algorithms.-.strings.-.easy.-.hackerrank.in.a.string!/hackerrank.in.a.string!.py
+@@ -6,8 +6,22 @@ import random
+ import re
+ import sys
+ 
++
+ # Complete the hackerrankInString function below.
+ def hackerrankInString(s):
++    l = 0
++    t = "hackerrank"
++    res = "YES"
++    last = -1
++    while l < len(t):
++        try:
++            last = s.index(t[l], last + 1)
++        except Exception:
++            res = "NO"
++            break
++        l += 1
++    return res
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
