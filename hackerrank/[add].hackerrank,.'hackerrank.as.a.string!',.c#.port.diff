@@ -1,0 +1,38 @@
+From f1f992f9b1cc3c285daafece05fa3aa8d2863759 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 6 Jun 2019 09:40:51 +0100
+Subject: [add] hackerrank, 'hackerrank as a string!', c# port
+
+---
+ .../hackerrank.in.a.string!.cs                    | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.hackerrank.in.a.string!/hackerrank.in.a.string!.cs b/hackerrank/algorithms.-.strings.-.easy.-.hackerrank.in.a.string!/hackerrank.in.a.string!.cs
+index 5400737..90096aa 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.hackerrank.in.a.string!/hackerrank.in.a.string!.cs
++++ b/hackerrank/algorithms.-.strings.-.easy.-.hackerrank.in.a.string!/hackerrank.in.a.string!.cs
+@@ -16,8 +16,19 @@ class Solution {
+ 
+     // Complete the hackerrankInString function below.
+     static string hackerrankInString(string s) {
+-
+-
++        var l = 0;
++        var t = "hackerrank";
++        var res = "YES";
++        var last = -1;
++        while (l < t.Length) {
++            last = s.IndexOf(t.Substring(l, 1), last + 1);
++            if (last == -1) {
++                res = "NO";
++                break;
++            }
++            l++;
++        }
++        return res;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
