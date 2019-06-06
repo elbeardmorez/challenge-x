@@ -1,0 +1,38 @@
+From 277e12654d4fe71ee2161ebc03e0da317b5fcb91 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 6 Jun 2019 10:12:52 +0100
+Subject: [add] hackerrank, 'hackerrank as a string!', javascript port
+
+---
+ .../hackerrank.in.a.string!.js                    | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.hackerrank.in.a.string!/hackerrank.in.a.string!.js b/hackerrank/algorithms.-.strings.-.easy.-.hackerrank.in.a.string!/hackerrank.in.a.string!.js
+index 7ddefa5..9f3a45a 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.hackerrank.in.a.string!/hackerrank.in.a.string!.js
++++ b/hackerrank/algorithms.-.strings.-.easy.-.hackerrank.in.a.string!/hackerrank.in.a.string!.js
+@@ -26,8 +26,19 @@ function readLine() {
+ 
+ // Complete the hackerrankInString function below.
+ function hackerrankInString(s) {
+-
+-
++    var l = 0;
++    var t = "hackerrank";
++    var res = "YES";
++    var last = -1;
++    while (l < t.length) {
++        last = s.indexOf(t.substr(l, 1), last + 1);
++        if (last == -1) {
++            res = "NO";
++            break;
++        }
++        l++;
++    }
++    return res;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
