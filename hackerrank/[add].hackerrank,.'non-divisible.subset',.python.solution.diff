@@ -1,0 +1,50 @@
+From 4b8cfbeecdf63b0400c50702079ea6c4bd355f1e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 7 Jun 2019 08:42:32 +0100
+Subject: [add] hackerrank, 'non-divisible subset', python solution
+
+---
+ .../non.divisible.subset.py                   | 21 ++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.non.divisible.subset/non.divisible.subset.py b/hackerrank/algorithms.-.implementation.-.medium.-.non.divisible.subset/non.divisible.subset.py
+index 1b21e6d..d8d6fee 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.non.divisible.subset/non.divisible.subset.py
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.non.divisible.subset/non.divisible.subset.py
+@@ -1,13 +1,32 @@
+ #!/bin/python3
+-
+ import math
+ import os
+ import random
+ import re
+ import sys
++from itertools import combinations
++
+ 
+ # Complete the nonDivisibleSubset function below.
+ def nonDivisibleSubset(k, S):
++    def valid(ss, k):
++        for l in range(len(ss)):
++            for l2 in range(l + 1, len(ss)):
++                if (ss[l] + ss[l2]) % k == 0:
++                    return False
++        return True
++
++    max_ = 1
++    while True:
++        max_last = max_
++        for c in combinations(S, max_ + 1):
++            if valid(c, k):
++                max_ += 1
++                break
++        if max_ == max_last:
++            break  # no progression
++    return max_
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
