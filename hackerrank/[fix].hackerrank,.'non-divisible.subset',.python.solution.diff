@@ -1,0 +1,82 @@
+From 46b817bac00f6a4212790fcbe89a1be9a96d68e6 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 8 Jun 2019 09:37:58 +0100
+Subject: [fix] hackerrank, 'non-divisible subset', python solution
+
+-redux, incomplete algorithm
+---
+ .../non.divisible.subset.py                   | 51 +++++++++++++++----
+ 1 file changed, 42 insertions(+), 9 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.non.divisible.subset/non.divisible.subset.py b/hackerrank/algorithms.-.implementation.-.medium.-.non.divisible.subset/non.divisible.subset.py
+index d8d6fee..9a74bb0 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.non.divisible.subset/non.divisible.subset.py
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.non.divisible.subset/non.divisible.subset.py
+@@ -5,6 +5,7 @@ import random
+ import re
+ import sys
+ from itertools import combinations
++from collections import deque
+ 
+ 
+ # Complete the nonDivisibleSubset function below.
+@@ -16,15 +17,47 @@ def nonDivisibleSubset(k, S):
+                     return False
+         return True
+ 
+-    max_ = 1
+-    while True:
+-        max_last = max_
+-        for c in combinations(S, max_ + 1):
+-            if valid(c, k):
+-                max_ += 1
+-                break
+-        if max_ == max_last:
+-            break  # no progression
++    S = sorted(S)
++    l_s = len(S)
++    invalid_pairs = {}
++    q = deque()
++    for l in range(l_s):
++        if S[l] not in invalid_pairs:
++            invalid_pairs[S[l]] = []
++        for l2 in range(l + 1, l_s):
++            if (S[l] + S[l2]) % k == 0:
++                invalid_pairs[S[l]].append(S[l2])
++            else:
++                q.append((l2, [S[l], S[l2]]))
++    if len(q) == 0:
++        return 1
++    max_ = 2
++    #print(f"{len(q)} seeds..")
++    while len(q) > 0:
++        idx_last, ss = q.popleft()
++        l_ss = len(ss)
++        if l_s - idx_last <= max_ - l_ss:
++            #print(f"no space to improve from idx: {idx_last}")
++            pass
++        else:
++            for l in range(idx_last + 1, l_s):
++                invalid = False
++                if l_s - l <= max_ - l_ss:
++                    #print(f"no point: l_s|{l_s} - l|{l} <= max_|{max_} - l_ss|{l_ss}")
++                    break
++                for ss_i in ss:
++                    if S[l] in invalid_pairs[ss_i]:
++                        #print(f"k: {k}, invalid pair hit: [{ss_i}, {S[l]}]")
++                        invalid = True
++                        break
++                if not invalid:
++                    #print(f"adding (yet another) valid seed len: {l_ss + 1}")
++                    q.appendleft((l, ss + [S[l]]))
++                    if l_ss + 1 > max_:
++                        print(f"q len: {len(q)}, max: {max_}")
++                        max_ = l_ss + 1
++                        break
++    #print(f"q len: {len(q)}, max: {max_}")
+     return max_
+ 
+ 
+-- 
+2.23.0
+
