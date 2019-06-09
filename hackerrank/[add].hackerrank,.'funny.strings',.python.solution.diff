@@ -1,0 +1,33 @@
+From 58cd3eb431d1853ec17730d4a5aa7c3f242eeefa Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 9 Jun 2019 23:48:25 +0100
+Subject: [add] hackerrank, 'funny strings', python solution
+
+---
+ .../funny.strings.py                                      | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.funny.strings/funny.strings.py b/hackerrank/algorithms.-.strings.-.easy.-.funny.strings/funny.strings.py
+index 22e16b1..536e904 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.funny.strings/funny.strings.py
++++ b/hackerrank/algorithms.-.strings.-.easy.-.funny.strings/funny.strings.py
+@@ -6,8 +6,16 @@ import random
+ import re
+ import sys
+ 
++
+ # Complete the funnyString function below.
+ def funnyString(s):
++    ac_s = [ord(x) for x in s]
++    diffs_s = [abs(ac_s[l] - ac_s[l + 1]) for l in range(len(ac_s) - 1)]
++    if diffs_s == list(reversed(diffs_s)):
++        return "Funny"
++    else:
++        return "Not Funny"
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
