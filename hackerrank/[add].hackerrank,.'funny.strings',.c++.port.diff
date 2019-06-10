@@ -1,0 +1,41 @@
+From a8324852d487949233dfb92ff1c1ba31a66fad3c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 10 Jun 2019 09:41:24 +0100
+Subject: [add] hackerrank, 'funny strings', c++ port
+
+---
+ .../funny.strings.cpp                          | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.funny.strings/funny.strings.cpp b/hackerrank/algorithms.-.strings.-.easy.-.funny.strings/funny.strings.cpp
+index b871405..da4ad0f 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.funny.strings/funny.strings.cpp
++++ b/hackerrank/algorithms.-.strings.-.easy.-.funny.strings/funny.strings.cpp
+@@ -4,7 +4,23 @@ using namespace std;
+ 
+ // Complete the funnyString function below.
+ string funnyString(string s) {
+-
++    vector<int> diffs;
++    int ac;
++    int ac_last = (int)(s.substr(0, 1).c_str()[0]);
++    for (int l = 1; l < s.length(); l++) {
++        ac = (int)(s.substr(l, 1).c_str()[0]);
++        diffs.push_back(abs(ac - ac_last));
++        ac_last = ac;
++    }
++    bool valid = true;
++    int ldiffs = diffs.size();
++    for (int l = 0; l < ldiffs; l++) {
++        if (diffs[l] != diffs[ldiffs - l - 1]) {
++            valid = false;
++            break;
++        }
++    }
++    return valid ? "Funny" : "Not Funny";
+ }
+ 
+ int main()
+-- 
+2.23.0
+
