@@ -1,0 +1,37 @@
+From 55f5657397e760edea4f7892c863e5e6b18d3f6e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 10 Jun 2019 11:08:53 +0100
+Subject: [add] hackerrank, 'funny strings', javascript port
+
+---
+ .../funny.strings.js                               | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.funny.strings/funny.strings.js b/hackerrank/algorithms.-.strings.-.easy.-.funny.strings/funny.strings.js
+index 2c5ef88..7084cb2 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.funny.strings/funny.strings.js
++++ b/hackerrank/algorithms.-.strings.-.easy.-.funny.strings/funny.strings.js
+@@ -26,8 +26,18 @@ function readLine() {
+ 
+ // Complete the funnyString function below.
+ function funnyString(s) {
+-
+-
++    let ac_s = s.split("").map(x => x.codePointAt(0));
++    //console.log("%j", ac_s);
++    let diffs = [];
++    for (let l = 0; l < s.length - 1; l++)
++        diffs.push(Math.abs(ac_s[l] - ac_s[l + 1]));
++    //console.log("%j", diffs);
++    let l_diffs = diffs.length;
++    for (let l = 0; l < l_diffs; l++) {
++        if (diffs[l] !== diffs[l_diffs - l - 1])
++            return "Not Funny";
++    }
++    return "Funny";
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
