@@ -1,0 +1,84 @@
+From 0e91ca1651ace9e53a948966e54c6855e88a6776 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 11 Jun 2019 09:46:42 +0100
+Subject: [fix] hackerrank, 'separate the numbers', javascript solution
+
+-implement custom string addition as MAX_INTEGER 2^53+1 hit
+---
+ .../separate.the.numbers.js                   | 47 ++++++++++++++++++-
+ 1 file changed, 45 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.separate.the.numbers/separate.the.numbers.js b/hackerrank/algorithms.-.strings.-.easy.-.separate.the.numbers/separate.the.numbers.js
+index c84417c..1f27aa5 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.separate.the.numbers/separate.the.numbers.js
++++ b/hackerrank/algorithms.-.strings.-.easy.-.separate.the.numbers/separate.the.numbers.js
+@@ -25,6 +25,46 @@ function readLine() {
+ // Complete the separateNumbers function below.
+ function separateNumbers(s) {
+ 
++    // add numbers as strings
++    var add_ = (s1, s2) => {
++        let res = "";
++        let l_s1 = s1.length;
++        let l_s2 = s2.length;
++        if (l_s2 > l_s1) {
++            let s1_ = s2;
++            s2 = s1;
++            s1 = s1_;
++            let l_s1_ = l_s2;
++            l_s2 = l_s1;
++            l_s1 = l_s1_;
++        }
++        let carry = 0;
++        let idx = 0;
++        let i1 = 0;
++        let i2 = 0;
++        let sum = "";
++        //console.log(`adding s1: ${s1}, s2: ${s2}, l_s1: ${l_s1}, l_s2: ${l_s2}`);
++        while (idx < l_s1) {
++            i1 = parseInt(s1.substr(l_s1 - idx - 1, 1));
++            i2 = 0;
++            if (idx < l_s2)
++                i2 = parseInt(s2.substr(l_s2 - idx - 1, 1));
++            //console.log(`adding i1: ${i1}, i2: ${i2}`);
++            sum = (i1 + i2 + carry).toString();
++            if (sum.length === 1) {
++                carry = 0;
++                res = sum + res;
++            } else {
++                res = sum.substr(sum.length - 1) + res;
++                carry = parseInt(sum.substr(0, sum.length -1));
++            }
++            idx++;
++        }
++        if (carry !== 0)
++            res = carry.toString() + res;
++        return res;
++    }
++
+     let state = 0;
+     let min_ = "";
+     let chrs = s.split('');
+@@ -57,14 +97,17 @@ function separateNumbers(s) {
+                         state = -1;
+                     break;
+                 }
+-                ss = (i_ss + 1).toString();
++                //console.log(`pre ss: ${ss}`);
++                //ss = (i_ss + 1).toString(); 2^53 + 1 limit hit!
++                ss = add_(ss, "1");
++                //console.log(`post ss: ${ss}`);
+                 if (l + ss.length > l_s) {
+                     //console.log(`${l + ss.length} > ${l_s}`);
+                     break;  // no further numbers possible
+                 }
+                 // next is possible
+                 if (s.substr(l, ss.length) !== ss) {
+-                    //console.log(`${s.substr(l, ss.length)} !== ${ss}`);
++                    //console.log(`l: ${l}, i_ss: ${i_ss}, ss: ${ss}, ${s.substr(l, ss.length)} !== ${ss}`);
+                     break;  // invalid, non-contiguous
+                 }
+                 sss.push(ss);
+-- 
+2.23.0
+
