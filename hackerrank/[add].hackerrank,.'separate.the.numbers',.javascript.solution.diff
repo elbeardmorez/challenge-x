@@ -1,0 +1,76 @@
+From a56a7028317ab70def64717c0251b6f1ac97057d Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 11 Jun 2019 08:34:44 +0100
+Subject: [add] hackerrank, 'separate the numbers', javascript solution
+
+---
+ .../separate.the.numbers.js                   | 52 +++++++++++++++++++
+ 1 file changed, 52 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.separate.the.numbers/separate.the.numbers.js b/hackerrank/algorithms.-.strings.-.easy.-.separate.the.numbers/separate.the.numbers.js
+index c1b78a2..c84417c 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.separate.the.numbers/separate.the.numbers.js
++++ b/hackerrank/algorithms.-.strings.-.easy.-.separate.the.numbers/separate.the.numbers.js
+@@ -25,7 +25,59 @@ function readLine() {
+ // Complete the separateNumbers function below.
+ function separateNumbers(s) {
+ 
++    let state = 0;
++    let min_ = "";
++    let chrs = s.split('');
++    let l_s = s.length;
++    if (parseInt(chrs[0]) > 0 &&
++        l_s > 1) {
++        let l_ss1 = 0;
++        let sss = [];
++        let ss = "";
++        let i_ss = -1;
++        while (true) {
++            l_ss1++; // length of initial number
++            if (l_ss1 > l_s) {
++                // no further attempts possible
++                state = -1;
++                break;
++            }
++            sss = [];
++            ss = s.substr(0, l_ss1);
++            sss.push(ss);
++            //console.log("l_ss1: %d, considering: %j", l_ss1, sss);
++            i_ss = parseInt(ss);
++            let l = ss.length;
++            while (true) {
++                if (l === l_s) {
++                    if (sss.length > 1) {
++                        state = 1;
++                        min_ = sss[0];
++                    } else
++                        state = -1;
++                    break;
++                }
++                ss = (i_ss + 1).toString();
++                if (l + ss.length > l_s) {
++                    //console.log(`${l + ss.length} > ${l_s}`);
++                    break;  // no further numbers possible
++                }
++                // next is possible
++                if (s.substr(l, ss.length) !== ss) {
++                    //console.log(`${s.substr(l, ss.length)} !== ${ss}`);
++                    break;  // invalid, non-contiguous
++                }
++                sss.push(ss);
++                l += ss.length;
++                //console.log("considering: %j", sss);
++                i_ss = parseInt(ss);
++            }
++            if (state !== 0)
++                break;
++        }
++    }
+ 
++    console.log(`${state === 1 ? "YES " + min_ : "NO"}`);
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
