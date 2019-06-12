@@ -1,0 +1,119 @@
+From 4f0045768cab97d28fca4b8792ed01ab17628981 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 12 Jun 2019 12:30:03 +0100
+Subject: [add] hackerrank, 'separate the numbers', c++ port
+
+---
+ .../separate.the.numbers.cpp                  | 93 ++++++++++++++++++-
+ 1 file changed, 92 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.separate.the.numbers/separate.the.numbers.cpp b/hackerrank/algorithms.-.strings.-.easy.-.separate.the.numbers/separate.the.numbers.cpp
+index cdd568d..ed3ddf4 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.separate.the.numbers/separate.the.numbers.cpp
++++ b/hackerrank/algorithms.-.strings.-.easy.-.separate.the.numbers/separate.the.numbers.cpp
+@@ -2,10 +2,101 @@
+ 
+ using namespace std;
+ 
++string add_(string s1, string s2) {
++    string res;
++    int l_s1 = s1.length();
++    int l_s2 = s2.length();
++    if (l_s2 > l_s1) {
++        string s1_ = s2;
++        s2 = s1;
++        s1 = s1_;
++        int l_s1_ = l_s2;
++        l_s2 = l_s1;
++        l_s1 = l_s1_;
++    }
++    int carry = 0;
++    int idx = 0;
++    int i1 = 0;
++    int i2 = 0;
++    string sum;
++    //cout << "adding s1: " << s1 << ", s2: " << s2 << ", l_s1: " << l_s1 << ", l_s2: " << l_s2 << endl;
++    while (idx < l_s1) {
++        i1 = atoi(s1.substr(l_s1 - idx - 1, 1).c_str());
++        i2 = 0;
++        if (idx < l_s2)
++            i2 = atoi(s2.substr(l_s2 - idx - 1, 1).c_str());
++        //cout << "adding i1: " << i1 << ", i2: " << i2 << endl;
++        sum = to_string(i1 + i2 + carry);
++        if (sum.length() == 1) {
++            carry = 0;
++            res = sum + res;
++        } else {
++            res = sum.substr(sum.length() - 1) + res;
++            carry = atoi(sum.substr(0, sum.length() -1).c_str());
++        }
++        idx++;
++    }
++    if (carry != 0)
++        res = to_string(carry) + res;
++    return res;
++}
++
++
+ // Complete the separateNumbers function below.
+ void separateNumbers(string s) {
++    // add numbers as strings
++    int state = 0;
++    string min_;
++    int l_s = s.length();
++    if (s.substr(0, 1) != "0" && l_s > 1) {
++        int l_ss1 = 0;
++        vector<string> sss;
++        string ss;
++        while (true) {
++            l_ss1++; // length of initial number
++            if (l_ss1 > l_s) {
++                // no further attempts possible
++                state = -1;
++                break;
++            }
++            sss.clear();
++            ss = s.substr(0, l_ss1);
++            sss.push_back(ss);
++            //cout << "l_ss1: " << l_ss1 << ", ";
++            //cout << "considering: "; for (auto itr = sss.begin(); itr != sss.end(); ++itr) cout << *itr;
++            //cout << endl;
++            int l = ss.length();
++            while (true) {
++                if (l == l_s) {
++                    if (sss.size() > 1) {
++                        state = 1;
++                        min_ = sss[0];
++                    } else
++                        state = -1;
++                    break;
++                }
++                //cout << "pre ss: " << ss << endl;
++                ss = add_(ss, "1");
++                //cout << "post ss: " << ss << endl;
++                if (l + ss.length() > l_s) {
++                    //cout << l + ss.length() << " > " << l_s << endl;
++                    break;  // no further numbers possible
++                }
++                // next is possible
++                if (s.substr(l, ss.length()) != ss) {
++                    //cout << "l: " << l << ", ss: " << ss << ", " << s.substr(l, ss.length()) << " != " << ss << endl;
++                    break;  // invalid, non-contiguous
++                }
++                sss.push_back(ss);
++                l += ss.length();
++                //cout << "considering: "; for (auto itr = sss.begin(); itr != sss.end(); ++itr) cout << *itr; cout << endl;
++            }
++            if (state != 0)
++                break;
++        }
++    }
+ 
+-
++    cout << (state == 1 ? "YES " + min_ : "NO") << endl;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
