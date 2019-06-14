@@ -1,0 +1,67 @@
+From 863778dd975c9964ac8bae4864a12ed88788a402 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 14 Jun 2019 07:55:17 +0100
+Subject: [add] hackerrank, 'separate the numbers', python port
+
+---
+ .../separate.the.numbers.py                   | 43 +++++++++++++++++++
+ 1 file changed, 43 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.separate.the.numbers/separate.the.numbers.py b/hackerrank/algorithms.-.strings.-.easy.-.separate.the.numbers/separate.the.numbers.py
+index a9e4c9b..f95befd 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.separate.the.numbers/separate.the.numbers.py
++++ b/hackerrank/algorithms.-.strings.-.easy.-.separate.the.numbers/separate.the.numbers.py
+@@ -9,7 +9,50 @@ import sys
+ 
+ # Complete the separateNumbers function below.
+ def separateNumbers(s):
++    state = 0
++    min_ = ""
++    l_s = len(s)
++    if s[0:1] != "0" and l_s > 1:
++        l_ss1 = 0
++        sss = []
++        ss = ""
++        while True:
++            l_ss1 += 1  # length of initial number
++            if l_ss1 > l_s:
++                # no further attempts possible
++                state = -1
++                break
++            sss = []
++            ss = s[0:l_ss1]
++            sss.append(ss)
++            #print(f"l_ss1: {l_ss1}, considering: {sss}")
++            l = len(ss)
++            while True:
++                if l == l_s:
++                    if len(sss) > 1:
++                        state = 1
++                        min_ = sss[0]
++                    else:
++                        state = -1
++                    break
++                #print(f"pre ss: {ss}")
++                ss = str(int(ss) + 1)
++                #print(f"post ss: {ss}")
++                if l + len(ss) > l_s:
++                    #print(f"{l + len(ss)} > {l_s}")
++                    break  # no further numbers possible
++                # next is possible
++                if s[l:l + len(ss)] != ss:
++                    #print(f"l: {l}, ss: {ss}, {s[l:l + len(ss)]} != {ss}")
++                    break  # invalid, non-contiguous
++                sss.append(ss)
++                l += len(ss)
++                #print(f"considering: {sss}")
++            if state != 0:
++                break
+ 
++    print(f"{'YES ' + str(min_) if state == 1 else 'NO'}")
++ 
+ 
+ if __name__ == '__main__':
+     q = int(input())
+-- 
+2.23.0
+
