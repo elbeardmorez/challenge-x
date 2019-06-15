@@ -1,0 +1,140 @@
+From 2aea3dcdc52319b2d01d50441e84253511bb2ce7 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 15 Jun 2019 12:22:28 +0100
+Subject: [fix] hackerrank, 'breadth first search: shortest reach', javascript
+ solution
+
+-speed-up, recurse with all remaining searches to pick off at every
+iteration
+---
+ .../breadth.first.search:.shortest.reach.js   | 99 +++++++++++++------
+ 1 file changed, 69 insertions(+), 30 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.graph.theory.-.medium.-.breadth.first.search:.shortest.reach/breadth.first.search:.shortest.reach.js b/hackerrank/algorithms.-.graph.theory.-.medium.-.breadth.first.search:.shortest.reach/breadth.first.search:.shortest.reach.js
+index cf96616..36de434 100644
+--- a/hackerrank/algorithms.-.graph.theory.-.medium.-.breadth.first.search:.shortest.reach/breadth.first.search:.shortest.reach.js
++++ b/hackerrank/algorithms.-.graph.theory.-.medium.-.breadth.first.search:.shortest.reach/breadth.first.search:.shortest.reach.js
+@@ -31,28 +31,34 @@ function bfs(n, m, edges, s) {
+             this.number = number;
+             this.nodes = [];
+         }
+-        bfs (path, target, max_depth) {
++        bfs (path, pool, search, res, max_depth) {
++            //console.log(`considering path ${path} -> ${this.number}?`);
+             if (path.indexOf(this.number) > -1)
+-                return -1;
+-            else if (this.number === target)
+-                return 0;
+-            else if (path.length === max_depth)
+-                return -1;
+-            else {
+-                let res = -1;
+-                //console.log(`considering path ${path} -> ${this.number} -> ? -> ${target}`);
++                return;
++            else if (search.has(this.number)) {
++                search.delete(this.number);
++                //console.log(`setting res: ${this.number} = ${6 * path.length}, search length: ${search.size}; res length: ${res.size}`);
++                res.set(this.number, 6 * path.length);
++                let path2 = Array.from(path);
++                path2.push(this.number);
++                pool.push(path2);
++                //console.log(`pushed path: ${path2}, pool length: ${pool.length}`);
++            } else if (path.length === max_depth) {
++                let path2 = Array.from(path);
++                path2.push(this.number);
++                pool.push(path2);
++                //console.log(`pushed path: ${path2}, pool length: ${pool.length}`);
++            } else {
+                 path.push(this.number);
+-                this.nodes.forEach(n => {
+-                    let res2 = n.bfs(path, target, max_depth);
+-                    if (res2 > -1) {
+-                        if (res === -1)
+-                            res = res2 + 6;
+-                        else
+-                            res = Math.min(res2 + 6, res);
++                for (let l = 0; l < this.nodes.length; l++) {
++                    let n = this.nodes[l];
++                    if (path.indexOf(n.number) === -1) {
++                        n.bfs(path, pool, search, res, max_depth);
++                        if (search.size === 0)
++                            break;
+                     }
+-                });
++                }
+                 path.pop();
+-                return res
+             }
+         }
+     };
+@@ -78,22 +84,55 @@ function bfs(n, m, edges, s) {
+             n_a.nodes.push(n_b);
+         }
+     });
+-    let res = [];
++
+     //console.log("%j", Array.from(map_.keys()));
+     //console.log(`s '${s}' is a '${typeof(s)}'`);
++    //console.log(`nodes: ${n}`);
++    let map_search = new Map();
+     for (let l = 1; l <= n; l++) {
+-        if (l !== s) {
+-            if (map_.has(l)) {
+-                let res2 = -1;
+-                for (let max_depth = 1; max_depth < map_.size; max_depth++) {
+-                    res2 = map_.get(l).bfs([], s, max_depth);
+-                    if (res2 !== -1)
+-                        break;
+-                }
+-                res.push(res2);
+-            } else
+-                res.push(-1);
++        if (l !== s && map_.has(l))
++            map_search.set(l, -1);
++    }
++
++    // search
++    let pool = []
++    let max_depth = 1;
++    let map_res = new Map();
++
++    if (!map_.has(s)) {
++        let res = new Array(n - 1).fill(-1);
++        return res;
++    }
++
++    while(map_search.size > 0 && max_depth < map_.size) {
++        //console.log(`pre pool length: ${pool.length}`);
++        while (pool.length > 0 && pool[0].length < max_depth - 1)
++            pool.shift();
++        //console.log(`post pool length: ${pool.length}`);
++        if (pool.length === 0)
++            pool.push([s]);
++        let last = pool.length;
++        //console.log(`searching at depth: ${max_depth}, pool length: ${pool.length}`);
++        for (let l2 = 0; l2 < last; l2++) {
++            let path = pool[l2];
++            let n_start = map_.get(path.pop());
++            n_start.bfs(path, pool, map_search, map_res, max_depth);
++            //console.log(`considering path ${l2}: ${pool[l2]}`);
++            if (map_search.size === 0)
++                break;
+         }
++        max_depth++;
++    }
++
++    // final results array
++    let res = [];
++    for (let l = 1; l <= n; l++) {
++        if (l === s)
++            continue;
++        if (map_res.has(l))
++            res.push(map_res.get(l));
++        else
++            res.push(-1);
+     }
+     return res;
+ }
+-- 
+2.23.0
+
