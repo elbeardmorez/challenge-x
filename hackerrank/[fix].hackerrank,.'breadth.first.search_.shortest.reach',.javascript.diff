@@ -1,0 +1,94 @@
+From 4e93a07bf73f6eab9efdfa1007237f9821d0699e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 15 Jun 2019 09:54:54 +0100
+Subject: [fix] hackerrank, 'breadth first search: shortest reach', javascript
+ solution
+
+-bidirectional edges
+-recurse with full path to short-circuit on loops
+-use max-depth to force breadth searching
+---
+ .../breadth.first.search:.shortest.reach.js   | 41 ++++++++++++-------
+ 1 file changed, 26 insertions(+), 15 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.graph.theory.-.medium.-.breadth.first.search:.shortest.reach/breadth.first.search:.shortest.reach.js b/hackerrank/algorithms.-.graph.theory.-.medium.-.breadth.first.search:.shortest.reach/breadth.first.search:.shortest.reach.js
+index 8845bd5..cf96616 100644
+--- a/hackerrank/algorithms.-.graph.theory.-.medium.-.breadth.first.search:.shortest.reach/breadth.first.search:.shortest.reach.js
++++ b/hackerrank/algorithms.-.graph.theory.-.medium.-.breadth.first.search:.shortest.reach/breadth.first.search:.shortest.reach.js
+@@ -31,15 +31,19 @@ function bfs(n, m, edges, s) {
+             this.number = number;
+             this.nodes = [];
+         }
+-        bfs (target) {
+-            let res = -1;
+-            if (this.number === target)
+-                res = 0;
++        bfs (path, target, max_depth) {
++            if (path.indexOf(this.number) > -1)
++                return -1;
++            else if (this.number === target)
++                return 0;
++            else if (path.length === max_depth)
++                return -1;
+             else {
+-                let res_
++                let res = -1;
++                //console.log(`considering path ${path} -> ${this.number} -> ? -> ${target}`);
++                path.push(this.number);
+                 this.nodes.forEach(n => {
+-                    let res2 = n.bfs(target);
+-                    console.log(`considering path ${this.number} -> ${target}, res: ${res2}}`);
++                    let res2 = n.bfs(path, target, max_depth);
+                     if (res2 > -1) {
+                         if (res === -1)
+                             res = res2 + 6;
+@@ -47,13 +51,14 @@ function bfs(n, m, edges, s) {
+                             res = Math.min(res2 + 6, res);
+                     }
+                 });
++                path.pop();
++                return res
+             }
+-            return res;
+         }
+     };
+     let map_ = new Map();
+     edges.forEach(([a, b]) => {
+-        console.log(`considering edge ${a} -> ${b}`);
++        //console.log(`considering edge ${a} -> ${b}`);
+         let n_a = undefined;
+         if (map_.has(a))
+             n_a = map_.get(a);
+@@ -70,17 +75,23 @@ function bfs(n, m, edges, s) {
+                 map_.set(b, n_b);
+             }
+             n_b.nodes.push(n_a);
++            n_a.nodes.push(n_b);
+         }
+     });
+     let res = [];
+-    console.log("%j", Array.from(map_.keys()));
+-    console.log(`s is a '${typeof(s)}'`);
++    //console.log("%j", Array.from(map_.keys()));
++    //console.log(`s '${s}' is a '${typeof(s)}'`);
+     for (let l = 1; l <= n; l++) {
+         if (l !== s) {
+-            console.log(`getting l: ${l}`);
+-            if (map_.has(l))
+-                res.push(map_.get(l).bfs(s));
+-            else
++            if (map_.has(l)) {
++                let res2 = -1;
++                for (let max_depth = 1; max_depth < map_.size; max_depth++) {
++                    res2 = map_.get(l).bfs([], s, max_depth);
++                    if (res2 !== -1)
++                        break;
++                }
++                res.push(res2);
++            } else
+                 res.push(-1);
+         }
+     }
+-- 
+2.23.0
+
