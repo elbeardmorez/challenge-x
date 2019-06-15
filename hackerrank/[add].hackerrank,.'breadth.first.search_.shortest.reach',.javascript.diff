@@ -1,0 +1,85 @@
+From 073d5c45d82ed2286ffb951d1f20242e1dc01d4f Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 15 Jun 2019 08:26:09 +0100
+Subject: [add] hackerrank, 'breadth first search: shortest reach', javascript
+ solution
+
+---
+ .../breadth.first.search:.shortest.reach.js   | 61 ++++++++++++++++++-
+ 1 file changed, 59 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.graph.theory.-.medium.-.breadth.first.search:.shortest.reach/breadth.first.search:.shortest.reach.js b/hackerrank/algorithms.-.graph.theory.-.medium.-.breadth.first.search:.shortest.reach/breadth.first.search:.shortest.reach.js
+index 373dcf3..8845bd5 100644
+--- a/hackerrank/algorithms.-.graph.theory.-.medium.-.breadth.first.search:.shortest.reach/breadth.first.search:.shortest.reach.js
++++ b/hackerrank/algorithms.-.graph.theory.-.medium.-.breadth.first.search:.shortest.reach/breadth.first.search:.shortest.reach.js
+@@ -26,8 +26,65 @@ function readLine() {
+ 
+ // Complete the bfs function below.
+ function bfs(n, m, edges, s) {
+-
+-
++    let node = class {
++        constructor (number) {
++            this.number = number;
++            this.nodes = [];
++        }
++        bfs (target) {
++            let res = -1;
++            if (this.number === target)
++                res = 0;
++            else {
++                let res_
++                this.nodes.forEach(n => {
++                    let res2 = n.bfs(target);
++                    console.log(`considering path ${this.number} -> ${target}, res: ${res2}}`);
++                    if (res2 > -1) {
++                        if (res === -1)
++                            res = res2 + 6;
++                        else
++                            res = Math.min(res2 + 6, res);
++                    }
++                });
++            }
++            return res;
++        }
++    };
++    let map_ = new Map();
++    edges.forEach(([a, b]) => {
++        console.log(`considering edge ${a} -> ${b}`);
++        let n_a = undefined;
++        if (map_.has(a))
++            n_a = map_.get(a);
++        else {
++            n_a = new node(a);
++            map_.set(a, n_a);
++        }
++        if (b) {
++            let n_b = undefined;
++            if (map_.has(b))
++                n_b = map_.get(b);
++            else {
++                n_b = new node(b);
++                map_.set(b, n_b);
++            }
++            n_b.nodes.push(n_a);
++        }
++    });
++    let res = [];
++    console.log("%j", Array.from(map_.keys()));
++    console.log(`s is a '${typeof(s)}'`);
++    for (let l = 1; l <= n; l++) {
++        if (l !== s) {
++            console.log(`getting l: ${l}`);
++            if (map_.has(l))
++                res.push(map_.get(l).bfs(s));
++            else
++                res.push(-1);
++        }
++    }
++    return res;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
