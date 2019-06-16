@@ -1,0 +1,147 @@
+From 49bde2bb6b19ab94ef9081517d8768e77a874253 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 16 Jun 2019 19:07:14 +0100
+Subject: [add] hackerrank, 'breadth first search: shortest reach', c# port
+
+---
+ .../breadth.first.search:.shortest.reach.cs   | 119 +++++++++++++++++-
+ 1 file changed, 118 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.graph.theory.-.medium.-.breadth.first.search:.shortest.reach/breadth.first.search:.shortest.reach.cs b/hackerrank/algorithms.-.graph.theory.-.medium.-.breadth.first.search:.shortest.reach/breadth.first.search:.shortest.reach.cs
+index e8bd913..1740ca5 100644
+--- a/hackerrank/algorithms.-.graph.theory.-.medium.-.breadth.first.search:.shortest.reach/breadth.first.search:.shortest.reach.cs
++++ b/hackerrank/algorithms.-.graph.theory.-.medium.-.breadth.first.search:.shortest.reach/breadth.first.search:.shortest.reach.cs
+@@ -12,12 +12,129 @@ using System.Text.RegularExpressions;
+ using System.Text;
+ using System;
+ 
++using static System.Console;
++
++class node {
++    private int number;
++    public List<node> nodes;
++
++    public node (int number) {
++        this.number = number;
++        this.nodes = new List<node>();
++    }
++
++    public void bfs (Stack<int> path, List<Stack<int>> pool, Dictionary<int, int> search, Dictionary<int, int> res, int max_depth) {
++        //WriteLine($"considering path {String.Join(" ", path.Select(x => x.ToString()))} -> {this.number} [nodes: {this.nodes.Count}]?");
++        if (path.Contains(this.number))
++            return;
++        else if (search.ContainsKey(this.number)) {
++            search.Remove(this.number);
++            //WriteLine($"setting res: {this.number} = {6 * path.Count}, search.Count: {search.Count}; res.Count: {res.Count}");
++            res[this.number] = 6 * path.Count;
++            var path2 = new Stack<int>(path);
++            path2.Push(this.number);
++            pool.Add(path2);
++            //WriteLine($"pushed path: {String.Join(" ", path2.Select(x => x.ToString()))}, pool.Count: {pool.Count}");
++        } else if (path.Count == max_depth) {
++            var path2 = new Stack<int>(path);
++            path2.Push(this.number);
++            pool.Add(path2);
++            //WriteLine($"pushed path: {String.Join(" ", path2.Select(x => x.ToString()))}, pool.Count: {pool.Count}");
++        } else {
++            path.Push(this.number);
++            for (var l = 0; l < this.nodes.Count; l++) {
++                var n = this.nodes[l];
++                if (!path.Contains(n.number)) {
++                    n.bfs(path, pool, search, res, max_depth);
++                    if (search.Count == 0)
++                        break;
++                }
++            }
++            path.Pop();
++        }
++    }
++}
++
+ class Solution {
+ 
+-    // Complete the bfs function below.
++    // Compare the bfs function below.
+     static int[] bfs(int n, int m, int[][] edges, int s) {
++        var map_ = new Dictionary<int, node>();
++        foreach(int[] edge in edges) {
++            //(var a, var b) = edge;
++            var a = edge[0];
++            var b = -1;
++            if (edge.Length > 1)
++                b = edge[1];
++            //WriteLine($"considering edge {a} <-> {b}");
++            node n_a;
++            if (map_.ContainsKey(a))
++                n_a = map_[a];
++            else {
++                n_a = new node(a);
++                map_[a] = n_a;
++            }
++            if (b > -1) {
++                node n_b;
++                if (map_.ContainsKey(b))
++                    n_b = map_[b];
++                else {
++                    n_b = new node(b);
++                    map_[b] = n_b;
++                }
++                n_b.nodes.Add(n_a);
++                n_a.nodes.Add(n_b);
++            }
++        }
++
++        //console.log("%j", Array.from(map_.keys()));
++        //WriteLine($"s '{s}' is a '{s.GetType()}'");
++        //WriteLine($"nodes: {n}");
++        var map_search = new Dictionary<int, int>();
++        for (var l = 1; l <= n; l++) {
++            if (l != s && map_.ContainsKey(l))
++                map_search[l] = -1;
++        }
++
++        // search
++        var pool = new List<Stack<int>>();
++        var max_depth = 1;
++        var map_res = new Dictionary<int, int>();
+ 
++        if (!map_.ContainsKey(s))
++            return Enumerable.Repeat<int>(-1, n - 1).ToArray();
+ 
++        while(map_search.Count > 0 && max_depth < map_.Count) {
++            //WriteLine($"pre pool.Count: {pool.Count}");
++            pool = pool.Where(x => x.Count >= max_depth - 1).ToList();
++            //WriteLine($"post pool.Count: {pool.Count}");
++            if (pool.Count == 0)
++                pool.Add(new Stack<int>(new int[]{s}));
++            var last = pool.Count;
++            //WriteLine($"searching at depth: {max_depth}, pool.Count: {pool.Count}");
++            for (var l2 = 0; l2 < last; l2++) {
++                var path = pool[l2];
++                //WriteLine($"path length: {path.Count}");
++                var n_start = map_[path.Pop()];
++                n_start.bfs(path, pool, map_search, map_res, max_depth);
++                //WriteLine($"considering path {l2}: {String.Join(" ", path.Select(x => x.ToString()))}");
++                if (map_search.Count == 0)
++                    break;
++            }
++            max_depth++;
++        }
++
++        // final results array
++        var res = new List<int>();
++        for (var l = 1; l <= n; l++) {
++            if (l == s)
++                continue;
++            if (map_res.ContainsKey(l))
++                res.Add(map_res[l]);
++            else
++                res.Add(-1);
++        }
++        return res.ToArray();
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
