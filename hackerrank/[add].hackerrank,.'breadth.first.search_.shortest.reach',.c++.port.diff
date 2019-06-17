@@ -1,0 +1,177 @@
+From bc005f508b6302f55718a79be9c657ce43d5f4dc Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 17 Jun 2019 15:45:40 +0100
+Subject: [add] hackerrank, 'breadth first search: shortest reach', c++ port
+
+---
+ .../breadth.first.search:.shortest.reach.cpp  | 147 ++++++++++++++++++
+ 1 file changed, 147 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.graph.theory.-.medium.-.breadth.first.search:.shortest.reach/breadth.first.search:.shortest.reach.cpp b/hackerrank/algorithms.-.graph.theory.-.medium.-.breadth.first.search:.shortest.reach/breadth.first.search:.shortest.reach.cpp
+index 641bf39..bd3fcbc 100644
+--- a/hackerrank/algorithms.-.graph.theory.-.medium.-.breadth.first.search:.shortest.reach/breadth.first.search:.shortest.reach.cpp
++++ b/hackerrank/algorithms.-.graph.theory.-.medium.-.breadth.first.search:.shortest.reach/breadth.first.search:.shortest.reach.cpp
+@@ -1,13 +1,160 @@
+ #include <bits/stdc++.h>
++#include <map>
++#include <typeinfo>
+ 
+ using namespace std;
+ 
+ vector<string> split_string(string);
++vector<int> bfs(int, int, vector<vector<int>>, int);
++
++class node {
++    private:
++    public:
++        int number;
++        vector<node*> nodes;
++
++        node () {
++        }
++
++        node (int number) {
++            this->number = number;
++        }
++
++        void bfs(vector<int> path, vector<vector<int>>& pool, map<int, int>& search, map<int, int>& res, int max_depth) {
++            //cout << "considering path: "; for (auto itr = path.begin(); itr < path.end(); ++itr) cout << *itr; cout << endl;
++            if (find(path.begin(), path.end(), this->number) != path.end())
++                return;
++            else if (search.find(this->number) != search.end()) {
++                search.erase(this->number);
++                //cout << "setting res: " << this->number << " == " << (6 * path.size()) << ", search length: " << search.size() << ". res length: " << res.size() << endl;
++                res[this->number] = 6 * path.size();
++                vector<int> path2(path);
++                path2.push_back(this->number);
++                pool.push_back(path2);
++                //cout << "pushed path: "; for (auto itr = path2.begin(); itr < path2.end(); ++itr) cout << *itr << " "; cout << endl;
++            } else if (path.size() == max_depth) {
++                vector<int> path2(path);
++                path2.push_back(this->number);
++                pool.push_back(path2);
++                //cout << "pushed path: "; for (auto itr = path2.begin(); itr < path2.end(); ++itr) cout << *itr << " "; cout << endl;
++            } else {
++                path.push_back(this->number);
++                for (int l = 0; l < this->nodes.size(); l++) {
++                    node* n = this->nodes[l];
++                    if (find(path.begin(), path.end(), n->number) == path.end()) {
++                        n->bfs(path, pool, search, res, max_depth);
++                        if (search.size() == 0)
++                            break;
++                    }
++                }
++                path.pop_back();
++            }
++        }
++};
++
++// explicit instantiation of type(s) for gdb
++template class std::map<int, node*>;
+ 
+ // Complete the bfs function below.
+ vector<int> bfs(int n, int m, vector<vector<int>> edges, int s) {
++    map<int, node*> map_;
++    for (auto itr = edges.begin(); itr != edges.end(); ++itr) {
++        vector<int> edge = *itr;
++        int a = edge[0];
++        int b = -1;
++        if (edge.size() > 1)
++            b = edge[1];
++        //cout << "considering edge " << a << " <-> " << b << endl;
++        node* n_a;
++        if (map_.find(a) != map_.end())
++            n_a = map_[a];
++        else {
++            n_a = new node(a);
++            map_[a] = n_a;
++        }
++        if (b > -1) {
++            node* n_b;
++            if (map_.find(b) != map_.end())
++                n_b = map_[b];
++            else {
++                n_b = new node(b);
++                map_[b] = n_b;
++            }
++            n_b->nodes.push_back(n_a);
++            n_a->nodes.push_back(n_b);
++        }
++    }
++
++    /*
++    cout << "map_: " << endl;
++    for (auto itr = map_.begin(); itr != map_.end(); ++itr)
++      cout << itr->first << " | node { number: " << itr->second->number << ", nodes: " << itr->second->nodes.size() << " }" << endl;
++    cout << "s: '" << s << "' is a '" << typeid(s).name() << "' (mangled!)" << endl;
++    cout << "nodes: " << n << endl;
++    */
++    map<int, int> map_search;
++    for (int l = 1; l <= n; l++) {
++        if (l != s && map_.find(l) != map_.end())
++            map_search[l] = -1;
++    }
+ 
++    // search
++    vector<vector<int>> pool;
++    int max_depth = 1;
++    map<int, int> map_res;
++
++    vector<int> res;
++
++    if (map_.find(s) == map_.end())
++        res = vector<int>(n - 1, -1);
++    else {
++
++        while(map_search.size() > 0 && max_depth < map_.size()) {
++            //cout << "pre pool length: " << pool.size() << endl;
++            int l = 0;
++            while (l < pool.size() && pool[l].size() >= max_depth - 1)
++                l++;
++            if (l > 0)
++                pool.erase(pool.begin(), pool.begin() + l);
++            //cout << "post pool length: " << pool.size() << endl;
++            if (pool.size() == 0) {
++                vector<int> path;
++                path.push_back(s);
++                pool.push_back(path);
++            }
++            int last = pool.size();
++            //cout << "searching at depth: " << max_depth << ", pool length: " << pool.size() << endl;
++            for (int l2 = 0; l2 < last; l2++) {
++                vector<int> path = pool[l2];
++                //cout << "path length: " << path.size() << endl;
++                node* n_start = map_[path.back()];
++                path.pop_back();
++                n_start->bfs(path, pool, map_search, map_res, max_depth);
++                //cout << "considering path " << l2 << ": "; for (auto itr = path.begin(); itr < path.end(); ++itr) cout << *itr << " "; cout << endl;
++                if (map_search.size() == 0)
++                    break;
++            }
++            max_depth++;
++        }
++
++        // final results array
++        for (int l = 1; l <= n; l++) {
++            if (l == s)
++                continue;
++            if (map_res.find(l) != map_res.end())
++                res.push_back(map_res[l]);
++            else
++                res.push_back(-1);
++        }
++    }
++
++    // cleanup
++    for (auto itr = map_.begin(); itr != map_.end(); ++itr) {
++        delete(itr->second);
++        itr->second = NULL;
++    }
+ 
++    return res;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
