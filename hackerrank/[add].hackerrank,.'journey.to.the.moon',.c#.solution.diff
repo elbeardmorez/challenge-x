@@ -1,0 +1,85 @@
+From 4d7671a3ea6358b752ca0372b1fc52b77ece13f6 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 19 Jun 2019 08:17:21 +0100
+Subject: [add] hackerrank, 'journey to the moon', c# solution
+
+---
+ .../journey.to.the.moon.cs                    | 56 +++++++++++++++++++
+ 1 file changed, 56 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.cs b/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.cs
+index 4e116e6..9220d8a 100644
+--- a/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.cs
++++ b/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.cs
+@@ -12,12 +12,68 @@ using System.Text.RegularExpressions;
+ using System.Text;
+ using System;
+ 
++using static System.Console;
++
++class node {
++    public int number;
++    public List<node> nodes;
++
++    public node (int number) {
++        this.number = number;
++        this.nodes = new List<node>();
++    }
++}
++
+ class Solution {
+ 
+     // Complete the journeyToMoon function below.
+     static int journeyToMoon(int n, int[][] astronaut) {
++        // create a graph to build groups
++        // use count of astronauts per group and it's nC2 with n as the number of groups
++        // but each group in the combination pair needs multiplying by its size..
++        // so just use each group's count to represent it ..then all generated
++        // pairs just need summing ..and adding to a running total as we iterate
++        // pairs
+ 
++        var map_ = new Dictionary<int, node>();
++        for (var l = 0; l < n; l++) {
++            map_[l] =new node(l);
++        }
++        foreach(int[] pair in astronaut) {
++            //(var a, var b) = edge;
++            var a = pair[0];
++            var b = pair[1];
++            //WriteLine($"considering edge {a} <-> {b}");
++            node n_a = map_[a];
++            node n_b = map_[b];
++            n_b.nodes.Add(n_a);
++            n_a.nodes.Add(n_b);
++        }
+ 
++        var groups = new List<HashSet<int>>();
++        bool same;
++        for(int l = 1; l < map_.Count; l++) {
++            var set_ = map_[l].nodes.Select(x => x.number).ToList();
++            set_.Add(map_[l].number);
++            same = false;
++            foreach(var g in groups) {
++                same = g.Overlaps(set_);
++                if (same) {
++                    g.UnionWith(set_);
++                    break;
++                }
++            }
++            if (!same)
++                groups.Add(new HashSet<int>(set_));
++        }
++        var counts = groups.Select(g => g.Count).ToList();
++        //WriteLine($"counts: {String.Join(" ", counts.Select(x => x.ToString()))}");
++        var sum_ = 0;
++        for (int l = 0; l < counts.Count; l++) {
++            for (int l2 = l + 1; l2 < counts.Count; l2++)
++                sum_ += (counts[l] * counts[l2]);
++        }
++        return sum_;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
