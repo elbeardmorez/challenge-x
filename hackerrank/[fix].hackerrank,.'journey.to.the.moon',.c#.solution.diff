@@ -1,0 +1,81 @@
+From eecadcfd8d728f25b87ceecebbed64e5d18762f7 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 19 Jun 2019 10:09:59 +0100
+Subject: [fix] hackerrank, 'journey to the moon', c# solution
+
+-incorrect algorithm, no traversal of graph equals no connection of
+non-adjacent nodes which resulted in more groups than there should
+have been
+-off-by-one bug
+---
+ .../journey.to.the.moon.cs                    | 26 +++++++++++++------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.cs b/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.cs
+index 9220d8a..e86127a 100644
+--- a/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.cs
++++ b/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.cs
+@@ -22,6 +22,15 @@ class node {
+         this.number = number;
+         this.nodes = new List<node>();
+     }
++
++    public void connected(Dictionary<int, int> pool) {
++        foreach(var n in nodes) {
++            if (!pool.ContainsKey(n.number)) {
++                pool[n.number] = 1;
++                n.connected(pool);
++            }
++        }
++    }
+ }
+ 
+ class Solution {
+@@ -37,13 +46,11 @@ class Solution {
+ 
+         var map_ = new Dictionary<int, node>();
+         for (var l = 0; l < n; l++) {
+-            map_[l] =new node(l);
++            map_[l] = new node(l);
+         }
+         foreach(int[] pair in astronaut) {
+-            //(var a, var b) = edge;
+             var a = pair[0];
+             var b = pair[1];
+-            //WriteLine($"considering edge {a} <-> {b}");
+             node n_a = map_[a];
+             node n_b = map_[b];
+             n_b.nodes.Add(n_a);
+@@ -52,9 +59,10 @@ class Solution {
+ 
+         var groups = new List<HashSet<int>>();
+         bool same;
+-        for(int l = 1; l < map_.Count; l++) {
+-            var set_ = map_[l].nodes.Select(x => x.number).ToList();
+-            set_.Add(map_[l].number);
++        for(int l = 0; l < map_.Count; l++) {
++            var pool = new Dictionary<int, int> {{map_[l].number, 1}};
++            map_[l].connected(pool);
++            var set_ = pool.Keys.ToList();
+             same = false;
+             foreach(var g in groups) {
+                 same = g.Overlaps(set_);
+@@ -63,11 +71,13 @@ class Solution {
+                     break;
+                 }
+             }
+-            if (!same)
++            if (!same) {
+                 groups.Add(new HashSet<int>(set_));
++            }
+         }
+         var counts = groups.Select(g => g.Count).ToList();
+-        //WriteLine($"counts: {String.Join(" ", counts.Select(x => x.ToString()))}");
++        //WriteLine($"counts: {counts.Sum()} | {String.Join(" ", counts.Select(x => x.ToString()))}");
++        //WriteLine(String.Join("\n", groups.Select(g => g.Count.ToString() + " | " + String.Join(" ", g.Select(x => x.ToString())))));
+         var sum_ = 0;
+         for (int l = 0; l < counts.Count; l++) {
+             for (int l2 = l + 1; l2 < counts.Count; l2++)
+-- 
+2.23.0
+
