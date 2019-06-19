@@ -1,0 +1,119 @@
+From d7fcb6bcd0a0ff818e4ce67726c4c37868c0408b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 19 Jun 2019 15:35:17 +0100
+Subject: [mod] hackerrank, 'journey to the moon', c# solution
+
+-speed-up, pass global 'processed' set through to node 'connected'
+method to avoid repeating work
+---
+ .../journey.to.the.moon.cs                    | 46 ++++++++++++-------
+ 1 file changed, 29 insertions(+), 17 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.cs b/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.cs
+index 8b905c3..2fbf11a 100644
+--- a/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.cs
++++ b/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.cs
+@@ -12,6 +12,7 @@ using System.Text.RegularExpressions;
+ using System.Text;
+ using System;
+ 
++using System.Diagnostics;
+ using static System.Console;
+ 
+ class node {
+@@ -23,11 +24,12 @@ class node {
+         this.nodes = new List<node>();
+     }
+ 
+-    public void connected(HashSet<long> pool) {
++    public void connected(HashSet<int> pool, HashSet<int> processed) {
+         foreach(var n in nodes) {
+-            if (!pool.Contains(n.number)) {
++            if (!processed.Contains(n.number)) {
+                 pool.Add(n.number);
+-                n.connected(pool);
++                processed.Add(n.number);
++                n.connected(pool, processed);
+             }
+         }
+     }
+@@ -44,38 +46,44 @@ class Solution {
+         // pairs just need summing ..and adding to a running total as we iterate
+         // pairs
+ 
++        //var sw = new Stopwatch();
++        //sw.Start();
++
+         var map_ = new Dictionary<int, node>();
+         foreach(int[] pair in astronaut) {
+-            var a = pair[0];
+-            var b = pair[1];
+             node n_a;
+-            if (map_.ContainsKey(a))
+-                n_a = map_[a];
++            if (map_.ContainsKey(pair[0]))
++                n_a = map_[pair[0]];
+             else {
+-                n_a = new node(a);
+-                map_[a] = n_a;
++                n_a = new node(pair[0]);
++                map_[pair[0]] = n_a;
+             }
+             node n_b;
+-            if (map_.ContainsKey(b))
+-                n_b = map_[b];
++            if (map_.ContainsKey(pair[1]))
++                n_b = map_[pair[1]];
+             else {
+-                n_b = new node(b);
+-                map_[b] = n_b;
++                n_b = new node(pair[1]);
++                map_[pair[1]] = n_b;
+             }
+-            n_b.nodes.Add(n_a);
+             n_a.nodes.Add(n_b);
++            n_b.nodes.Add(n_a);
+         }
+         var singles = new HashSet<int>();
+         for (var l = 0; l < n; l++) {
+             if (!map_.ContainsKey(l))
+                 singles.Add(l);
++
+         }
+ 
+-        var groups = new List<HashSet<long>>();
++        //WriteLine($"[debug|{sw.Elapsed}]");
++
++        var groups = new List<HashSet<int>>();
++        var processed = new HashSet<int>();
+         bool same;
+         foreach(var node in map_.Values) {
+-            var pool = new HashSet<long> {node.number};
+-            node.connected(pool);
++            var pool = new HashSet<int> {node.number};
++            node.connected(pool, processed);
++            //WriteLine($"[debug|{sw.Elapsed}] node: {node.number}, nodes: {node.nodes.Count}");
+             same = false;
+             foreach(var g in groups) {
+                 same = g.Overlaps(pool);
+@@ -88,6 +96,9 @@ class Solution {
+                 groups.Add(pool);
+             }
+         }
++
++        //WriteLine($"[debug|{sw.Elapsed}]");
++
+         var counts = groups.Select(g => (long)g.Count).ToList();
+         //WriteLine($"counts: {counts.Sum()} | {String.Join(" ", counts.Select(x => x.ToString()))}");
+         //WriteLine(String.Join("\n", groups.Select(g => g.Count.ToString() + " | " + String.Join(" ", g.Select(x => x.ToString())))));
+@@ -105,6 +116,7 @@ class Solution {
+             sum_ += counts[0];
+ 
+         //WriteLine($"groups: {groups.Count}, singles count: {singles_count}, sum: {sum_}, sum type: {sum_.GetType()}");
++        //WriteLine($"[debug|{sw.Elapsed}]");
+  
+         return sum_;
+     }
+-- 
+2.23.0
+
