@@ -1,0 +1,124 @@
+From e382124b705d552bb006d87f8734c19cc389e12f Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 19 Jun 2019 14:19:36 +0100
+Subject: [mod] hackerrank, 'journey to the moon', c# solution
+
+-speed-up, treat isolated nodes differently, short-circuiting need
+to query graph for them, using n(n-1) / 2 for trianglular pairs
+calc and merge set with set calced from connected graphs groups
+---
+ .../journey.to.the.moon.cs                    | 60 +++++++++++++------
+ 1 file changed, 42 insertions(+), 18 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.cs b/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.cs
+index 26e3267..8b905c3 100644
+--- a/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.cs
++++ b/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.cs
+@@ -23,7 +23,7 @@ class node {
+         this.nodes = new List<node>();
+     }
+ 
+-    public void connected(HashSet<int> pool) {
++    public void connected(HashSet<long> pool) {
+         foreach(var n in nodes) {
+             if (!pool.Contains(n.number)) {
+                 pool.Add(n.number);
+@@ -36,7 +36,7 @@ class node {
+ class Solution {
+ 
+     // Complete the journeyToMoon function below.
+-    static int journeyToMoon(int n, int[][] astronaut) {
++    static long journeyToMoon(int n, int[][] astronaut) {
+         // create a graph to build groups
+         // use count of astronauts per group and it's nC2 with n as the number of groups
+         // but each group in the combination pair needs multiplying by its size..
+@@ -45,23 +45,37 @@ class Solution {
+         // pairs
+ 
+         var map_ = new Dictionary<int, node>();
+-        for (var l = 0; l < n; l++) {
+-            map_[l] = new node(l);
+-        }
+         foreach(int[] pair in astronaut) {
+             var a = pair[0];
+             var b = pair[1];
+-            node n_a = map_[a];
+-            node n_b = map_[b];
++            node n_a;
++            if (map_.ContainsKey(a))
++                n_a = map_[a];
++            else {
++                n_a = new node(a);
++                map_[a] = n_a;
++            }
++            node n_b;
++            if (map_.ContainsKey(b))
++                n_b = map_[b];
++            else {
++                n_b = new node(b);
++                map_[b] = n_b;
++            }
+             n_b.nodes.Add(n_a);
+             n_a.nodes.Add(n_b);
+         }
++        var singles = new HashSet<int>();
++        for (var l = 0; l < n; l++) {
++            if (!map_.ContainsKey(l))
++                singles.Add(l);
++        }
+ 
+-        var groups = new List<HashSet<int>>();
++        var groups = new List<HashSet<long>>();
+         bool same;
+-        for(int l = 0; l < map_.Count; l++) {
+-            var pool = new HashSet<int> {map_[l].number};
+-            map_[l].connected(pool);
++        foreach(var node in map_.Values) {
++            var pool = new HashSet<long> {node.number};
++            node.connected(pool);
+             same = false;
+             foreach(var g in groups) {
+                 same = g.Overlaps(pool);
+@@ -74,14 +88,24 @@ class Solution {
+                 groups.Add(pool);
+             }
+         }
+-        var counts = groups.Select(g => g.Count).ToList();
++        var counts = groups.Select(g => (long)g.Count).ToList();
+         //WriteLine($"counts: {counts.Sum()} | {String.Join(" ", counts.Select(x => x.ToString()))}");
+         //WriteLine(String.Join("\n", groups.Select(g => g.Count.ToString() + " | " + String.Join(" ", g.Select(x => x.ToString())))));
+-        var sum_ = 0;
+-        for (int l = 0; l < counts.Count; l++) {
+-            for (int l2 = l + 1; l2 < counts.Count; l2++)
+-                sum_ += (counts[l] * counts[l2]);
+-        }
++        long sum_ = 0;
++        long singles_count = (long)singles.Count;
++        sum_ += ((singles_count * (singles_count - 1))/2);
++        //WriteLine($"sum: {sum_}");
++        counts.Add(singles_count);
++        if (counts.Count > 1) {
++            for (int l = 0; l < counts.Count; l++) {
++                for (int l2 = l + 1; l2 < counts.Count; l2++)
++                    sum_ += (counts[l] * counts[l2]);
++            }
++        } else if (groups.Count == 1)
++            sum_ += counts[0];
++
++        //WriteLine($"groups: {groups.Count}, singles count: {singles_count}, sum: {sum_}, sum type: {sum_.GetType()}");
++ 
+         return sum_;
+     }
+ 
+@@ -100,7 +124,7 @@ class Solution {
+             astronaut[i] = Array.ConvertAll(Console.ReadLine().Split(' '), astronautTemp => Convert.ToInt32(astronautTemp));
+         }
+ 
+-        int result = journeyToMoon(n, astronaut);
++        long result = journeyToMoon(n, astronaut);
+ 
+         textWriter.WriteLine(result);
+ 
+-- 
+2.23.0
+
