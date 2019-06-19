@@ -1,0 +1,54 @@
+From 7763154b90282f7c9fa668005037160002699ff3 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 19 Jun 2019 10:27:42 +0100
+Subject: [mod] hackerrank, 'journey to the moon', c# solution
+
+-speed-up, switch Dictionary to HashSet, we're mapping nothing
+---
+ .../journey.to.the.moon.cs                         | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.cs b/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.cs
+index 0743492..26e3267 100644
+--- a/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.cs
++++ b/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.cs
+@@ -23,10 +23,10 @@ class node {
+         this.nodes = new List<node>();
+     }
+ 
+-    public void connected(Dictionary<int, int> pool) {
++    public void connected(HashSet<int> pool) {
+         foreach(var n in nodes) {
+-            if (!pool.ContainsKey(n.number)) {
+-                pool[n.number] = 1;
++            if (!pool.Contains(n.number)) {
++                pool.Add(n.number);
+                 n.connected(pool);
+             }
+         }
+@@ -60,18 +60,18 @@ class Solution {
+         var groups = new List<HashSet<int>>();
+         bool same;
+         for(int l = 0; l < map_.Count; l++) {
+-            var pool = new Dictionary<int, int> {{map_[l].number, 1}};
++            var pool = new HashSet<int> {map_[l].number};
+             map_[l].connected(pool);
+             same = false;
+             foreach(var g in groups) {
+-                same = g.Overlaps(pool.Keys);
++                same = g.Overlaps(pool);
+                 if (same) {
+-                    g.UnionWith(pool.Keys);
++                    g.UnionWith(pool);
+                     break;
+                 }
+             }
+             if (!same) {
+-                groups.Add(new HashSet<int>(pool.Keys));
++                groups.Add(pool);
+             }
+         }
+         var counts = groups.Select(g => g.Count).ToList();
+-- 
+2.23.0
+
