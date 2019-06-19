@@ -1,0 +1,38 @@
+From 6560145e1134c0b8c75f9c0de10b85332117941b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 19 Jun 2019 10:13:34 +0100
+Subject: [mod] hackerrank, 'journey to the moon', c# solution
+
+-speed-up, don't copy sets to lists
+---
+ .../journey.to.the.moon.cs                                 | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.cs b/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.cs
+index e86127a..0743492 100644
+--- a/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.cs
++++ b/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.cs
+@@ -62,17 +62,16 @@ class Solution {
+         for(int l = 0; l < map_.Count; l++) {
+             var pool = new Dictionary<int, int> {{map_[l].number, 1}};
+             map_[l].connected(pool);
+-            var set_ = pool.Keys.ToList();
+             same = false;
+             foreach(var g in groups) {
+-                same = g.Overlaps(set_);
++                same = g.Overlaps(pool.Keys);
+                 if (same) {
+-                    g.UnionWith(set_);
++                    g.UnionWith(pool.Keys);
+                     break;
+                 }
+             }
+             if (!same) {
+-                groups.Add(new HashSet<int>(set_));
++                groups.Add(new HashSet<int>(pool.Keys));
+             }
+         }
+         var counts = groups.Select(g => g.Count).ToList();
+-- 
+2.23.0
+
