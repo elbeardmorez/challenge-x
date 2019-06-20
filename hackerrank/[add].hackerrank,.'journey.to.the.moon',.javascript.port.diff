@@ -1,0 +1,133 @@
+From cc745b32eac2edd6ad48fb83b180055a1cb9f897 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 20 Jun 2019 10:38:13 +0100
+Subject: [add] hackerrank, 'journey to the moon', javascript port
+
+---
+ .../journey.to.the.moon.js                    | 109 +++++++++++++++++-
+ 1 file changed, 108 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.js b/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.js
+index 7d369ea..c8fe44d 100644
+--- a/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.js
++++ b/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.js
+@@ -26,8 +26,115 @@ function readLine() {
+ 
+ // Complete the journeyToMoon function below.
+ function journeyToMoon(n, astronaut) {
++    // create a graph to build groups
++    // use count of astronauts per group and it's nC2 with n as the number_ of groups
++    // but each group in the combination pair needs multiplying by its size..
++    // so just use each group's count to represent it ..then all generated
++    // pairs just need summing ..and adding to a running total as we iterate
++    // pairs
++
++    let t_last = process.hrtime();
++
++    let node = class {
++        constructor(number_) {
++            this.number_ = number_;
++            this.nodes = [];
++        }
++
++        connected(pool, processed) {
++            this.nodes.forEach(n => {
++                if (!processed.has(n.number_)) {
++                    pool.add(n.number_);
++                    processed.add(n.number_);
++                    n.connected(pool, processed);
++                }
++            });
++        }
++    };
++
++    let map_ = new Map();
++    astronaut.forEach(pair => {
++        //console.log(pair);
++        let n_a = undefined;
++        if (map_.has(pair[0]))
++            n_a = map_.get(pair[0]);
++        else {
++            n_a = new node(pair[0]);
++            map_.set(pair[0], n_a);
++        }
++        let n_b = undefined;
++        if (map_.has(pair[1]))
++            n_b = map_.get(pair[1]);
++        else {
++            n_b = new node(pair[1]);
++            map_.set(pair[1], n_b);
++        }
++        n_a.nodes.push(n_b);
++        n_b.nodes.push(n_a);
++    });
++    //console.log("map_: [%d] | %j", map_.size, Array.from(map_.keys()));
++    var singles = [];
++    for (var l = 0; l < n; l++) {
++        if (!map_.has(l))
++            singles.push(l);
+ 
+-
++    }
++    //console.log("singles: %j", singles);
++
++    //console.log(`[debug|${process.hrtime(t_last).join(".")}s] elapsed`);
++
++    let groups = [];
++    let processed = new Set();
++    let same = false;
++    map_.forEach(node => {
++        var pool = new Set([node.number_]);
++        node.connected(pool, processed);
++        //console.log(`considering pool: ${Array.from(pool)}`);
++        ////console.log(`[debug|${process.hrtime(t_last).join(".")}s] elapsed`);
++        same = false;
++        for (let l = 0; l < groups.length; l++) {
++            let g = groups[l];
++            //console.log(`considering group: ${Array.from(g)}`);
++            pool.forEach(x => {
++                if (g.has(x)) {
++                    //console.log(`match!`);
++                    same = true;
++                }
++            });
++            if (same) {
++                pool.forEach(x => {
++                    g.add(x);
++                });
++                break;
++            }
++        }
++        if (!same)
++            groups.push(pool);
++    });
++
++    //console.log(`[debug|${process.hrtime(t_last).join(".")}s] elapsed`);
++
++    var counts = groups.map(g => g.size);
++    //console.log(`counts: ${counts.reduce((a, x) => a + x, 0)} | ${counts}`);
++    //console.log("groups:");
++    //groups.map(x => Array.from(x)).forEach(s => console.log(s));
++    let sum_ = 0;
++    let singles_count = singles.length;
++    sum_ += ((singles_count * (singles_count - 1))/2);
++    //console.log(`sum: ${sum_}`);
++    counts.push(singles_count);
++    if (counts.length > 1) {
++        for (let l = 0; l < counts.length; l++) {
++            for (let l2 = l + 1; l2 < counts.length; l2++)
++                sum_ += (counts[l] * counts[l2]);
++        }
++    } else if (groups.length === 1)
++        sum_ += counts[0];
++
++    //console.log(`groups: ${groups.length}, singles count: ${singles_count}, sum: ${sum_}`);
++    //console.log(`[debug|${process.hrtime(t_last).join(".")}s] elapsed`);
++
++    return sum_;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
