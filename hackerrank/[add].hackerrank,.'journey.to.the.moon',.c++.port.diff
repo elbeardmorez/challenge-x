@@ -1,0 +1,177 @@
+From 71f19e94d31d0e80d6b50016789f825237d6b342 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 21 Jun 2019 11:51:25 +0100
+Subject: [add] hackerrank, 'journey to the moon', c++ port
+
+---
+ .../journey.to.the.moon.cpp                   | 141 +++++++++++++++++-
+ 1 file changed, 139 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.cpp b/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.cpp
+index 47a88cc..019e726 100644
+--- a/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.cpp
++++ b/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.cpp
+@@ -1,13 +1,150 @@
+ #include <bits/stdc++.h>
++#include <set>
++#include <map>
++#include <chrono>
+ 
+ using namespace std;
+ 
+ vector<string> split_string(string);
++class node {
++    public:
++        int number;
++        vector<node*> nodes;
++
++        node () {
++        } 
++        node (int number) {
++            this->number = number;
++        }
++
++        void connected(set<int>& pool, set<int>& processed) {
++            for (auto itr = this->nodes.begin(); itr != this->nodes.end(); ++itr) {
++                node* n = *itr;
++                if (processed.find(n->number) == processed.end()) {
++                    pool.insert(n->number);
++                    processed.insert(n->number);
++                    n->connected(pool, processed);
++                }
++            }
++        }
++};
++
++double elapsed(chrono::time_point<chrono::high_resolution_clock> tp_last) {
++    chrono::duration<double> tp_diff = chrono::high_resolution_clock::now() - tp_last;
++    return chrono::duration_cast<chrono::milliseconds>(tp_diff).count();
++}
+ 
+ // Complete the journeyToMoon function below.
+-int journeyToMoon(int n, vector<vector<int>> astronaut) {
++long journeyToMoon(int n, vector<vector<int>> astronaut) {
++    // create a graph to build groups
++    // use count of astronauts per group and it's nC2 with n as the number of groups
++    // but each group in the combination pair needs multiplying by its size..
++    // so just use each group's count to represent it ..then all generated
++    // pairs just need summing ..and adding to a running total as we iterate
++    // pairs
++
++    // profiling
++    //auto tp_last = chrono::high_resolution_clock::now();
++
++    map<int, node> map_;
++    for (auto itr = astronaut.begin(); itr != astronaut.end(); ++itr) {
++        int a = (*itr)[0];
++        int b = (*itr)[1];
++        //cout << "adding pair: " << a << " | " << b << endl;
++        node* n_a;
++        if (map_.find(a) != map_.end())
++            n_a = &(map_[a]);
++        else {
++            map_[a] = node(a);
++            n_a = &(map_[a]);
++        }
++        node* n_b;
++        if (map_.find(b) != map_.end())
++            n_b = &(map_[b]);
++        else {
++            map_[b] = node(b);
++            n_b = &(map_[b]);
++        }
++        n_a->nodes.push_back(n_b);
++        n_b->nodes.push_back(n_a);
++    }
++    //cout << "map_ length: " << map_.size() << endl;
++    //for (auto itr = map_.begin(); itr != map_.end(); ++itr) {
++    //    cout << "map_ item: key '" << itr->first << "', val '" << itr->second.number << "'" << endl;
++    //}
++
++    set<int> singles;
++    for (int l = 0; l < n; l++) {
++        if (map_.find(l) == map_.end())
++            singles.insert(l);
++    }
++
++    //cout << "[debug|" << elapsed(tp_last) << "ms] elapsed" << endl;
++
++    vector<set<int>> groups;
++    set<int> processed;
++    bool same;
++    for (auto itr = map_.begin(); itr != map_.end(); ++itr) {
++        node* n = &(itr->second);
++        set<int> pool({n->number});
++        n->connected(pool, processed);
++        //cout << "[debug|" << elapsed(tp_last) << "ms] elapsed, node: " << n->number << ", nodes: " << n->nodes.size() << endl;
++        //cout << "considering pool:"; for (auto itr2 = pool.begin(); itr2 != pool.end(); ++itr2) cout << " " << *itr2; cout << endl;
++        same = false;
++        for (auto g = groups.begin(); g != groups.end(); ++g) {
++            //set<int> overlapping;
++            //set_intersection(g.begin(), g.end(), pool.begin(), pool.end(), overlapping.begin());
++            //if (overlapping.size() > 0)
++            //    same = true;
++            //ineffecient re-copy into g..
++            for (auto p = pool.begin(); p != pool.end(); ++p) {
++                if (g->find(*p) != g->end()) {
++                    //cout << "match: " << *p << " from pool:"; for (auto itr2 = pool.begin(); itr2 != pool.end(); ++itr2) cout << " " << *itr2;
++                    //cout << " in group |"; for (auto itr2 = g->begin(); itr2 != g->end(); ++itr2) cout << " " << *itr2; cout << endl;
++                    same = true;
++                    break;
++                }
++            }
++            if (same) {
++                for (auto p = pool.begin(); p != pool.end(); ++p)
++                    g->insert(*p);
++                break;
++            }
++        }
++        if (!same)
++            groups.push_back(pool);
++    }
++
++    //cout << "[debug|" << elapsed(tp_last) << "ms] elapsed" << endl;
++
++    vector<int> counts;
++    for (auto itr = groups.begin(); itr != groups.end(); ++itr)
++        counts.push_back(itr->size());
++    /*
++    cout << "counts: " << accumulate(counts.begin(), counts.end(), 0) << " |"; for (auto itr = counts.begin(); itr != counts.end(); ++itr) cout << " " << *itr; cout << endl;
++    cout << "singles:"; for (auto itr = singles.begin(); itr != singles.end(); ++itr) cout << " " << *itr; cout << endl;
++    cout << "groups:" << endl;
++    for (auto itr = groups.begin(); itr != groups.end(); ++itr) {
++        for (auto itr2 = itr->begin(); itr2 != itr->end(); ++itr2) cout << *itr2 << " "; cout << endl;
++    }
++    */
++    long sum_ = 0;
++    long singles_count = (long)singles.size();
++    sum_ += ((singles_count * (singles_count - 1))/2);
++    cout << "sum: " << sum_ << endl;
++    counts.push_back(singles_count);
++    if (counts.size() > 1) {
++        for (int l = 0; l < counts.size(); l++) {
++            for (int l2 = l + 1; l2 < counts.size(); l2++)
++                sum_ += (counts[l] * counts[l2]);
++        }
++    } else if (groups.size() == 1)
++        sum_ += counts[0];
+ 
++    //cout << "groups: " << groups.size() << ", singles count: " << singles_count << ", sum: " << sum_ << endl;
++    //cout << "[debug|" << elapsed(tp_last) << "ms] elapsed" << endl;
+ 
++    return sum_;
+ }
+ 
+ int main()
+@@ -34,7 +171,7 @@ int main()
+         cin.ignore(numeric_limits<streamsize>::max(), '\n');
+     }
+ 
+-    int result = journeyToMoon(n, astronaut);
++    long result = journeyToMoon(n, astronaut);
+ 
+     fout << result << "\n";
+ 
+-- 
+2.23.0
+
