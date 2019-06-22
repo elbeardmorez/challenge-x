@@ -1,0 +1,122 @@
+From 969c9eea43598aaca646f596b9bc40143494c09f Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 22 Jun 2019 23:36:35 +0100
+Subject: [add] hackerrank, 'journey to the moon', python port
+
+---
+ .../journey.to.the.moon.py                    | 96 ++++++++++++++++++-
+ 1 file changed, 95 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.py b/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.py
+index b9f5571..eb6c0da 100644
+--- a/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.py
++++ b/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.py
+@@ -5,10 +5,104 @@ import os
+ import random
+ import re
+ import sys
+-
++import time
+ 
+ # Complete the journeyToMoon function below.
+ def journeyToMoon(n, astronaut):
++    # create a graph to build groups
++    # use count of astronauts per group and it's nC2 with n as the number_ of groups
++    # but each group in the combination pair needs multiplying by its size..
++    # so just use each group's count to represent it ..then all generated
++    # pairs just need summing ..and adding to a running total as we iterate
++    # pairs
++
++    t_last = time.time()
++
++    class node():
++
++        def __init__(self, number_):
++            self.number_ = number_
++            self.nodes = []
++
++        def connected(self, pool, processed):
++            for n in self.nodes:
++                if n.number_ not in processed:
++                    pool.add(n.number_)
++                    processed.add(n.number_)
++                    n.connected(pool, processed)
++
++    map_ = {}
++    for pair in astronaut:
++        #print(pair)
++        n_a = None
++        if pair[0] in map_:
++            n_a = map_[pair[0]]
++        else:
++            n_a = node(pair[0])
++            map_[pair[0]] = n_a
++        n_b = None
++        if pair[1] in map_:
++            n_b = map_[pair[1]]
++        else:
++            n_b = node(pair[1])
++            map_[pair[1]] = n_b
++        n_a.nodes.append(n_b)
++        n_b.nodes.append(n_a)
++    #print(f"map_: [{len(map_)}] | {list(map_.keys())}")
++
++    singles = []
++    for l in range(n):
++        if l not in map_:
++            singles.append(l)
++
++    #print(f"singles:{singles}")
++
++    #print(f"[debug|{'{:.3f}'.format(round(time.time() - t_last, 3))}ms] elapsed")
++
++    groups = []
++    processed = set()
++    same = False
++    for node in map_.values():
++        pool = set([node.number_])
++        node.connected(pool, processed)
++        #print(f"considering pool: {pool}")
++        #print(f"[debug|{'{:.3f}'.format(round(time.time() - t_last, 3))}ms] elapsed")
++        same = False
++        for l in range(len(groups)):
++            g = groups[l]
++            #print(f"considering group: {g}")
++            if len(g & pool) > 0:
++                #print(f"match!")
++                for x in pool:
++                    g.add(x)
++                same = True
++                break
++        if not same:
++            groups.append(pool)
++
++    #print(f"[debug|{'{:.3f}'.format(round(time.time() - t_last, 3))}ms] elapsed")
++
++    counts = [len(g) for g in groups]
++    #print(f"counts: {sum(counts)} | {counts}")
++    #print("groups:")
++    #print(f"{groups}")
++    sum_ = 0
++    singles_count = len(singles)
++    sum_ += ((singles_count * (singles_count - 1))/2)
++    #print(f"sum: {sum_}")
++    counts.append(singles_count)
++    l_counts = len(counts)
++    if l_counts > 1:
++        for l in range(l_counts):
++            for l2 in range(l + 1, l_counts):
++                sum_ += (counts[l] * counts[l2])
++    elif len(groups) == 1:
++        sum_ += counts[0]
++
++    #print(f"groups: {len(groups)}, singles count: {singles_count}, sum: {sum_}")
++    #print(f"[debug|{'{:.3f}'.format(round(time.time() - t_last, 3))}ms] elapsed")
++
++    return int(sum_)
+ 
+ 
+ if __name__ == '__main__':
+-- 
+2.23.0
+
