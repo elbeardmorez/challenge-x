@@ -1,0 +1,68 @@
+From c4aef9f84b04d0244abb78d41d982460d56a4bf4 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 23 Jun 2019 09:19:21 +0100
+Subject: [fix] hackerrank, 'journey to the moon', python port
+
+-maximum recursive depth hit. re-write to avoid tail end recursion
+---
+ .../journey.to.the.moon.py                    | 23 +++++++++++--------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.py b/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.py
+index eb6c0da..6b73b2d 100644
+--- a/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.py
++++ b/hackerrank/algorithms.-.graph.theory.-.medium.-.journey.to.the.moon/journey.to.the.moon.py
+@@ -6,6 +6,8 @@ import random
+ import re
+ import sys
+ import time
++from collections import deque
++
+ 
+ # Complete the journeyToMoon function below.
+ def journeyToMoon(n, astronaut):
+@@ -16,7 +18,7 @@ def journeyToMoon(n, astronaut):
+     # pairs just need summing ..and adding to a running total as we iterate
+     # pairs
+ 
+-    t_last = time.time()
++    #t_last = time.time()
+ 
+     class node():
+ 
+@@ -24,12 +26,14 @@ def journeyToMoon(n, astronaut):
+             self.number_ = number_
+             self.nodes = []
+ 
+-        def connected(self, pool, processed):
+-            for n in self.nodes:
+-                if n.number_ not in processed:
+-                    pool.add(n.number_)
+-                    processed.add(n.number_)
+-                    n.connected(pool, processed)
++        def connected(self, pool, processed, next_):
++            while len(next_) > 0:
++                n = next_.popleft()
++                for n2 in n.nodes:
++                    if n2.number_ not in processed:
++                        pool.add(n2.number_)
++                        processed.add(n2.number_)
++                        next_.append(n2)
+ 
+     map_ = {}
+     for pair in astronaut:
+@@ -63,8 +67,9 @@ def journeyToMoon(n, astronaut):
+     processed = set()
+     same = False
+     for node in map_.values():
+-        pool = set([node.number_])
+-        node.connected(pool, processed)
++        pool = set()
++        next_ = deque([node])
++        node.connected(pool, processed, next_)
+         #print(f"considering pool: {pool}")
+         #print(f"[debug|{'{:.3f}'.format(round(time.time() - t_last, 3))}ms] elapsed")
+         same = False
+-- 
+2.23.0
+
