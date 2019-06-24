@@ -1,0 +1,73 @@
+From 26fc2e8a9ff7893d37c6fd25bd0e924772cf2bce Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 24 Jun 2019 14:38:31 +0100
+Subject: [add] hackerrank, 'the time in words', c++ solution
+
+---
+ .../the.time.in.words.cpp                     | 50 +++++++++++++++++++
+ 1 file changed, 50 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.the.time.in.words/the.time.in.words.cpp b/hackerrank/algorithms.-.implementation.-.medium.-.the.time.in.words/the.time.in.words.cpp
+index 45586f7..15029d3 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.the.time.in.words/the.time.in.words.cpp
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.the.time.in.words/the.time.in.words.cpp
+@@ -4,6 +4,56 @@ using namespace std;
+ 
+ // Complete the timeInWords function below.
+ string timeInWords(int h, int m) {
++    map<int, string> numbers {
++        {1, "one"}, {2, "two"}, {3, "three"}, {4, "four"},
++        {5, "five"}, {6, "six"}, {7, "seven"}, {8, "eight"},
++        {9, "nine"}, {10, "ten"}, {11, "eleven"}, {12, "twelve"},
++        {13, "thirteen"}, {14, "fourteen"}, {16, "sixteen"},
++        {17, "seventeen"}, {18, "eighteen"}, {19, "nineteen"}, {20, "twenty"}
++    };
++
++    int h_ = h;
++    int m_ = m;
++    string s_m = "";
++    string s_h = "";
++    string time = "";
++    if (m > 30)
++        h_ += 1;
++    if (h_ == 12)
++        s_h = numbers[12];
++    else
++        s_h = (numbers[h_ % 12]);
++    if (m == 0) {
++        if (h_ == 12)
++            time += "12 o' clock";
++        else
++            time += s_h + " o' clock";
++    } else {
++        if (m == 15 || m == 45) {
++            s_m = "quarter";
++            time += s_m;
++        } else if (m == 30) {
++            s_m = "half";
++            time += s_m;
++        } else {
++            if (m > 30)
++                m_ = 60 - m_;
++            if (m_ > 20)
++                s_m = numbers[20] + " " + numbers[m_ - 20];
++            else
++                s_m = numbers[m_];
++            time += s_m + " minute";
++            if (m_ > 1)
++                time += "s";
++        }
++        if (m <= 30)
++            time += " past";
++        else
++            time += " to";
++        time += " " + s_h;
++    }
++    cout << h << "h:" << m << "m -> " << time << endl;
++    return time;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
