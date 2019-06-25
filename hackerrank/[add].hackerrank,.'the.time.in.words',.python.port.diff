@@ -1,0 +1,76 @@
+From d9e21e91fd8e9f38b0116ec617efe68a8050e985 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 25 Jun 2019 20:39:41 +0100
+Subject: [add] hackerrank, 'the time in words', python port
+
+---
+ .../the.time.in.words.py                      | 51 +++++++++++++++++++
+ 1 file changed, 51 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.the.time.in.words/the.time.in.words.py b/hackerrank/algorithms.-.implementation.-.medium.-.the.time.in.words/the.time.in.words.py
+index 4e50e29..cea99fa 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.the.time.in.words/the.time.in.words.py
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.the.time.in.words/the.time.in.words.py
+@@ -6,8 +6,59 @@ import random
+ import re
+ import sys
+ 
++
+ # Complete the timeInWords function below.
+ def timeInWords(h, m):
++    numbers = {
++        1: "one", 2: "two", 3: "three", 4: "four",
++        5: "five", 6: "six", 7: "seven", 8: "eight",
++        9: "nine", 10: "ten", 11: "eleven", 12: "twelve",
++        13: "thirteen", 14: "fourteen", 16: "sixteen",
++        17: "seventeen", 18: "eighteen", 19: "nineteen", 20: "twenty"
++    }
++    h_ = h
++    m_ = m
++    s_m = ""
++    s_h = ""
++    time = ""
++    if m > 30:
++        h_ += 1
++    if h_ == 12:
++        s_h = numbers[12]
++    else:
++        s_h = (numbers[h_ % 12])
++    if m == 0:
++        if h_ == 12:
++            time += "12 o' clock"
++        else:
++            time += s_h + " o' clock"
++    else:
++        if m == 15 or m == 45:
++            s_m = "quarter"
++            time += s_m
++        elif m == 30:
++            s_m = "half"
++            time += s_m
++        else:
++            if m > 30:
++                m_ = 60 - m_
++            if m_ > 20:
++                s_m = numbers[20] + " " + numbers[m_ - 20]
++            else:
++                s_m = numbers[m_]
++            time += s_m + " minute"
++            if m_ > 1:
++                time += "s"
++
++        if m <= 30:
++            time += " past"
++        else:
++            time += " to"
++        time += " " + s_h
++
++    print(f"{h}h:{m}m -> {time}")
++    return time
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
