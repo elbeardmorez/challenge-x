@@ -1,0 +1,74 @@
+From 397d899653b8d069430e8fdaededbacb4452edd3 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 26 Jun 2019 08:23:11 +0100
+Subject: [add] hackerrank, 'the time in words', c# port
+
+---
+ .../the.time.in.words.cs                      | 49 ++++++++++++++++++-
+ 1 file changed, 48 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.the.time.in.words/the.time.in.words.cs b/hackerrank/algorithms.-.implementation.-.medium.-.the.time.in.words/the.time.in.words.cs
+index 7cbb3be..f23653b 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.the.time.in.words/the.time.in.words.cs
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.the.time.in.words/the.time.in.words.cs
+@@ -16,9 +16,56 @@ class Solution {
+ 
+     // Complete the timeInWords function below.
+     static string timeInWords(int h, int m) {
++        var numbers = {
++            1: "one", 2: "two", 3: "three", 4: "four",;
++            5: "five", 6: "six", 7: "seven", 8: "eight",;
++            9: "nine", 10: "ten", 11: "eleven", 12: "twelve",;
++            13: "thirteen", 14: "fourteen", 16: "sixteen",;
++            17: "seventeen", 18: "eighteen", 19: "nineteen", 20: "twenty";
++        };
++        var h_ = h;
++        var m_ = m;
++        var s_m = "";
++        var s_h = "";
++        var time = "";
++        if (m > 30) {
++            h_ += 1;
++        if (h_ == 12) {
++            var s_h = numbers[12];
++        else {
++            var s_h = (numbers[h_ % 12]);
++        if (m == 0) {
++            if (h_ == 12) {
++                time += "12 o' clock";
++            else {
++                time += s_h + " o' clock";
++        else {
++            if (m == 15 || m == 45) {
++                var s_m = "quarter";
++                time += s_m;
++            elif (m == 30) {
++                var s_m = "half";
++                time += s_m;
++            else {
++                if (m > 30) {
++                    var m_ = 60 - m_;
++                if (m_ > 20) {
++                    var s_m = numbers[20] + " " + numbers[m_ - 20];
++                else {
++                    var s_m = numbers[m_];
++                time += s_m + " minute";
++                if (m_ > 1) {
++                    time += "s";
+ 
++            if (m <= 30) {
++                time += " past";
++            else {
++                time += " to";
++            time += " " + s_h;
+ 
+-    }
++        WriteLine($"{h}h:{m}m -> {time}");
++        return time;
++    };
+ 
+     static void Main(string[] args) {
+         TextWriter textWriter = new StreamWriter(@System.Environment.GetEnvironmentVariable("OUTPUT_PATH"), true);
+-- 
+2.23.0
+
