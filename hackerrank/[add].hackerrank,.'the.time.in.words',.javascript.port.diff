@@ -1,0 +1,74 @@
+From a8d5e3cc76174e065ef22d00525f9e5ee87cbe9a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 27 Jun 2019 07:59:10 +0100
+Subject: [add] hackerrank, 'the time in words', javascript port
+
+---
+ .../the.time.in.words.js                      | 51 ++++++++++++++++++-
+ 1 file changed, 49 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.the.time.in.words/the.time.in.words.js b/hackerrank/algorithms.-.implementation.-.medium.-.the.time.in.words/the.time.in.words.js
+index 52a2559..751c8ed 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.the.time.in.words/the.time.in.words.js
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.the.time.in.words/the.time.in.words.js
+@@ -26,8 +26,55 @@ function readLine() {
+ 
+ // Complete the timeInWords function below.
+ function timeInWords(h, m) {
+-
+-
++    let numbers = {
++        1: "one", 2: "two", 3: "three", 4: "four",
++        5: "five", 6: "six", 7: "seven", 8: "eight",
++        9: "nine", 10: "ten", 11: "eleven", 12: "twelve",
++        13: "thirteen", 14: "fourteen", 16: "sixteen",
++        17: "seventeen", 18: "eighteen", 19: "nineteen", 20: "twenty"
++    };
++    let h_ = h;
++    let m_ = m;
++    let s_m = "";
++    let s_h = "";
++    let time = "";
++    if (m > 30)
++        h_ += 1;
++    if (h_ === 12)
++        s_h = numbers[(12).toString()];
++    else
++        s_h = (numbers[(h_ % 12).toString()]);
++    if (m === 0) {
++        if (h_ === 12)
++            time += "12 o' clock";
++        else
++            time += s_h + " o' clock";
++    } else {
++        if (m === 15 || m === 45) {
++            s_m = "quarter";
++            time += s_m;
++        } else if (m === 30) {
++            s_m = "half";
++            time += s_m;
++        } else {
++            if (m > 30)
++                m_ = 60 - m_;
++            if (m_ > 20)
++                s_m = numbers[(20).toString()] + " " + numbers[(m_ - 20).toString()];
++            else
++                s_m = numbers[(m_).toString()];
++            time += s_m + " minute";
++            if (m_ > 1)
++                time += "s";
++        }
++        if (m <= 30)
++            time += " past";
++        else
++            time += " to";
++        time += " " + s_h;
++    }
++    console.log(`${h}h:${m}m -> ${time}`);
++    return time;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
