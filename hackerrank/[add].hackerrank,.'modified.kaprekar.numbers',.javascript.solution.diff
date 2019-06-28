@@ -1,0 +1,42 @@
+From 89e40e3f4f5f36695c7ff0fc4a6c666683159421 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 28 Jun 2019 13:06:14 +0100
+Subject: [add] hackerrank, 'modified kaprekar numbers', javascript solution
+
+---
+ .../modified.kaprekar.numbers.js              | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.modified.kaprekar.numbers/modified.kaprekar.numbers.js b/hackerrank/algorithms.-.implementation.-.easy.-.modified.kaprekar.numbers/modified.kaprekar.numbers.js
+index 2b9c1c7..bb11f07 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.modified.kaprekar.numbers/modified.kaprekar.numbers.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.modified.kaprekar.numbers/modified.kaprekar.numbers.js
+@@ -24,7 +24,24 @@ function readLine() {
+ 
+ // Complete the kaprekarNumbers function below.
+ function kaprekarNumbers(p, q) {
+-
++    let lsq = 0;
++    let s_lsq = "";
++    let s1 = "";
++    let s2 = "";
++    let set = [];
++    for (let l = p; l <= q; l++) {
++        lsq = Math.pow(l, 2).toString();
++        s_lsq = lsq.toString();
++        s2 = s_lsq.substr(s_lsq.length - parseInt((s_lsq.length % 2 === 0 ? s_lsq.length : s_lsq.length + 1) / 2));
++        s1 = s2.length < s_lsq.length ? s_lsq.substr(0, s_lsq.length - s2.length) : "0";
++        //console.log(`considering l: ${l}, s1: ${s1}, s2: ${s2}`);
++        if (parseInt(s1) + parseInt(s2) === l)
++            set.push(l);
++    }
++    if (set.length > 0)
++        console.log(set.join(" "));
++    else
++        console.log("INVALID RANGE");
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
