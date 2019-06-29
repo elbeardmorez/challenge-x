@@ -1,0 +1,45 @@
+From 4604dec58fe0978e22866831e08c69943cb5031f Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 29 Jun 2019 23:01:54 +0100
+Subject: [add] hackerrank, 'modified kaprekar numbers', python port
+
+---
+ .../modified.kaprekar.numbers.py              | 20 +++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.modified.kaprekar.numbers/modified.kaprekar.numbers.py b/hackerrank/algorithms.-.implementation.-.easy.-.modified.kaprekar.numbers/modified.kaprekar.numbers.py
+index 5babc60..fcb1e74 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.modified.kaprekar.numbers/modified.kaprekar.numbers.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.modified.kaprekar.numbers/modified.kaprekar.numbers.py
+@@ -6,8 +6,28 @@ import random
+ import re
+ import sys
+ 
++
+ # Complete the kaprekarNumbers function below.
+ def kaprekarNumbers(p, q):
++    lsq = 0
++    s_lsq = ""
++    s1 = ""
++    s2 = ""
++    set = []
++    for l in range(p, q + 1):
++        lsq = pow(l, 2)
++        s_lsq = str(lsq)
++        s2 = s_lsq[len(s_lsq) - int((len(s_lsq) if len(s_lsq) % 2 == 0 else len(s_lsq) + 1) / 2):]
++        s1 = s_lsq[0:len(s_lsq) - len(s2)] if len(s2) < len(s_lsq) else "0"
++        #print(f"considering l: {l}, s1: {s1}, s2: {s2}")
++        if int(s1) + int(s2) == l:
++            set.append(l)
++
++    if len(set) > 0:
++        print(" ".join([str(x) for x in set]))
++    else:
++        print(f"INVALID RANGE")
++
+ 
+ if __name__ == '__main__':
+     p = int(input())
+-- 
+2.23.0
+
