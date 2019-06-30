@@ -1,0 +1,49 @@
+From 1adb316f862199cf6d29808250e15616ce8f9184 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 30 Jun 2019 08:53:05 +0100
+Subject: [add] hackerrank, 'modified kaprekar numbers', c# port
+
+---
+ .../modified.kaprekar.numbers.cs              | 21 +++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.modified.kaprekar.numbers/modified.kaprekar.numbers.cs b/hackerrank/algorithms.-.implementation.-.easy.-.modified.kaprekar.numbers/modified.kaprekar.numbers.cs
+index a963d19..7059727 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.modified.kaprekar.numbers/modified.kaprekar.numbers.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.modified.kaprekar.numbers/modified.kaprekar.numbers.cs
+@@ -11,13 +11,30 @@ using System.Runtime.Serialization;
+ using System.Text.RegularExpressions;
+ using System.Text;
+ using System;
++using static System.Console;
+ 
+ class Solution {
+ 
+     // Complete the kaprekarNumbers function below.
+     static void kaprekarNumbers(int p, int q) {
+-
+-
++        double lsq = 0;
++        var s_lsq = "";
++        var s1 = "";
++        var s2 = "";
++        var set = new List<int>();
++        for (int l = p; l <= q; l++) {
++            lsq = Math.Pow(l, 2);
++            s_lsq = lsq.ToString();
++            s2 = s_lsq.Substring(s_lsq.Length - Convert.ToInt32((s_lsq.Length % 2 == 0 ? s_lsq.Length : s_lsq.Length + 1) / 2));
++            s1 = s2.Length < s_lsq.Length ? s_lsq.Substring(0, s_lsq.Length - s2.Length) : "0";
++            //WriteLine($"considering l: {l}, s1: {s1}, s2: {s2}");
++            if (Convert.ToInt32(s1) + Convert.ToInt32(s2) == l)
++                set.Add(l);
++        }
++        if (set.Count > 0)
++            WriteLine(String.Join(" ", set.Select(x => x.ToString())));
++        else
++            WriteLine("INVALID RANGE");
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
