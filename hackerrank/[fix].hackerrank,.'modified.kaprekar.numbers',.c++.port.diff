@@ -1,0 +1,37 @@
+From be812b6e26c4c5efbde7453c1deabbbf8f3a7df9 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 1 Jul 2019 10:54:09 +0100
+Subject: [fix] hackerrank, 'modified kaprekar numbers', c++ port
+
+-lazy reversion from double to int resulted in overflow
+-use double, remove mantissa
+---
+ .../modified.kaprekar.numbers.cpp                            | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.modified.kaprekar.numbers/modified.kaprekar.numbers.cpp b/hackerrank/algorithms.-.implementation.-.easy.-.modified.kaprekar.numbers/modified.kaprekar.numbers.cpp
+index 54cb434..5a80a93 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.modified.kaprekar.numbers/modified.kaprekar.numbers.cpp
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.modified.kaprekar.numbers/modified.kaprekar.numbers.cpp
+@@ -4,7 +4,7 @@ using namespace std;
+ 
+ // Complete the kaprekarNumbers function below.
+ void kaprekarNumbers(int p, int q) {
+-    int lsq = 0;
++    double lsq = 0;
+     string s_lsq = "";
+     string s1 = "";
+     string s2 = "";
+@@ -12,6 +12,9 @@ void kaprekarNumbers(int p, int q) {
+     for (int l = p; l <= q; l++) {
+         lsq = pow(l, 2);
+         s_lsq = to_string(lsq);
++        int dot;
++        if ((dot = s_lsq.find('.')) != string::npos)
++            s_lsq = s_lsq.substr(0, dot);
+         //cout << "s_lsq: " << s_lsq << ", len: " << s_lsq.length() << endl;
+         s2 = s_lsq.substr(s_lsq.length() - (int)((s_lsq.length() % 2 == 0 ? s_lsq.length() : s_lsq.length() + 1) / 2));
+         s1 = s2.length() < s_lsq.length() ? s_lsq.substr(0, s_lsq.length() - s2.length()) : "0";
+-- 
+2.23.0
+
