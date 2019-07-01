@@ -1,0 +1,44 @@
+From 148b3eaa8558b6f871a81e8cb385cd613429389d Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 1 Jul 2019 10:41:13 +0100
+Subject: [add] hackerrank, 'modified kaprekar numbers', c++ port
+
+---
+ .../modified.kaprekar.numbers.cpp             | 21 +++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.modified.kaprekar.numbers/modified.kaprekar.numbers.cpp b/hackerrank/algorithms.-.implementation.-.easy.-.modified.kaprekar.numbers/modified.kaprekar.numbers.cpp
+index fe7e201..54cb434 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.modified.kaprekar.numbers/modified.kaprekar.numbers.cpp
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.modified.kaprekar.numbers/modified.kaprekar.numbers.cpp
+@@ -4,8 +4,25 @@ using namespace std;
+ 
+ // Complete the kaprekarNumbers function below.
+ void kaprekarNumbers(int p, int q) {
+-
+-
++    int lsq = 0;
++    string s_lsq = "";
++    string s1 = "";
++    string s2 = "";
++    vector<int> set_;
++    for (int l = p; l <= q; l++) {
++        lsq = pow(l, 2);
++        s_lsq = to_string(lsq);
++        //cout << "s_lsq: " << s_lsq << ", len: " << s_lsq.length() << endl;
++        s2 = s_lsq.substr(s_lsq.length() - (int)((s_lsq.length() % 2 == 0 ? s_lsq.length() : s_lsq.length() + 1) / 2));
++        s1 = s2.length() < s_lsq.length() ? s_lsq.substr(0, s_lsq.length() - s2.length()) : "0";
++        //cout << "considering l: " << l << ", s1: " << s1 << ", s2: " << s2 << endl;
++        if (stoi(s1) + stoi(s2) == l)
++            set_.push_back(l);
++    }
++    if (set_.size() > 0) {
++        for (int l = 0; l < set_.size() - 1; l++) cout << (set_[l]) << " "; cout << set_.back() << endl;
++    } else
++        cout << "INVALID RANGE" << endl;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
