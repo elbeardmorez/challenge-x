@@ -1,0 +1,40 @@
+From a915c0355b84b9a9c18dfdc7eba86b4c2e268ccd Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 2 Jul 2019 22:02:41 +0100
+Subject: [add] hackerrank, 'equalise the array', javascript solution
+
+---
+ .../equalise.the.array.js                       | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.equalise.the.array/equalise.the.array.js b/hackerrank/algorithms.-.implementation.-.easy.-.equalise.the.array/equalise.the.array.js
+index 3299d5a..8b127e9 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.equalise.the.array/equalise.the.array.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.equalise.the.array/equalise.the.array.js
+@@ -26,8 +26,21 @@ function readLine() {
+ 
+ // Complete the equalizeArray function below.
+ function equalizeArray(arr) {
+-
+-
++    let max_ = 1;
++    arr.sort();
++    let last = arr[0];
++    let count = 0;
++    arr.forEach(x => {
++        if (x === last)
++            count++;
++        else {
++            if (count > max_)
++                max_ = count;
++            count = 1;
++        }
++        last = x;
++    });
++    return arr.length - Math.max(count, max_);
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
