@@ -1,0 +1,26 @@
+From 0f256adb6fb4f51acaa2bb5513c7838bc1a3fe48 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 3 Jul 2019 12:14:07 +0100
+Subject: [add] hackerrank, 'equalise the array', c# port
+
+---
+ .../equalise.the.array.cs                                      | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.equalise.the.array/equalise.the.array.cs b/hackerrank/algorithms.-.implementation.-.easy.-.equalise.the.array/equalise.the.array.cs
+index e1050be..75d09bb 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.equalise.the.array/equalise.the.array.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.equalise.the.array/equalise.the.array.cs
+@@ -16,8 +16,7 @@ class Solution {
+ 
+     // Complete the equalizeArray function below.
+     static int equalizeArray(int[] arr) {
+-
+-
++        return arr.Length - arr.AsEnumerable().GroupBy(x => x).Select(g => g.Count()).Aggregate(0, (a, x) => Math.Max(a, x));
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
