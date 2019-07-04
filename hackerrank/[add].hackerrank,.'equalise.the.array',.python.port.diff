@@ -1,0 +1,30 @@
+From d61eef0d91920c4093415ad1f352a0c2f3fac33d Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 4 Jul 2019 11:07:34 +0100
+Subject: [add] hackerrank, 'equalise the array', python port
+
+---
+ .../equalise.the.array.py                                     | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.equalise.the.array/equalise.the.array.py b/hackerrank/algorithms.-.implementation.-.easy.-.equalise.the.array/equalise.the.array.py
+index 1b2cccd..f7be9e6 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.equalise.the.array/equalise.the.array.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.equalise.the.array/equalise.the.array.py
+@@ -5,9 +5,13 @@ import os
+ import random
+ import re
+ import sys
++from itertools import groupby
++
+ 
+ # Complete the equalizeArray function below.
+ def equalizeArray(arr):
++    return len(arr) - max([len(list(g)) for _, g in groupby(sorted(arr))])
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
