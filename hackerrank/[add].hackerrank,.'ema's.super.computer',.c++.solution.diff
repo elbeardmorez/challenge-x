@@ -1,0 +1,123 @@
+From 349473020ead5e2c50a2bf7db23b24f9612bf1cf Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 6 Jul 2019 07:05:02 +0100
+Subject: [add] hackerrank, 'ema's super computer', c++ solution
+
+---
+ .../ema's.supercomputer.cpp                   | 100 +++++++++++++++++-
+ 1 file changed, 98 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.ema's.supercomputer/ema's.supercomputer.cpp b/hackerrank/algorithms.-.implementation.-.medium.-.ema's.supercomputer/ema's.supercomputer.cpp
+index b8153e0..829aab8 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.ema's.supercomputer/ema's.supercomputer.cpp
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.ema's.supercomputer/ema's.supercomputer.cpp
+@@ -6,8 +6,104 @@ vector<string> split_string(string);
+ 
+ // Complete the twoPluses function below.
+ int twoPluses(vector<string> grid) {
+-
+-
++    // create bool grid
++    // iterate each element
++    // whiz around borders, get max extents, append each level of coord sets
++    // e.g
++    // idx | co-ord(s)
++    // 0 | [(1,1)]
++    // 1 | [(1,1),(0,1),(1,0),(1,2),(2,1)]
++    // fail on incomplete circuit
++    // append each possible 'cross from center co-ord' set to a pool
++    // sort pool by length of sets
++    // find largest non intersecting pair product
++    // e.g. item 1 len 10, iterate all item2 under size Y=5 found, no need to look further
++    //      item 1_2 len 10, .. Y=6  (now no searches below Y=6 etc.
++    //      ..
++    //      item 1_4 len 8, ..short-circuit if item2_x length <= int(10*6 / 8)
++    //      ..
++    //      item 1_12 len 8, Y=9 ..greater max
++    // rev. use single unique int as opposed to y,x coord
++
++    int max_ = 0;
++    int max_y = grid.size();
++    int max_x = grid[0].length();
++    int g[max_y][max_x];
++    for (int l = 0; l < max_y; l++) {
++        int l2 = 0;
++        for (auto itr = grid[l].begin(); itr != grid[l].end(); ++itr) {
++            g[l][l2] = *itr == 'G' ? 1 : 0;
++            l2++;
++        }
++    }
++    vector<vector<int>> pool;
++    int size_;
++    for (int l = 0; l < max_y; l++) {
++        for (int l2 = 0; l2 < max_y; l2++) {
++            if (!g[l][l2])
++                continue;
++            vector<int> cross;
++            cross.push_back(l * max_x + l2);
++            pool.push_back(vector<int>(cross));  // clone
++            size_ = 1;
++            while (true) {
++                // test for valid cross of size..
++                // above
++                if (l - size_ < 0 || !g[l - size_][l2])
++                    break;
++                cross.push_back((l - size_) * max_x + l2);
++                // left
++                if (l2 - size_ < 0 || !g[l][l2 - size_])
++                    break;
++                cross.push_back(l * max_x + l2 - size_);
++                // right
++                if (l2 + size_ >= max_x || !g[l][l2 + size_])
++                    break;
++                cross.push_back(l * max_x + l2 + size_);
++                // below
++                if (l + size_ >= max_y || !g[l + size_][l2])
++                    break;
++                cross.push_back((l + size_) * max_x + l2);
++                // add
++                pool.push_back(vector<int>(cross));  // clone
++                size_++;
++            }
++        }
++    }
++    sort(pool.begin(), pool.end(), [](vector<int> x, vector<int> y) { return x.size() > y.size(); });
++    int tests = 0;
++    if (pool.size() > 1) {
++        cout << "pool:" << endl;
++        for (auto itr = pool.begin(); itr != pool.end(); ++itr) {
++            cout << itr->size() << " |"; for (auto itr2 = (*itr).begin(); itr2 != (*itr).end(); ++itr2) cout << " " << *itr2; cout << endl;
++        }
++        int l_pool = pool.size();
++        int l_prod;
++        for (int l = 0; l < l_pool; l++) {
++            for (int l2 = l + 1; l2 < l_pool; l2++) {
++                l_prod = pool[l].size() * pool[l2].size();
++                if (l_prod <= max_)
++                    break;
++                tests++;
++                //set<int> overlapping;
++                //set_intersection(pool[l].begin(), pool[l].end(), pool[l2].begin(), pool[l2].end(), overlapping.begin());
++                //if (overlapping.size() == 0)
++                // short-circuit on intersection immediately
++                bool overlaps = false;
++                for (auto p1 = pool[l].begin(); p1 != pool[l].end(); ++p1) {
++                    for (auto p2 = pool[l2].begin(); p2 != pool[l2].end(); ++p2) {
++                        if (*p1 == *p2) { overlaps = true; break; }
++                    }
++                    if (overlaps) break;
++                }
++                if (!overlaps)
++                    max_ = l_prod;
++            }
++        }
++    }
++    cout << "max: " << max_ << ", tests: " << tests << endl;
++    return max_;
++}
+ }
+ 
+ int main()
+-- 
+2.23.0
+
