@@ -1,0 +1,113 @@
+From 1fbd47215e3fe1ce0c2400baba8c6d55f17db27f Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 7 Jul 2019 23:39:32 +0100
+Subject: [add] hackerrank, 'ema's super computer', python port
+
+---
+ .../ema's.supercomputer.py                    | 88 +++++++++++++++++++
+ 1 file changed, 88 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.ema's.supercomputer/ema's.supercomputer.py b/hackerrank/algorithms.-.implementation.-.medium.-.ema's.supercomputer/ema's.supercomputer.py
+index 1ab327c..02a464d 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.ema's.supercomputer/ema's.supercomputer.py
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.ema's.supercomputer/ema's.supercomputer.py
+@@ -6,8 +6,96 @@ import random
+ import re
+ import sys
+ 
++
+ # Complete the twoPluses function below.
+ def twoPluses(grid):
++    """
++    create bool grid
++    iterate each element
++    whiz around borders, get max extents, append each level of coord sets
++    e.g
++    idx | co-ord(s)
++    0 | [(1,1)]
++    1 | [(1,1),(0,1),(1,0),(1,2),(2,1)]
++    fail on incomplete circuit
++    append each possible 'cross from center co-ord' set to a pool
++    sort pool by length of sets
++    find largest non intersecting pair product
++    e.g. item 1 len 10, iterate all item2 under size Y=5 found, no need to look further
++         item 1_2 len 10, .. Y=6  (now no searches below Y=6 etc.
++         ..
++         item 1_4 len 8, ..short-circuit if item2_x length <= int(10*6 / 8)
++         ..
++         item 1_12 len 8, Y=9 ..greater max
++    rev. use single unique int as opposed to y,x coord
++    """
++
++    max_ = 0
++    max_y = len(grid)
++    max_x = len(grid[0])
++    g = [[0] * max_x for _ in range(max_y)]
++    for l in range(max_y):
++        for l2 in range(max_x):
++            #print(f"considering y:{l} x:{l2} | {grid[l][l2:l2 + 1]}")
++            if grid[l][l2:l2 + 1] == "G":
++                g[l][l2] = 1
++
++    pool = []
++    size_ = 0
++    for l in range(0, max_y):
++        for l2 in range(0, max_y):
++            if not g[l][l2]:
++                continue
++            cross = []
++            cross.append(l * max_x + l2)
++            pool.append(list(cross))  # clone
++            size_ = 1
++            while True:
++                # test for valid cross of size..:
++                # above
++                if l - size_ < 0 or not g[l - size_][l2]:
++                    break
++                cross.append((l - size_) * max_x + l2)
++                # left
++                if l2 - size_ < 0 or not g[l][l2 - size_]:
++                    break
++                cross.append(l * max_x + l2 - size_)
++                # right
++                if l2 + size_ >= max_x or not g[l][l2 + size_]:
++                    break
++                cross.append(l * max_x + l2 + size_)
++                # below
++                if l + size_ >= max_y or not g[l + size_][l2]:
++                    break
++                cross.append((l + size_) * max_x + l2)
++                # add
++                pool.append(list(cross))  # clone
++                size_ += 1
++
++    pool.sort(key=lambda x: len(x), reverse=True)
++    tests = 0
++    if len(pool) > 1:
++        #print(f"pool:")
++        #for set_ in pool:
++        #    print(f"{len(set_)} | {set_}")
++
++        l_pool = len(pool)
++        for l in range(0, l_pool):
++            for l2 in range(l + 1, l_pool):
++                l_prod = len(pool[l]) * len(pool[l2])
++                if l_prod <= max_:
++                    break
++                tests += 1
++                overlaps = False
++                for c in pool[l]:
++                    if c in pool[l2]:
++                        overlaps = True
++                if not overlaps:
++                    max_ = l_prod
++
++    print(f"max: {max_}, tests: {tests}")
++    return max_
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
