@@ -1,0 +1,26 @@
+From 23504a9527e78922c8866b088f0111f8dbca06e1 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 7 Jul 2019 23:43:45 +0100
+Subject: [fix] hackerrank, 'ema's super computer', python port
+
+-wrong idx, duplication error in port
+---
+ .../ema's.supercomputer.py                                      | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.ema's.supercomputer/ema's.supercomputer.py b/hackerrank/algorithms.-.implementation.-.medium.-.ema's.supercomputer/ema's.supercomputer.py
+index 02a464d..3b2d843 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.ema's.supercomputer/ema's.supercomputer.py
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.ema's.supercomputer/ema's.supercomputer.py
+@@ -43,7 +43,7 @@ def twoPluses(grid):
+     pool = []
+     size_ = 0
+     for l in range(0, max_y):
+-        for l2 in range(0, max_y):
++        for l2 in range(0, max_x):
+             if not g[l][l2]:
+                 continue
+             cross = []
+-- 
+2.23.0
+
