@@ -1,0 +1,120 @@
+From 3b7bc9fed23992e62c1053ca125c9b40c9ff2005 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 8 Jul 2019 10:38:15 +0100
+Subject: [add] hackerrank, 'ema's super computer', javascript port
+
+---
+ .../ema's.supercomputer.js                    | 96 ++++++++++++++++++-
+ 1 file changed, 95 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.ema's.supercomputer/ema's.supercomputer.js b/hackerrank/algorithms.-.implementation.-.medium.-.ema's.supercomputer/ema's.supercomputer.js
+index 3ca9d67..deff806 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.ema's.supercomputer/ema's.supercomputer.js
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.ema's.supercomputer/ema's.supercomputer.js
+@@ -26,8 +26,102 @@ function readLine() {
+ 
+ // Complete the twoPluses function below.
+ function twoPluses(grid) {
++    // create bool grid
++    // iterate each element
++    // whiz around borders, get max extents, append each level of coord sets
++    // e.g
++    // idx | co-ord(s)
++    // 0 | [(1,1)]
++    // 1 | [(1,1),(0,1),(1,0),(1,2),(2,1)]
++    // fail on incomplete circuit
++    // append each possible 'cross from center co-ord' set to a pool
++    // sort pool by length of sets
++    // find largest non intersecting pair product
++    // e.g. item 1 len 10, iterate all item2 under size Y=5 found, no need to look further
++    //      item 1_2 len 10, .. Y=6  (now no searches below Y=6 etc.
++    //      ..
++    //      item 1_4 len 8, ..short-circuit if item2_x length <= int(10*6 / 8)
++    //      ..
++    //      item 1_12 len 8, Y=9 ..greater max
++    // rev. use single unique int as opposed to y,x coord
++    let max_ = 0;
++    let max_y = grid.length;
++    let max_x = grid[0].length;
++    let g = new Array(max_y).fill(0).map(_ => new Array(max_x).fill(0));
++    for (let l = 0; l < max_y; l++) {
++        for (let l2 = 0; l2 < grid[l].length; l2++) {
++            //console.log(`considering: y:${l},x:${l2} '${grid[l].substring(l2, l2 + 1)}`);
++            if (grid[l].substring(l2, l2 + 1) === 'G')
++                g[l][l2] = 1;
++        }
++    }
+ 
+-
++    //console.log(g);
++
++    let pool = [];
++    let size_;
++    for (let l = 0; l < max_y; l++) {
++        for (let l2 = 0; l2 < max_x; l2++) {
++            if (!g[l][l2])
++                continue;
++            let cross = [];
++            cross.push(l * max_x + l2);
++            pool.push(cross.slice(0));  // clone
++            size_ = 1;
++            while (true) {
++                // test for valid cross of size..
++                // above
++                if (l - size_ < 0 || !g[l - size_][l2])
++                    break;
++                cross.push((l - size_) * max_x + l2);
++                // left
++                if (l2 - size_ < 0 || !g[l][l2 - size_])
++                    break;
++                cross.push(l * max_x + l2 - size_);
++                // right
++                if (l2 + size_ >= max_x || !g[l][l2 + size_])
++                    break;
++                cross.push(l * max_x + l2 + size_);
++                // below
++                if (l + size_ >= max_y || !g[l + size_][l2])
++                    break;
++                cross.push((l + size_) * max_x + l2);
++                // add
++                pool.push(cross.slice(0));  // clone
++                size_++;
++            }
++        }
++    }
++    pool = pool.sort((x, y) => { return x.length === y.length ? 0 : (x.length < y.length ? 1 : -1); });
++    //console.log(pool);
++    let tests = 0;
++    if (pool.length > 1) {
++        //console.log("pool:");
++        //for (let l = 0; l < pool.length; l++)
++        //    console.log(`${pool[l].length} | ${pool[l]}`);
++        let l_pool = pool.length;
++        let l_prod;
++        for (let l = 0; l < l_pool; l++) {
++            for (let l2 = l + 1; l2 < l_pool; l2++) {
++                l_prod = pool[l].length * pool[l2].length;
++                if (l_prod <= max_)
++                    break;
++                tests++;
++                // short-circuit on intersection immediately
++                let overlaps = false;
++                for (let l3 = 0; l3 < pool[l].length; l3++) {
++                    if (pool[l2].indexOf(pool[l][l3]) > -1) {
++                        overlaps = true;
++                        break;
++                    }
++                }
++                if (!overlaps)
++                    max_ = l_prod;
++            }
++        }
++    }
++    console.log(`max: ${max_}, tests: ${tests}`);
++    return max_;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
