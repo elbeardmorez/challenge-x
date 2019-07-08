@@ -1,0 +1,27 @@
+From 7dcabcc3c19eb265f2846dc9df549367099e0b44 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 8 Jul 2019 09:25:07 +0100
+Subject: [fix] hackerrank, 'ema's super computer', c++ solution
+
+-somehow got away with this 'wrong idx / extent' bug should have, and
+which would ultimately have resulted in a memory access segfault
+---
+ .../ema's.supercomputer.cpp                                     | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.ema's.supercomputer/ema's.supercomputer.cpp b/hackerrank/algorithms.-.implementation.-.medium.-.ema's.supercomputer/ema's.supercomputer.cpp
+index 829aab8..977ccd5 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.ema's.supercomputer/ema's.supercomputer.cpp
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.ema's.supercomputer/ema's.supercomputer.cpp
+@@ -39,7 +39,7 @@ int twoPluses(vector<string> grid) {
+     vector<vector<int>> pool;
+     int size_;
+     for (int l = 0; l < max_y; l++) {
+-        for (int l2 = 0; l2 < max_y; l2++) {
++        for (int l2 = 0; l2 < max_x; l2++) {
+             if (!g[l][l2])
+                 continue;
+             vector<int> cross;
+-- 
+2.23.0
+
