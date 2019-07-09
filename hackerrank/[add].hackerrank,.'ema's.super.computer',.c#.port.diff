@@ -1,0 +1,125 @@
+From 6984056746db8551503c4cc7996b0d32f2417ea2 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 9 Jul 2019 07:09:46 +0100
+Subject: [add] hackerrank, 'ema's super computer', c# port
+
+---
+ .../ema's.supercomputer.cs                    | 96 +++++++++++++++++++
+ 1 file changed, 96 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.ema's.supercomputer/ema's.supercomputer.cs b/hackerrank/algorithms.-.implementation.-.medium.-.ema's.supercomputer/ema's.supercomputer.cs
+index 52db837..db61874 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.ema's.supercomputer/ema's.supercomputer.cs
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.ema's.supercomputer/ema's.supercomputer.cs
+@@ -12,12 +12,108 @@ using System.Text.RegularExpressions;
+ using System.Text;
+ using System;
+ 
++using static System.Console;
++
+ class Solution {
+ 
+     // Complete the twoPluses function below.
+     static int twoPluses(string[] grid) {
++        // create bool grid
++        // iterate each element
++        // whiz around borders, get max extents, append each level of coord sets
++        // e.g
++        // idx | co-ord(s)
++        // 0 | [(1,1)]
++        // 1 | [(1,1),(0,1),(1,0),(1,2),(2,1)]
++        // fail on incomplete circuit
++        // append each possible 'cross from center co-ord' set to a pool
++        // sort pool by length of sets
++        // find largest non intersecting pair product
++        // e.g. item 1 len 10, iterate all item2 under size Y=5 found, no need to look further
++        //      item 1_2 len 10, .. Y=6  (now no searches below Y=6 etc.
++        //      ..
++        //      item 1_4 len 8, ..short-circuit if item2_x length <= int(10*6 / 8)
++        //      ..
++        //      item 1_12 len 8, Y=9 ..greater max
++        // rev. use single unique int as opposed to y,x coord
++        var max_ = 0;
++        var max_y = grid.Length;
++        var max_x = grid[0].Length;
++        var g = new int[max_y, max_x];
++        for (var l = 0; l < max_y; l++) {
++            for (var l2 = 0; l2 < grid[l].Length; l2++) {
++                WriteLine($"considering: y:{l},x:{l2} '{grid[l].Substring(l2, 1)}");
++                if (grid[l].Substring(l2, 1) == "G")
++                    g[l, l2] = 1;
++            }
++        }
+ 
++        //WriteLine(g);
+ 
++        var pool = new List<List<int>>();
++        var size_ = 0;
++        for (var l = 0; l < max_y; l++) {
++            for (var l2 = 0; l2 < max_x; l2++) {
++                if (g[l, l2] == 0)
++                    continue;
++                var cross = new List<int>();
++                cross.Add(l * max_x + l2);
++                pool.Add(new List<int>(cross.ToArray()));  // clone
++                size_ = 1;
++                while (true) {
++                    // test for valid cross of size..
++                    // above
++                    if (l - size_ < 0 || g[l - size_, l2] == 0)
++                        break;
++                    cross.Add((l - size_) * max_x + l2);
++                    // left
++                    if (l2 - size_ < 0 || g[l, l2 - size_] == 0)
++                        break;
++                    cross.Add(l * max_x + l2 - size_);
++                    // right
++                    if (l2 + size_ >= max_x || g[l, l2 + size_] == 0)
++                        break;
++                    cross.Add(l * max_x + l2 + size_);
++                    // below
++                    if (l + size_ >= max_y || g[l + size_, l2] == 0)
++                        break;
++                    cross.Add((l + size_) * max_x + l2);
++                    // add
++                    pool.Add(new List<int>(cross.ToArray()));  // clone
++                    size_++;
++                }
++            }
++        }
++        pool.Sort((x, y) => { return x.Count == y.Count ? 0 : (x.Count < y.Count ? 1 : -1); });
++        WriteLine(pool);
++        var tests = 0;
++        if (pool.Count > 1) {
++            WriteLine("pool:");
++            for (var l = 0; l < pool.Count; l++)
++                WriteLine($"{pool[l].Count} | {String.Join(" ", pool[l].Select(x => x.ToString()))}");
++            var l_pool = pool.Count;
++            var l_prod = 1;
++            for (var l = 0; l < l_pool; l++) {
++                for (var l2 = l + 1; l2 < l_pool; l2++) {
++                    l_prod = pool[l].Count * pool[l2].Count;
++                    if (l_prod <= max_)
++                        break;
++                    tests++;
++                    // short-circuit on intersection immediately
++                    var overlaps = false;
++                    for (var l3 = 0; l3 < pool[l].Count; l3++) {
++                        if (pool[l2].Contains(pool[l][l3])) {
++                            overlaps = true;
++                            break;
++                        }
++                    }
++                    if (!overlaps)
++                        max_ = l_prod;
++                }
++            }
++        }
++        WriteLine($"max: {max_}, tests: {tests}");
++        return max_;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
