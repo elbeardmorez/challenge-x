@@ -1,0 +1,60 @@
+From 079b96abb6730faecd88efa0d2d0364a23ecb46d Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 10 Jul 2019 09:40:50 +0100
+Subject: [fix] hackerrank, 'larry's array', javascript solution
+
+-overwriting array at the wrong (non-sparse) index
+-no-op index switch code
+---
+ .../larry's.array.js                             | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.larry's.array/larry's.array.js b/hackerrank/algorithms.-.implementation.-.medium.-.larry's.array/larry's.array.js
+index ae664e0..f751cec 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.larry's.array/larry's.array.js
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.larry's.array/larry's.array.js
+@@ -57,6 +57,7 @@ function larrysArray(A) {
+     //console.log(`sort: ${As}`);
+     let n = A.length;
+     let idx = -1;
++    let idx_sparse = -1;
+     let l_tmp = -1;
+     let l = -1;
+     let target = -1;
+@@ -64,14 +65,15 @@ function larrysArray(A) {
+         target = As[l_s];
+         // get idx in 'sparse array'
+         idx = 0;
+-        l = 0;
++        idx_sparse = 0;
+         while (true) {
+-            if (A[l] === target)
++            if (A[idx_sparse] === target)
+                 break;
+-            else if (A[l] > 0)
++            else if (A[idx_sparse] > 0)
+                 idx++;
+-            l++;
++            idx_sparse++;
+         }
++        //console.log(`target: ${target}, found at idx: ${idx}`);
+         // effect of removal on special lead rotation
+         if (idx < 3) {
+             if (idx === 0) {
+@@ -102,10 +104,10 @@ function larrysArray(A) {
+             if (idx % 3 === 1) {
+                 // switch -1 and +1 idxs
+                 l_tmp = A[0];
+-                A[1] = A[1];
+-                A[0] = l_tmp;
++                A[0] = A[1];
++                A[1] = l_tmp;
+             }
+-            A[idx] = -1;
++            A[idx_sparse] = -1;
+             //console.log(`step: ${A}`);
+         }
+     }
+-- 
+2.23.0
+
