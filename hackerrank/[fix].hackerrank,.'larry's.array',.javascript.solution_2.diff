@@ -1,0 +1,44 @@
+From 76ff5485e3c77ec9140b660e1d93cdcd84af8d54 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 10 Jul 2019 10:05:54 +0100
+Subject: [fix] hackerrank, 'larry's array', javascript solution
+
+-wrong modulus for switch test
+---
+ .../larry's.array.js                                  | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.larry's.array/larry's.array.js b/hackerrank/algorithms.-.implementation.-.medium.-.larry's.array/larry's.array.js
+index f751cec..12234bc 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.larry's.array/larry's.array.js
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.larry's.array/larry's.array.js
+@@ -52,7 +52,7 @@ function larrysArray(A) {
+ 
+     */
+ 
+-    //console.log(`init: ${A}`);
++    //console.log(`\n\ninit: ${A}`);
+     let As = A.slice(0).sort((x, y) => x === y ? 0 : (parseInt(x) > parseInt(y) ? 1 : -1));
+     //console.log(`sort: ${As}`);
+     let n = A.length;
+@@ -97,11 +97,14 @@ function larrysArray(A) {
+                 }
+             }
+             //console.log(`step: ${A}`);
+-            if (!set_)
++            if (!set_) {
+                 // decide!
+-                return A[0] < A[1] ? "YES" : "NO";
++                let res = A[0] < A[1] ? "YES" : "NO";
++                //console.log(`res: ${res}`);
++                return res;
++            }
+         } else {
+-            if (idx % 3 === 1) {
++            if (idx % 2 === 1) {
+                 // switch -1 and +1 idxs
+                 l_tmp = A[0];
+                 A[0] = A[1];
+-- 
+2.23.0
+
