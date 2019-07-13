@@ -1,0 +1,118 @@
+From fb42e5ba8811464b50d71ba7cd2009015f8cbf52 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 13 Jul 2019 09:20:01 +0100
+Subject: [add] hackerrank, 'larry's array', c# port
+
+---
+ .../larry's.array.cs                          | 89 +++++++++++++++++++
+ 1 file changed, 89 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.larry's.array/larry's.array.cs b/hackerrank/algorithms.-.implementation.-.medium.-.larry's.array/larry's.array.cs
+index dab0f29..c417b2d 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.larry's.array/larry's.array.cs
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.larry's.array/larry's.array.cs
+@@ -12,12 +12,101 @@ using System.Text.RegularExpressions;
+ using System.Text;
+ using System;
+ 
++using static System.Console;
++
+ class Solution {
+ 
+     // Complete the larrysArray function below.
+     static string larrysArray(int[] A) {
++        /*
++
++        boils down to length and whether the final necessary rotation is possible
++
++        0 rotations  -> c b a
++        1 rotation   c b a -> b a c
++        2 rotations  b a c -> a c b ..impossible
++
++        ..hence you're just moving the first item through the array with no affect on the other two
++        ..up until the last 3
++
++        0 rotations  -> e d c b a
++        x rotations  -> a b c e d ..impossible
+ 
++        what is the affect of x moving to the front?
+ 
++        it can jump -2 with no affect
++        if there's only one space left, jump 1, switch -1 and +1 and jump -1
++
++        implementation
++        how to pull each x out of array A_n
++
++        consider the lead 3 idxs a special 'next' subset, keep populated until only 3 remain, then deduce
++
++        */
++
++        //WriteLine($"\n\ninit: {A.Select(x => x.ToString())}");
++        var As = A.OrderBy(x => x).ToList();
++        //WriteLine($"sort: {As.Select(x => x.ToString())}");
++        int n = A.Length;
++        int idx = -1;
++        int idx_sparse = -1;
++        int l_tmp = -1;
++        int l = -1;
++        int target = -1;
++        for (int l_s = 0; l_s < n; l_s++) {
++            target = As[l_s];
++            // get idx in 'sparse array'
++            idx = 0;
++            idx_sparse = 0;
++            while (true) {
++                if (A[idx_sparse] == target)
++                    break;
++                else if (A[idx_sparse] > 0)
++                    idx++;
++                idx_sparse++;
++            }
++            //WriteLine($"target: ${target}, found at idx: ${idx}");
++            // effect of removal on special lead rotation
++            if (idx < 3) {
++                if (idx == 0) {
++                    A[0] = A[1];
++                    A[1] = A[2];
++                } else if (idx == 1) {
++                    l_tmp = A[0];
++                    A[0] = A[2];
++                    A[1] = l_tmp;
++                }
++                A[2] = -1;
++                // re-populate next[2]?
++                var set_ = false;
++                for (l = 3; l < n; l++) {
++                    //WriteLine($"searching: idx ${l} = ${A[l]}");
++                    if (A[l] > 0) {
++                        A[2] = A[l];
++                        A[l] = -1;
++                        set_ = true;
++                        break;
++                    }
++                }
++                //WriteLine($"step: {A.Select(x => x.ToString())}");
++                if (!set_) {
++                    // decide!
++                    var res = A[0] < A[1] ? "YES" : "NO";
++                    //WriteLine($"res: ${res}");
++                    return res;
++                }
++            } else {
++                if (idx % 2 == 1) {
++                    // switch -1 and +1 idxs
++                    l_tmp = A[0];
++                    A[0] = A[1];
++                    A[1] = l_tmp;
++                }
++                A[idx_sparse] = -1;
++                //WriteLine($"step: {A.Select(x => x.ToString())}");
++            }
++        }
++        return "NO";
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
