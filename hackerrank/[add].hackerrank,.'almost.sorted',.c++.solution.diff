@@ -1,0 +1,105 @@
+From 48b5cca0feafa17243d48c435018a9a36d19640c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 14 Jul 2019 08:02:27 +0100
+Subject: [add] hackerrank, 'almost sorted', c++ solution
+
+---
+ .../almost.sorted.cpp                         | 81 ++++++++++++++++++-
+ 1 file changed, 80 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.almost.sorted/almost.sorted.cpp b/hackerrank/algorithms.-.implementation.-.medium.-.almost.sorted/almost.sorted.cpp
+index d341819..0542bd7 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.almost.sorted/almost.sorted.cpp
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.almost.sorted/almost.sorted.cpp
+@@ -6,8 +6,87 @@ vector<string> split_string(string);
+ 
+ // Complete the almostSorted function below.
+ void almostSorted(vector<int> arr) {
++    /*
++    sorted | "yes"
++    sortable | "swap l r"
++    sortable | "reverse l r"
++    unsortable | "no"
++    */
++
++    cout << "considering set:"; for (auto itr = arr.begin(); itr != arr.end(); ++itr) cout << " " << *itr; cout << endl;
++
++    int l_a = arr.size();
++    int direction = 1;
++    vector<int> non_monotonic;
++    for (int l = 1; l < arr.size(); l++) {
++        if (direction > 0 && arr[l] < arr[l - 1]) {
++            cout << "non-monotonic @ idx: " << l << endl;
++            non_monotonic.push_back(l);
++            direction = -1;
++            if (non_monotonic.size() > 2)
++                break;
++        } else if (direction < 0 && arr[l] > arr[l - 1]) {
++            cout << "non-monotonic @ idx: " << l << endl;
++            non_monotonic.push_back(l);
++            direction = 1;
++            if (non_monotonic.size() > 2)
++                break;
++        }
++    }
+ 
+-
++    if (non_monotonic.size() == 0)
++        cout << "yes" << endl;
++    else if (non_monotonic.size() == 1) {
++        if (l_a == 2) {
++            cout << "yes\nswap " << 0 + 1 << " " << 1 + 1 << endl;
++        } else if (l_a == 3) {
++            if (non_monotonic[0] == 1) {
++                if (arr[0] > arr[1] && arr[2] < arr[1])
++                    cout << "yes\nswap " << 0 + 1 << " " << 2 + 1 << endl;
++                else
++                    cout << "no" << endl;
++            } else { //  idx = 2
++               if (arr[2] > arr[0])
++                    cout << "yes\nswap " << 1 + 1 << " " << 2 + 1 << endl;
++                else
++                    cout << "no" << endl;
++            }
++        } else if (l_a > 3) {
++            // reverse required
++            if (non_monotonic[0] == 1 ||
++                arr[non_monotonic[0] - 2] < arr[l_a - 1])
++                cout << "yes\nreverse " << non_monotonic[0] - 1 + 1 << " " << l_a - 1 + 1 << endl;
++            else
++                cout << "no" << endl;
++        }
++    } else if (non_monotonic.size() == 2) {
++        // swap or reverse
++        if (non_monotonic[1] - non_monotonic[0] == 1) {
++            if (arr[non_monotonic[0] - 1] < arr[non_monotonic[1]] &&
++                (non_monotonic[1] == l_a - 1 || arr[non_monotonic[0]] < arr[non_monotonic[1] + 1]))
++                cout << "yes\nswap " << non_monotonic[0] - 1 + 1 << " " << non_monotonic[1] - 1 + 1 << endl;
++            else
++                cout << "no" << endl;
++        } else {
++            if (arr[non_monotonic[0] - 1] > arr[non_monotonic[0]] &&
++                arr[non_monotonic[0]] > arr[non_monotonic[0] + 1]) {
++                // reverse
++                if (arr[non_monotonic[0] - 1] < arr[non_monotonic[1]] &&
++                    (non_monotonic[1] == l_a - 1 || arr[non_monotonic[0]] < arr[non_monotonic[1] + 1]))
++                    cout << "yes\nreverse " << non_monotonic[0] - 1 + 1 << " " << non_monotonic[1] - 1 + 1 << endl;
++                else
++                    cout << "no" << endl;
++            } else {
++                // swap
++                if (arr[non_monotonic[0] - 1] < arr[non_monotonic[1]] &&
++                    (non_monotonic[1] == l_a - 1 || arr[non_monotonic[0]] < arr[non_monotonic[1] + 1]))
++                    cout << "yes\nswap " << non_monotonic[0] - 1 + 1 << " " << non_monotonic[1] - 1 + 1 << endl;
++                else
++                    cout << "no" << endl;
++            }
++        }
++    } else if (non_monotonic.size() > 2)
++        cout << "no" << endl;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
