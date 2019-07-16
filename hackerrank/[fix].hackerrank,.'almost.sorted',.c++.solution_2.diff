@@ -1,0 +1,48 @@
+From 2df702b56e005259cd8bef5420ce549c0d978ae6 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 16 Jul 2019 07:48:22 +0100
+Subject: [fix] hackerrank, 'almost sorted', c++ solution
+
+-premature return
+-ignore inflection after non-adjacent swap
+---
+ .../almost.sorted.cpp                               | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.almost.sorted/almost.sorted.cpp b/hackerrank/algorithms.-.implementation.-.medium.-.almost.sorted/almost.sorted.cpp
+index 711baba..55610ce 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.almost.sorted/almost.sorted.cpp
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.almost.sorted/almost.sorted.cpp
+@@ -33,7 +33,7 @@ void almostSorted(vector<int> arr) {
+ 
+     */
+ 
+-    //cout << "[debug] considering set:"; for (auto itr = arr.begin(); itr != arr.end(); ++itr) cout << " " << *itr; cout << endl;
++    ////cout << "[debug] considering set:"; for (auto itr = arr.begin(); itr != arr.end(); ++itr) cout << " " << *itr; cout << endl;
+ 
+     int l_a = arr.size();
+     vector<int> inflections;
+@@ -174,13 +174,16 @@ void almostSorted(vector<int> arr) {
+                             right = l;
+                             if (((left == 0 || arr[left - 1] < arr[right]) && arr[left + 1] > arr[right]) &&
+                                 (arr[right - 1] < arr[left] && (right == l_a - 1 || arr[right + 1] > arr[left]))) {
+-                                // 1 3 5 10 7 8 12 |6| 11  left=10
+-                                cout << "yes\nswap " << left + 1 << " " << right + 1 << endl;
++                                // 4 5 9 7 8 6 |12|  left=[2]9
++                                // 1 3 5 10 7 8 12 |6| 11  left=[3]10
++                                swapped = true;
++                                //cout << "[debug] ignoring next inflection" << endl;
++                                continue;
+                             } else {
+-                                //cout << "[debug] illegal swap";
++                                //cout << "[debug] illegal swap" << endl;
+                                 cout << "no" << endl;
++                                return;
+                             }
+-                            return;
+                         }
+                     }
+                 }
+-- 
+2.23.0
+
