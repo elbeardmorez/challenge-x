@@ -1,0 +1,265 @@
+From cb829d6f7001c64c97f2846ec1a5f73029c9b6de Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 18 Jul 2019 09:18:41 +0100
+Subject: [add] hackerrank, 'almost sorted', python port
+
+---
+ .../almost.sorted.py                          | 242 ++++++++++++++++++
+ 1 file changed, 242 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.almost.sorted/almost.sorted.py b/hackerrank/algorithms.-.implementation.-.medium.-.almost.sorted/almost.sorted.py
+index ccdb7ce..4b85234 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.almost.sorted/almost.sorted.py
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.almost.sorted/almost.sorted.py
+@@ -8,6 +8,248 @@ import sys
+ 
+ # Complete the almostSorted function below.
+ def almostSorted(arr):
++    """
++    sorted | "yes"
++    sortable | "swap l r"
++    sortable | "reverse l r"
++    unsortable | "no"
++
++    // 1 2 5 4 3 13
++    1 2 5 | 4 .. but the previous (5) MUST be after, so include it in the decreasing run
++    1 2 | 5 4 3 | 13 here we look at previous increasing run, the endpoint (2) must be < 3 AND 5 < 13
++    ..then based on size of negative run, either swap (<=3) or reverse (>3)
++
++    // 1 2 55 4 6 13 1 15
++    1 2 55 | 4 .. but .. ""      ""
++    1 2 | 55 4 | 6 .. but a negative run of size 2 is actually a single swap digit
++    1 2 | 55 | 4 6 13 | 1
++
++    // 4 5 9 7 8 6 12
++    4 5 9 | 7 .. but 8 is increasing
++        either 9 is a mistake, or 7 is a mistake
++        should it be: 4 5 | 9 | 7 8 or
++                      4 5 9 | 7 | 8
++        4 5 | 9 | 7
++
++    // 4 5 9 7 11 16 18
++
++    """
++    #//#print(f"[debug] considering set: {arr}")
++
++    l_a = len(arr)
++    inflections = []
++    reversal_required = False
++    reversed = False
++    swap_required = False
++    swapped = False
++    left = -1
++    right = -1
++
++    last = 0
++    last_set = False
++
++    # simplify main algorithm by removing short edge cases:
++    if l_a == 2:
++        if arr[0] < arr[1]:
++            print(f"yes")
++        else:
++            print(f"yes\nswap 1 2")
++        return
++    elif l_a == 3:
++        if arr[0] < arr[1] and arr[1] < arr[2]:
++            # 1 2 3
++            print(f"yes")
++        elif arr[0] > arr[1] and arr[1] > arr[2]:
++            # 3 2 1
++            print(f"yes\nswap 1 3")
++        elif arr[0] < arr[2] and arr[1] > arr[2]:
++            # 1 3 2
++            print(f"yes\nswap 2 3")
++        else:
++            # 2 3 1
++            print(f"no")
++        return
++
++    direction = 1 if arr[1] > arr[0] else -1
++    if direction == -1:
++        reversal_required = True
++        left = 0
++
++    # 4 5 9 | 7 | 8 | 6 | 12
++    # 4 5 9 | 7
++    #            7 HAS to move left of 9
++    #            can i swap 7 with 9 ? no, 9 > 8
++    #            only other way is swap 9 for something else:
++
++    #print(f"[debug] initial direction: {direction}")
++    for l in range(1, len(arr)):
++        ##print(f"[debug] l: {l}, comparing {arr[l]} with previous {arr[l - 1]}")
++        if direction > 0 and arr[l] < arr[l - 1]:
++            # inflection
++            #print(f"[debug] @ [{l}]{arr[l]}, now {('de' if direction == 1 else 'in')}creasing, last: {last}, swap_required: {swap_required}, reversal_required: {reversal_required}")
++
++            if swapped or reversed:
++                #print(f"[debug] inversion @ [{l}]{arr[l]}, but already swapped / reversed")
++                print(f"no")
++                return
++
++            last_set = False
++            if l == l_a - 1:
++                # inflection on final item
++                if swap_required:
++                    # validate swap
++                    if l - left == 1 and arr[left - 1] < arr[l]:
++                        # adjacent
++                        right = l
++                        print(f"yes\nswap {left + 1} {right + 1}")
++                    elif arr[left] > arr[l - 1] and \
++                            arr[left + 1] > arr[l] and \
++                            (left == 0 or arr[left - 1] < arr[l]):
++                        right = l
++                        print(f"yes\nswap {left + 1} {right + 1}")
++                    else:
++                        #print(f"[debug] last item inversion, impossible swap")
++                        print(f"no")
++
++                else:
++                    # 1 2 4 8 7
++                    # swap with previous only possibility
++                    if arr[l - 2] < arr[l]:
++                        print(f"yes\nswap {l - 1 + 1} {l + 1}")
++                    else:
++                        #print(f"[debug] last item inversion, impossible swap")
++                        print(f"no")
++
++                return
++            else:
++                # we can peek forward:
++                direction2 = (arr[l + 1] - arr[l]) / abs((arr[l + 1] - arr[l]))
++                #if l - last == 1:
++                if direction2 == direction:
++                    # next item restores the current direction
++                    if (arr[l - 1] < arr[l + 1]) and \
++                        (l < 2 or arr[l - 2] < arr[l]):
++                        # adjacent swap
++                        # 4 5 9 |7| 11 16 18
++                        left = l - 1
++                        last = l - 1
++                        last_set = True
++                        swap_required = 1
++                        #right = l
++                        #swapped = True
++                    elif arr[l + 1] < arr[l - 1]:
++                         # 1 3 6 10 |7| 8
++                         # 1 3 6 10 |5| 8
++                         # next restores increasing direction but l can't be swapped out so l - 1 MUST move or else die:
++                         if l <= 1 or arr[l] > arr[l - 2]:
++                             if not swap_required:
++                                 # 1 3 6 10 |7| 8
++                                 left = l - 1
++                                 swap_required = True
++                                 last = left
++                                 last_set = True
++                             else:
++                                 # 1 3 5 10 7 8 12 |6| 11  left=10
++                                 #print(f"[debug] single error, impossible to rectify self a second time..")
++                                 print(f"no")
++                                 return
++
++                         else:
++                             # 1 3 6 10 |5| 8
++                             #print(f"[debug] cannot swap [{l}]{arr[l]} or [{l - 1}]{arr[l - 1]}")
++                             print(f"no")
++                             return
++
++                    else:
++                        # l can swap out
++                        if not swap_required:
++                            left = l
++                            swap_required = True
++                            last = left
++                            last_set = True
++                        else:
++                            # legal swap?
++                            right = l
++                            if ((left == 0 or arr[left - 1] < arr[right]) and arr[left + 1] > arr[right]) and \
++                                (arr[right - 1] < arr[left] and (right == l_a - 1 or arr[right + 1] > arr[left])):
++                                # 4 5 9 7 8 6 |12|  left=[2]9
++                                # 1 3 5 10 7 8 12 |6| 11  left=[3]10
++                                swapped = True
++                                #print(f"[debug] ignoring next inflection")
++                                continue
++                            else:
++                                #print(f"[debug] illegal swap")
++                                print(f"no")
++                                return
++
++            inflections.append(l)
++            direction *= -1
++            if not last_set:
++                last = l
++        elif direction < 0 and arr[l] > arr[l - 1]:
++            # inflection
++            #print(f"[debug] @ [{l}]{arr[l]}, now {('de' if direction == 1 else 'in')}creasing, last: {last}, swap_required: {swap_required}, reversal_required: {reversal_required}")
++            if swapped or reversed:
++                #print(f"[debug] inversion @ [{l}]{arr[l]}, but already swapped / reversed")
++                print(f"no")
++                return
++
++            if swap_required:
++                right = l - 1
++                if right - left == 1:
++                    # adjacent swap possible ?
++                    # 4 5 9 7 |11| 16 18 | yes
++                    # [11]894947 [12]125082 |[13]137123| [14]137276 left: 11  | no
++                    if arr[left - 1] < arr[l] and \
++                        (last == 0 or arr[left] < arr[right + 1]):
++                        swapped = True
++
++
++            elif not swap_required and l - last > 1:
++                # range reversal possible?
++                reversal_required = True
++                # 10 9 8 7 15 16
++                left = last - 1
++                right = l - 1
++                if arr[left - 1] < arr[l] and \
++                    (last == 0 or arr[left - 1] < arr[right]):
++                    reversed = True
++                else:
++                    #print(f"[debug] inversion @ [{l}]{arr[l]}, but impossible reversal required")
++                    print(f"no")
++                    return
++
++            inflections.append(l)
++            direction *= -1
++            last = l
++
++    #print(f"[debug] end")
++    if swapped:
++        # single valid swap and made it to the end without further anomalies
++        print(f"yes\nswap {left + 1} {right + 1}")
++    elif reversed:
++        # single valid reverse and made it to the end without further anomalies
++        print(f"yes\nreverse {left + 1} {right + 1}")
++    elif len(inflections) == 0:
++        # dependent up last idx
++        if direction > 0:
++            # 1 2 3 4
++            print(f"yes")
++        else:
++            # 10 9 8 7  // full reverse
++            print(f"yes\nreverse 1 {l_a}")
++    elif len(inflections) == 1 and direction == -1:
++        # decreasing subset to end
++        left = last - 1
++        right = l_a - 1
++        if arr[right] > arr[left - 1]:
++            print(f"yes\nreverse {last - 1 + 1} {l_a - 1 + 1}")
++        else:
++            #print(f"[debug] impossible reversal, incompatible end-points")
++            print(f"no")
++
++    else:
++        print(f"no")
+ 
+ if __name__ == '__main__':
+     n = int(input())
+-- 
+2.23.0
+
