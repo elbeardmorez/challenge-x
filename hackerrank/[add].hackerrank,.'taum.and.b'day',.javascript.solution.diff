@@ -1,0 +1,45 @@
+From 5676e1906677d132d154f0d25c7d5a8f85388702 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 26 Jul 2019 08:30:42 +0100
+Subject: [add] hackerrank, 'taum and b'day', javascript solution
+
+---
+ .../taum.and.b'day.js                         | 22 +++++++++++++++++++
+ 1 file changed, 22 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.taum.and.b'day/taum.and.b'day.js b/hackerrank/algorithms.-.implementation.-.easy.-.taum.and.b'day/taum.and.b'day.js
+index 179bbc0..4cffcd2 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.taum.and.b'day/taum.and.b'day.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.taum.and.b'day/taum.and.b'day.js
+@@ -36,6 +36,28 @@ function readLine() {
+ 
+ function taumBday(b, w, bc, wc, z) {
+     // Write your code here
++    let cost = (convert) => {
++        return (w + convert) * wc + Math.abs(convert) * z + (b - convert) * bc;
++    }
++
++    //console.log(`considering black: ${b}@${bc} vs white: ${w}@${wc} with conversion cost: ${z}`);
++
++    let min_cost = cost(0);
++    let conv = 0;
++    let direction = cost(-1) < cost(1) ? -1 : 1;
++
++    let next_ = 0;
++    while (true) {
++        conv += direction;
++        next_ = cost(conv);
++        //console.log(`min_cost: ${min_cost}, propose convert: ${conv} @ cost: ${next_}`);
++        if (next_ > min_cost || (
++           (direction == -1 && conv < (-1 * w)) ||
++           (direction == 1 && conv > b) ))
++            break;
++        min_cost = next_;
++    }
++    return min_cost;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
