@@ -1,0 +1,65 @@
+From 71e0cdf255f99abf2486c0d0f98e602107a03200 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 26 Jul 2019 09:05:15 +0100
+Subject: [mod] hackerrank, 'taum and b'day', javascript solution
+
+-switch to BigInts
+-remove unnecessary iteration, if reduction in minimum cost is
+achieved through one unit conversion, all units should be converted
+---
+ .../taum.and.b'day.js                         | 33 +++++++++----------
+ 1 file changed, 16 insertions(+), 17 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.taum.and.b'day/taum.and.b'day.js b/hackerrank/algorithms.-.implementation.-.easy.-.taum.and.b'day/taum.and.b'day.js
+index 4cffcd2..4b08931 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.taum.and.b'day/taum.and.b'day.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.taum.and.b'day/taum.and.b'day.js
+@@ -34,29 +34,28 @@ function readLine() {
+  *  5. INTEGER z
+  */
+ 
+-function taumBday(b, w, bc, wc, z) {
++function taumBday(b_, w_, bc_, wc_, z_) {
+     // Write your code here
++    let b = BigInt(b_);
++    let w = BigInt(w_);
++    let bc = BigInt(bc_);
++    let wc = BigInt(wc_);
++    let z = BigInt(z_);
++
+     let cost = (convert) => {
+-        return (w + convert) * wc + Math.abs(convert) * z + (b - convert) * bc;
++        return (w + convert) * wc + BigInt(Math.abs(parseInt(convert))) * z + (b - convert) * bc;
+     }
+ 
+     //console.log(`considering black: ${b}@${bc} vs white: ${w}@${wc} with conversion cost: ${z}`);
+ 
+-    let min_cost = cost(0);
+-    let conv = 0;
+-    let direction = cost(-1) < cost(1) ? -1 : 1;
+-
+-    let next_ = 0;
+-    while (true) {
+-        conv += direction;
+-        next_ = cost(conv);
+-        //console.log(`min_cost: ${min_cost}, propose convert: ${conv} @ cost: ${next_}`);
+-        if (next_ > min_cost || (
+-           (direction == -1 && conv < (-1 * w)) ||
+-           (direction == 1 && conv > b) ))
+-            break;
+-        min_cost = next_;
+-    }
++    let conv = 0n;
++    let min_cost = cost(conv);
++
++    if (cost(-1n) < min_cost)
++        min_cost = cost(-1n * w);
++    else if (cost(1n) < min_cost)
++        min_cost = cost(b);
++
+     return min_cost;
+ }
+ 
+-- 
+2.23.0
+
