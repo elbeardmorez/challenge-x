@@ -1,0 +1,44 @@
+From 24d5e91728d8d14bd9cc33d2c85db8657ae60dc7 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 27 Jul 2019 06:51:57 +0100
+Subject: [add] hackerrank, 'taum and b'day', python port
+
+---
+ .../taum.and.b'day.py                          | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.taum.and.b'day/taum.and.b'day.py b/hackerrank/algorithms.-.implementation.-.easy.-.taum.and.b'day/taum.and.b'day.py
+index f9fbbb5..9cff102 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.taum.and.b'day/taum.and.b'day.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.taum.and.b'day/taum.and.b'day.py
+@@ -18,9 +18,27 @@ import sys
+ #  5. INTEGER z
+ #
+ 
++
+ def taumBday(b, w, bc, wc, z):
+     # Write your code here
+ 
++    def cost(convert):
++        return (w + convert) * wc + abs(convert) * z + (b - convert) * bc
++
++
++    #print(f"considering black: {b}@{bc} vs white: {w}@{wc} with conversion cost: {z}")
++
++    conv = 0
++    min_cost = cost(conv)
++
++    if cost(-1) < min_cost:
++        min_cost = cost(-1 * w)
++    elif cost(1) < min_cost:
++        min_cost = cost(b)
++
++    return min_cost
++
++
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+ 
+-- 
+2.23.0
+
