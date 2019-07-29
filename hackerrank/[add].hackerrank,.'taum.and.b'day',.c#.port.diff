@@ -1,0 +1,40 @@
+From 8ad118551fb1fc25c4cedcfe98b3ca91db7b0f23 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 29 Jul 2019 09:02:19 +0100
+Subject: [add] hackerrank, 'taum and b'day', c# port
+
+---
+ .../taum.and.b'day.cs                             | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.taum.and.b'day/taum.and.b'day.cs b/hackerrank/algorithms.-.implementation.-.easy.-.taum.and.b'day/taum.and.b'day.cs
+index 997ab4f..74acbc5 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.taum.and.b'day/taum.and.b'day.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.taum.and.b'day/taum.and.b'day.cs
+@@ -27,8 +27,23 @@ class Result
+      *  5. INTEGER z
+      */
+ 
++    public delegate long funcCost(long convert);
++  
+     public static long taumBday(int b, int w, int bc, int wc, int z)
+     {
++        funcCost cost = (convert) =>  { return (w + convert) * wc + Math.Abs(convert) * z + (b - convert) * bc; };
++
++        //Console.WriteLine($"considering black: {b}@{bc} vs white: {w}@{wc} with conversion cost: {z}");
++
++        var conv = 0;
++        var min_cost = cost(conv);
++
++        if (cost(-1) < min_cost)
++            min_cost = cost(-1 * w);
++        else if (cost(1) < min_cost)
++            min_cost = cost(b);
++
++        return min_cost;
+     }
+ }
+ 
+-- 
+2.23.0
+
