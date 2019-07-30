@@ -1,0 +1,36 @@
+From b3979c56aaa9640e1885064c59bf11423248f352 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 30 Jul 2019 08:39:38 +0100
+Subject: [add] hackerrank, 'taum and b'day', c++ port
+
+---
+ .../taum.and.b'day.cpp                              | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.taum.and.b'day/taum.and.b'day.cpp b/hackerrank/algorithms.-.implementation.-.easy.-.taum.and.b'day/taum.and.b'day.cpp
+index 89d627d..59e288b 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.taum.and.b'day/taum.and.b'day.cpp
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.taum.and.b'day/taum.and.b'day.cpp
+@@ -20,6 +20,19 @@ vector<string> split(const string &);
+ 
+ long taumBday(int b, int w, int bc, int wc, int z) {
+ 
++    auto cost = [&](long convert) { return (w + convert) * wc + abs(convert) * z + (b - convert) * bc; };
++
++    //cout << "considering black: " << b << "@" << bc << " vs white: " << w << "@" << wc << " with conversion cost: " << z << endl;
++
++    long conv = 0;
++    long min_cost = cost(conv);
++
++    if (cost(-1) < min_cost)
++        min_cost = cost(-1 * w);
++    else if (cost(1) < min_cost)
++        min_cost = cost(b);
++
++    return min_cost;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
