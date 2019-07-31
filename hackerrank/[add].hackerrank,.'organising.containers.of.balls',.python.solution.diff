@@ -1,0 +1,83 @@
+From 5d915f91d7eda34540c22626ce30e5128ec1532c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 31 Jul 2019 08:02:01 +0100
+Subject: [add] hackerrank, 'organising containers of balls', python solution
+
+---
+ .../organising.containers.of.balls.py         | 60 +++++++++++++++++++
+ 1 file changed, 60 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.organising.containers.of.balls/organising.containers.of.balls.py b/hackerrank/algorithms.-.implementation.-.medium.-.organising.containers.of.balls/organising.containers.of.balls.py
+index c770e0b..f2eb9c9 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.organising.containers.of.balls/organising.containers.of.balls.py
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.organising.containers.of.balls/organising.containers.of.balls.py
+@@ -8,6 +8,66 @@ import sys
+ 
+ # Complete the organizingContainers function below.
+ def organizingContainers(container):
++    """
++    grid x y
++    a column represents the split of balls of a single type
++    swap elements vertically, if column A requires 4 moves to push all balls into the same row (container)
++    then 4 moves must be performed from the same row (container) in other columns (types)
++
++    10^9 number = 10 digits
++    2^31 number = 10 digits
++    n x n matrix n <= 100 ..so upto 12 digits > int32
++
++    try force a lead diagonal?
++
++    1 3 1
++    2 1 2  ->  no way that row 1 can be all type 2, as 4 have to be moved in (from rows 2 and 3) and there are
++    3 3 3      only two other typed balls in there to remove ..no balance. similarly with row2. but row 3? whilst
++               4 can go in and 4 can go out, it still leaves 2 of the wrong type in there
++
++    hence we need to find all the possible (valid) 'targets' (valid target rows) for a given type to amass, and then
++    determine whether these are all compatible
++
++    so sum all rows and all columns. for each x,y the sum of Cx,y - x,y must == Rx,y - x,y to be valid
++
++    identifying an impossible container is enough?? e.g. is there a container no type can exclusively exist in?
++    """
++
++    M = container
++    n = len(M)
++
++    #print("considering %dx%d matrix:\n%s" % (n, n, '\n'.join(["{}".format(r) for r in M])))
++
++    x, y = 0, 0
++    Ry, Cx = [0] * n, [0] * n
++    for y in range(n):
++        for x in range(n):
++            Cx[y] += M[y][x]
++            Ry[x] += M[y][x]
++
++    #print(f"row counts: {Ry}")
++    #print(f"column counts: {Cx}")
++
++    possible = []
++    in_, out_ = 0, 0
++
++    # for each container y..
++    for y in range(n):
++        # is type x exclusively existing in there possible?
++        possible.append([])
++        for x in range(n):
++            in_ = Cx[x] - M[y][x]
++            out_ = Ry[y] - M[y][x]
++            #print(f"[y,x]|[{y},{x}] in_: {in_}, out: '{out_}'")
++            if in_ == out_:
++                # container y can contain type x exclusively
++                possible[y].append(x)
++
++        if len(possible[y]) == 0:
++            #print(f"cannot exclusively collect any type in container {y+1}")
++            return "Impossible"
++
++    return "Possible"
+ 
+ 
+ if __name__ == '__main__':
+-- 
+2.23.0
+
