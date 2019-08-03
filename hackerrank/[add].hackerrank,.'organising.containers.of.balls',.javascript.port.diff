@@ -1,0 +1,87 @@
+From a20b27b0ab1e78721b075b37506cfd31576b8eab Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 3 Aug 2019 07:18:35 +0100
+Subject: [add] hackerrank, 'organising containers of balls', javascript port
+
+---
+ .../organising.containers.of.balls.js         | 62 +++++++++++++++++++
+ 1 file changed, 62 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.organising.containers.of.balls/organising.containers.of.balls.js b/hackerrank/algorithms.-.implementation.-.medium.-.organising.containers.of.balls/organising.containers.of.balls.js
+index bbc5fe9..0cc2cf9 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.organising.containers.of.balls/organising.containers.of.balls.js
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.organising.containers.of.balls/organising.containers.of.balls.js
+@@ -26,8 +26,70 @@ function readLine() {
+ 
+ // Complete the organizingContainers function below.
+ function organizingContainers(container) {
++    /*
++    grid x y
++    a column represents the split of balls of a single type
++    swap elements vertically, if column A requires 4 moves to push all balls into the same row (container)
++    then 4 moves must be performed from the same row (container) in other columns (types)
++
++    10^9 number = 10 digits
++    2^31 number = 10 digits
++    n x n matrix n <= 100 ..so upto 12 digits > int32
++
++    try force a lead diagonal?
++
++    1 3 1
++    2 1 2  ->  no way that row 1 can be all type 2, as 4 have to be moved in (from rows 2 and 3) and there are
++    3 3 3      only two other typed balls in there to remove ..no balance. similarly with row2. but row 3? whilst
++               4 can go in and 4 can go out, it still leaves 2 of the wrong type in there
++
++    hence we need to find all the possible (valid) 'targets' (valid target rows) for a given type to amass, and then
++    determine whether these are all compatible
++
++    so sum all rows and all columns. for each x,y the sum of Cx,y - x,y must == Rx,y - x,y to be valid
++
++    identifying an impossible container is enough?? e.g. is there a container no type can exclusively exist in?
++    */
++
++    let M = container;
++    let n = M.length;
++    //console.log("considering %dx%d matrix:\n%j", n, n, M);
++
++    let x, y = 0;
++    let Cx = new Array(n).fill(0);
++    let Ry = new Array(n).fill(0);
++    for (y = 0; y < n; y++) {
++        for (x = 0; x < n; x++) {
++            Cx[y] += M[y][x];
++            Ry[x] += M[y][x];
++        }
++    }
+ 
++    //console.log(`"row counts: ${Ry}`);
++    //console.log(`"column counts: ${Cx}`);
++
++    let possible = [];
++    let in_, out_ = 0;
++
++    // for each container y..;
++    for (y = 0; y < n; y++) {
++        // is type x exclusively existing in there possible?;
++        possible.push([]);
++        for (x = 0; x < n; x++) {
++            in_ = Cx[x] - M[y][x];
++            out_ = Ry[y] - M[y][x];
++            //console.log(`"[y,x]|[${y},${x}] in_: ${in_}, out: '${out_}'`);
++            if (in_ === out_)
++                // container y can contain type x exclusively;
++                possible[y].push(x);
++        }
+ 
++        if (possible[y].length === 0) {
++            //console.log(`"cannot exclusively collect any type in container ${y+1}`);
++            return "Impossible";
++        }
++    }
++    return "Possible";
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
