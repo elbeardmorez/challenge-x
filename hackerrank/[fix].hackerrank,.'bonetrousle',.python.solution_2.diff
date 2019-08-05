@@ -1,0 +1,26 @@
+From e666866c23d5f0e0b41186ae5fc49bb3a9eac21c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 5 Aug 2019 09:11:39 +0100
+Subject: [fix] hackerrank, 'bonetrousle', python solution
+
+-short-circuit for corner case returned int as opposed to array
+---
+ .../bonetrousle.py                                              | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.constructive.algorithms.-.medium.-.bonetrousle/bonetrousle.py b/hackerrank/algorithms.-.constructive.algorithms.-.medium.-.bonetrousle/bonetrousle.py
+index e4131b0..3fd76eb 100644
+--- a/hackerrank/algorithms.-.constructive.algorithms.-.medium.-.bonetrousle/bonetrousle.py
++++ b/hackerrank/algorithms.-.constructive.algorithms.-.medium.-.bonetrousle/bonetrousle.py
+@@ -39,7 +39,7 @@ def bonetrousle(n, k, b):
+     """ 
+ 
+     if b > n or b > k:
+-        return -1
++        return [-1]
+ 
+     mid_boxes = int(b / 2)
+     med_sum = int(n / b) if b % 2 == 1 else int(n / b) + 1
+-- 
+2.23.0
+
