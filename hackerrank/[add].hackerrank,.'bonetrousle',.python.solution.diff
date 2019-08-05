@@ -1,0 +1,65 @@
+From 12bbe3618135ca95bf562cb9a8243ec0fc5e45e2 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 5 Aug 2019 06:17:34 +0100
+Subject: [add] hackerrank, 'bonetrousle', python solution
+
+---
+ .../bonetrousle.py                            | 42 +++++++++++++++++++
+ 1 file changed, 42 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.constructive.algorithms.-.medium.-.bonetrousle/bonetrousle.py b/hackerrank/algorithms.-.constructive.algorithms.-.medium.-.bonetrousle/bonetrousle.py
+index c7107c6..3b7debc 100644
+--- a/hackerrank/algorithms.-.constructive.algorithms.-.medium.-.bonetrousle/bonetrousle.py
++++ b/hackerrank/algorithms.-.constructive.algorithms.-.medium.-.bonetrousle/bonetrousle.py
+@@ -11,6 +11,48 @@ def bonetrousle(n, k, b):
+     # Write your code here.
+     #
+ 
++    """
++    nothing in the question states that each trip is dependent upon the last
++    e.g. the stock is replenished each time
++
++    sum b values to get n ..in ? ways when 1 <= b <= k
++
++    always possible if sum of all numbers up to b <= n and..
++    n is reachable in b numbers.. so accumulate backwards to check
++
++    take lower b - x numbers x >= 0
++    sum
++    then shift b - xth number as far right along the set of possible numbers
++    either as far as is needed to acheive the sum, else at the range limit
++    repeat if necessary
++
++    e.g. b = 4, n = 26
++
++    1 2 3 4  ....    [10]  s = 10
++    1 2 3 ....        10   s = 16
++    1 2 ....        9 10   s = 22
++    1 ....  5 ....  9 10   s = 28
++
++    ..or more simple, int(n / b) as starting point and then shuffle extents
++
++    10^18 max n int64 safe
++    """ 
++
++    if b > n or b > k:
++        return -1
++
++    mid_boxes = int(b / 2)
++    med_sum = int(n / b) if b % 2 == 1 else int(n / b) + 1
++    print(f"target: {n}, max: {k}, boxes: {b}, mid boxes {mid_boxes}, median sum: {med_sum}")
++    numbers = list(range(med_sum - mid_boxes, med_sum - mid_boxes + b))
++    print(f"sum: {sum(numbers)} vs: {n}, proposing numbers: {numbers}")
++
++    if numbers[-1] > k:
++        print("insufficiently large stock!")
++        numbers = [-1]
++
++    return numbers
++
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+ 
+-- 
+2.23.0
+
