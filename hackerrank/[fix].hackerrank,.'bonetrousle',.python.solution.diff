@@ -1,0 +1,68 @@
+From 353c366da1046105228a9e059c9e29ec2af15ced Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 5 Aug 2019 07:07:43 +0100
+Subject: [fix] hackerrank, 'bonetrousle', python solution
+
+-incomplete algorith, add remaining shift aspect
+-add sum check
+---
+ .../bonetrousle.py                            | 41 +++++++++++++++++--
+ 1 file changed, 37 insertions(+), 4 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.constructive.algorithms.-.medium.-.bonetrousle/bonetrousle.py b/hackerrank/algorithms.-.constructive.algorithms.-.medium.-.bonetrousle/bonetrousle.py
+index 3b7debc..e4131b0 100644
+--- a/hackerrank/algorithms.-.constructive.algorithms.-.medium.-.bonetrousle/bonetrousle.py
++++ b/hackerrank/algorithms.-.constructive.algorithms.-.medium.-.bonetrousle/bonetrousle.py
+@@ -43,12 +43,45 @@ def bonetrousle(n, k, b):
+ 
+     mid_boxes = int(b / 2)
+     med_sum = int(n / b) if b % 2 == 1 else int(n / b) + 1
+-    print(f"target: {n}, max: {k}, boxes: {b}, mid boxes {mid_boxes}, median sum: {med_sum}")
++    #print(f"target: {n}, max: {k}, boxes: {b}, mid boxes {mid_boxes}, median sum: {med_sum}")
+     numbers = list(range(med_sum - mid_boxes, med_sum - mid_boxes + b))
+-    print(f"sum: {sum(numbers)} vs: {n}, proposing numbers: {numbers}")
+ 
+-    if numbers[-1] > k:
+-        print("insufficiently large stock!")
++    n_ = sum(numbers)
++    if n_ > n:
++        #print(f"numbers: {numbers} need shift(s)")
++        idx = 0
++        min_ = 0
++        while n_ != n:
++            # shift
++            #print(f"considering min of {n_ - n} and {numbers[idx] - (min_ + 1)}")
++            diff = min(n_ - n, numbers[idx] - (min_ + 1))
++            #print(f"too big, substracting diff: {diff} from idx: {idx}, so {numbers[idx]} -> {numbers[idx] - diff}")
++            numbers[idx] -= diff
++            n_ -= diff
++            min_ = numbers[idx]
++            idx += 1
++            if idx > b - 1:
++                 break
++    elif n_ < n:
++        idx = b - 1
++        max_ = k + 1
++        #print(f"numbers: {numbers} need shift(s)")
++        while n_ != n:
++            # shift
++            #print(f"considering min of {n - n_} and {(max_ - 1) - numbers[idx]}")
++            diff = min(n - n_, (max_ - 1) - numbers[idx])
++            #print(f"too small, adding diff: {diff} to idx: {idx}, so {numbers[idx]} -> {numbers[idx] + diff}")
++            numbers[idx] += diff
++            n_ += diff
++            max_ = numbers[idx]
++            idx -= 1
++            if idx < 0:
++                 break
++
++    #print(f"sum: {sum(numbers)} vs {n}, proposing numbers: {numbers}")
++
++    if n_ != n or numbers[0] < 1 or numbers[-1] > k:
++        #print("incompatible stock!")
+         numbers = [-1]
+ 
+     return numbers
+-- 
+2.23.0
+
