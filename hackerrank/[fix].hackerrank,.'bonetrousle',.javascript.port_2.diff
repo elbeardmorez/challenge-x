@@ -1,0 +1,40 @@
+From 89f7296e380938eabe0da6bee7dc68454f632a24 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 6 Aug 2019 09:31:30 +0100
+Subject: [fix] hackerrank, 'bonetrousle', javascript port
+
+-broken stub, requires 'BigInt' else trunctation for test 9
+---
+ .../bonetrousle.js                                         | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.constructive.algorithms.-.medium.-.bonetrousle/bonetrousle.js b/hackerrank/algorithms.-.constructive.algorithms.-.medium.-.bonetrousle/bonetrousle.js
+index 55896e1..074fe04 100644
+--- a/hackerrank/algorithms.-.constructive.algorithms.-.medium.-.bonetrousle/bonetrousle.js
++++ b/hackerrank/algorithms.-.constructive.algorithms.-.medium.-.bonetrousle/bonetrousle.js
+@@ -108,6 +108,7 @@ function bonetrousle(n_, k_, b_) {
+     }
+ 
+     //console.log(`sum: ${numbers.reduce((a, x) => a + x)} vs ${n}, proposing numbers: ${numbers}`);
++    //console.log(`sum: ${numbers.reduce((a, x) => a + x)} vs ${n}, proposing numbers: [${numbers[0]}, ${numbers[1]}, .. ,${numbers[numbers.length - 2]}, ${numbers[numbers.length - 1]}]`);
+ 
+     if (n_ !== n || numbers[0] < 1n || numbers[numbers.length - 1] > k) {
+         console.log("incompatible stock!");
+@@ -125,11 +126,11 @@ function main() {
+     for (let tItr = 0; tItr < t; tItr++) {
+         const nkb = readLine().split(' ');
+ 
+-        const n = parseInt(nkb[0], 10);
++        const n = BigInt(nkb[0]);
+ 
+-        const k = parseInt(nkb[1], 10);
++        const k = BigInt(nkb[1]);
+ 
+-        const b = parseInt(nkb[2], 10);
++        const b = BigInt(nkb[2]);
+ 
+         let result = bonetrousle(n, k, b);
+ 
+-- 
+2.23.0
+
