@@ -1,0 +1,26 @@
+From e6997820fd3845f1b808c4507d32e6ff9048e52b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 6 Aug 2019 08:42:12 +0100
+Subject: [fix] hackerrank, 'bonetrousle', javascript port
+
+-javascript doesn't support negative indexing of arrays
+---
+ .../bonetrousle.js                                              | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.constructive.algorithms.-.medium.-.bonetrousle/bonetrousle.js b/hackerrank/algorithms.-.constructive.algorithms.-.medium.-.bonetrousle/bonetrousle.js
+index 4245ffa..55896e1 100644
+--- a/hackerrank/algorithms.-.constructive.algorithms.-.medium.-.bonetrousle/bonetrousle.js
++++ b/hackerrank/algorithms.-.constructive.algorithms.-.medium.-.bonetrousle/bonetrousle.js
+@@ -109,7 +109,7 @@ function bonetrousle(n_, k_, b_) {
+ 
+     //console.log(`sum: ${numbers.reduce((a, x) => a + x)} vs ${n}, proposing numbers: ${numbers}`);
+ 
+-    if (n_ !== n || numbers[0] < 1n || numbers[-1] > k) {
++    if (n_ !== n || numbers[0] < 1n || numbers[numbers.length - 1] > k) {
+         console.log("incompatible stock!");
+         numbers = [-1];
+     }
+-- 
+2.23.0
+
