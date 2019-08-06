@@ -1,0 +1,114 @@
+From 176cacd7458963b5bee323a630c77ccf222924d5 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 6 Aug 2019 08:26:21 +0100
+Subject: [add] hackerrank, 'bonetrousle', javascript port
+
+---
+ .../bonetrousle.js                            | 87 ++++++++++++++++++-
+ 1 file changed, 86 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.constructive.algorithms.-.medium.-.bonetrousle/bonetrousle.js b/hackerrank/algorithms.-.constructive.algorithms.-.medium.-.bonetrousle/bonetrousle.js
+index fd881ca..4245ffa 100644
+--- a/hackerrank/algorithms.-.constructive.algorithms.-.medium.-.bonetrousle/bonetrousle.js
++++ b/hackerrank/algorithms.-.constructive.algorithms.-.medium.-.bonetrousle/bonetrousle.js
+@@ -25,11 +25,96 @@ function readLine() {
+ /*
+  * Complete the bonetrousle function below.
+  */
+-function bonetrousle(n, k, b) {
++function bonetrousle(n_, k_, b_) {
+     /*
+      * Write your code here.
+      */
+ 
++    /*
++    nothing in the question states that each trip is dependent upon the last
++    e.g. the stock is replenished each time
++
++    sum b values to get n ..in ? ways when 1 <= b <= k
++
++    always possible if sum of all numbers up to b <= n and..
++    n is reachable in b numbers.. so accumulate backwards to check
++
++    take lower b - x numbers x >= 0
++    sum
++    then shift b - xth number as far right along the set of possible numbers
++    either as far as is needed to acheive the sum, else at the range limit
++    repeat if necessary
++
++    e.g. b = 4, n = 26
++
++    1 2 3 4  ....    [10]  s = 10
++    1 2 3 ....        10   s = 16
++    1 2 ....        9 10   s = 22
++    1 ....  5 ....  9 10   s = 28
++
++    ..or more simple, int(n / b) as starting point and then shuffle extents
++
++    10^18 > 2^53 ..requires bigint
++    */
++
++    let n = BigInt(n_);
++    let k = BigInt(k_);
++    let b = BigInt(b_);
++
++    if (b > n || b > k)
++        return [-1];
++
++    let mid_boxes = BigInt(b / 2n);
++    let med_sum = (b % 2n === 1n) ? BigInt(n / b) : BigInt(n / b) + 1n;
++    //console.log(`target: ${n}, max: ${k}, boxes: ${b}, mid boxes ${mid_boxes}, median sum: ${med_sum}`);
++    let numbers = [];
++    for (let l = med_sum - mid_boxes; l < med_sum - mid_boxes + b; l++)
++        numbers.push(l);
++
++    n_ = numbers.reduce((a, x) => a + x);
++    let diff = 0n;
++    if (n_ > n) {
++        //console.log(`numbers: ${numbers} need shift(s)`);
++        let idx = 0n;
++        let min_ = 0n;
++        while (n_ !== n) {
++            // shift;
++            //console.log(`considering min of ${n_ - n}  and and ${numbers[idx] - (min_ + 1n)}`);
++            diff = n_ - n < numbers[idx] - (min_ + 1n) ? n_ - n : numbers[idx] - (min_ + 1n);
++            //console.log(`too big, substracting diff: ${diff} from idx: ${idx}, so ${numbers[idx]} -> ${numbers[idx] - diff}`);
++            numbers[idx] -= diff;
++            n_ -= diff;
++            min_ = numbers[idx];
++            idx += 1n;
++            if (idx > b - 1n)
++                 break;
++        }
++    } else if (n_ < n) {
++        let idx = b - 1n;
++        let max_ = k + 1n;
++        //console.log(`numbers: ${numbers} need shift(s)`);
++        while (n_ !== n) {
++            // shift;
++            //console.log(`considering min of ${n - n_}  and and ${(max_ - 1n) - numbers[idx]}`);
++            diff = n - n_ < (max_ - 1n) - numbers[idx] ? n - n_ : (max_ - 1n) - numbers[idx];
++            //console.log(`too small, adding diff: ${diff} to idx: ${idx}, so ${numbers[idx]} -> ${numbers[idx] + diff}`);
++            numbers[idx] += diff;
++            n_ += diff;
++            max_ = numbers[idx];
++            idx -= 1n;
++            if (idx < 0n)
++                break;
++        }
++    }
++
++    //console.log(`sum: ${numbers.reduce((a, x) => a + x)} vs ${n}, proposing numbers: ${numbers}`);
++
++    if (n_ !== n || numbers[0] < 1n || numbers[-1] > k) {
++        console.log("incompatible stock!");
++        numbers = [-1];
++    }
++
++    return numbers;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
