@@ -34,6 +34,7 @@ this repository contains a heck of a lot of my programming faux-pas, but i've de
 i refuse to 'work around' bugs like others have done, hard-coding results on a per broken test case basis in order to dishonestly achieve the maximum score. doing so means they'll never get fixed! i have raised the following bugs through the hackerrank 'suggestions' medium with no feedback
 
 #### live
+- [algorithms|constructive algorithms|medium] bonetrousle | javascript, out of bounds use of ParseInt in stub
 - [algorithms|graph theory|medium] journey to the moon | c# stub use 'int's (signed 32-bit) but output 11 4999949998, which is > 2^31-1
 - [data structures|linked lists|easy] insert a node at the head of a linked list | c#, attempted use of pointer notation in locket code area, probably a c++ copy/paste error
 - [data structures|linked lists|medium] cylce detection | javascript, use of 'int' in locked code area
