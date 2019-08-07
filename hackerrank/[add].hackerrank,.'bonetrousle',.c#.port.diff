@@ -1,0 +1,115 @@
+From 58548d73a4f9d177b6ce5db72333a976b965d94e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 7 Aug 2019 08:16:15 +0100
+Subject: [add] hackerrank, 'bonetrousle', c# port
+
+---
+ .../bonetrousle.cs                            | 84 +++++++++++++++++++
+ 1 file changed, 84 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.constructive.algorithms.-.medium.-.bonetrousle/bonetrousle.cs b/hackerrank/algorithms.-.constructive.algorithms.-.medium.-.bonetrousle/bonetrousle.cs
+index b1a4149..dde5032 100644
+--- a/hackerrank/algorithms.-.constructive.algorithms.-.medium.-.bonetrousle/bonetrousle.cs
++++ b/hackerrank/algorithms.-.constructive.algorithms.-.medium.-.bonetrousle/bonetrousle.cs
+@@ -3,6 +3,8 @@ using System.Collections.Generic;
+ using System.IO;
+ using System.Linq;
+ 
++using static System.Console;
++
+ class Solution {
+ 
+     /*
+@@ -12,7 +14,89 @@ class Solution {
+         /*
+          * Write your code here.
+          */
++        /*
++        nothing in the question states that each trip is dependent upon the last
++        e.g. the stock is replenished each time
++
++        sum b values to get n ..in ? ways when 1 <= b <= k
++
++        always possible if sum of all numbers up to b <= n and..
++        n is reachable in b numbers.. so accumulate backwards to check
++
++        take lower b - x numbers x >= 0
++        sum
++        then shift b - xth number as far right along the set of possible numbers
++        either as far as is needed to acheive the sum, else at the range limit
++        repeat if necessary
++
++        e.g. b = 4, n = 26
++
++        1 2 3 4  ....    [10]  s = 10
++        1 2 3 ....        10   s = 16
++        1 2 ....        9 10   s = 22
++        1 ....  5 ....  9 10   s = 28
++
++        ..or more simple, int(n / b) as starting point and then shuffle extents
++
++        10^18 max n int64 safe
++        */
++
++        if (b > n || b > k)
++            return new long[] {-1};
++
++        var mid_boxes = Convert.ToInt64(b / 2);
++        var med_sum = b % 2 == 1 ? Convert.ToInt64(n / b) : Convert.ToInt64(n / b) + 1;
++        //WriteLine($"target: {n}, max: {k}, boxes: {b}, mid boxes {mid_boxes}, median sum: {med_sum}");
++        var numbers = new List<long>();
++        for (var l = med_sum - mid_boxes; l < med_sum - mid_boxes + b; l++)
++            numbers.Add(l);
++
++        var n_ = numbers.Sum();
++        if (n_ > n) {
++            //WriteLine($"numbers: {numbers} need shift(s)");
++            var idx = 0;
++            long min_ = 0;
++            long diff;
++            while (n_ != n) {
++                // shift;
++                //WriteLine($"considering min of {n_ - n}  and and {numbers[idx] - (min_ + 1)}");
++                diff = Math.Min(n_ - n, numbers[idx] - (min_ + 1));
++                //WriteLine($"too big, substracting diff: {diff} from idx: {idx}, so {numbers[idx]} -> {numbers[idx] - diff}");
++                numbers[idx] -= diff;
++                n_ -= diff;
++                min_ = numbers[idx];
++                idx += 1;
++                if (idx > b - 1)
++                     break;
++            }
++        } else if (n_ < n) {
++            var idx = b - 1;
++            var max_ = k + 1;
++            long diff = 0;
++            //WriteLine($"numbers: {numbers} need shift(s)");
++            while (n_ != n) {
++                // shift;
++                //WriteLine($"considering min of {n - n_}  and and {(max_ - 1) - numbers[idx]}");
++                diff = Math.Min(n - n_, (max_ - 1) - numbers[idx]);
++                //WriteLine($"too small, adding diff: {diff} to idx: {idx}, so {numbers[idx]} -> {numbers[idx] + diff}");
++                numbers[idx] += diff;
++                n_ += diff;
++                max_ = numbers[idx];
++                idx -= 1;
++                if (idx < 0)
++                     break;
++            }
++        }
++
++        //WriteLine($"sum: {numbers.Sum()} vs {n}, proposing numbers: {String.Join(" ", numbers.Select(x => x.ToString()))}");
++
++        if (n_ != n || numbers[0] < 1 || numbers[numbers.Count - 1] > k) {
++            //WriteLine("incompatible stock!");
++            numbers.Clear();
++            numbers.Add(-1);
++        }
+ 
++        return numbers.ToArray();
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
