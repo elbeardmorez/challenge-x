@@ -1,0 +1,137 @@
+From fe03bb8e8fd81d6e3ecd14f965a4891b01965434 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 8 Aug 2019 07:34:17 +0100
+Subject: [add] hackerrank, 'bonetrousle', go port
+
+---
+ .../bonetrousle.go                            | 110 +++++++++++++++++-
+ 1 file changed, 109 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.constructive.algorithms.-.medium.-.bonetrousle/bonetrousle.go b/hackerrank/algorithms.-.constructive.algorithms.-.medium.-.bonetrousle/bonetrousle.go
+index b691f4a..9020b53 100644
+--- a/hackerrank/algorithms.-.constructive.algorithms.-.medium.-.bonetrousle/bonetrousle.go
++++ b/hackerrank/algorithms.-.constructive.algorithms.-.medium.-.bonetrousle/bonetrousle.go
+@@ -12,11 +12,119 @@ import (
+ /*
+  * Complete the bonetrousle function below.
+  */
+-func bonetrousle(n int64, k int64, b int32) []int64 {
++func bonetrousle(n int64, k int64, b_ int32) []int64 {
+     /*
+      * Write your code here.
+      */
++    /*
++    nothing in the question states that each trip is dependent upon the last
++    e.g. the stock is replenished each time
++
++    sum b values to get n ..in ? ways when 1 <= b <= k
++
++    always possible if sum of all numbers up to b <= n and..
++    n is reachable in b numbers.. so accumulate backwards to check
++
++    take lower b - x numbers x >= 0
++    sum
++    then shift b - xth number as far right along the set of possible numbers
++    either as far as is needed to acheive the sum, else at the range limit
++    repeat if necessary
++
++    e.g. b = 4, n = 26
++
++    1 2 3 4  ....    [10]  s = 10
++    1 2 3 ....        10   s = 16
++    1 2 ....        9 10   s = 22
++    1 ....  5 ....  9 10   s = 28
++
++    ..or more simple, int(n / b) as starting point and then shuffle extents
++
++    10^18 max n int64 safe
++    */
++
++    min := func(x int64, y int64) int64 {
++        if x <= y {
++            return x
++        } else {
++            return y
++        }
++    }
++
++    sum := func(numbers []int64) int64 {
++        len_ := int64(len(numbers))
++        sum_ := int64(0)
++        for l := int64(0); l < len_; l++ {
++            sum_ += numbers[l]
++        }
++        return sum_
++    }
++
++    b := int64(b_)
++
++    if b > n || b > k {
++        return []int64 {-1}
++    }
++
++    mid_boxes := int64(b / 2)
++    med_sum := int64((n / b) + 1)
++    if b % 2 == 1 {
++        med_sum = int64(n / b)
++    }
++
++    //fmt.Printf("target: %v, max: %v, boxes: %v, mid boxes %v, median sum: %v\n", n, k, b, mid_boxes, med_sum)
++    var numbers = make([]int64, 0)
++    for l := med_sum - mid_boxes; l < med_sum - mid_boxes + b; l++ {
++        numbers = append(numbers, l)
++    }
++
++    n_ := sum(numbers)
++    if n_ > n {
++        //fmt.Printf("numbers: %v need shift(s)\n", numbers)
++        idx := int64(0)
++        min_ := int64(0)
++        diff := int64(0)
++        for n_ != n {
++            // shift
++            //fmt.Printf("considering min of %v  and and %v\n", n_ - n, numbers[idx] - (min_ + 1))
++            diff = min(n_ - n, numbers[idx] - (min_ + 1))
++            //fmt.Printf("too big, substracting diff: %v from idx: %v, so %v -> %v\n", diff, idx, numbers[idx], numbers[idx] - diff)
++            numbers[idx] -= diff
++            n_ -= diff
++            min_ = numbers[idx]
++            idx += 1
++            if idx > b - 1 {
++                 break
++            }
++        }
++    } else if n_ < n {
++        idx := int64(b - 1)
++        max_ := int64(k + 1)
++        diff := int64(0)
++        //fmt.Printf("numbers: %v need shift(s)\n", numbers)
++        for n_ != n {
++            // shift
++            //fmt.Printf("considering min of %v  and and %v\n", n - n_, (max_ - 1) - numbers[idx])
++            diff = min(n - n_, (max_ - 1) - numbers[idx])
++            //fmt.Printf("too small, adding diff: %v to idx: %v, so %v -> %v\n", diff, idx, numbers[idx], numbers[idx] + diff)
++            numbers[idx] += diff
++            n_ += diff
++            max_ = numbers[idx]
++            idx -= 1
++            if idx < 0 {
++                 break
++            }
++        }
++    }
++
++    //fmt.Printf("sum: %v vs %v, proposing numbers: %v\n", sum(numbers), n, numbers)
++
++    if n_ != n || numbers[0] < 1 || numbers[len(numbers) - 1] > k {
++        //fmt.Printf("incompatible stock!\n")
++        numbers = []int64 {-1}
++    }
+ 
++    return numbers
+ }
+ 
+ func main() {
+-- 
+2.23.0
+
