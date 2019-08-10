@@ -1,0 +1,110 @@
+From 0e79eb59fcdd0e1908783b8d0bb66cc78c218a88 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 10 Aug 2019 08:30:10 +0100
+Subject: [add] hackerrank, 'maximizing mission points', python solution
+
+---
+ .../maximizing.mission.points.py              | 83 +++++++++++++++++++
+ 1 file changed, 83 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py b/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
+index 64b38b2..a6e1b6c 100644
+--- a/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
++++ b/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
+@@ -6,6 +6,86 @@ import random
+ import re
+ import sys
+ 
++cities = []
++
++
++def maximum_mission_points(max_lat, max_long):
++    """
++    sort cities by height
++    work backwards to construct a max subpath per city
++
++    on encountering a -ve points city on the path, skip if possible by considering
++    all following reachable cities, but one cannot dismiss -ve point cities as they
++    may facilitate the maximum path
++
++    max jump 3
++    city |   a   b   c   d
++    pts  |   2  -1   4   1
++    pos  | 2,1 4,1 6,1 7,1
++
++    valid jumps  max size         max from city tally
++    d            1 (max d)        [0 0 0 1]
++    c -> d       5 (c + max d)    [0 0 5 1]
++    b -> c       4 (b + max c)    [0 4 5 1]
++    b -> d       0 (b + max d)    [0 4 5 1]
++    a -> b       6 (a + max b)    [6 4 5 1]
++
++    from position a, we're iterating visited (b, c, d), short-circuiting
++    validity tests if max combined path is not worth even checking (e.g.
++    less than an already determined global max)
++    maintaining a sorted tail of maximum scores would help optimally short
++    circuit the loop correctly asap
++
++    need to iterate until some jump is found though..
++
++    """
++
++    global cities
++    cities.sort(key=lambda a: a[2])
++    #print("\n".join([str(c) for c in cities]))
++    l_cities = len(cities)
++
++    scores = [c[3] for c in cities]
++    global_max_score = scores[-1]
++    max_scores_ordered = [scores[-1]]
++    max_scores = {scores[-1]: [len(scores) - 1]}
++
++    for l in range(l_cities - 2, -1, -1):
++        # 0 jump max
++        max_cur = scores[l]
++        # consider all possible jumps, in order of greatest max scores acheived thus far
++        for max_ in max_scores_ordered:
++            set_ = False
++            for c_idx in max_scores[max_]:
++                if abs(cities[l][0] - cities[c_idx][0]) <= max_lat and \
++                   abs(cities[l][1] - cities[c_idx][1]) <= max_long:
++                    #print(f"base jump {l}[{max_cur}] -> {c_idx}[{max_}] valid maximal jump for city")
++                    if max_ > 0:
++                        max_cur += max_
++                    set_ = True
++                    break
++            if set_:
++                break
++
++        if max_cur > global_max_score:
++            #print(f"global max set: {max_cur}")
++            global_max_score = max_cur
++
++        # persist max
++        if not max_cur in max_scores:
++            # insert this city's max score in ordered max scores
++            idx = 0
++            l_mso = len(max_scores_ordered)
++            while idx < l_mso and max_scores_ordered[idx] > max_cur:
++                idx += 1
++
++            max_scores_ordered.insert(idx, max_cur)
++            #print(f"max_scores_ordered: {max_scores_ordered}")
++            max_scores[max_cur] = [l]
++        else:
++            max_scores[max_cur].append(l)
++
++    return global_max_score
+ 
+ 
+ if __name__ == '__main__':
+@@ -29,3 +109,6 @@ if __name__ == '__main__':
+         points = int(latitudeLongitude[3])
+ 
+         # Write Your Code Here
++        cities.append([latitude, longitude, height, points])
++
++    print(maximum_mission_points(d_lat, d_long))
+-- 
+2.23.0
+
