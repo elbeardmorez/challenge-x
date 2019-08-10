@@ -1,0 +1,158 @@
+From 8ac75f89e0890638ee3d42e5c20ca94e5a9cbfcc Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 10 Aug 2019 19:05:17 +0100
+Subject: [fix] hackerrank, 'maximizing mission points', python solution
+
+-invalid reversed conditional for while loop broke insert index to
+ensure sorted location. test 10 'worked' pre-fix. now far too slow.
+fixes test 1
+-speed-up, switch to deque for O(1) insertion goodness
+-speed-up, manually maintain location set size
+---
+ .../maximizing.mission.points.py              | 96 ++++++++++---------
+ 1 file changed, 50 insertions(+), 46 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py b/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
+index 3a1f4ab..e0f561a 100644
+--- a/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
++++ b/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
+@@ -5,6 +5,7 @@ import os
+ import random
+ import re
+ import sys
++from collections import deque
+ 
+ cities = []
+ 
+@@ -49,79 +50,82 @@ def maximum_mission_points(max_lat, max_long):
+ 
+     global_max_score = cities[-1][3]
+ 
+-    locations = [[cities[-1][0], [[cities[-1][1], global_max_score]]]]
+-    if debug >= 1:
+-        print(f"locations: {locations}")
++    locations = deque()
++    locations.append([cities[-1][0], [[cities[-1][1], global_max_score]]])
++
++    l_loc = 1
+     if debug >= 1:
+         print(f"max lat: {max_lat}, max long: {max_long}")
+     for l in range(l_cities - 2, -1, -1):
+         [lat_, long_, _, score] = cities[l]
+         # process in order of greatest max scores achieved thus far
+-        if debug >= 1:
++        if debug >= 2:
+             print(f"consider possible jumps for city: {l} | {cities[l]}")
+-        idx = 0
+-        if locations[0][0] - max_lat > lat_ or \
+-           locations[len(locations) - 1][0] + max_lat < lat_:
+-            continue
+-        while idx < len(locations) and locations[idx][0] + max_lat < lat_:
+-            #if debug >= 1:
+-            #    print(f"comparing latitudes, base: {lat_} vs test: {locations[idx][0]}")
+-            idx += 1
+-        #if debug >= 1:
+-        #    print(f"testing latitude {locations[idx][0] - max_lat} <= {lat_}")
+-        max_jump = 0
+-        while idx < len(locations) and locations[idx][0] - max_lat <= lat_:
+-            # iterate valid latitudes to find valid longitudes
+-            idx2 = 0
+-            while idx < len(locations[idx][1]) and locations[idx][1][idx2][0] + max_long < long_:
+-                #if debug >= 1:
+-                #    print(f"comparing longitudes, base: {long_} vs test: {locations[idx][1][idx2]}")
+-                idx2 += 1
+-            #if debug >= 1:
+-            #    print(f"testing longitude {locations[idx][1][idx2][0] - long_} < {max_long}")
+-            if idx2 < len(locations[idx][1]) and locations[idx][1][idx2][0] - long_ <= max_long:
++        if lat_ >= locations[0][0] - max_lat and \
++           lat_ <= locations[-1][0] + max_lat:
++            # possibly reachable
++            idx = 0
++            while idx < l_loc and locations[idx][0] + max_lat < lat_:
+                 #if debug >= 1:
+-                #    print(f"base jump from {l}[{score}] maximal jump to city with size {locations[idx][1][idx2][1]}")
+-                if locations[idx][1][idx2][1] > max_jump:
+-                    max_jump = locations[idx][1][idx2][1]
+-                if max_jump == global_max_score:
+-                    break
+-            idx += 1
+-        score += max_jump
+-
++                #    print(f"comparing latitudes, base: {lat_} vs test: {locations[idx][0]}")
++                idx += 1
++            if debug >= 3 and idx < l_loc:
++                print(f"testing latitude {locations[idx][0] - max_lat} <= {lat_}")
++            max_jump = 0
++            while idx < l_loc and locations[idx][0] - max_lat <= lat_:
++                # iterate valid latitudes to find valid longitudes
++                idx2 = 0
++                while idx2 < len(locations[idx][1]) and locations[idx][1][idx2][0] + max_long < long_:
++                    if debug >= 3:
++                        print(f"comparing longitudes, base: {long_} vs test: {locations[idx][1][idx2]}")
++                    idx2 += 1
++                if debug >= 3 and idx2 < len(locations[idx][1]):
++                    print(f"testing longitude {locations[idx][1][idx2][0] - long_} < {max_long}")
++                if idx2 < len(locations[idx][1]) and locations[idx][1][idx2][0] - long_ <= max_long:
++                    if locations[idx][1][idx2][1] > max_jump:
++                        max_jump = locations[idx][1][idx2][1]
++                        if max_jump == global_max_score:
++                            break
++                idx += 1
++            if debug >= 1 and max_jump > 0:
++                print(f"base jump from {l}[{score}] maximal jump to city with max path size {max_jump}")
++            score += max_jump
+         if score > global_max_score:
+-            #if debug >= 1:
+-            #    print(f"global max set: {score}")
+             global_max_score = score
++            if debug >= 1:
++                print(f"global max set: {global_max_score}")
+ 
+         # persist max
+         idx = 0
+         set_ = False
++        if lat_ > locations[-1][0]:
++            idx = l_loc
+         # while lat <= lat_cur
+-        while len(locations) < idx and locations[idx][0] <= lat_:
++        while idx < l_loc and locations[idx][0] <= lat_:
+             if locations[idx][0] == lat_:
+                 # matching latitude, insert at correct longitude
+                 idx2 = 0
+-                while locations[idx][1][idx2] <= long_:
+-                    if locations[idx][1][idx2] == long_:
+-                        if score > locations[idx][1][idx2][1]:
+-                            locations[idx][1][idx2][1] = score
+-                        set_ = True
+-                        break
++                while locations[idx][1][idx2] < long_:
+                     idx2 += 1
+-                if not set_:
++                if locations[idx][1][idx2] == long_:
++                    if score > locations[idx][1][idx2][1]:
++                        locations[idx][1][idx2][1] = score
++                else:
+                     locations[idx][1].insert(idx2, [long_, score])
+                 set_ = True
+                 break
+             idx += 1
++
+         if not set_:
+             locations.insert(idx, [lat_, [[long_, score]]])
+-        #if debug >= 2:
+-        #    print(f"locations: {locations}")
++            l_loc += 1
++
++        if debug >= 3:
++            print(f"locations: {locations}")
+ 
+         """
+         if (l_cities - l) % 1000 == 0:
+-            print(f"[debug] {n-l}/{n}")
++            print(f"[debug] {l_cities - l}/{l_cities}")
+         """
+ 
+     return global_max_score
+-- 
+2.23.0
+
