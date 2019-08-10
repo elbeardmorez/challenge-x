@@ -1,0 +1,125 @@
+From 422abdb5a92aa7518cf84d6b4f87e2b69d4bf6dc Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 10 Aug 2019 16:46:28 +0100
+Subject: [mod] hackerrank, 'maximizing mission points', python solution
+
+-order inserts by latitude / longitude too
+---
+ .../maximizing.mission.points.py              | 76 +++++++++++++++----
+ 1 file changed, 60 insertions(+), 16 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py b/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
+index 1f06de5..032b846 100644
+--- a/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
++++ b/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
+@@ -43,30 +43,58 @@ def maximum_mission_points(max_lat, max_long):
+     debug = 0
+     global cities
+     cities.sort(key=lambda a: a[2])
+-    if debug >= 1:
++    if debug >= 2:
+         print("\n".join([str(c) for c in cities]))
+     l_cities = len(cities)
+ 
+     scores = [c[3] for c in cities]
+     global_max_score = scores[-1]
+     max_scores_ordered = [scores[-1]]
+-    max_scores = {scores[-1]: [len(scores) - 1]}
+ 
++    max_scores = {scores[-1]: [[cities[-1][0], [[cities[-1][1], [l_cities - 1]]]]]}
++
++    if debug >= 1:
++        print(f"max lat: {max_lat}, max long: {max_long}")
+     for l in range(l_cities - 2, -1, -1):
+         # 0 jump max
+         max_cur = scores[l]
+-        # consider all possible jumps, in order of greatest max scores acheived thus far
++        # process in order of greatest max scores achieved thus far
++        if debug >= 1:
++            print(f"consider possible jumps for city: {l} | {cities[l]}")
+         for max_ in max_scores_ordered:
+             set_ = False
+-            for c_idx in max_scores[max_]:
+-                if abs(cities[l][0] - cities[c_idx][0]) <= max_lat and \
+-                   abs(cities[l][1] - cities[c_idx][1]) <= max_long:
++            idx = 0
++            if debug >= 1:
++               print(f"considering max score set: {max_} | {max_scores[max_]}")
++            if max_scores[max_][0][0] - max_lat > cities[l][0] or \
++               max_scores[max_][len(max_scores[max_]) - 1][0] + max_lat < cities[l][0]:
++                print("skipping out of bounds item")
++                print(f"{max_scores[max_][0][0] - max_lat} > {cities[l][0]} or {max_scores[max_][len(max_scores[max_]) - 1][0] + max_lat} < {cities[l][0]}")
++                #exit()
++                continue
++            while idx < len(max_scores[max_]) and max_scores[max_][idx][0] + max_lat < cities[l][0]:
++                if debug >= 1:
++                    print(f"comparing latitudes, base: {cities[l][0]} vs test: {max_scores[max_][idx][0]}")
++                idx += 1
++            if debug >= 1:
++                print(f"testing latitude {max_scores[max_][idx][0] - max_lat} <= {cities[l][0]}")
++            while idx < len(max_scores[max_]) and max_scores[max_][idx][0] - max_lat <= cities[l][0]:
++                # iterate valid latitudes to find valid longitudes
++                idx2 = 0
++                while idx < len(max_scores[max_][idx][1]) and max_scores[max_][idx][1][idx2][0] + max_long < cities[l][1]:
++                    if debug >= 1:
++                        print(f"comparing longitudes, base: {cities[l][1]} vs test: {max_scores[max_][idx][1][idx2]}")
++                    idx2 += 1
++                if debug >= 1:
++                    print(f"testing longitude {max_scores[max_][idx][1][idx2][0] - cities[l][1]} < {max_long}")
++                if idx2 < len(max_scores[max_][idx][1]) and max_scores[max_][idx][1][idx2][0] - cities[l][1] <= max_long:
+                     if debug >= 1:
+-                        print(f"base jump {l}[{max_cur}] -> {c_idx}[{max_}] valid maximal jump for city")
++                        print(f"base jump {l}[{max_cur}] -> {max_scores[max_][idx][1][idx2][1][0]}[{max_}] valid maximal jump for city")
+                     if max_ > 0:
+                         max_cur += max_
+                     set_ = True
+                     break
++                idx += 1
+             if set_:
+                 break
+ 
+@@ -84,16 +112,32 @@ def maximum_mission_points(max_lat, max_long):
+                 idx += 1
+ 
+             max_scores_ordered.insert(idx, max_cur)
+-            if debug >= 1:
+-                print(f"max_scores_ordered: [{len(max_scores_ordered)}]")
+-            elif debug >= 2:
+-                print(f"max_scores_ordered: [{len(max_scores_ordered)}] {max_scores_ordered}")
+-            max_scores[max_cur] = [l]
++            if debug >= 3:
++                 print(f"max_scores_ordered: {max_scores_ordered}")
++            max_scores[max_cur] = [[cities[l][0], [[cities[l][1], [l]]]]]
+         else:
+-            max_scores[max_cur].append(l)
+-
+-        #if (l_cities - l) % 1000 == 0:
+-        #    print(f"[debug] {n-l}/{n}")
++            idx = 0
++            # while lat <= lat_cur
++            set_ = False
++            while idx < len(max_scores[max_cur]) and max_scores[max_cur][idx][0] <= cities[l][0]:
++                if max_scores[max_cur][idx][0] == cities[l][0]:
++                    # matching latitude, insert at correct longitude
++                    idx2 = 0
++                    while max_scores[max_cur][idx][1][idx2][0] < cities[l][1]:
++                        idx2 += 1
++                    max_scores[max_cur][idx][1].insert(idx2, [idx2, [l]])
++                    set_ = True
++                    break
++                idx += 1
++            if not set_:
++                max_scores[max_cur].insert(idx, [cities[l][0], [[cities[l][1], [l]]]])
++        if debug >= 3:
++            print(f"max scores: {max_scores}")
++
++        """
++        if (l_cities - l) % 1000 == 0:
++            print(f"[debug] {n-l}/{n}")
++        """
+ 
+     return global_max_score
+ 
+-- 
+2.23.0
+
