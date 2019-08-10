@@ -1,0 +1,69 @@
+From 869f1d6dd4bdd3bd29112631c44a3a0e87e1afc6 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 10 Aug 2019 09:02:48 +0100
+Subject: [mod] hackerrank, 'maximizing mission points', python solution
+
+-debug switch
+---
+ .../maximizing.mission.points.py               | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py b/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
+index a6e1b6c..1f06de5 100644
+--- a/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
++++ b/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
+@@ -40,9 +40,11 @@ def maximum_mission_points(max_lat, max_long):
+ 
+     """
+ 
++    debug = 0
+     global cities
+     cities.sort(key=lambda a: a[2])
+-    #print("\n".join([str(c) for c in cities]))
++    if debug >= 1:
++        print("\n".join([str(c) for c in cities]))
+     l_cities = len(cities)
+ 
+     scores = [c[3] for c in cities]
+@@ -59,7 +61,8 @@ def maximum_mission_points(max_lat, max_long):
+             for c_idx in max_scores[max_]:
+                 if abs(cities[l][0] - cities[c_idx][0]) <= max_lat and \
+                    abs(cities[l][1] - cities[c_idx][1]) <= max_long:
+-                    #print(f"base jump {l}[{max_cur}] -> {c_idx}[{max_}] valid maximal jump for city")
++                    if debug >= 1:
++                        print(f"base jump {l}[{max_cur}] -> {c_idx}[{max_}] valid maximal jump for city")
+                     if max_ > 0:
+                         max_cur += max_
+                     set_ = True
+@@ -68,7 +71,8 @@ def maximum_mission_points(max_lat, max_long):
+                 break
+ 
+         if max_cur > global_max_score:
+-            #print(f"global max set: {max_cur}")
++            if debug >= 1:
++                print(f"global max set: {max_cur}")
+             global_max_score = max_cur
+ 
+         # persist max
+@@ -80,11 +84,17 @@ def maximum_mission_points(max_lat, max_long):
+                 idx += 1
+ 
+             max_scores_ordered.insert(idx, max_cur)
+-            #print(f"max_scores_ordered: {max_scores_ordered}")
++            if debug >= 1:
++                print(f"max_scores_ordered: [{len(max_scores_ordered)}]")
++            elif debug >= 2:
++                print(f"max_scores_ordered: [{len(max_scores_ordered)}] {max_scores_ordered}")
+             max_scores[max_cur] = [l]
+         else:
+             max_scores[max_cur].append(l)
+ 
++        #if (l_cities - l) % 1000 == 0:
++        #    print(f"[debug] {n-l}/{n}")
++
+     return global_max_score
+ 
+ 
+-- 
+2.23.0
+
