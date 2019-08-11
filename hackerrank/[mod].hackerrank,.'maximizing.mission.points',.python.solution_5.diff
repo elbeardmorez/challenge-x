@@ -1,0 +1,208 @@
+From d631615d1dcf4dabf48539198b8d7f1758bc50a0 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 11 Aug 2019 22:15:48 +0100
+Subject: [mod] hackerrank, 'maximizing mission points', python solution
+
+-speed-up, switch to an 'order-of-magnitude based set of sub-lookups'
+to determine nearest node as 'non-sparse map' was too expensive to
+(re)construct on each change / enabled node
+---
+ .../maximizing.mission.points.py              | 123 ++++++++++++------
+ 1 file changed, 82 insertions(+), 41 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py b/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
+index 8b01ef4..e77b1a1 100644
+--- a/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
++++ b/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
+@@ -6,11 +6,11 @@ import random
+ import re
+ import sys
+ 
+-
+ debug = 0
+ cities = []
+ location_nodes = {}
+-next_node = []
++near_nodes = {}
++
+ 
+ class node:
+     global debug
+@@ -27,62 +27,100 @@ class node:
+         self.next_live = None
+ 
+     def enable(self, global_min_lat, global_max_lat):
+-        iters = 0
+         debug_ = ()
+ 
+-        # how to quickly deduce where the closest enabled node sits
+-        """
+-        idx reference table?
+-
+-        [ 10 10 10 10 10 10 10 10 10 10 ]
+-        adding pos 6
+-        lookup next_node_start for that idx
+-        replace range
+-        [  6  6  6  6  6  6 10 10 10 10 ]
+- 
+-        [  3  3  3  3  3  3  3  3  3  3 ]
+-        adding pos 6
+-        lookup next_node_start for that idx
+-        replace range
+-        [  3  3  3  3  3  6  6  6  6  6 ]
+-        """
+-
+-        nn_idx = next_node[self.lat]
+-        n = location_nodes[next_node[nn_idx]]
++        n = near_node(self, location_nodes[global_min_lat], location_nodes[global_max_lat])
+         if debug >= 3:
+             print(f"found next node: {n} @ lat: {self.lat}")
+         if n.lat < self.lat:
+-            l = nn_idx + 1
+-            while l < len(next_node) and next_node[l] == nn_idx:
+-                next_node[l] = self.lat
+-                iters += 1
+-                l += 1
+             if n != self:
+                 self.prev_live = n
+                 self.next_live = n.next_live
+         elif n.lat > self.lat:
+-            l = nn_idx - 1
+-            while l > -1 and next_node[l] == nn_idx:
+-                next_node[l] = self.lat
+-                iters += 1
+-                l -= 1
+             if n != self:
+                 self.next_live = n
+                 self.prev_live = n.prev_live
+ 
+-        #print(f"next_node post {self.lat} addition: {next_node}")
+-
+         if self.prev_live is not None:
+             self.prev_live.next_live = self
+         if self.next_live is not None:
+            self.next_live.prev_live = self
+ 
+         self.enabled = True
+-        if (debug >= 2):
+-            print(f"enabling node: {self}, range: {global_min_lat}-{global_max_lat}, iters: {iters}")
++
++        if (debug >= 2 or self.idx in debug_):
++            print(f"enabled node: {self}, range: {global_min_lat}-{global_max_lat}")
+ 
+     def __str__(self):
+-        return f"[node: lat: {self.lat}, enabled: {self.enabled}, prev_live: {'None' if not self.prev_live else self.prev_live.lat}, next_live: {'None' if not self.next_live else self.next_live.lat}]"
++        return f"[node: lat: {self.lat}, enabled: {self.enabled}, idxs: {self.idx}, prev_live: {'None' if not self.prev_live else self.prev_live.lat}, next_live: {'None' if not self.next_live else self.next_live.lat}]"
++
++
++def near_node(n_new, n_first, n_last):
++
++    # how to quickly deduce where the closest enabled node sits
++    """
++    near nodes
++
++    ensure that a trivial transformation to the number yields a 'round' number
++    to then use as a 'nearby' anchor
++
++    e.g. 125533 -% 10^5 = 120000
++         125533 -% 10^4 = 125000
++
++    """
++    global near_nodes
++    debug_ = ()
++    iters = 0
++
++    if n_new.idx in debug_:
++        debug = 10
++    else:
++        debug = 0
++
++    if n_new.lat < n_first.lat:
++        return n_first
++    elif n_new.lat > n_last.lat:
++        return n_last
++
++    if debug >= 10:
++        print(f"searching for node near: {n_new}, near_nodes: {near_nodes}")
++
++    magnitudes = len(str(n_new.lat))
++    start = None
++    n = None
++    for l in range(1, magnitudes):
++        near = n_new.lat - n_new.lat % (10 ** l)
++        if near in near_nodes[l]:
++            start = near_nodes[l][near]
++            # all further magnitudes are necessarily already set
++            break
++        else:
++            near_nodes[l][near] = n_new
++
++    if start is None:
++        if n_first is n_new:
++            start = n_last
++        elif n_last is n_new:
++            start = n_first
++        else:
++            start = n_first if abs(n_first.lat - n_new.lat) < abs(n_last.lat - n_new.lat) else n_last
++
++    if debug >= 10:
++        print(f"searching for node near: {n_new}, start: {start}")
++    n = start
++    if n.lat > n_new.lat:
++        while n.prev_live is not None and n.lat > n_new.lat:
++            n = n.prev_live
++            iters += 1
++    elif n.lat <= n_new.lat:
++        while n.next_live is not None and n.lat <= n_new.lat:
++            n = n.next_live
++            iters += 1
++
++    if debug >= 1:
++        print(f"searched for node near: {n_new}, range: {n_first.lat}-{n_last.lat}, iters: {iters}, set n: {n}")
++
++    return n
+ 
+ 
+ def maximum_mission_points(max_lat, max_long):
+@@ -118,7 +156,7 @@ def maximum_mission_points(max_lat, max_long):
+ 
+     global debug
+     global location_nodes
+-    global next_node
++    global near_nodes
+     global cities
+     cities.sort(key=lambda a: a[2])
+     cities_by_height = cities.copy()
+@@ -132,6 +170,10 @@ def maximum_mission_points(max_lat, max_long):
+     cities_by_lat = list([cities_by_height[idx] + [idx] for idx in range(l_cities)])
+     cities_by_lat.sort(key=lambda a: a[0])
+ 
++    magnitudes = max(len(str(cities_by_lat[0][0])), len(str(cities_by_lat[-1][0])))
++    for l in range(1, magnitudes):
++        near_nodes[l] = {}
++
+     # location_nodes is a keyed entry point for the linked list
+     prev = None
+     for c in cities_by_lat:
+@@ -143,7 +185,6 @@ def maximum_mission_points(max_lat, max_long):
+     global_max_lat = cities_by_height[-1][0]
+ 
+     # add start item
+-    next_node = [global_max_lat] * (cities_by_lat[-1][0] + 1)
+     location_data = {cities_by_height[-1][0]: [cities_by_height[-1][0], [[cities_by_height[-1][1], global_max_score]]]}
+     location_nodes[cities_by_height[-1][0]].enable(global_min_lat, global_max_lat)
+ 
+@@ -216,8 +257,8 @@ def maximum_mission_points(max_lat, max_long):
+                         max_location = (location_data[n.lat][0], location_data[n.lat][1][idx2][0])
+                         if max_jump == global_max_score:
+                             break
+-                #if max_jump == global_max_score:
+-                #    break
++                if max_jump == global_max_score:
++                    break
+                 n = n.next_live
+ 
+             if debug >= 1 and set_ and n is not None:
+-- 
+2.23.0
+
