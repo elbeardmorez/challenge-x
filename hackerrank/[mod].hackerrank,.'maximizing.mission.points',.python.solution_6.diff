@@ -1,0 +1,219 @@
+From 4b462243228122489b4d845e34cebb9ed4bf761d Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 12 Aug 2019 08:45:50 +0100
+Subject: [mod] hackerrank, 'maximizing mission points', python solution
+
+-employ a mixed algorithm approach determining appropriate search
+type based on width of valid location space
+-speed-up, search_by_score, reverse ordered max list to benefit
+from O(1) append operation
+---
+ .../maximizing.mission.points.py              | 181 +++++++++++++++---
+ 1 file changed, 150 insertions(+), 31 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py b/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
+index e77b1a1..cbbfbff 100644
+--- a/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
++++ b/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
+@@ -123,36 +123,7 @@ def near_node(n_new, n_first, n_last):
+     return n
+ 
+ 
+-def maximum_mission_points(max_lat, max_long):
+-    """
+-    sort cities by height
+-    work backwards to construct a max subpath per city
+-
+-    on encountering a -ve points city on the path, skip if possible by considering
+-    all following reachable cities, but one cannot dismiss -ve point cities as they
+-    may facilitate the maximum path
+-
+-    max jump 3
+-    city |   a   b   c   d
+-    pts  |   2  -1   4   1
+-    pos  | 2,1 4,1 6,1 7,1
+-
+-    valid jumps  max size         max from city tally
+-    d            1 (max d)        [0 0 0 1]
+-    c -> d       5 (c + max d)    [0 0 5 1]
+-    b -> c       4 (b + max c)    [0 4 5 1]
+-    b -> d       0 (b + max d)    [0 4 5 1]
+-    a -> b       6 (a + max b)    [6 4 5 1]
+-
+-    from position a, we're iterating visited (b, c, d), short-circuiting
+-    validity tests if max combined path is not worth even checking (e.g.
+-    less than an already determined global max)
+-    maintaining a sorted tail of maximum scores would help optimally short
+-    circuit the loop correctly asap
+-
+-    need to iterate until some jump is found though..
+-
+-    """
++def search_by_location(max_lat, max_long):
+ 
+     global debug
+     global location_nodes
+@@ -285,6 +256,154 @@ def maximum_mission_points(max_lat, max_long):
+     return global_max_score
+ 
+ 
++def search_by_score(max_lat, max_long):
++
++    global debug
++    global cities
++    cities.sort(key=lambda a: a[2])
++    if debug >= 2:
++        print("\n".join([str(c) for c in cities]))
++    l_cities = len(cities)
++
++    scores = [c[3] for c in cities]
++    global_max_score = scores[-1]
++    max_scores_ordered = [scores[-1]]
++
++    max_scores = {scores[-1]: [[cities[-1][0], [[cities[-1][1], [l_cities - 1]]]]]}
++
++    if debug >= 1:
++        print(f"max lat: {max_lat}, max long: {max_long}")
++    for l in range(l_cities - 2, -1, -1):
++        # 0 jump max
++        max_cur = scores[l]
++        # process in order of greatest max scores achieved thus far
++        if debug >= 2:
++            print(f"consider possible jumps for city: {l} | {cities[l]}")
++        for max_ in reversed(max_scores_ordered):
++            set_ = False
++            idx = 0
++            if debug >= 5:
++                print(f"considering max score set: {max_} | {max_scores[max_]}")
++            if max_scores[max_][0][0] - max_lat > cities[l][0] or \
++               max_scores[max_][len(max_scores[max_]) - 1][0] + max_lat < cities[l][0]:
++                if debug >= 5:
++                    print("skipping out of bounds item")
++                    print(f"{max_scores[max_][0][0] - max_lat} > {cities[l][0]} or {max_scores[max_][len(max_scores[max_]) - 1][0] + max_lat} < {cities[l][0]}")
++                continue
++            while idx < len(max_scores[max_]) and max_scores[max_][idx][0] + max_lat < cities[l][0]:
++                if debug >= 0:
++                    print(f"comparing latitudes, base: {cities[l][0]} vs test: {max_scores[max_][idx][0]}")
++                idx += 1
++            if debug >= 3 and idx < len(max_scores[max_]):
++                print(f"testing latitude {max_scores[max_][idx][0] - max_lat} <= {cities[l][0]}")
++            while idx < len(max_scores[max_]) and max_scores[max_][idx][0] - max_lat <= cities[l][0]:
++                # iterate valid latitudes to find valid longitudes
++                idx2 = 0
++                while idx2 < len(max_scores[max_][idx][1]) and max_scores[max_][idx][1][idx2][0] + max_long < cities[l][1]:
++                    if debug >= 0:
++                        print(f"comparing longitudes, base: {cities[l][1]} vs test: {max_scores[max_][idx][1][idx2]}")
++                    idx2 += 1
++                if debug >= 3 and idx2 > len(max_scores[max_][idx][1]):
++                    print(f"testing longitude {max_scores[max_][idx][1][idx2][0] - cities[l][1]} < {max_long}")
++                if idx2 < len(max_scores[max_][idx][1]) and max_scores[max_][idx][1][idx2][0] - cities[l][1] <= max_long:
++                    if debug >= 1:
++                        print(f"base jump {l}[{max_cur}] -> {max_scores[max_][idx][1][idx2][1][0]}[{max_}] valid maximal jump for city")
++                    if max_ > 0:
++                        max_cur += max_
++                    set_ = True
++                    break
++                idx += 1
++            if set_:
++                break
++
++        if max_cur > global_max_score:
++            if debug >= 1:
++                print(f"global max set: {max_cur}")
++            global_max_score = max_cur
++
++        # persist max
++        if not max_cur in max_scores:
++            # insert this city's max score in ordered max scores
++            if max_cur > max_scores_ordered[-1]:
++                max_scores_ordered.append(max_cur)
++            else:
++                l_mso = len(max_scores_ordered)
++                idx = 1
++                while idx <= l_mso and max_scores_ordered[-idx] > max_cur:
++                    idx += 1
++                max_scores_ordered.insert(l_mso - idx + 1, max_cur)
++            if debug >= 10:
++                print(f"max_scores_ordered: {max_scores_ordered}")
++            max_scores[max_cur] = [[cities[l][0], [[cities[l][1], [l]]]]]
++        else:
++            idx = 0
++            # while lat <= lat_cur
++            set_ = False
++            while idx < len(max_scores[max_cur]) and max_scores[max_cur][idx][0] <= cities[l][0]:
++                if max_scores[max_cur][idx][0] == cities[l][0]:
++                    # matching latitude, insert at correct longitude
++                    idx2 = 0
++                    while max_scores[max_cur][idx][1][idx2][0] < cities[l][1]:
++                        idx2 += 1
++                    max_scores[max_cur][idx][1].insert(idx2, [idx2, [l]])
++                    set_ = True
++                    break
++                idx += 1
++            if not set_:
++                max_scores[max_cur].insert(idx, [cities[l][0], [[cities[l][1], [l]]]])
++        if debug >= 10:
++            print(f"max scores: {max_scores}")
++
++    return global_max_score
++
++
++def maximum_mission_points(n, max_lat, max_long):
++    """
++    sort cities by height
++    work backwards to construct a max subpath per city
++
++    on encountering a -ve points city on the path, skip if possible by considering
++    all following reachable cities, but one cannot dismiss -ve point cities as they
++    may facilitate the maximum path
++
++    max jump 3
++    city |   a   b   c   d
++    pts  |   2  -1   4   1
++    pos  | 2,1 4,1 6,1 7,1
++
++    valid jumps  max size         max from city tally
++    d            1 (max d)        [0 0 0 1]
++    c -> d       5 (c + max d)    [0 0 5 1]
++    b -> c       4 (b + max c)    [0 4 5 1]
++    b -> d       0 (b + max d)    [0 4 5 1]
++    a -> b       6 (a + max b)    [6 4 5 1]
++
++    from position a, we're iterating visited (b, c, d), short-circuiting
++    validity tests if max combined path is not worth even checking (e.g.
++    less than an already determined global max)
++    maintaining a sorted tail of maximum scores would help optimally short
++    circuit the loop correctly asap
++
++    there is a dichotomy between searching for valid my indexed max score,
++    and searching based on nearest location
++
++    where the valid search location space is wide, iterating a decending list
++    of max score is optimum
++
++    where the valid search location space is narrow, iterating those nearby
++    locations is optimum
++
++    mixed search approach is thus warranted..
++
++    """
++    global cities
++
++    if max_lat / n > 0.5:
++        return search_by_score(max_lat, max_long)
++    else:
++        return search_by_location(max_lat, max_long)
++
++
+ if __name__ == '__main__':
+     nD_latD_long = input().split()
+ 
+@@ -308,4 +427,4 @@ if __name__ == '__main__':
+         # Write Your Code Here
+         cities.append([latitude, longitude, height, points])
+ 
+-    print(maximum_mission_points(d_lat, d_long))
++    print(maximum_mission_points(n, d_lat, d_long))
+-- 
+2.23.0
+
