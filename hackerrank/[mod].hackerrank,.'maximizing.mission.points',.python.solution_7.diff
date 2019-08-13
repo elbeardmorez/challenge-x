@@ -1,0 +1,582 @@
+From fb34479177a33271eb8b7842fec71c946aa86eaf Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 13 Aug 2019 13:07:18 +0100
+Subject: [mod] hackerrank, 'maximizing mission points', python solution
+
+-remove unnecessary nested structures for both algorithms
+-add a bisect-search implementation for search_by_score lookup
+---
+ .../maximizing.mission.points.py              | 365 +++++++++++-------
+ 1 file changed, 217 insertions(+), 148 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py b/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
+index cbbfbff..d0e2098 100644
+--- a/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
++++ b/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
+@@ -7,18 +7,26 @@ import re
+ import sys
+ 
+ debug = 0
++iters = 0
++
+ cities = []
+ location_nodes = {}
++location_nodes_ordered_by_lat = []
+ near_nodes = {}
++n_min_lat = None
++n_max_lat = None
+ 
+ 
+ class node:
+     global debug
++    global iters
+ 
+-    def __init__(self, idx_, lat_, prev_=None, next_=None):
++    def __init__(self, idx_, lat_, long_, score, prev_=None, next_=None):
+         self.enabled = False
+         self.idx = idx_
+         self.lat = lat_
++        self.long = long_
++        self.score = score
+         self.prev = prev_
+         if self.prev is not None:
+             self.prev.next = self
+@@ -26,36 +34,47 @@ class node:
+         self.prev_live = None
+         self.next_live = None
+ 
+-    def enable(self, global_min_lat, global_max_lat):
++    def enable(self, n_min_lat, n_max_lat):
+         debug_ = ()
+ 
+-        n = near_node(self, location_nodes[global_min_lat], location_nodes[global_max_lat])
++        n = near_node(self.lat, n_min_lat, n_max_lat, self)
++        #print(f"location_nodes_ordered_by_lat: {location_nodes_ordered_by_lat}")
++        #print(f"location_nodes: {location_nodes}")
++        #idx = bisect_search(location_nodes_ordered_by_lat, self.lat)
++        #n = location_nodes[location_nodes_ordered_by_lat[idx]]
++
+         if debug >= 3:
+-            print(f"found next node: {n} @ lat: {self.lat}")
++            print(f"found near node for lat: {self.lat} @ n: {n}")
+         if n.lat < self.lat:
+             if n != self:
+                 self.prev_live = n
+                 self.next_live = n.next_live
++                #location_nodes_ordered_by_lat.insert(idx + 1, self.lat)
+         elif n.lat > self.lat:
+             if n != self:
+                 self.next_live = n
+                 self.prev_live = n.prev_live
++                #location_nodes_ordered_by_lat.insert(idx, self.lat)
++        if debug > 10:
++            print(f"location_nodes_ordered_by_lat: {location_nodes_ordered_by_lat}")
+ 
+         if self.prev_live is not None:
+             self.prev_live.next_live = self
+         if self.next_live is not None:
+-           self.next_live.prev_live = self
++            self.next_live.prev_live = self
+ 
+         self.enabled = True
+ 
+-        if (debug >= 2 or self.idx in debug_):
+-            print(f"enabled node: {self}, range: {global_min_lat}-{global_max_lat}")
++        if (debug >= 3 or self.idx in debug_):
++            print(f"enabled node: {self}, range: {n_min_lat.lat}-{n_max_lat.lat}")
+ 
+     def __str__(self):
+-        return f"[node: lat: {self.lat}, enabled: {self.enabled}, idxs: {self.idx}, prev_live: {'None' if not self.prev_live else self.prev_live.lat}, next_live: {'None' if not self.next_live else self.next_live.lat}]"
++        return f"[node: idx: {self.idx}, loc: ({self.lat},{self.long}), score: {self.score}, enabled: {self.enabled}, | prev_live: {'None' if not self.prev_live else self.prev_live.lat} | next_live: {'None' if not self.next_live else self.next_live.lat}]"
++
++    __repr__ = __str__
+ 
+ 
+-def near_node(n_new, n_first, n_last):
++def near_node(target, n_first, n_last, n_new=None):
+ 
+     # how to quickly deduce where the closest enabled node sits
+     """
+@@ -68,74 +87,139 @@ def near_node(n_new, n_first, n_last):
+          125533 -% 10^4 = 125000
+ 
+     """
++    global debug
++    global iters
++    iters2 = 0
++
+     global near_nodes
+     debug_ = ()
+-    iters = 0
+ 
+-    if n_new.idx in debug_:
++    if n_new is not None and n_new.idx in debug_:
+         debug = 10
+-    else:
+-        debug = 0
+-
+-    if n_new.lat < n_first.lat:
+-        return n_first
+-    elif n_new.lat > n_last.lat:
+-        return n_last
+-
+-    if debug >= 10:
++    if debug >= 4:
+         print(f"searching for node near: {n_new}, near_nodes: {near_nodes}")
+ 
+-    magnitudes = len(str(n_new.lat))
++    # find closest cached position on the linked list
++    magnitudes = len(str(target))
+     start = None
+     n = None
+     for l in range(1, magnitudes):
+-        near = n_new.lat - n_new.lat % (10 ** l)
++        near = target - target % (10 ** l)
+         if near in near_nodes[l]:
+             start = near_nodes[l][near]
+             # all further magnitudes are necessarily already set
+             break
+         else:
+             near_nodes[l][near] = n_new
+-
+     if start is None:
+-        if n_first is n_new:
++        if target == n_first.lat:
+             start = n_last
+-        elif n_last is n_new:
++        elif target == n_last:
+             start = n_first
+         else:
+-            start = n_first if abs(n_first.lat - n_new.lat) < abs(n_last.lat - n_new.lat) else n_last
++            start = n_first if abs(n_first.lat - target) < abs(n_last.lat - target) else n_last
+ 
+-    if debug >= 10:
+-        print(f"searching for node near: {n_new}, start: {start}")
++    if target < n_first.lat:
++        return n_first
++    elif target > n_last.lat:
++        return n_last
++    elif target == n_first.lat and target == n_last.lat:
++        return n_first
++    if debug >= 4:
++        print(f"searching for node near: {target} | {n_new}, start: {start}")
+     n = start
+-    if n.lat > n_new.lat:
+-        while n.prev_live is not None and n.lat > n_new.lat:
++    if n.lat > target:
++        while n.prev_live is not None and n.lat > target:
+             n = n.prev_live
+-            iters += 1
+-    elif n.lat <= n_new.lat:
+-        while n.next_live is not None and n.lat <= n_new.lat:
++            iters2 += 1
++    elif n.lat < target:
++        while n.next_live is not None and n.lat <= target:
++            n = n.next_live
++            iters2 += 1
++    if n.lat == target:
++        if n.next_live is not None:
++            iters2 += 1
+             n = n.next_live
+-            iters += 1
++        elif n.prev_live is not None:
++            iters2 += 1
++            n = n.prev_live
++        elif n.lat > n_first.lat:
++            iters2 += 1
++            n = n_first
++        elif n.lat < n_last.lat:
++            iters2 += 1
++            n = n_last
++
+ 
+-    if debug >= 1:
+-        print(f"searched for node near: {n_new}, range: {n_first.lat}-{n_last.lat}, iters: {iters}, set n: {n}")
++    iters += iters2
+ 
++    if debug >= 3:
++        print(f"searched for node near: {target} | iters: {iters2} | {n_new} -> {n}")
+     return n
+ 
+ 
+-def search_by_location(max_lat, max_long):
++def bisect_search(col, target, start=None):
++    global debug
++    global iters
++    iters2 = 0
++
++    n = len(col)
++    if target < col[0]:
++        return 0
++    else:
++        idx = start if start is not None else int(n / 2)
++        bounce = max(int(idx / 2), 1)
++        if debug > 10:
++            print(f"bisect_search, target: {target}, idx: {idx}, n: {n}, bounce: {bounce}, col: {col}")
++        # bounce over
++        while col[idx] < target:
++            iters2 += 1
++            if debug > 10:
++                print(f"idx: {idx}, col: {col}, while {col[idx]} < {target}")
++            if idx + bounce < n and col[idx + bounce] <= target:
++                idx += bounce
++            elif bounce > 1:
++                bounce = int(bounce / 2)
++            elif idx + 1 == n or col[idx + 1] > target:
++                if idx + 1 < n:
++                    idx += 1
++                break
++        while col[idx] > target:
++            iters2 += 1
++            if debug > 10:
++                print(f"idx: {idx}, col: {col}, while {col[idx]} > {target}")
++            if idx - bounce >= 0 and col[idx - bounce] >= target:
++                idx -= bounce
++            elif bounce > 1:
++                bounce = int(bounce / 2)
++            elif idx - 1 == 0 or col[idx - 1] < target:
++                break
++
++        iters += iters2
++        if debug > 0:
++            print(f"bisect_search, target: {target} | iters: {iters2} | idx: {idx} = {col[idx]},  surrounding: [..{str(col[idx - 1]) + ', ' if idx - 1 >= 0 else ''}{col[idx]}{', ' + str(col[idx + 1]) if idx + 1 < n else ''}..]")
++
++        return idx
++
+ 
++def search_by_location(max_lat, max_long):
+     global debug
++    global iters
++
+     global location_nodes
++    global location_nodes_ordered_by_lat
+     global near_nodes
+     global cities
++    global n_min_lat
++    global n_max_lat
++
+     cities.sort(key=lambda a: a[2])
+     cities_by_height = cities.copy()
+-    #if debug >= 2:
+-    #    print("\n".join([str(c) for c in cities]))
++    if debug >= 20:
++        print("\n".join([str(c) for c in cities]))
+     l_cities = len(cities)
+     global_max_score = cities_by_height[-1][3]
+-    if debug >= 1:
++    if debug >= 10:
+         print(f"global max set: {global_max_score}")
+ 
+     cities_by_lat = list([cities_by_height[idx] + [idx] for idx in range(l_cities)])
+@@ -147,121 +231,97 @@ def search_by_location(max_lat, max_long):
+ 
+     # location_nodes is a keyed entry point for the linked list
+     prev = None
++    n = None
+     for c in cities_by_lat:
+-        if c[0] not in location_nodes:
+-            location_nodes[c[0]] = node(c[4], c[0], prev, None)
+-        prev = location_nodes[c[0]]
+-
+-    global_min_lat = cities_by_height[-1][0]
+-    global_max_lat = cities_by_height[-1][0]
++        n = node(c[4], c[0], c[1], c[3], prev, None)
++        location_nodes[c[0]] = n
++        prev = n
+ 
+     # add start item
+-    location_data = {cities_by_height[-1][0]: [cities_by_height[-1][0], [[cities_by_height[-1][1], global_max_score]]]}
+-    location_nodes[cities_by_height[-1][0]].enable(global_min_lat, global_max_lat)
+-
+-    l_loc = 1
+-    if debug >= 1:
++    location_nodes_ordered_by_lat = [cities_by_height[-1][0]]
++    n = location_nodes[cities_by_height[-1][0]]
++    n_min_lat = n
++    n_max_lat = n
++    n.enable(n_min_lat, n_max_lat)
++
++    if debug >= 3:
++        print(f"near_nodes: {near_nodes}")
+         print(f"max lat: {max_lat}, max long: {max_long}")
++
+     for l in range(l_cities - 2, -1, -1):
+-        [lat_, long_, _, score] = cities_by_height[l]
+-        if lat_ < global_min_lat:
+-            global_min_lat = lat_
+-        elif lat_ > global_max_lat:
+-            global_max_lat = lat_
+-        n = location_nodes[lat_]
+-        n.enable(global_min_lat, global_max_lat)
+-        long_idx = -1
+-        if lat_ in location_data:
+-            # existing latitude, ensure longitude
+-            idx = 0
+-            while location_data[lat_][1][idx] < long_:
+-                idx += 1
+-            location_data[lat_][1].insert(idx, [long_, score])
+-            long_idx = idx
+-        else:
+-            # add latitude
+-            location_data[lat_] = [lat_, [[long_, score]]]
+-            l_loc += 1
+-            long_idx = 0
++        n_base = location_nodes[cities_by_height[l][0]]
++        n = n_base
++        [lat_, long_, score] = [n.lat, n.long, n.score]
++        if lat_ < n_min_lat.lat:
++            n_min_lat = n
++        elif lat_ > n_max_lat.lat:
++            n_max_lat = n
++        n.enable(n_min_lat, n_max_lat)
+ 
+-        # process in order of greatest max scores achieved thus far
+-        if debug >= 2:
++        if debug >= 3:
+             print(f"consider possible jumps for city: {l} | {cities[l]}")
+-        if lat_ >= global_min_lat - max_lat and \
+-           lat_ <= global_max_lat + max_lat:
++        if lat_ >= n_min_lat.lat - max_lat and \
++           lat_ <= n_max_lat.lat + max_lat:
+             # possibly reachable
+             if debug >= 3:
+-                print(f"starting at n: {n}, data: {location_data[n.lat]}")
++                print(f"starting at n: {n}")
++            """
++            n = near_node(n.lat - max_lat, n_min_lat, n_max_lat)
++            #idx_ = bisect_search(location_nodes_ordered_by_lat, lat_ - max_lat)
++            #n = location_nodes[location_nodes_ordered_by_lat[idx_]]
++            """
+             while n.prev_live is not None and n.prev_live.lat + max_lat >= lat_:
+                 n = n.prev_live
+-                if debug >= 2:
++                iters += 1
++                if debug >= 4:
+                     print(f"comparing latitudes, test: {n.lat + max_lat} > base: {lat_}")
+             if debug >= 3:
+                 print(f"reversed to n: {n}")
+-                if n is not None:
+-                    print(f"latitude: {lat_}, location_data[n.lat]: {location_data[n.lat]}, longitides: [{len(location_data[n.lat][1])}]|{location_data[n.lat][1]}")
+             max_jump = 0
+             max_location = None
+             max_idx = -1
+-            set_ = False
+-            while n is not None and n.lat - max_lat <= lat_:
++            while n is not None and n.lat <= lat_ + max_lat:
+                 if n.idx == l:
+                     n = n.next_live
+                     continue
+-                # iterate valid latitudes to find valid longitudes
+-                if debug >= 3:
+-                    print(f"lat_: {lat_}, n: {n}, location_data: {location_data}")
+-                idx2 = 0
+-                if debug >= 3:
+-                    print(f"latitude: {lat_}, longitides: [{len(location_data[n.lat][1])}]|{location_data[n.lat][1]}")
+-                while idx2 + 1 < len(location_data[n.lat][1]) and location_data[n.lat][1][idx2 + 1][0] + max_long > long_:
+-                    if debug >= 2:
+-                        print(f"comparing longitudes, test: {location_data[n.lat][1][idx2][0] + max_long} vs base: {long_}")
+-                    idx2 += 1
+-                if debug >= 3 and idx2 < len(location_data[n.lat][1]):
+-                    print(f"testing longitude {location_data[n.lat][1][idx2][0] - long_} <= {max_long}")
+-                if idx2 < len(location_data[n.lat][1]) and abs(location_data[n.lat][1][idx2][0] - long_) <= max_long:
+-                    if not set_ or location_data[n.lat][1][idx2][1] > max_jump:
+-                        set_ = True
+-                        max_jump = location_data[n.lat][1][idx2][1]
++                if abs(n.long - long_) <= max_long:
++                    if n.score > max_jump:
++                        max_jump = n.score
+                         max_idx = n.idx
+-                        max_location = (location_data[n.lat][0], location_data[n.lat][1][idx2][0])
+-                        if max_jump == global_max_score:
+-                            break
+-                if max_jump == global_max_score:
+-                    break
++                        max_location = (n.lat, n.long)
++                    if max_jump == global_max_score:
++                        break
+                 n = n.next_live
+-
+-            if debug >= 1 and set_ and n is not None:
++            if debug >= 2 and max_location is not None:
+                 print(f"max jump: [{l}]|{score}@({lat_},{long_}) -> [{max_idx}]|{max_jump}@({max_location[0]},{max_location[1]})")
+             score += max_jump
+ 
+         if score > global_max_score:
+             global_max_score = score
+-            if debug >= 1:
++            if debug >= 10:
+                 print(f"global max set: {global_max_score}")
+ 
+         # persist max
+-        if score > location_data[lat_][1][long_idx][1]:
+-            location_data[lat_][1][long_idx][1] = score
++        if score > n_base.score:
++            n_base.score = score
+ 
+-        if debug >= 3:
+-            print(f"location_data: {location_data}")
++        if debug >= 10:
++            print(f"location_nodes: {location_nodes}")
+ 
+-        """
+-        if (l_cities - l) % 1000 == 0:
+-            print(f"[debug] {l_cities - l}/{l_cities}")
+-        """
++        if debug >= 1:
++            if (l_cities - l) % 10 == 0:
++                print(f"[debug] {l_cities - l}/{l_cities}, iters: {iters}")
+ 
+     return global_max_score
+ 
+ 
+ def search_by_score(max_lat, max_long):
+-
+     global debug
++    global iters
++
+     global cities
+     cities.sort(key=lambda a: a[2])
+-    if debug >= 2:
++    if debug >= 20:
+         print("\n".join([str(c) for c in cities]))
+     l_cities = len(cities)
+ 
+@@ -269,45 +329,41 @@ def search_by_score(max_lat, max_long):
+     global_max_score = scores[-1]
+     max_scores_ordered = [scores[-1]]
+ 
+-    max_scores = {scores[-1]: [[cities[-1][0], [[cities[-1][1], [l_cities - 1]]]]]}
++    max_scores = {scores[-1]: [[cities[-1][0], cities[-1][1], cities[-1][3], l_cities - 1]]}
+ 
+-    if debug >= 1:
++    if debug >= 3:
+         print(f"max lat: {max_lat}, max long: {max_long}")
++
+     for l in range(l_cities - 2, -1, -1):
+         # 0 jump max
+         max_cur = scores[l]
+         # process in order of greatest max scores achieved thus far
+-        if debug >= 2:
++        if debug >= 3:
+             print(f"consider possible jumps for city: {l} | {cities[l]}")
+         for max_ in reversed(max_scores_ordered):
++            l_ms = len(max_scores[max_])
+             set_ = False
+             idx = 0
+             if debug >= 5:
+                 print(f"considering max score set: {max_} | {max_scores[max_]}")
+             if max_scores[max_][0][0] - max_lat > cities[l][0] or \
+-               max_scores[max_][len(max_scores[max_]) - 1][0] + max_lat < cities[l][0]:
++               max_scores[max_][l_ms - 1][0] + max_lat < cities[l][0]:
+                 if debug >= 5:
+                     print("skipping out of bounds item")
+-                    print(f"{max_scores[max_][0][0] - max_lat} > {cities[l][0]} or {max_scores[max_][len(max_scores[max_]) - 1][0] + max_lat} < {cities[l][0]}")
++                    print(f"{max_scores[max_][0][0] - max_lat} > {cities[l][0]} or {max_scores[max_][l_ms - 1][0] + max_lat} < {cities[l][0]}")
+                 continue
+-            while idx < len(max_scores[max_]) and max_scores[max_][idx][0] + max_lat < cities[l][0]:
+-                if debug >= 0:
++            while idx < l_ms and max_scores[max_][idx][0] + max_lat < cities[l][0]:
++                if debug >= 4:
+                     print(f"comparing latitudes, base: {cities[l][0]} vs test: {max_scores[max_][idx][0]}")
+                 idx += 1
+-            if debug >= 3 and idx < len(max_scores[max_]):
++            if debug >= 3 and idx < l_ms:
+                 print(f"testing latitude {max_scores[max_][idx][0] - max_lat} <= {cities[l][0]}")
+-            while idx < len(max_scores[max_]) and max_scores[max_][idx][0] - max_lat <= cities[l][0]:
++            while idx < l_ms and max_scores[max_][idx][0] - max_lat <= cities[l][0]:
+                 # iterate valid latitudes to find valid longitudes
+-                idx2 = 0
+-                while idx2 < len(max_scores[max_][idx][1]) and max_scores[max_][idx][1][idx2][0] + max_long < cities[l][1]:
+-                    if debug >= 0:
+-                        print(f"comparing longitudes, base: {cities[l][1]} vs test: {max_scores[max_][idx][1][idx2]}")
+-                    idx2 += 1
+-                if debug >= 3 and idx2 > len(max_scores[max_][idx][1]):
+-                    print(f"testing longitude {max_scores[max_][idx][1][idx2][0] - cities[l][1]} < {max_long}")
+-                if idx2 < len(max_scores[max_][idx][1]) and max_scores[max_][idx][1][idx2][0] - cities[l][1] <= max_long:
+-                    if debug >= 1:
+-                        print(f"base jump {l}[{max_cur}] -> {max_scores[max_][idx][1][idx2][1][0]}[{max_}] valid maximal jump for city")
++                iters += 1
++                if abs(max_scores[max_][idx][1] - cities[l][1]) <= max_long:
++                    if debug >= 2:
++                        print(f"max jump: [{l}]|{max_cur}@({cities[l][0]},{cities[l][1]}) -> [{max_scores[max_][idx][3]}]|{max_}@({max_scores[max_][idx][0]},{max_scores[max_][idx][1]})")
+                     if max_ > 0:
+                         max_cur += max_
+                     set_ = True
+@@ -317,7 +373,7 @@ def search_by_score(max_lat, max_long):
+                 break
+ 
+         if max_cur > global_max_score:
+-            if debug >= 1:
++            if debug >= 10:
+                 print(f"global max set: {max_cur}")
+             global_max_score = max_cur
+ 
+@@ -331,29 +387,32 @@ def search_by_score(max_lat, max_long):
+                 idx = 1
+                 while idx <= l_mso and max_scores_ordered[-idx] > max_cur:
+                     idx += 1
++                    iters += 1
+                 max_scores_ordered.insert(l_mso - idx + 1, max_cur)
++                """
++                max_scores_ordered.append(max_cur)
++                max_scores_ordered.sort()
++                idx = bisect_search(max_scores_ordered, max_cur)
++                max_scores_ordered.insert(idx, max_cur)
++                """
+             if debug >= 10:
+                 print(f"max_scores_ordered: {max_scores_ordered}")
+-            max_scores[max_cur] = [[cities[l][0], [[cities[l][1], [l]]]]]
++            max_scores[max_cur] = [[cities[l][0], cities[l][1], cities[l][3], l]]
+         else:
+             idx = 0
+             # while lat <= lat_cur
+-            set_ = False
+-            while idx < len(max_scores[max_cur]) and max_scores[max_cur][idx][0] <= cities[l][0]:
+-                if max_scores[max_cur][idx][0] == cities[l][0]:
+-                    # matching latitude, insert at correct longitude
+-                    idx2 = 0
+-                    while max_scores[max_cur][idx][1][idx2][0] < cities[l][1]:
+-                        idx2 += 1
+-                    max_scores[max_cur][idx][1].insert(idx2, [idx2, [l]])
+-                    set_ = True
+-                    break
++            l_msc = len(max_scores[max_cur])
++            while idx < l_msc and max_scores[max_cur][idx][0] < cities[l][0]:
+                 idx += 1
+-            if not set_:
+-                max_scores[max_cur].insert(idx, [cities[l][0], [[cities[l][1], [l]]]])
++            max_scores[max_cur].insert(idx, [cities[l][0], cities[l][1], cities[l][3], l])
+         if debug >= 10:
++            print(f"max scores ordered: {max_scores_ordered}")
+             print(f"max scores: {max_scores}")
+ 
++        if debug >= 1:
++            if (l_cities - l) % 10 == 0:
++                print(f"[debug] {l_cities - l}/{l_cities}, iters: {iters}")
++
+     return global_max_score
+ 
+ 
+@@ -395,9 +454,19 @@ def maximum_mission_points(n, max_lat, max_long):
+ 
+     mixed search approach is thus warranted..
+ 
++    tests 6-9 introduce increasing width of space for
++    a large sample. neither bespoke 'by score' or 'by location'
++    is fast enough
++
++    "The values of latitude/longitude are distinct across all cities"
++
++    latitude is thus a unique key
++
+     """
++    global debug
+     global cities
+ 
++    debug = 0
+     if max_lat / n > 0.5:
+         return search_by_score(max_lat, max_long)
+     else:
+-- 
+2.23.0
+
