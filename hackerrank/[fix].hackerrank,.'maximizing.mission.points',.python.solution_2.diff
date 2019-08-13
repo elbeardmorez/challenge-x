@@ -1,0 +1,50 @@
+From 308416c9154300a83e336d15dcd2f299f2bf92a9 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 13 Aug 2019 13:32:18 +0100
+Subject: [fix] hackerrank, 'maximizing mission points', python solution
+
+-bug, comparison of node to int
+---
+ .../maximizing.mission.points.py                           | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py b/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
+index d0e2098..150add1 100644
+--- a/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
++++ b/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
+@@ -114,7 +114,7 @@ def near_node(target, n_first, n_last, n_new=None):
+     if start is None:
+         if target == n_first.lat:
+             start = n_last
+-        elif target == n_last:
++        elif target == n_last.lat:
+             start = n_first
+         else:
+             start = n_first if abs(n_first.lat - target) < abs(n_last.lat - target) else n_last
+@@ -126,7 +126,7 @@ def near_node(target, n_first, n_last, n_new=None):
+     elif target == n_first.lat and target == n_last.lat:
+         return n_first
+     if debug >= 4:
+-        print(f"searching for node near: {target} | {n_new}, start: {start}")
++        print(f"searching for node near: {target} | {n_new}, start: {start.lat}, first: {n_first.lat}, last: {n_last.lat}")
+     n = start
+     if n.lat > target:
+         while n.prev_live is not None and n.lat > target:
+@@ -281,11 +281,14 @@ def search_by_location(max_lat, max_long):
+             max_location = None
+             max_idx = -1
+             while n is not None and n.lat <= lat_ + max_lat:
++                #print(f"search target n: {n}")
+                 if n.idx == l:
+                     n = n.next_live
+                     continue
+                 if abs(n.long - long_) <= max_long:
++                    #print("search target valid")
+                     if n.score > max_jump:
++                        #print("search target is max")
+                         max_jump = n.score
+                         max_idx = n.idx
+                         max_location = (n.lat, n.long)
+-- 
+2.23.0
+
