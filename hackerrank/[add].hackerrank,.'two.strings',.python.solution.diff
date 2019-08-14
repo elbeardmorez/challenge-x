@@ -1,0 +1,25 @@
+From d0481b91a5696f2b379993b7513366fd6d37c81a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 14 Aug 2019 23:42:48 +0100
+Subject: [add] hackerrank, 'two strings', python solution
+
+---
+ .../algorithms.-.strings.-.easy.-.two.strings/two.strings.py    | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.two.strings/two.strings.py b/hackerrank/algorithms.-.strings.-.easy.-.two.strings/two.strings.py
+index d89ee1d..045c558 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.two.strings/two.strings.py
++++ b/hackerrank/algorithms.-.strings.-.easy.-.two.strings/two.strings.py
+@@ -8,6 +8,8 @@ import sys
+ 
+ # Complete the twoStrings function below.
+ def twoStrings(s1, s2):
++    return "YES" if len(set(list(s1)).intersection(set(list(s2)))) > 0 else "NO"
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
