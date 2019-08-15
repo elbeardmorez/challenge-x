@@ -1,0 +1,223 @@
+From 792590e1271e2307222628051d1f05eb7dc4e0aa Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 15 Aug 2019 12:52:26 +0100
+Subject: [mod] hackerrank, 'maximizing mission points', python solution
+
+-speed-up, use __slots__ to avoid dynamic dictionary creation for
+node object
+-add profiling class
+---
+ .../maximizing.mission.points.py              | 120 ++++++++++++++++++
+ 1 file changed, 120 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py b/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
+index 220caed..8d6149b 100644
+--- a/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
++++ b/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
+@@ -8,6 +8,7 @@ import sys
+ 
+ debug = 0
+ iters = 0
++profiling = None
+ 
+ cities = []
+ location_nodes = {}
+@@ -20,10 +21,80 @@ max_long = 0
+ lat_range = None
+ long_range = None
+ 
++## profiling
++
++import time
++class profiler:
++
++    class profile:
++        def __init__(self, name):
++            self.name = name
++            self.time = 0
++            self.chunks = {}
++
++    def __init__(self):
++        self.profiles = {}
++
++    def start(self, name="default"):
++        if name not in self.profiles:
++            self.profiles[name] = profiler.profile(name)
++            print(f"created new '{name}' profiler profile")
++        self.profiles[name].time = time.time()
++
++    def stop(self, name="default"):
++        if name not in self.profiles:
++            raise Exception(f"invalid profile name '{name}'")
++        self.profiles[name].time = 0
++
++    def restart(self, name="default"):
++        if name not in self.profiles:
++            raise Exception(f"invalid profile name '{name}'")
++        self.profiles[name].chunks = {}
++        self.profiles[name].time = time.time()
++
++    def add(self, name="default", tag=""):
++        if name not in self.profiles:
++            raise Exception(f"invalid profile name '{name}'")
++        if self.profiles[name].time == 0:
++            raise Exception(f"no start reference for '{name}' timer")
++        if tag not in self.profiles[name].chunks:
++            self.profiles[name].chunks[tag] = []
++        self.profiles[name].chunks[tag].append(time.time() - self.profiles[name].time)
++
++    def append(self, name="default", tag=""):
++        if name not in self.profiles:
++            raise Exception(f"invalid profile name '{name}'")
++        if self.profiles[name].time == 0:
++            raise Exception(f"no start reference for '{name}' timer")
++        if tag not in self.profiles[name].chunks:
++            self.profiles[name].chunks[tag] = [0]
++        self.profiles[name].chunks[tag][-1] += time.time() - self.profiles[name].time
++
++    def splits(self, name="default"):
++        if name not in self.profiles:
++            raise Exception(f"invalid profile name '{name}'")
++        profile = self.profiles[name]
++        for tag, epochs in profile.chunks.items():
++            for epoch in epochs:
++                print("[profile|{}] split: {}s elapsed".format(name + (("|" + tag) if tag else ""), '{:.3f}'.format(round(epoch, 3))))
++
++    def totals(self, name=None):
++        if name and name not in self.profiles:
++            raise Exception(f"invalid profile name '{name}'")
++        profiles = self.profiles.values()
++        if name:
++            profiles = [self.profiles[name]]
++        for profile in profiles:
++            for tag, epochs in profile.chunks.items():
++                print("[profile|{}] split: {}s elapsed".format(profile.name + (("|" + tag) if tag else ""), '{:.3f}'.format(round(sum(epochs), 3))))
++
++
+ class node:
+     global debug
+     global iters
+ 
++    __slots__ = "idx", "enabled", "lat", "long", "score", "prev", "next", "prev_live", "next_live", "max_jump", "max_jump_location", "max_score", "max_score_limits"
++
+     def __init__(self, idx_, lat_, long_, score, prev_=None, next_=None):
+         self.enabled = False
+         self.idx = idx_
+@@ -44,6 +115,7 @@ class node:
+     def enable(self, n_min_lat, n_max_lat):
+         debug_ = ()
+ 
++        profiling.start("node-enable")
+         n = near_node(self.lat, n_min_lat, n_max_lat, self)
+         #print(f"location_nodes_ordered_by_lat: {location_nodes_ordered_by_lat}")
+         #print(f"location_nodes: {location_nodes}")
+@@ -75,6 +147,8 @@ class node:
+         if (debug >= 3 or self.idx in debug_):
+             print(f"enabled node: {self}, range: {n_min_lat.lat}-{n_max_lat.lat}")
+ 
++        profiling.append("node-enable")
++
+     def __str__(self):
+         return f"[node: idx: {self.idx}, loc: ({self.lat},{self.long}), score: {self.score}, max_score: {self.max_score}, | prev_live: {'None' if not self.prev_live else self.prev_live.lat} | next_live: {'None' if not self.next_live else self.next_live.lat}]"
+ 
+@@ -263,6 +337,32 @@ def search_by_location():
+     for l in range(magnitudes):
+         location_nodes_linked_lat[l] = {}
+ 
++    """
++    from collections import deque
++
++    interest = {}
++    max_interest = 0
++
++    idx_start = 0
++    idx_end = 0
++
++    for c in cities_by_lat:
++        while idx_start > 0 and cities_by_lat[idx_start][0] >= cities_by_lat[0][0] - max_lat:
++            idx_start += 1
++        while idx_end < l_cities and cities_by_lat[idx_end][0] < cities_by_lat[0][0] + max_lat:
++            idx_end += 1
++        #print(f"{len(cities_by_lat[idx_start:idx_end])}")
++        #print(f"{cities_by_lat[idx_start:idx_end]}")
++        interest[c[0]] = [x for x in cities_by_lat[idx_start:idx_end] if x[2] > c[2] and abs(x[1] - c[1]) <= max_long]
++        print(f"interest for city {c[4]} is {len(interest[c[0]])}")
++        l_interest = len(interest[c[0]])
++        if l_interest > max_interest:
++             max_interest = l_interest
++
++    print(f"max interest: {max_interest}")
++    exit()
++    """
++
+     # location_nodes is a keyed entry point for the linked list
+     cities.sort(key=lambda a: a[0])
+     prev = None
+@@ -288,7 +388,11 @@ def search_by_location():
+         print(f"location_nodes_linked_lat: {location_nodes_linked_lat}")
+         print(f"max lat: {max_lat}, max long: {max_long}")
+ 
++    profiling.start("node-loop")
+     for l in range(l_cities - 2, -1, -1):
++        profiling.add("node-loop")
++        profiling.start("node-loop")
++
+         n_base = location_nodes[cities[l][0]]
+         n = n_base
+         [lat_, long_, score] = [n.lat, n.long, n.score]
+@@ -324,13 +428,16 @@ def search_by_location():
+                 print(f"starting at n: {n}")
+ 
+             iters2 = 0
++            profiling.start("node-loop-backward")
+             while n.prev_live is not None and n.prev_live.lat + max_lat >= lat_:
+                 n = n.prev_live
+                 iters2 += 1
+                 #if debug >= 4:
+                 #    print(f"comparing latitudes, test: {n.lat + max_lat} > base: {lat_}")
++            profiling.append("node-loop-backward")
+             if debug >= 3:
+                 print(f"reversed to n: {n}")
++            profiling.start("node-loop-forward")
+             while n is not None and n.lat <= lat_ + max_lat:
+                 #print(f"search target n: {n}")
+                 iters2 += 1
+@@ -347,6 +454,7 @@ def search_by_location():
+                     if max_jump == n_global_max.max_score:
+                         break
+                 n = n.next_live
++            profiling.append("node-loop-forward")
+             iters += iters2
+             if max_jump:
+                 max_score += max_jump
+@@ -529,6 +637,12 @@ def maximum_mission_points(n, diffs, lat_range_, long_range_):
+ 
+     latitude is thus a unique key
+ 
++    is knowing the exact valid test number in range helpful?
++    very expensive to find out!
++    could be used if iterating possible maximums, after hitting x valid
++    maxes you know you've tests them all. but again, if one of the 'valids' is
++    at the very bottom of the heap, all have to be processed to get there
++
+     """
+     global debug
+ 
+@@ -542,8 +656,14 @@ def maximum_mission_points(n, diffs, lat_range_, long_range_):
+     long_range = lat_range_
+ 
+     global cities
++    global profiler
+ 
+     debug = 0
++
++    global profiling
++    profiling = profiler()
++    #profiling.totals()
++
+     if max_lat / n > 0.5:
+         return search_by_location()
+     else:
+-- 
+2.23.0
+
