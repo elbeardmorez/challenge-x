@@ -1,0 +1,33 @@
+From 91d10f9038135429e8bf742d201f1a2d5afda5be Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 15 Aug 2019 07:41:32 +0100
+Subject: [add] hackerrank, 'two strings', javascript port
+
+---
+ .../two.strings.js                                     | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.two.strings/two.strings.js b/hackerrank/algorithms.-.strings.-.easy.-.two.strings/two.strings.js
+index aec22a0..abc766f 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.two.strings/two.strings.js
++++ b/hackerrank/algorithms.-.strings.-.easy.-.two.strings/two.strings.js
+@@ -26,8 +26,14 @@ function readLine() {
+ 
+ // Complete the twoStrings function below.
+ function twoStrings(s1, s2) {
+-
+-
++    let x = new Set(s1.split(''));
++    let y = new Set(s2.split(''));
++    for (let v of x.values()) {
++        //console.log(`testing for '${v}' in [${Array.from(y)}]`);
++        if (y.has(v))
++            return "YES";
++    }
++    return "NO";
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
