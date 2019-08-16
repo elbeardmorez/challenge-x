@@ -1,0 +1,28 @@
+From 372e004b185936d91de40898e0f121755489c0fc Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 16 Aug 2019 09:22:08 +0100
+Subject: [add] hackerrank, 'two strings', c# port
+
+---
+ .../algorithms.-.strings.-.easy.-.two.strings/two.strings.cs | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.two.strings/two.strings.cs b/hackerrank/algorithms.-.strings.-.easy.-.two.strings/two.strings.cs
+index 3be854a..02794df 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.two.strings/two.strings.cs
++++ b/hackerrank/algorithms.-.strings.-.easy.-.two.strings/two.strings.cs
+@@ -16,8 +16,9 @@ class Solution {
+ 
+     // Complete the twoStrings function below.
+     static string twoStrings(string s1, string s2) {
+-
+-
++        var h1 = new HashSet<char>(s1.ToCharArray());
++        var h2 = new HashSet<char>(s2.ToCharArray());
++        return h2.Overlaps(h1) ? "YES" : "NO";
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
