@@ -1,0 +1,329 @@
+From d57ea5b4b363b29ba01d67a06bffe433b8692028 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 16 Aug 2019 18:39:54 +0100
+Subject: [mod] hackerrank, 'maximizing mission points', python solution
+
+-add 'node2' class as a leaner 'node' object
+-add 'linked' class as an encapsulated linked-list implementation
+-add 'search_by_scored_linked' to compare against originial list
+based search_by_score implementation, primarily to avoid costly O(n)
+insertion when ensuring order
+-refactor 'search_by_score' -> 'search_by_score_list'
+---
+ .../maximizing.mission.points.py              | 286 +++++++++++++++++-
+ 1 file changed, 284 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py b/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
+index 8d6149b..a4b6283 100644
+--- a/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
++++ b/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
+@@ -268,6 +268,191 @@ def near_node(target, n_first, n_last, n_new=None):
+     return n
+ 
+ 
++class node2:
++#    def __init__(self, key, idx, lat_, long_, score, data=None, next_=None, prev_=None):
++    __slots__ = "key", "data", "next", "prev"
++
++    def __init__(self, key, data=None, next_=None, prev_=None):
++        self.key = key
++        self.data = data
++        self.next = next_
++        self.prev = prev_
++
++    def __str__(self):
++        return f"[node|key: {self.key}, prev: {self.prev.key if self.prev else 'None'}, next: {self.next.key if self.next else 'None'}" + str(f", data: {self.data}" if self.data else '') + str("]")
++
++    __repr__ = __str__
++
++
++class linked:
++    def __init__(self, extremes):
++        self.first = None
++        self.last = None
++        self.lookup = {}
++        self.magnitudes = max(map(lambda x: len(str(abs(x))), extremes))
++        for l in range(self.magnitudes):
++            self.lookup[l] = {}
++
++    def insert(self, n):
++        debug_ = ()
++        #profiling.start("linked-insert")
++
++        # add
++        if len(self.lookup[0]) == 0:
++            self.first = n
++            self.last = n
++        else:
++            # find closest
++            n_ = self.next_to(n.key)
++            #if debug >= 3:
++            #    print(f"found node next to target: {n.key} @ n_: {n_}")
++
++            if n_.key < n.key:
++                if n_ != n:
++                    n.prev = n_
++                    n.next = n_.next
++            elif n_.key > n.key:
++                if n_ != n:
++                    n.next = n_
++                    n.prev = n_.prev
++            if n.prev is not None:
++                n.prev.next = n
++            if n.next is not None:
++                n.next.prev = n
++
++        #if debug > 10:
++        #    print(f"linked lookup: {self.lookup}")
++
++        # add to lookup
++        for l_ in range(0, self.magnitudes):
++            near = n.key - n.key % (10 ** l_)
++            #near = n.key - n.key % (8 ** l_)
++            #near = n.key - n.key % (2 ** l_)
++            if near not in self.lookup[l_]:
++                self.lookup[l_][near] = n
++
++        if n.key < self.first.key:
++            self.first = n
++        elif n.key > self.last.key:
++            self.last = n
++
++        #if (debug >= 3 or n.key in debug_):
++        #    print(f"inserted node: {n}, range: {self.first.key}-{self.last.key}")
++
++        #profiling.append("linked-insert")
++
++    def next_to(self, target):
++        """
++        # how to quickly deduce where the closest node sits
++
++        no bisection possible on non-list structure, resort to lookups of increasing
++        resolution
++
++        ensure that a trivial transformation to the number yields a 'round' number
++        to then use as a 'nearby' anchor
++
++        e.g. 125533 -% 10^5 = 120000
++             125533 -% 10^4 = 125000
++        """
++
++        global debug
++        global iters
++
++        #debug_ = ()
++
++        """
++        if debug >= 4:
++            print(f"searching for node near: {target}")
++        if debug >= 10:
++            print(f"linked lookup: {self.lookup}")
++        """
++
++        magnitudes = len(str(abs(target)))
++        if magnitudes > self.magnitudes:
++            for l_ in range(self.magnitudes, magnitudes + 1):
++                self.lookup[l_] = {}
++            self.magnitudes = magnitudes
++
++        #iters2 = 0
++
++        start = None
++        n = None
++        for l_ in range(0, magnitudes):
++            near = target - target % (10 ** l_)
++            #near = target - target % (8 ** l_)
++            #near = target - target % (2 ** l_)
++            if near in self.lookup[l_]:
++                start = self.lookup[l_][near]
++                # all further magnitudes are necessarily already set
++                #print("near hit!")
++                break
++
++        if start is None:
++            #print("near miss!")
++            if target == self.first.key:
++                start = self.last
++            elif target == self.last.key:
++                start = self.first
++            else:
++                start = self.first if abs(self.first.key - target) < abs(self.last.key - target) else self.last
++
++        if target < self.first.key:
++            return self.first
++        elif target > self.last.key:
++            return self.last
++        elif target == self.first.key and target == self.last.key:
++            return self.first
++        #if debug >= 4:
++        #    print(f"searching for node near: {target} | start: {start.key}, first: {self.first.key}, last: {self.last.key}")
++        n = start
++        if n.key > target:
++            while n.prev is not None and n.key > target:
++                #iters2 += 1
++                n = n.prev
++        elif n.key < target:
++            while n.next is not None and n.key <= target:
++                #iters2 += 1
++                n = n.next
++        if n.key == target:
++            if n.next is not None:
++                #iters2 += 1
++                n = n.next
++            elif n.prev is not None:
++                #iters2 += 1
++                n = n.prev
++            elif n.key > self.first.key:
++                #iters2 += 1
++                n = self.first
++            elif n.key < self.last.key:
++                #iters2 += 1
++                n = self.last
++
++        #print(iters2)
++
++        #iters += iters2
++        #if debug >= 3:
++        #    print(f"searched for node near {target}, iters: {iters2}, found n: {n}")
++        return n
++
++    def __str__(self):
++        max_ = 10
++        l_ = 0
++        n = self.first
++        if not n:
++            return "Empty"
++        res = "\n"
++        while n:
++            res += str(n) + "\n"
++            n = n.next
++            if l_ == max_:
++                res += "..."
++                break
++            l_ += 1
++        return res
++
++    __repr__ = __str__
++
++
+ def bisect_search(col, target, start=None):
+     global debug
+     global iters
+@@ -486,7 +671,103 @@ def search_by_location():
+     return n_global_max.max_score
+ 
+ 
+-def search_by_score():
++def search_by_score_linked():
++    global debug
++    global iters
++
++    iters = 0
++
++    global cities
++    l_cities = len(cities)
++
++    cities.sort(key=lambda a: a[2])
++    for idx in range(l_cities):
++        cities[idx][4] = idx
++
++    if debug >= 20:
++        print("\n".join([str(c) for c in cities]))
++    scores = [c[3] for c in cities]
++
++    global_max_score = scores[-1]
++    max_scores = {scores[-1]: [[cities[-1][0], cities[-1][1], cities[-1][3], l_cities - 1]]}
++    max_scores_ordered = linked([min(scores), max(scores)])
++    max_scores_ordered.insert(node2(key=scores[-1]))
++
++    if debug >= 3:
++        print(f"diff limits, max lat: {max_lat}, max long: {max_long}")
++
++    for l in range(l_cities - 2, -1, -1):
++        # 0 jump max
++        max_cur = scores[l]
++        # process in order of greatest max scores achieved thus far
++        iters2 = 0
++        if debug >= 3:
++            print(f"consider possible jumps for city: {l} | {cities[l]}")
++        n = max_scores_ordered.last
++        while n:
++            max_ = n.key
++            l_ms = len(max_scores[max_])
++            set_ = False
++            idx = 0
++            if debug >= 5:
++                print(f"considering max score set: {max_} | {max_scores[max_]}")
++            if max_scores[max_][0][0] - max_lat > cities[l][0] or \
++               max_scores[max_][l_ms - 1][0] + max_lat < cities[l][0]:
++                if debug >= 5:
++                    print("skipping out of bounds item")
++                    print(f"{max_scores[max_][0][0] - max_lat} > {cities[l][0]} or {max_scores[max_][l_ms - 1][0] + max_lat} < {cities[l][0]}")
++                n = n.prev
++                continue
++            while idx < l_ms and max_scores[max_][idx][0] + max_lat < cities[l][0]:
++                if debug >= 4:
++                    print(f"comparing latitudes, base: {cities[l][0]} vs test: {max_scores[max_][idx][0]}")
++                idx += 1
++            if debug >= 4 and idx < l_ms:
++                print(f"testing latitude {max_scores[max_][idx][0] - max_lat} <= {cities[l][0]}")
++            while idx < l_ms and max_scores[max_][idx][0] - max_lat <= cities[l][0]:
++                # iterate valid latitudes to find valid longitudes
++                iters2 += 1
++                if abs(max_scores[max_][idx][1] - cities[l][1]) <= max_long:
++                    if max_ > 0:
++                        if debug >= 2:
++                            print(f"max jump, iters: {iters2}, [{l}]|{max_cur}@({cities[l][0]},{cities[l][1]}) -> [{max_scores[max_][idx][3]}]|{max_}@({max_scores[max_][idx][0]},{max_scores[max_][idx][1]}) = {max_cur + max_}\n")
++                        max_cur += max_
++                    set_ = True
++                    break
++                idx += 1
++            if set_:
++                break
++            # next max score group
++            n = n.prev
++
++        iters += iters2
++
++        if max_cur > global_max_score:
++            if debug >= 10:
++                print(f"global max set: {max_cur}")
++            global_max_score = max_cur
++
++        # persist max
++        if max_cur in max_scores:
++            max_scores[max_cur].append(cities[l])
++        else:
++            #n_ = cities_nodes[l]
++            #n_.key = max_cur
++            n_ = node2(key=max_cur)
++            max_scores_ordered.insert(n_)
++            max_scores[max_cur] = [cities[l]]
++
++        if debug >= 10:
++            print(f"max scores ordered: {max_scores_ordered}")
++            print(f"max scores: {max_scores}")
++
++        if debug >= 1:
++            if (l_cities - l) % 10 == 0:
++                print(f"[debug] {l_cities - l}/{l_cities}, iters: {iters}")
++    return global_max_score
++
++
++def search_by_score_list():
+     global debug
+     global iters
+ 
+@@ -667,7 +948,8 @@ def maximum_mission_points(n, diffs, lat_range_, long_range_):
+     if max_lat / n > 0.5:
+         return search_by_location()
+     else:
+-        return search_by_score()
++        return search_by_score_linked()
++        #return search_by_score_list()
+ 
+ 
+ if __name__ == '__main__':
+-- 
+2.23.0
+
