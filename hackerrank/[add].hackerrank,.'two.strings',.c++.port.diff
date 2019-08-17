@@ -1,0 +1,31 @@
+From a90508f95bdec2d2d49248f450db308616f594b8 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 17 Aug 2019 08:11:48 +0100
+Subject: [add] hackerrank, 'two strings', c++ port
+
+---
+ .../two.strings.cpp                                       | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.two.strings/two.strings.cpp b/hackerrank/algorithms.-.strings.-.easy.-.two.strings/two.strings.cpp
+index d89f2bb..af7ffec 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.two.strings/two.strings.cpp
++++ b/hackerrank/algorithms.-.strings.-.easy.-.two.strings/two.strings.cpp
+@@ -4,8 +4,12 @@ using namespace std;
+ 
+ // Complete the twoStrings function below.
+ string twoStrings(string s1, string s2) {
+-
+-
++    set<char> x1(s1.begin(), s1.end());
++    set<char> x2(s2.begin(), s2.end());
++    for (auto itr = x1.begin(); itr != x1.end(); ++itr) {
++        if (x2.find(*itr) != x2.end()) return "YES";
++    }
++    return "NO";
+ }
+ 
+ int main()
+-- 
+2.23.0
+
