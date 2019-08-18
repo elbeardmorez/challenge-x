@@ -1,0 +1,32 @@
+From 8cd11778df6062e2b91d0974200f77cdc9ef8a8b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 18 Aug 2019 07:33:01 +0100
+Subject: [add] hackerrank, 'two strings', go port
+
+---
+ .../two.strings.go                                       | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.two.strings/two.strings.go b/hackerrank/algorithms.-.strings.-.easy.-.two.strings/two.strings.go
+index 9c2b1cd..5f9257c 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.two.strings/two.strings.go
++++ b/hackerrank/algorithms.-.strings.-.easy.-.two.strings/two.strings.go
+@@ -11,8 +11,13 @@ import (
+ 
+ // Complete the twoStrings function below.
+ func twoStrings(s1 string, s2 string) string {
+-
+-
++    x1 := strings.Split(s1, "")
++    for _, ss1 := range(x1) {
++        if strings.Index(s2, ss1) > -1 {
++            return "YES"
++        }
++    }
++    return "NO";
+ }
+ 
+ func main() {
+-- 
+2.23.0
+
