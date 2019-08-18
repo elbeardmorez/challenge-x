@@ -1,0 +1,256 @@
+From d77721da944079b08f911d47bd94e8871ccfe639 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 18 Aug 2019 21:05:45 +0100
+Subject: [mod] hackerrank, 'maximizing mission points', python solution
+
+-add 'search_by_score_split_linked' implementation based on the idea
+of split max score tables. massive speed-up
+---
+ .../maximizing.mission.points.py              | 217 +++++++++++++++++-
+ 1 file changed, 211 insertions(+), 6 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py b/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
+index ca96a25..68cb04d 100644
+--- a/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
++++ b/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
+@@ -827,6 +827,158 @@ def search_by_location_node2():
+     return city_max[k_max_score]
+ 
+ 
++def search_by_score_split_linked():
++    # process in order of greatest max scores achieved thus far
++
++    global debug
++    global iters
++
++    iters = 0
++
++    if debug >= 3:
++        print(f"diff limits, max lat: {max_lat}, max long: {max_long}")
++
++    global cities
++    l_cities = len(cities)
++
++    cities.sort(key=lambda a: a[2])
++    if debug >= 10:
++        for l in range(l_cities - 1, -1, -1):
++            print(f"[{l}] {cities[l]}")
++
++    max_scores = {}  # should be split too
++    max_global = [0] * 6
++
++    max_score_linked_regions = []
++    max_score_linked_regions_description = []
++    #region = max(100, max_lat)
++    #region = max(50, 2 * max_lat)
++    region = max(50, max_lat / 4)
++    regions_ = [int(x / region) for x in lat_range]
++    regions_[-1] += 1
++    for x in range(*regions_):
++        max_score_linked_regions.append(linked([x]))
++        max_score_linked_regions_description.append(f"covering latitude range: {x * region + 1}-{(x + 1) * region}")
++
++    for l in range(l_cities - 1, -1, -1):
++        # 0 jump max
++        city = cities[l] + [l]
++        max_cur = city[3]
++        iters2 = 0
++        if debug >= 3:
++            print(f"\n[{l}] consider possible jumps for city: {l} | {city}")
++
++        max_jump = 0
++        #max_city = None
++        if abs(max_global[0] - city[0]) <= max_lat and abs(max_global[1] - city[0]) <= max_long:
++            if max_global[5] > 0:
++                max_jump = max_global[5]
++                max_city = max_global[0:5]
++            #print("global max hit!")
++        else:
++            # search (multiple) max score linked list
++
++            # max linked list(s)
++            max_score_regions = []
++            lat_left = max(0, city[0] - max_lat)
++            lat_right = min(l_cities, city[0] + max_lat)
++            #print([lat_left, lat_right])
++            max_score_regions = [x for x in range(int(lat_left / region), int(lat_right / region) + 1)]
++            max_score_regions = set(max_score_regions)
++            #print(max_score_regions)
++            max_score_linked = [[x, max_score_linked_regions[x]] for x in max_score_regions]
++            #print(max_score_linked)
++
++            max_score_linked_ = [[r_idx, l.last] for r_idx, l in max_score_linked]
++            end = False
++            loops = 0
++            if debug >= 5:
++                print(f"[{l}] max regions [{len(max_score_linked_)}]: {max_score_linked_}")
++            while not end:
++                end = True
++                for r in range(len(max_score_linked_)):
++                    [r_idx, n] = max_score_linked_[r]
++                    if not n:
++                        continue
++                    end = False
++                    max_ = n.key
++                    if max_ < max_jump:
++                        max_score_linked_[r][1] = None
++                        continue
++                    #if debug >= 1:
++                    #    print(f"[{r_idx}] considering max score set [{max_}] {max_scores[max_]}")
++                    l_ms = len(max_scores[max_])
++                    if city[0] < max_scores[max_][0][0] - max_lat and \
++                       city[0] > max_scores[max_][l_ms - 1][0] + max_lat:
++                        if debug >= 3:
++                            print(f"skipping invalid max score set {max_}|{r}, {city[0]} < {max_scores[max_][0][0] - max_lat} (lower than lower bound) or {city[0]} > {max_scores[max_][l_ms - 1][0] + max_lat} (higher than upper bound), city: {city}, set: {max_scores[max_]}")
++                        max_score_linked_[r][1] = None
++                    else:
++                        idx = 0
++                        while idx < l_ms and abs(max_scores[max_][idx][0] - city[0]) <= max_lat:
++                            if debug >= 5:
++                                print(f"[{r}|{idx}] max: {max_}, lat test: {max_scores[max_][idx][0]} - {city[0]} <= {max_lat}")
++                            # iterate valid latitudes to find valid longitudes
++                            iters2 += 1
++                            if abs(max_scores[max_][idx][1] - city[1]) <= max_long:
++                                if debug >= 5:
++                                    print(f"[{r}|{idx}] max: {max_}, long test: {max_scores[max_][idx][1]} - {city[1]} <= {max_long}")
++                                if max_ > max_jump:
++                                    max_jump = max_
++                                    max_city = n.data
++                                    #print(f"max jump {max_} set for region {r_idx}, iters: {iters2}, city: {max_city}")
++                                set_ = True
++                                break
++                            # next city whose max score path yields the same the current max score
++                            idx += 1
++                        # next max score group in current region
++                        if set_:
++                            max_score_linked_[r][1] = None
++                        else:
++                            max_score_linked_[r][1] = n.prev
++
++                # next max score region
++                        # out of bounds
++                loops += 1
++
++        if debug >= 3:
++            print(f"max set: {max_cur + max_jump}, iters: {iters2}, loops: {loops}")
++
++        if max_jump > 0:
++            if debug >= 2:
++                print(f"max jump, iters: {iters2}, [{l}]|{max_cur}@({city[0]},{city[1]}) -> [{max_city[4]}]|{max_}@({max_city[0]},{max_city[1]}) = {max_cur + max_}\n")
++            max_cur += max_jump
++
++        iters += iters2
++
++        if max_cur > max_global[5]:
++            if debug >= 10:
++                print(f"global max set: {max_cur}")
++            max_global = city + [max_cur]
++
++        # persist max
++        if max_cur in max_scores:
++            max_scores[max_cur].append(city)
++        else:
++            # add max in appropriate region
++            n_ = node2(key=max_cur, data=city)
++            r_idx = int((city[0] - 1) / region)
++            #print(f"lat: {city[0]}, r_idx: {r_idx}, max: {len(max_score_linked_regions)}")
++            #print(f"adding city: {l}, lat: {city[0]} -> region {r_idx} [{max_score_linked_regions_description[r_idx]}]")
++            max_score_linked_regions[r_idx].insert(n_)
++            max_scores[max_cur] = [city + [l]]
++
++        if debug >= 10:
++            print(f"max scores linked region: {max_score_linked_regions[int(l / region)]}")
++            print(f"max scores: {max_scores}")
++
++        if debug >= 1:
++            if (l_cities - l) % 100 == 0:
++                print(f"[debug] {l_cities - l}/{l_cities}, iters: {iters}")
++
++    return max_global[5]
++
++
+ def search_by_score_linked():
+     global debug
+     global iters
+@@ -1080,6 +1232,60 @@ def maximum_mission_points(n, diffs, lat_range_, long_range_):
+     maxes you know you've tests them all. but again, if one of the 'valids' is
+     at the very bottom of the heap, all have to be processed to get there
+ 
++    for the mixed 'large sample wide space'.. up 40000 iterations per
++    city to determime max is too expensive
++    caching maxes doesn't work because there's no way to cache valid
++    maxes for the current 'space'
++
++    however..
++    given max lat/long diff of 20000, take cities
++    x: 100000 30000 (max 25140) and y: 100010 300600  (max ?)
++    ..and assume you've hit y z (hundreds) of cities after x (due to disperate
++    heights of the two cities) and thus last 'z' caches are useless. you've
++    already performed the expensive 400000 walk for x to determine max of 25140,
++    so can we leverage that for the nearby city 'y'?
++
++    maintain where the jump for the max score was located.. and that location
++    is also valid (reachable) from 'y'.. then we'd only need to check that the
++    non-intersecting areas y - y ∩ x don't contain the ultimate max. hence we
++    hope that the longitudinal overlap is as large as possible
++
++    but the next time you return to the (near by) location, your height requirements
++    have diminished, and thus the original (max of nearby city) is will have potentially
++    missed cities in the valid space which had smaller heights, which are now valid,
++    and which need to be considered for 'max' status. similarly it misses any 'now valid
++    based on differing latitudes' cities. whiles the former can be corrected for by
++    retesting the cities added since the proposed max was created (e.g. iterating the
++    height axis from current to proposed), the latter cannot ..requiring an entire
++    space re-test for missing.. thus too expensive
++
++    is it possible to skip negatives? if there is a reachable positive..
++    e.g
++    max_lat: 2
++    idx     1  2  3  4  5  6
++    height 10 12 14 16 18 29
++    lat     6  7  8  9 11 12
++    score  14 -2 -1 11 14 14
++
++    idx route -> 1 -1 11 14
++
++    but then what if some city also requires idx2 to continue a max path?
++
++    what about knowing the current cumulative max of the system for any, city. can
++    any cities be dropped as we progress?
++
++    any negative at end of height axis can certainly be dropped
++
++    test 8, width 40000.. search by score or by location? both horrific prospects
++
++    for each city l iteration
++      prospect of searching max (l of 200000) scores
++      or 'all previously visited city in the 40000 range that are valid longitudinally'
++
++    what about multiple maximum score sets?
++    'regional' maxes.. that will allow re-use of pre-sorted maxes with a nearly correct
++    latitude set. merge regional sets to fully encompass a city's boundary / space
++
+     """
+     global debug
+ 
+@@ -1101,12 +1307,11 @@ def maximum_mission_points(n, diffs, lat_range_, long_range_):
+     profiling = profiler()
+     #profiling.totals()
+ 
+-    if max_lat / n > 0.5:
+-        return search_by_location_node2()
+-        #return search_by_location_node()
+-    else:
+-        return search_by_score_linked()
+-        #return search_by_score_list()
++    return search_by_score_split_linked()
++    #return search_by_location_node2()
++    #return search_by_location_node()
++    #return search_by_score_linked()
++    #return search_by_score_list()
+ 
+ 
+ if __name__ == '__main__':
+-- 
+2.23.0
+
