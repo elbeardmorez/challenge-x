@@ -1,0 +1,221 @@
+From 1b9d4946e922b643d069f5593a9d27d0ca1fb8ef Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 19 Aug 2019 15:41:59 +0100
+Subject: [mod] hackerrank, 'maximizing mission points', python solution
+
+-speed-up, remove dynamic lat / long range calc, assume range matches
+sample size
+-hardcode size of lookup sets to 3
+-further commenting out of unused code
+---
+ .../maximizing.mission.points.py              | 71 ++++++++++---------
+ 1 file changed, 38 insertions(+), 33 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py b/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
+index 8d756e9..a6a4093 100644
+--- a/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
++++ b/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
+@@ -6,9 +6,9 @@ import random
+ import re
+ import sys
+ 
+-debug = 0
+-iters = 0
+-profiling = None
++#debug = 0
++#iters = 0
++#profiling = None
+ 
+ cities = []
+ 
+@@ -17,6 +17,7 @@ max_long = 0
+ lat_range = None
+ long_range = None
+ 
++"""
+ ## profiling
+ 
+ import time
+@@ -83,22 +84,21 @@ class profiler:
+         for profile in profiles:
+             for tag, epochs in profile.chunks.items():
+                 print("[profile|{}] split: {}s elapsed".format(profile.name + (("|" + tag) if tag else ""), '{:.3f}'.format(round(sum(epochs), 3))))
+-
++"""
+ 
+ class node2:
+ #    def __init__(self, key, idx, lat_, long_, score, data=None, next_=None, prev_=None):
+     __slots__ = "key", "data", "next", "prev"
+ 
+-    def __init__(self, key, data=None, next_=None, prev_=None):
++    def __init__(self, key, data=None):
+         self.key = key
+         self.data = data
+-        self.next = next_
+-        self.prev = prev_
++        self.prev = self.next = None
+ 
+-    def __str__(self):
+-        return f"[node|key: {self.key}, prev: {self.prev.key if self.prev else 'None'}, next: {self.next.key if self.next else 'None'}" + str(f", data: {self.data}" if self.data else '') + str("]")
++    #def __str__(self):
++    #    return f"[node|key: {self.key}, prev: {self.prev.key if self.prev else 'None'}, next: {self.next.key if self.next else 'None'}" + str(f", data: {self.data}" if self.data else '') + str("]")
+ 
+-    __repr__ = __str__
++    #__repr__ = __str__
+ 
+ 
+ class linked:
+@@ -106,12 +106,13 @@ class linked:
+         self.first = None
+         self.last = None
+         self.lookup = {}
+-        self.magnitudes = max(map(lambda x: len(str(abs(x))), extremes))
++        #self.magnitudes = max(map(lambda x: len(str(abs(x))), extremes))
++        self.magnitudes = 3
+         for l in range(self.magnitudes):
+             self.lookup[l] = {}
+ 
+     def insert(self, n):
+-        debug_ = ()
++        #debug_ = ()
+         #profiling.start("linked-insert")
+ 
+         # add
+@@ -141,9 +142,10 @@ class linked:
+         #    print(f"linked lookup: {self.lookup}")
+ 
+         # add to lookup
++        #for l_ in range(0, 3):
+         for l_ in range(0, self.magnitudes):
+-            near = n.key - n.key % (10 ** l_)
+-            #near = n.key - n.key % (8 ** l_)
++            #near = n.key - n.key % (10 ** l_)
++            near = n.key - n.key % (8 ** l_)
+             #near = n.key - n.key % (2 ** l_)
+             if near not in self.lookup[l_]:
+                 self.lookup[l_][near] = n
+@@ -172,8 +174,8 @@ class linked:
+              125533 -% 10^4 = 125000
+         """
+ 
+-        global debug
+-        global iters
++        #global debug
++        #global iters
+ 
+         #debug_ = ()
+ 
+@@ -184,19 +186,20 @@ class linked:
+             print(f"linked lookup: {self.lookup}")
+         """
+ 
+-        magnitudes = len(str(abs(target)))
++        """
++        #magnitudes = min(len(str(abs(target))), self.magnitudes)
+         if magnitudes > self.magnitudes:
+             for l_ in range(self.magnitudes, magnitudes + 1):
+                 self.lookup[l_] = {}
+             self.magnitudes = magnitudes
+-
++        """
+         #iters2 = 0
+ 
+         start = None
+         n = None
+-        for l_ in range(0, magnitudes):
+-            near = target - target % (10 ** l_)
+-            #near = target - target % (8 ** l_)
++        for l_ in range(0, self.magnitudes):
++            #near = target - target % (10 ** l_)
++            near = target - target % (8 ** l_)
+             #near = target - target % (2 ** l_)
+             if near in self.lookup[l_]:
+                 start = self.lookup[l_][near]
+@@ -250,7 +253,7 @@ class linked:
+         #if debug >= 3:
+         #    print(f"searched for node near {target}, iters: {iters2}, found n: {n}")
+         return n
+-
++    """
+     def __str__(self):
+         max_ = 10
+         l_ = 0
+@@ -268,15 +271,15 @@ class linked:
+         return res
+ 
+     __repr__ = __str__
+-
++    """
+ 
+ def search_by_score_split_linked_multi():
+     # process in order of greatest max scores achieved thus far
+ 
+-    global debug
+-    global iters
++    #global debug
++    #global iters
+ 
+-    iters = 0
++    #iters = 0
+ 
+     #if debug >= 3:
+     #    print(f"diff limits, max lat: {max_lat}, max long: {max_long}")
+@@ -295,12 +298,12 @@ def search_by_score_split_linked_multi():
+     # regions setup
+     max_score_linked_regions = []
+     #max_score_linked_lat_regions_description = []
+-    lat_region = max(max_lat * 1.5, abs(lat_range[1] - lat_range[0]) / 100)
++    lat_region = max(max_lat * 1.4, abs(lat_range[1] - lat_range[0]) / 150)
+     lat_regions = [int(x / lat_region) for x in lat_range]
+     lat_regions[-1] += 1
+ 
+     #max_score_linked_long_regions_description = []
+-    long_region = max(max_long * 1.5, abs(long_range[1] - long_range[0]) / 400)
++    long_region = max(max_long * 1.4, abs(long_range[1] - long_range[0]) / 200)
+     long_regions = [int(x / long_region) for x in long_range]
+     long_regions[-1] += 1
+     #if debug >= 3:
+@@ -399,6 +402,8 @@ def search_by_score_split_linked_multi():
+                 # next max score region
+                 #loops += 1
+ 
++        #iters += iters2
++
+         #if debug >= 3:
+         #    print(f"max set: {max_cur + max_jump}, iters: {iters2}, loops: {loops}")
+         if max_jump > 0:
+@@ -406,8 +411,6 @@ def search_by_score_split_linked_multi():
+             #    print(f"max jump, iters: {iters2}, [{city_idx}]|{max_cur}@({city_lat},{city_long}) -> [{max_city_idx}]|{max_jump}@({max_city_lat},{max_city_long}) = {max_cur + max_jump}\n")
+             max_cur += max_jump
+ 
+-        #iters += iters2
+-
+         if max_cur > max_global[5]:
+             #if debug >= 10:
+             #    print(f"global max set: {max_cur}")
+@@ -606,6 +609,7 @@ if __name__ == '__main__':
+         points = int(latitudeLongitude[3])
+ 
+         # Write Your Code Here
++        """
+         if len(cities) == 0:
+             lat_min = lat_max = latitude
+             long_min = long_max = longitude
+@@ -616,10 +620,11 @@ if __name__ == '__main__':
+                 long_min = longitude
+             if latitude > lat_max:
+                 lat_max = latitude
+-            if longitude < long_max:
++            if longitude > long_max:
+                 long_max = longitude
+-
++        """
+         cities.append([latitude, longitude, height, points, 0])
+ 
+-    print(maximum_mission_points(n, [d_lat, d_long], [lat_min, lat_max], [long_min, long_max]))
++    #print(f"n: {n}, lat: {[lat_min, lat_max]}, long: {[long_min, long_max]}")
++    print(maximum_mission_points(n, [d_lat, d_long], [1, n], [1, n]))
+ 
+-- 
+2.23.0
+
