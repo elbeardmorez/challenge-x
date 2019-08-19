@@ -1,0 +1,225 @@
+From 4acc4acb3cd628a225e6a8cd2eca86ff3ab21ef7 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 19 Aug 2019 14:26:44 +0100
+Subject: [mod] hackerrank, 'maximizing mission points', python solution
+
+-add 'search_by_score_split_linked_multi' implementation adding the
+longitude dimension to previous 'search_by_score_split_linked'
+attempt
+-optimise, remove debugging, profiling etc.
+---
+ .../maximizing.mission.points.py              | 182 +++++++++++++++++-
+ 1 file changed, 179 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py b/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
+index 68cb04d..dfe3deb 100644
+--- a/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
++++ b/hackerrank/algorithms.-.search.-.hard.-.maximizing.mission.points/maximizing.mission.points.py
+@@ -979,6 +979,177 @@ def search_by_score_split_linked():
+     return max_global[5]
+ 
+ 
++def search_by_score_split_linked_multi():
++    # process in order of greatest max scores achieved thus far
++
++    global debug
++    global iters
++
++    iters = 0
++
++    #if debug >= 3:
++    #    print(f"diff limits, max lat: {max_lat}, max long: {max_long}")
++
++    global cities
++    l_cities = len(cities)
++
++    cities.sort(key=lambda a: a[2])
++    #if debug >= 10:
++    #    for l in range(l_cities - 1, -1, -1):
++    #        print(f"[{l}] {cities[l]}")
++
++    max_scores = {}  # should be split too
++    max_global = [0] * 6
++
++    # regions setup
++    max_score_linked_regions = []
++    #max_score_linked_lat_regions_description = []
++    lat_region = max(max_lat * 1.5, abs(lat_range[1] - lat_range[0]) / 100)
++    lat_regions = [int(x / lat_region) for x in lat_range]
++    lat_regions[-1] += 1
++
++    #max_score_linked_long_regions_description = []
++    long_region = max(max_long * 1.5, abs(long_range[1] - long_range[0]) / 400)
++    long_regions = [int(x / long_region) for x in long_range]
++    long_regions[-1] += 1
++    #if debug >= 3:
++    #    print(f"grid: {lat_regions[1]}x{long_regions[1]}")
++    for x in range(*lat_regions):
++        #max_score_linked_lat_regions_description.append(f"covering latitude range: {x * lat_region + 1}-{(x + 1) * lat_region}")
++        max_score_linked_regions.append([])
++        for x2 in range(*long_regions):
++            max_score_linked_regions[x].append(linked([x2]))
++    #for x in range(*long_regions):
++    #    max_score_linked_long_regions_description.append(f"covering longitude range: {x * long_region + 1}-{(x + 1) * long_region}")
++
++    for city_idx in range(l_cities - 1, -1, -1):
++        # 0 jump max
++        city = cities[city_idx]
++        #city[4] = city_idx
++        city_lat = city[0]
++        city_long = city[1]
++        max_cur = city[3]
++        #iters2 = 0
++        #if debug >= 3:
++        #    print(f"\n[{city_idx}] consider possible jumps for city: {city_idx} | {city}")
++
++        max_jump = 0
++        #max_city = None
++        if abs(max_global[0] - city_lat) <= max_lat and abs(max_global[1] - city_long) <= max_long:
++            if max_global[5] > 0:
++                max_jump = max_global[5]
++                #max_city = max_global[0:5]
++            #if debug >= 5:
++            #    print("global max hit!")
++        else:
++            # search (multiple) max score linked list
++
++            # max score linked list(s) subset
++            lat_left = max(lat_range[0], city_lat - max_lat)
++            lat_right = min(lat_range[1], city_lat + max_lat)
++            #print([lat_left, lat_right])
++            long_left = max(long_range[0], city_long - max_long)
++            long_right = min(long_range[1], city_long + max_long)
++            #print([long_left, long_right])
++            max_score_lat_regions = [x for x in range(int(lat_left / lat_region), int(lat_right / lat_region) + 1)]
++            #print(max_score_lat_regions)
++            max_score_long_regions = [x for x in range(int(long_left / long_region), int(long_right / long_region) + 1)]
++            #print(max_score_long_regions)
++            max_score_linked_regions_ = [[r_idx, r2_idx, max_score_linked_regions[r_idx][r2_idx].last] for r2_idx in max_score_long_regions for r_idx in max_score_lat_regions if max_score_linked_regions[r_idx][r2_idx].last]
++
++            end = False
++            #loops = 0
++            #if debug >= 5:
++            #    print(f"[{city_idx}] max regions [{len(max_score_linked_regions_)}]: {max_score_linked_regions_}")
++            while not end:
++                end = True
++                r = len(max_score_linked_regions_) - 1
++                while r >= 0:
++                    [r_idx, r2_idx, n] = max_score_linked_regions_[r]
++                    if not n:
++                        continue
++                    end = False
++                    max_ = n.key
++                    if max_ < max_jump:
++                        del max_score_linked_regions_[r]
++                        r -= 1
++                        continue
++                    #if debug >= 5:
++                    #    print(f"[{r_idx}|{r2_idx}] considering max score set [{max_}] {max_scores[max_]}")
++
++                    set_ = False
++                    idx = 0
++                    for max_score_ in max_scores[max_]:
++                        if abs(max_score_[0] - city_lat) <= max_lat and \
++                           abs(max_score_[1] - city_long) <= max_long:
++                        #if debug >= 5:
++                        #    print(f"[{r_idx}|{r2_idx} {r}|{idx}] max: {max_}, lat test: {max_scores[max_][idx][0]} - {city_lat} <= {max_lat}")
++                        # iterate valid latitudes to find valid longitudes
++                        #iters2 += 1
++                            #if debug >= 5:
++                            #    print(f"[{r_idx}|{r2_idx} {r}|{idx}] max: {max_}, long test: {max_score_[1]} - {city_long} <= {max_long}")
++                            if max_ > max_jump:
++                                max_jump = max_
++                                #max_city = n.data
++                                #print(f"max jump {max_} set for region {r_idx}|{r2_idx}, iters: {iters2}, city: {max_city}")
++                            set_ = True
++                            break
++                        # next city whose max score path yields the same the current max score
++                        idx += 1
++                    # next max score group in current region
++                    if set_:
++                        del max_score_linked_regions_[r]
++                    elif not max_score_linked_regions_[r][2].prev:
++                        del max_score_linked_regions_[r]
++                    else:
++                        max_score_linked_regions_[r][2] = n.prev
++                    r -= 1
++
++                # next max score region
++                #loops += 1
++
++        #if debug >= 3:
++        #    print(f"max set: {max_cur + max_jump}, iters: {iters2}, loops: {loops}")
++        if max_jump > 0:
++            #if debug >= 2:
++            #    print(f"max jump, iters: {iters2}, [{city_idx}]|{max_cur}@({city_lat},{city_long}) -> [{max_city_idx}]|{max_jump}@({max_city_lat},{max_city_long}) = {max_cur + max_jump}\n")
++            max_cur += max_jump
++
++        #iters += iters2
++
++        if max_cur > max_global[5]:
++            #if debug >= 10:
++            #    print(f"global max set: {max_cur}")
++            max_global = city + [max_cur]
++
++        # persist max
++        if max_cur in max_scores:
++            max_scores[max_cur].append(city)
++        else:
++            # add max in appropriate region
++            n_ = node2(key=max_cur, data=city)
++            r_idx = int(city_lat / lat_region)
++            r2_idx = int(city_long / long_region)
++            #if debug >= 4:
++            #    print(f"lat: {city_lat}, r_idx: {r_idx}, r_idx_max: {len(max_score_lat_regions)}, r2_idx: {r2_idx}, r2_idx_max: {len(max_score_long_regions)}")
++            #    print(f"adding city: {l}@({city_lat},{city_long}) -> region {r_idx}|{r2_idx} [{max_score_linked_lat_regions_description[r_idx]}|{max_score_linked_long_regions_description[r2_idx]}]")
++            #    print(f"adding city: {l}, lat: {city_lat} -> region {r_idx}|{r2_idx} [{max_score_linked_regions[r_idx][r2_idx]}]")
++            #    print(f"[{r_idx}|{r2_idx}] inserting: {n_.key}")
++            max_score_linked_regions[r_idx][r2_idx].insert(n_)
++            max_scores[max_cur] = [city]
++            #if debug >= 10:
++            #    print(f"max scores linked region: {max_score_linked_regions[r_idx][r2_idx]}")
++
++        #if debug >= 10:
++        #    print(f"max scores: {max_scores}")
++
++        #if debug >= 1:
++        #    if (l_cities - l) % 1000 == 0:
++        #        print(f"[debug] {l_cities - l}/{l_cities}, iters: {iters}")
++
++    return max_global[5]
++
++
+ def search_by_score_linked():
+     global debug
+     global iters
+@@ -1286,6 +1457,10 @@ def maximum_mission_points(n, diffs, lat_range_, long_range_):
+     'regional' maxes.. that will allow re-use of pre-sorted maxes with a nearly correct
+     latitude set. merge regional sets to fully encompass a city's boundary / space
+ 
++    still too slow.. with 2*lat regions, still yielding 500 iteration to disern max
++    from a 'sorted' list.. try same split approach for longitudes, so we're creating
++    multi-dimensional linked lists which cover sub-grids of the problem space
++
+     """
+     global debug
+ 
+@@ -1303,11 +1478,12 @@ def maximum_mission_points(n, diffs, lat_range_, long_range_):
+ 
+     debug = 0
+ 
+-    global profiling
+-    profiling = profiler()
++    #global profiling
++    #profiling = profiler()
+     #profiling.totals()
+ 
+-    return search_by_score_split_linked()
++    return search_by_score_split_linked_multi()
++    #return search_by_score_split_linked()
+     #return search_by_location_node2()
+     #return search_by_location_node()
+     #return search_by_score_linked()
+-- 
+2.23.0
+
