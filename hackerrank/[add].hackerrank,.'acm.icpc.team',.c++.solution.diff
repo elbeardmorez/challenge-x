@@ -1,0 +1,50 @@
+From 400a9bd9ffdbadd6723afe83ae519f1182f3c487 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 20 Aug 2019 08:39:46 +0100
+Subject: [add] hackerrank, 'acm icpc team', c++ solution
+
+---
+ .../acm.icpc.team.cpp                         | 27 ++++++++++++++++++-
+ 1 file changed, 26 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.cpp b/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.cpp
+index c70a30b..18c31ee 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.cpp
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.cpp
+@@ -6,7 +6,32 @@ vector<string> split_string(string);
+ 
+ // Complete the acmTeam function below.
+ vector<int> acmTeam(vector<string> topic) {
+-
++    /*
++    nC2 binary XOR grouped and counted combos. take max
++    */
++
++    int covered;
++    int n = topic.size();
++    int n2 = topic[0].length();
++    int max_ = 0;
++    int max_count = 0;
++    for (int l = 0; l < n; l++) {
++        for (int l2 = l + 1; l2 < n; l2++) {
++            covered = 0;
++            for (int l3 = 0; l3 < n2; l3++) {
++                if (topic[l].substr(l3, 1) == "1" || topic[l2].substr(l3, 1) == "1")
++                    covered++;
++            }
++            if (covered < max_)
++                continue;
++            if (covered > max_) {
++                max_ = covered;
++                max_count = 1;
++            } else
++                max_count++;
++        }
++    }
++    return vector<int> {max_, max_count};
+ }
+ 
+ int main()
+-- 
+2.23.0
+
