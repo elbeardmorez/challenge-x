@@ -1,0 +1,26 @@
+From 2484e210a19291d1683e8ce5923ef7ae8a891703 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 21 Aug 2019 16:44:18 +0100
+Subject: [mod] hackerrank, 'acm icpc team', python port
+
+-speed-up, port of characteric access via slice was expensive
+---
+ .../acm.icpc.team.py                                            | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.py b/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.py
+index d4a9c54..e4c20a4 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.py
+@@ -18,7 +18,7 @@ def acmTeam(topic):
+         for l2 in range(l + 1, n):
+             covered = 0
+             for l3 in range(0, n2):
+-                if topic[l][l3:l3 + 1] == "1" or topic[l2][l3:l3 + 1] == "1":
++                if topic[l][l3] == "1" or topic[l2][l3] == "1":
+                     covered += 1
+ 
+             if covered < max_:
+-- 
+2.23.0
+
