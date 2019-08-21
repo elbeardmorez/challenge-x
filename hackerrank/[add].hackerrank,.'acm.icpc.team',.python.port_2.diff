@@ -1,0 +1,36 @@
+From 7e880e6a6fcf6c1ed519a1e7b44ec4a8bc98be39 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 21 Aug 2019 17:20:49 +0100
+Subject: [add] hackerrank, 'acm icpc team', python port
+
+-speed-up, switch to binary implementation, ~8x faster
+---
+ .../acm.icpc.team.py                                      | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.py b/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.py
+index e4c20a4..5286fd0 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.py
+@@ -16,15 +16,13 @@ def acmTeam(topic):
+     max_count = 0
+     for l in range(0, n):
+         for l2 in range(l + 1, n):
+-            covered = 0
+-            for l3 in range(0, n2):
+-                if topic[l][l3] == "1" or topic[l2][l3] == "1":
+-                    covered += 1
+-
++            covered = len(bin(int(topic[l], 2) | int(topic[l2], 2))[2:].replace("0", ""))
++            #print(f"topic[{l}]: {topic[l]}, topic[{l2}]: {topic[l2]}, bitwise OR: {int(topic[l]) | int(topic[l2])}")
+             if covered < max_:
+                 continue
+             if covered > max_:
+                 max_ = covered
++                #print(f"new max: {max_}")
+                 max_count = 1
+             else:
+                 max_count += 1
+-- 
+2.23.0
+
