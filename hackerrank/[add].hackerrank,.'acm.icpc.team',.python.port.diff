@@ -1,0 +1,46 @@
+From e10cb74ff6037c61fae6ea0a7a8dcafc18f69bd1 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 21 Aug 2019 16:20:31 +0100
+Subject: [add] hackerrank, 'acm icpc team', python port
+
+---
+ .../acm.icpc.team.py                          | 23 +++++++++++++++++++
+ 1 file changed, 23 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.py b/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.py
+index fa61971..d4a9c54 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.py
+@@ -8,6 +8,29 @@ import sys
+ 
+ # Complete the acmTeam function below.
+ def acmTeam(topic):
++    # nC2 binary XOR grouped and counted combos. take max
++    covered = 0
++    n = len(topic)
++    n2 = len(topic[0])
++    max_ = 0
++    max_count = 0
++    for l in range(0, n):
++        for l2 in range(l + 1, n):
++            covered = 0
++            for l3 in range(0, n2):
++                if topic[l][l3:l3 + 1] == "1" or topic[l2][l3:l3 + 1] == "1":
++                    covered += 1
++
++            if covered < max_:
++                continue
++            if covered > max_:
++                max_ = covered
++                max_count = 1
++            else:
++                max_count += 1
++
++    return [max_, max_count]
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
