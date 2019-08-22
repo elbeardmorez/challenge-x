@@ -1,0 +1,61 @@
+From 97de842891ca3a0d97c2a99c03ead316145a8ec6 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 22 Aug 2019 10:18:43 +0100
+Subject: [add] hackerrank, 'acm icpc team', javascript port
+
+---
+ .../acm.icpc.team.js                          | 38 ++++++++++++++++++-
+ 1 file changed, 36 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.js b/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.js
+index 6a63a5d..8b11b0a 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.js
+@@ -26,8 +26,42 @@ function readLine() {
+ 
+ // Complete the acmTeam function below.
+ function acmTeam(topic) {
+-
+-
++    // nC2 binary XOR grouped and counted combos. take max;
++    let covered = 0;
++    let n = topic.length;
++    let n2 = topic[0].length;
++    let max_ = 0;
++    let max_count = 0;
++    let sss = 15;
++    let ss1 = "";
++    let ss2 = "";
++    let l3 = 0;
++    let covered_ = 0;
++    for (let l = 0; l < n; l++) {
++        for (let l2 = l + 1; l2 < n; l2++) {
++            covered = 0;
++            l3 = 0;
++            while (l3 < n2) {
++                ss1 = topic[l].substr(l3, sss);
++                ss2 = topic[l2].substr(l3, sss);
++                covered_ = (parseInt(ss1, 2) | parseInt(ss2, 2)).toString(2).replace(/0/g, "").length;
++                //console.log(`[${l}] ss1: ${ss1}, [${l2}] ss2: ${ss2}, bitwise OR: ${(parseInt(ss1, 2) | parseInt(ss2, 2)).toString(2)}`);
++                covered += covered_;
++                //console.log(`covered_: ${covered_}, covered: ${covered}`);
++                l3 += sss;
++            }
++            //console.log(`max_: ${max_}, max_count: ${max_count}`);
++            if (covered < max_)
++                continue;
++            if (covered > max_) {
++                max_ = covered;
++                //console.log(`new max: ${max_}`);
++                max_count = 1;
++            } else
++                max_count += 1;
++        }
++    }
++    return [max_, max_count];
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
