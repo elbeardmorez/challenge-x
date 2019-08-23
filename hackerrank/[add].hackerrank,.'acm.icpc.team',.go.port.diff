@@ -1,0 +1,81 @@
+From 082c7c0c1ef4720058c8b6134ff3a8040f350d65 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 23 Aug 2019 10:43:49 +0100
+Subject: [add] hackerrank, 'acm icpc team', go port
+
+---
+ .../acm.icpc.team.go                          | 51 ++++++++++++++++++-
+ 1 file changed, 49 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.go b/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.go
+index 638f2ee..43c44a9 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.go
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.go
+@@ -11,8 +11,54 @@ import (
+ 
+ // Complete the acmTeam function below.
+ func acmTeam(topic []string) []int32 {
+-
+-
++    // nC2 binary XOR grouped and counted combos. take max;
++    var n = len(topic)
++    var n2 = len(topic[0])
++    var max_ = int32(0)
++    var max_count = int32(0)
++    var sss_max = 15
++    var sss = sss_max
++    var ss1 = ""
++    var ss2 = ""
++    var covered = int32(0)
++    var covered_ = int32(0)
++    var l3 = 0
++    var x1 int64
++    var x2 int64
++    for l := 0; l < n; l++ {
++        for l2 := l + 1; l2 < n; l2++ {
++            covered = 0
++            sss = sss_max
++            l3 = 0
++            for l3 < n2 {
++                if n2 - l3 < sss {
++                    sss = n2 - l3
++                    //fmt.Printf("last sss set: %v, l3: %v, n2: %v\n", sss, l3, n2)
++                }
++                ss1 = topic[l][l3:l3 + sss]
++                ss2 = topic[l2][l3:l3 + sss]
++                x1, _ = strconv.ParseInt(ss1, 2, 32) 
++                x2, _ = strconv.ParseInt(ss2, 2, 32) 
++                covered_ = int32(len(strings.Replace(fmt.Sprintf("%s", strconv.FormatInt(x1 | x2, 2)), "0", "", -1)))
++                //fmt.Printf("[%v] ss1: %v, [%v] ss2: %v, bitwise OR: %v\n", l, ss1, l2, ss2, strconv.FormatInt(x1 | x2, 2))
++                covered += covered_
++                //fmt.Printf("covered_: %v, covered: %v\n", covered_, covered)
++                l3 += sss
++            }
++            //fmt.Printf("max_: %v, max_count: %v\n", max_, max_count)
++            if covered < max_ {
++                continue
++            }
++            if covered > max_ {
++                max_ = covered
++                //fmt.Printf("new max: %v\n", max_)
++                max_count = 1
++            } else {
++                max_count += 1
++            }
++        }
++    }
++    return []int32 {max_, max_count}
+ }
+ 
+ func main() {
+@@ -34,6 +80,7 @@ func main() {
+     mTemp, err := strconv.ParseInt(nm[1], 10, 64)
+     checkError(err)
+     m := int32(mTemp)
++    _ = m
+ 
+     var topic []string
+ 
+-- 
+2.23.0
+
