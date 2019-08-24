@@ -1,0 +1,87 @@
+From de1079a1b819c55ec643655c3d06bad474dfc5b0 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 24 Aug 2019 08:56:04 +0100
+Subject: [mod] hackerrank, 'acm icpc team', c# port
+
+-speed-up, switch to full BitArray operations, ~2x performance
+increase
+---
+ .../acm.icpc.team.cs                          | 57 +++++++++----------
+ 1 file changed, 27 insertions(+), 30 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.cs b/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.cs
+index 0e10dd5..2408772 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.cs
+@@ -22,41 +22,38 @@ class Solution {
+         var n2 = topic[0].Length;
+         var max_ = 0;
+         var max_count = 0;
+-        var sss_max = 19;
+-        var sss = sss_max;
+-        //var ss1 = "";
+-        //var ss2 = "";
++        var s = new StringBuilder();
+         var covered = 0;
+-        var covered_ = 0;
+-        var l3 = 0;
+-        //var x1 = 0L;
+-        //var x2 = 0L;
++        var topic_x = topic.Select(x => new BitArray(x.ToCharArray().Select(x2 => x2 == '1' ? true : false).ToArray())).ToArray();
++        for (var l = 0; l < n; l++) {
++            s.Clear();
++            foreach(bool bit in topic_x[l])
++                s.Append(bit ? "1" : "0");
++            //WriteLine($"topic[{l}]: {topic[l]}, topic_x[{l}]: {s.ToString()}");
++        }
+         for (var l = 0; l < n; l++) {
+             for (var l2 = l + 1; l2 < n; l2++) {
++                /*
++                WriteLine($"topic[{l}]: {topic[l]}");
++                s.Clear();
++                foreach(bool bit in topic_x[l])
++                    s.Append(bit ? "1" : "0");
++                WriteLine($"topic_x[{l}]: {s.ToString()}");
++
++                WriteLine($"topic[{l2}]: {topic[l2]}");
++                s.Clear();
++                foreach(bool bit in topic_x[l2])
++                    s.Append(bit ? "1" : "0");
++                WriteLine($"topic_x[{l2}]: {s.ToString()}");
++                */
++                //s.Clear();
+                 covered = 0;
+-                sss = sss_max;
+-                l3 = 0;
+-                while (l3 < n2) {
+-                    if (n2 - l3 < sss) {
+-                        sss = n2 - l3;
+-                        //WriteLine($"last sss set: {sss}, l3: {l3}, n2: {n2}");
+-                    }
+-                    //ss1 = topic[l].Substring(l3, sss);
+-                    //ss2 = topic[l2].Substring(l3, sss);
+-                    //WriteLine($"converting: {ss1} and {ss2}");
+-                    //x1 = Convert.ToInt64(ss1, 2);
+-                    //x2 = Convert.ToInt64(ss2, 2);
+-                    covered_ = Convert.ToString(Convert.ToInt64(topic[l].Substring(l3, sss), 2) |
+-                                                Convert.ToInt64(topic[l2].Substring(l3, sss), 2), 2).Replace("0", "").Length;
+-                    //WriteLine($"[{l}] ss1: {ss1}, [{l2}] ss2: {ss2}, bitwise OR: {Convert.ToString(x1 | x2, 2)}");
+-                    covered += covered_;
+-                    //WriteLine($"covered_: {covered_}, covered: {covered}");
+-                    l3 += sss;
+-                    if (covered + (n2 - l3) < max_) {
+-                        // no hope!
+-                        break;
+-                    }
++                foreach(bool bit in new BitArray(topic_x[l]).Or(topic_x[l2])) {
++                    //s.Append(bit ? "1" : "0");
++                    if (bit)
++                        covered++;
+                 }
++                //WriteLine($"topic[{l}] OR topic[{l2}]: {s.ToString()}, covered: {covered}");
+                 //WriteLine($"max_: {max_}, max_count: {max_count}");
+                 if (covered < max_) {
+                     continue;
+-- 
+2.23.0
+
