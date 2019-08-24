@@ -1,0 +1,80 @@
+From 0378cfebabd0f18e4da56f6ba02aa822a0947ed0 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 24 Aug 2019 07:22:45 +0100
+Subject: [add] hackerrank, 'acm icpc team', c# port
+
+---
+ .../acm.icpc.team.cs                          | 52 ++++++++++++++++++-
+ 1 file changed, 50 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.cs b/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.cs
+index 6ba3793..dc0f728 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.cs
+@@ -11,13 +11,61 @@ using System.Runtime.Serialization;
+ using System.Text.RegularExpressions;
+ using System.Text;
+ using System;
++using static System.Console;
+ 
+ class Solution {
+ 
+     // Complete the acmTeam function below.
+     static int[] acmTeam(string[] topic) {
+-
+-
++        // nC2 binary XOR grouped and counted combos. take max;
++        var n = topic.Length;
++        var n2 = topic[0].Length;
++        var max_ = 0;
++        var max_count = 0;
++        var sss_max = 19;
++        var sss = sss_max;
++        var ss1 = "";
++        var ss2 = "";
++        var covered = 0;
++        var covered_ = 0;
++        var l3 = 0;
++        var x1 = 0L;
++        var x2 = 0L;
++        for (var l = 0; l < n; l++) {
++            for (var l2 = l + 1; l2 < n; l2++) {
++                covered = 0;
++                sss = sss_max;
++                l3 = 0;
++                while (l3 < n2) {
++                    if (n2 - l3 < sss) {
++                        sss = n2 - l3;
++                        //WriteLine($"last sss set: {sss}, l3: {l3}, n2: {n2}");
++                    }
++                    ss1 = topic[l].Substring(l3, sss);
++                    ss2 = topic[l2].Substring(l3, sss);
++                    //WriteLine($"converting: {ss1} and {ss2}");
++                    x1 = Convert.ToInt64(ss1, 2);
++                    x2 = Convert.ToInt64(ss2, 2);
++                    covered_ = Convert.ToString(x1 | x2, 2).Replace("0", "").Length;
++                    //WriteLine($"[{l}] ss1: {ss1}, [{l2}] ss2: {ss2}, bitwise OR: {Convert.ToString(x1 | x2, 2)}");
++                    covered += covered_;
++                    //WriteLine($"covered_: {covered_}, covered: {covered}");
++                    l3 += sss;
++                }
++                //WriteLine($"max_: {max_}, max_count: {max_count}");
++                if (covered < max_) {
++                    continue;
++                }
++                if (covered > max_) {
++                    max_ = covered;
++                    //WriteLine($"new max: {max_}");
++                    max_count = 1;
++                } else {
++                    max_count += 1;
++                }
++            }
++        }
++        return new int[] {max_, max_count};
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
