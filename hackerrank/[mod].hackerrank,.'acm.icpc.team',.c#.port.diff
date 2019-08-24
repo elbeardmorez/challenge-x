@@ -1,0 +1,64 @@
+From e533207ec417d75a3a5daa19fa6077c342d2b47f Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 24 Aug 2019 07:29:55 +0100
+Subject: [mod] hackerrank, 'acm icpc team', c# port
+
+-speed-up, remove intermediate variables
+-speed-up, add short-circuit when a potential winner cannot possibly
+win anymore
+---
+ .../acm.icpc.team.cs                          | 23 +++++++++++--------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.cs b/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.cs
+index dc0f728..0e10dd5 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.acm.icpc.team/acm.icpc.team.cs
+@@ -24,13 +24,13 @@ class Solution {
+         var max_count = 0;
+         var sss_max = 19;
+         var sss = sss_max;
+-        var ss1 = "";
+-        var ss2 = "";
++        //var ss1 = "";
++        //var ss2 = "";
+         var covered = 0;
+         var covered_ = 0;
+         var l3 = 0;
+-        var x1 = 0L;
+-        var x2 = 0L;
++        //var x1 = 0L;
++        //var x2 = 0L;
+         for (var l = 0; l < n; l++) {
+             for (var l2 = l + 1; l2 < n; l2++) {
+                 covered = 0;
+@@ -41,16 +41,21 @@ class Solution {
+                         sss = n2 - l3;
+                         //WriteLine($"last sss set: {sss}, l3: {l3}, n2: {n2}");
+                     }
+-                    ss1 = topic[l].Substring(l3, sss);
+-                    ss2 = topic[l2].Substring(l3, sss);
++                    //ss1 = topic[l].Substring(l3, sss);
++                    //ss2 = topic[l2].Substring(l3, sss);
+                     //WriteLine($"converting: {ss1} and {ss2}");
+-                    x1 = Convert.ToInt64(ss1, 2);
+-                    x2 = Convert.ToInt64(ss2, 2);
+-                    covered_ = Convert.ToString(x1 | x2, 2).Replace("0", "").Length;
++                    //x1 = Convert.ToInt64(ss1, 2);
++                    //x2 = Convert.ToInt64(ss2, 2);
++                    covered_ = Convert.ToString(Convert.ToInt64(topic[l].Substring(l3, sss), 2) |
++                                                Convert.ToInt64(topic[l2].Substring(l3, sss), 2), 2).Replace("0", "").Length;
+                     //WriteLine($"[{l}] ss1: {ss1}, [{l2}] ss2: {ss2}, bitwise OR: {Convert.ToString(x1 | x2, 2)}");
+                     covered += covered_;
+                     //WriteLine($"covered_: {covered_}, covered: {covered}");
+                     l3 += sss;
++                    if (covered + (n2 - l3) < max_) {
++                        // no hope!
++                        break;
++                    }
+                 }
+                 //WriteLine($"max_: {max_}, max_count: {max_count}");
+                 if (covered < max_) {
+-- 
+2.23.0
+
