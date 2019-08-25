@@ -1,0 +1,43 @@
+From 89adcb1a4a4e6c55b581338d366a06228c1e624e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 25 Aug 2019 10:14:01 +0100
+Subject: [add] hackerrank, 'chocolate feast', c# solution
+
+---
+ .../chocolate.feast.cs                            | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.chocolate.feast/chocolate.feast.cs b/hackerrank/algorithms.-.implementation.-.easy.-.chocolate.feast/chocolate.feast.cs
+index aa093c5..0a9d96e 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.chocolate.feast/chocolate.feast.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.chocolate.feast/chocolate.feast.cs
+@@ -11,13 +11,24 @@ using System.Runtime.Serialization;
+ using System.Text.RegularExpressions;
+ using System.Text;
+ using System;
++using static System.Console;
+ 
+ class Solution {
+ 
+     // Complete the chocolateFeast function below.
+     static int chocolateFeast(int n, int c, int m) {
+-
+-
++        int eaten = n / c;
++        int wrappers = eaten;
++        int free_ = 0;
++        //WriteLine($"n: {n}, c: {c}, m: {m}");
++        //WriteLine($"eaten: {eaten}, wrappers: {wrappers}");
++        while (wrappers >= m) {
++            free_ = wrappers / m;
++            eaten += free_;
++            wrappers = free_ + (wrappers % m);
++            //WriteLine($"eaten: {eaten}, wrappers: {wrappers}");
++        }
++        return eaten;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
