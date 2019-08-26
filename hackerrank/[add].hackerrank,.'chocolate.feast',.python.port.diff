@@ -1,0 +1,39 @@
+From 790f9b7a1b6f27cd3654993a84eb2e80f8346192 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 26 Aug 2019 07:12:09 +0100
+Subject: [add] hackerrank, 'chocolate feast', python port
+
+---
+ .../chocolate.feast.py                             | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.chocolate.feast/chocolate.feast.py b/hackerrank/algorithms.-.implementation.-.easy.-.chocolate.feast/chocolate.feast.py
+index d30836f..105c515 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.chocolate.feast/chocolate.feast.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.chocolate.feast/chocolate.feast.py
+@@ -6,8 +6,22 @@ import random
+ import re
+ import sys
+ 
++
+ # Complete the chocolateFeast function below.
+ def chocolateFeast(n, c, m):
++    eaten = int(n / c)
++    wrappers = eaten
++    free_ = 0
++    #print(f"n: {n}, c: {c}, m: {m}")
++    #print(f"eaten: {eaten}, wrappers: {wrappers}")
++    while wrappers >= m:
++        free_ = int(wrappers / m)
++        eaten += free_
++        wrappers = free_ + (wrappers % m)
++        #print(f"eaten: {eaten}, wrappers: {wrappers}")
++
++    return eaten
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
