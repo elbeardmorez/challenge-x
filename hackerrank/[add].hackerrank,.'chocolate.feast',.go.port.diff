@@ -1,0 +1,37 @@
+From cdc827dc987fb0259dcab9be59393e0e60468003 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 27 Aug 2019 07:20:00 +0100
+Subject: [add] hackerrank, 'chocolate feast', go port
+
+---
+ .../chocolate.feast.go                             | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.chocolate.feast/chocolate.feast.go b/hackerrank/algorithms.-.implementation.-.easy.-.chocolate.feast/chocolate.feast.go
+index 054190a..d5c9537 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.chocolate.feast/chocolate.feast.go
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.chocolate.feast/chocolate.feast.go
+@@ -11,8 +11,18 @@ import (
+ 
+ // Complete the chocolateFeast function below.
+ func chocolateFeast(n int32, c int32, m int32) int32 {
+-
+-
++    var eaten int32 = n / c
++    var wrappers int32 = eaten
++    var free_ int32 = 0
++    //fmt.Printf("n: %v, c: %v, m: %v\n", n, c, m)
++    //fmt.Printf("eaten: %v, wrappers: %v\n", eaten, wrappers)
++    for wrappers >= m {
++        free_ = wrappers / m
++        eaten += free_
++        wrappers = free_ + (wrappers % m)
++        //fmt.Printf("eaten: %v, wrappers: %v\n", eaten, wrappers)
++    }
++    return eaten
+ }
+ 
+ func main() {
+-- 
+2.23.0
+
