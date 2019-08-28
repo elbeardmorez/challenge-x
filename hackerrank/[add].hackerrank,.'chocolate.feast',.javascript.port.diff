@@ -1,0 +1,37 @@
+From 9595038af6d59e0c9834c4ad8ebb38860e9b2920 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 28 Aug 2019 08:23:10 +0100
+Subject: [add] hackerrank, 'chocolate feast', javascript port
+
+---
+ .../chocolate.feast.js                             | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.chocolate.feast/chocolate.feast.js b/hackerrank/algorithms.-.implementation.-.easy.-.chocolate.feast/chocolate.feast.js
+index c1d88af..9dad1e5 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.chocolate.feast/chocolate.feast.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.chocolate.feast/chocolate.feast.js
+@@ -26,8 +26,18 @@ function readLine() {
+ 
+ // Complete the chocolateFeast function below.
+ function chocolateFeast(n, c, m) {
+-
+-
++    let eaten = parseInt(n / c);
++    let wrappers = eaten;
++    let free_ = 0;
++    //console.log(`n: ${n}, c: ${c}, m: ${m}`);
++    //console.log(`eaten: ${eaten}, wrappers: ${wrappers}`);
++    while (wrappers >= m) {
++        free_ = parseInt(wrappers / m);
++        eaten += free_;
++        wrappers = free_ + (wrappers % m);
++        //console.log(`eaten: ${eaten}, wrappers: ${wrappers}`);
++    }
++    return eaten;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
