@@ -1,0 +1,37 @@
+From ec239dfd3be30462c1ced525e21d00101dcf6ca7 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 29 Aug 2019 10:00:20 +0100
+Subject: [add] hackerrank, 'chocolate feast', c++ port
+
+---
+ .../chocolate.feast.cpp                            | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.chocolate.feast/chocolate.feast.cpp b/hackerrank/algorithms.-.implementation.-.easy.-.chocolate.feast/chocolate.feast.cpp
+index a86a0ab..720098c 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.chocolate.feast/chocolate.feast.cpp
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.chocolate.feast/chocolate.feast.cpp
+@@ -6,8 +6,18 @@ vector<string> split_string(string);
+ 
+ // Complete the chocolateFeast function below.
+ int chocolateFeast(int n, int c, int m) {
+-
+-
++    auto eaten = n / c;
++    auto wrappers = eaten;
++    int free_ = 0;
++    //cout << "n: " << n << ", c: " << c << ", m: " << m << endl;
++    //cout << "eaten: " << eaten << ", wrappers: " << wrappers << endl;
++    while (wrappers >= m) {
++        free_ = wrappers / m;
++        eaten += free_;
++        wrappers = free_ + (wrappers % m);
++        //cout << "eaten: " << eaten << ", wrappers: " << wrappers << endl;
++    }
++    return eaten;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
