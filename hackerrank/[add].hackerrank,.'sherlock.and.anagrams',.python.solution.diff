@@ -1,0 +1,119 @@
+From fc25cdf8280f34676590079d43fe110455767c0a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 30 Aug 2019 05:15:13 +0100
+Subject: [add] hackerrank, 'sherlock and anagrams', python solution
+
+---
+ .../sherlock.and.anagrams.py                  | 94 +++++++++++++++++++
+ 1 file changed, 94 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.anagrams/sherlock.and.anagrams.py b/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.anagrams/sherlock.and.anagrams.py
+index d2b0e9e..75b5a39 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.anagrams/sherlock.and.anagrams.py
++++ b/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.anagrams/sherlock.and.anagrams.py
+@@ -6,8 +6,102 @@ import random
+ import re
+ import sys
+ 
++
+ # Complete the sherlockAndAnagrams function below.
+ def sherlockAndAnagrams(s):
++    """
++    # inbetween substrings, at least one unless the chars are adjacent
++    acbdefgcbaaa  ..n-1! n > 2 instances per char
++
++    a|a 4-1!=6
++    aa|aa acb|cba acbdefg|defgcba acbdefgcb|cbdefgcba acbdefgcba|cbdefgcbaa acbdefgcbaa|cbdefgcbaaa 6
++
++    c|c 1
++    cbdefg|bdefgc 1
++    cb|cb 1 <-stray cornercase
++
++    b|b 1
++    bdefgc|defgcb 1
++
++    16
++    """
++
++    #print(s)
++    anagrams = 0
++
++    ls = len(s)
++    chars = {}
++    idx = 0
++    for c in list(s):
++        if c not in chars:
++            chars[c] = []
++        chars[c].append(idx)
++        idx += 1
++
++    anagram_idxs = {}
++
++    for c, idxs in chars.items():
++        #print(f"c: {c}, idxs: {idxs}")
++        if len(idxs) < 2:
++            continue
++
++        lidxs = len(idxs)
++        for l in range(lidxs - 1):
++            for l2 in range(l + 1, lidxs):
++                last = idxs[l]
++                next_ = idxs[l2]
++                #print(f"last: {last}, next: {next_}")
++                anagrams += 1
++                anagram_idxs[f"{last}_{next}"] = 1
++                if next_ == -1:
++                    break
++                if next_ - last >= 1:
++                    # search substrings towards eachother in the gap
++                    gap = next_ - last
++                    lss = 2
++                    while lss <= gap:
++                        ss1 = s[last:last + lss]
++                        ss2 = s[next_ - lss + 1:next_ + 1]
++                        #print(f"comparing ss1: {ss1}, ss2: {ss2}")
++                        if sorted(ss1) == sorted(ss2):
++                            desc = f"{last}_{last + lss}-{next_ - lss + 1}_{next_ + 1}"
++                            if desc not in anagram_idxs:
++                                anagram_idxs[desc] = 1
++                                anagrams += 1
++                                #print(f"anagram! ss1: {ss1}, ss2: {ss2}")
++                        if lss == 2:
++                            # corner case of otherwise untested stray single
++                            # chars on the other side
++
++                            # towards ss1-> away ss2->
++                            if next_ + lss <= ls:
++                                ss1 = s[last:last + lss]
++                                ss2 = s[next_:next_ + lss]
++                                #print(f"comparing cc ss1: {ss1}, ss2: {ss2}")
++                                if sorted(ss1) == sorted(ss2):
++                                    desc = f"{last}_{last + lss}-{next_}_{next_ + lss}"
++                                    if desc not in anagram_idxs:
++                                        anagram_idxs[desc] = 1
++                                        anagrams += 1
++                                        #print(f"cc anagram! ss1: {ss1}, ss2: {ss2}")
++
++                            # away <-ss1 towards <-ss2
++                            if last - lss >= 0:
++                                ss1 = s[last - lss + 1:last + 1]
++                                ss2 = s[next_ - lss + 1:next_ + 1]
++                                #print(f"comparing cc ss1: {ss1}, ss2: {ss2}")
++                                if sorted(ss1) == sorted(ss2):
++                                    desc = f"{last - lss + 1}_{last + 1}-{next_ - lss + 1}_{next_ + 1}"
++                                    if desc not in anagram_idxs:
++                                        anagram_idxs[desc] = 1
++                                        anagrams += 1
++                                        #print(f"cc anagram! ss1: {ss1}, ss2: {ss2}")
++
++                        lss += 1
++    #print(f"anagrams: {anagrams}")
++
++    return anagrams
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
