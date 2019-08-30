@@ -1,0 +1,137 @@
+From 77207fdee28715cfc476b10c5667aed19a6dba29 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 30 Aug 2019 09:07:58 +0100
+Subject: [fix] hackerrank, 'sherlock and anagrams', python solution
+
+-tweak to 'range over' all substrings which contain the two indexes
+of the current letter, thus there's no special case
+---
+ .../sherlock.and.anagrams.py                  | 83 +++++++++----------
+ 1 file changed, 37 insertions(+), 46 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.anagrams/sherlock.and.anagrams.py b/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.anagrams/sherlock.and.anagrams.py
+index 75b5a39..a534b9c 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.anagrams/sherlock.and.anagrams.py
++++ b/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.anagrams/sherlock.and.anagrams.py
+@@ -18,16 +18,16 @@ def sherlockAndAnagrams(s):
+ 
+     c|c 1
+     cbdefg|bdefgc 1
+-    cb|cb 1 <-stray cornercase
++    cbdefg|defgcb 1
++    cb|cb 1
+ 
+     b|b 1
+     bdefgc|defgcb 1
+ 
+-    16
++    18
+     """
+ 
+-    #print(s)
+-    anagrams = 0
++    #print(f"\n{s}")
+ 
+     ls = len(s)
+     chars = {}
+@@ -38,6 +38,7 @@ def sherlockAndAnagrams(s):
+         chars[c].append(idx)
+         idx += 1
+ 
++    visited_idxs = {}
+     anagram_idxs = {}
+ 
+     for c, idxs in chars.items():
+@@ -50,57 +51,47 @@ def sherlockAndAnagrams(s):
+             for l2 in range(l + 1, lidxs):
+                 last = idxs[l]
+                 next_ = idxs[l2]
+-                #print(f"last: {last}, next: {next_}")
+-                anagrams += 1
+-                anagram_idxs[f"{last}_{next}"] = 1
++                desc = f"{last}_{last}-{next_}_{next_}"
++                if desc in visited_idxs:
++                    continue
++                visited_idxs[desc] = 1
+                 if next_ == -1:
+                     break
+                 if next_ - last >= 1:
+                     # search substrings towards eachother in the gap
+-                    gap = next_ - last
+-                    lss = 2
+-                    while lss <= gap:
+-                        ss1 = s[last:last + lss]
+-                        ss2 = s[next_ - lss + 1:next_ + 1]
+-                        #print(f"comparing ss1: {ss1}, ss2: {ss2}")
+-                        if sorted(ss1) == sorted(ss2):
+-                            desc = f"{last}_{last + lss}-{next_ - lss + 1}_{next_ + 1}"
+-                            if desc not in anagram_idxs:
+-                                anagram_idxs[desc] = 1
+-                                anagrams += 1
+-                                #print(f"anagram! ss1: {ss1}, ss2: {ss2}")
+-                        if lss == 2:
+-                            # corner case of otherwise untested stray single
+-                            # chars on the other side
+-
+-                            # towards ss1-> away ss2->
+-                            if next_ + lss <= ls:
+-                                ss1 = s[last:last + lss]
+-                                ss2 = s[next_:next_ + lss]
+-                                #print(f"comparing cc ss1: {ss1}, ss2: {ss2}")
+-                                if sorted(ss1) == sorted(ss2):
+-                                    desc = f"{last}_{last + lss}-{next_}_{next_ + lss}"
+-                                    if desc not in anagram_idxs:
+-                                        anagram_idxs[desc] = 1
+-                                        anagrams += 1
+-                                        #print(f"cc anagram! ss1: {ss1}, ss2: {ss2}")
+-
+-                            # away <-ss1 towards <-ss2
+-                            if last - lss >= 0:
+-                                ss1 = s[last - lss + 1:last + 1]
+-                                ss2 = s[next_ - lss + 1:next_ + 1]
+-                                #print(f"comparing cc ss1: {ss1}, ss2: {ss2}")
++                    lss_max = next_ - last
++                    lss = 1
++                    while lss <= lss_max:
++                        # 'range over' points
++                        for offset1 in range(-lss, 0):
++                            for offset2 in range(-lss, 0):
++                                left1 = last + offset1 + 1
++                                if left1 < 0:
++                                    continue
++                                right2 = next_ + offset2 + lss + 1
++                                if right2 > ls:
++                                    continue
++                                right1 = last + offset1 + lss + 1
++                                left2 = next_ + offset2 + 1
++
++                                desc = f"{left1}_{right1}-{left2}_{right2}"
++                                ss1 = s[left1:right1]
++                                ss2 = s[left2:right2]
++
++                                #print(f"len ss: {lss }, offset1: {offset1}, offset2: {offset2} ranges: {desc}, comparing ss1: {ss1}, ss2: {ss2}")
++                                #if left1 < 0 or right2 > ls:
++                                #    continue
++
+                                 if sorted(ss1) == sorted(ss2):
+-                                    desc = f"{last - lss + 1}_{last + 1}-{next_ - lss + 1}_{next_ + 1}"
+                                     if desc not in anagram_idxs:
+                                         anagram_idxs[desc] = 1
+-                                        anagrams += 1
+-                                        #print(f"cc anagram! ss1: {ss1}, ss2: {ss2}")
+-
++                                        #print(f"anagram! len ss: {lss}, offset1: {offset1}, offset2: {offset2} ranges: {desc}, comparing ss1: {ss1}, ss2: {ss2}")
+                         lss += 1
+-    #print(f"anagrams: {anagrams}")
+ 
+-    return anagrams
++
++    #print(f"anagrams: {len(anagram_idxs)}")
++
++    return len(anagram_idxs)
+ 
+ 
+ if __name__ == '__main__':
+-- 
+2.23.0
+
