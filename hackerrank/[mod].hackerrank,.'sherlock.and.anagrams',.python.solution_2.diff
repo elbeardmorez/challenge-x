@@ -1,0 +1,126 @@
+From 90047c04f12db9afb31441fe2244157a711164bd Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 30 Aug 2019 14:27:55 +0100
+Subject: [mod] hackerrank, 'sherlock and anagrams', python solution
+
+-redux, just use the pre-calcuated substrings
+---
+ .../sherlock.and.anagrams.py                  | 89 +++++--------------
+ 1 file changed, 20 insertions(+), 69 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.anagrams/sherlock.and.anagrams.py b/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.anagrams/sherlock.and.anagrams.py
+index 7773f86..b685850 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.anagrams/sherlock.and.anagrams.py
++++ b/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.anagrams/sherlock.and.anagrams.py
+@@ -11,9 +11,9 @@ import sys
+ def sherlockAndAnagrams(s):
+     """
+     # inbetween substrings, at least one unless the chars are adjacent
+-    acbdefgcbaaa  ..n-1! n > 2 instances per char
++    acbdefgcbaaa  ..nCr n > 2 instances per dupe char e.g. a 4!/2!(4-2)!
+ 
+-    a|a 4-1!=6
++    a|a 4!/2!2!=6
+     aa|aa acb|cba acbdefg|defgcba acbdefgcb|cbdefgcba acbdefgcba|cbdefgcbaa acbdefgcbaa|cbdefgcbaaa 6
+ 
+     c|c 1
+@@ -30,78 +30,29 @@ def sherlockAndAnagrams(s):
+     #print(f"\n{s}")
+ 
+     ls = len(s)
+-    chars = {}
+-    idx = 0
+-    for c in list(s):
+-        if c not in chars:
+-            chars[c] = []
+-        chars[c].append(idx)
+-        idx += 1
+-
+-    visited_idxs = {}
+-    anagram_idxs = {}
+-
+-    sss = {}
++    anagrams = 0
++    sss = []
+     for l in range(ls):
+         for l2 in range(1, ls - l + 1):
+             left = l
+             right = l + l2
+             #print(f"added: {left}_{right}: {s[left:right]} -> {sorted(s[left:right])}")
+-            sss[f"{left}_{right}"] = "".join(sorted(s[left:right]))
+-
+-    for c, idxs in chars.items():
+-        #print(f"c: {c}, idxs: {idxs}")
+-        if len(idxs) < 2:
+-            continue
+-
+-        lidxs = len(idxs)
+-        for l in range(lidxs - 1):
+-            for l2 in range(l + 1, lidxs):
+-                last = idxs[l]
+-                next_ = idxs[l2]
+-                desc = f"{last}_{last}-{next_}_{next_}"
+-                if desc in visited_idxs:
+-                    continue
+-                visited_idxs[desc] = 1
+-                if next_ == -1:
+-                    break
+-                if next_ - last >= 1:
+-                    # search substrings towards eachother in the gap
+-                    lss_max = next_ - last
+-                    lss = 1
+-                    while lss <= lss_max:
+-                        # 'range over' points
+-                        for offset1 in range(-lss, 0):
+-                            for offset2 in range(-lss, 0):
+-                                left1 = last + offset1 + 1
+-                                if left1 < 0:
+-                                    continue
+-                                right2 = next_ + offset2 + lss + 1
+-                                if right2 > ls:
+-                                    continue
+-                                right1 = last + offset1 + lss + 1
+-                                left2 = next_ + offset2 + 1
+-
+-                                desc1 = f"{left1}_{right1}"
+-                                desc2 = f"{left2}_{right2}"
+-                                desc = f"{desc1}-{desc2}"
+-                                ss1 = sss[desc1]
+-                                ss2 = sss[desc2]
+-
+-                                #print(f"len ss: {lss }, offset1: {offset1}, offset2: {offset2} ranges: {desc}, comparing ss1: {ss1}, ss2: {ss2}")
+-                                #if left1 < 0 or right2 > ls:
+-                                #    continue
+-
+-                                if ss1 == ss2:
+-                                    if desc not in anagram_idxs:
+-                                        anagram_idxs[desc] = 1
+-                                        #print(f"anagram! len ss: {lss}, offset1: {offset1}, offset2: {offset2} ranges: {desc}, comparing ss1: {ss1}, ss2: {ss2}")
+-                        lss += 1
+-
+-
+-    #print(f"anagrams: {len(anagram_idxs)}")
+-
+-    return len(anagram_idxs)
++            sss.append("".join(sorted(s[left:right])))
++    sss.sort()
++    #print(*sss, sep='\n')
++
++    from itertools import groupby
++    grouped = groupby(sss)
++    for k, g in grouped:
++        l = len(list(g))
++        if l > 2:
++            anagrams += (math.factorial(l) / (2 * math.factorial(l - 2)))
++        elif l == 2:
++            anagrams += 1
++
++    #print(f"anagrams: {int(anagrams)}")
++
++    return int(anagrams)
+ 
+ 
+ if __name__ == '__main__':
+-- 
+2.23.0
+
