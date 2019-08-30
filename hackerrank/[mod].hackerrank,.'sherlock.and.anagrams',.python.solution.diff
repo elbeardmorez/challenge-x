@@ -1,0 +1,56 @@
+From f7f5f2467dcb6b7f099ee803c460d6fbfb81e6f5 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 30 Aug 2019 10:05:39 +0100
+Subject: [mod] hackerrank, 'sherlock and anagrams', python solution
+
+-pre-calculate a map of sorted substrings at any given start-end
+pair to avoid expensive re-calculations
+-~3x performance increase
+---
+ .../sherlock.and.anagrams.py                   | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.anagrams/sherlock.and.anagrams.py b/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.anagrams/sherlock.and.anagrams.py
+index a534b9c..7773f86 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.anagrams/sherlock.and.anagrams.py
++++ b/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.anagrams/sherlock.and.anagrams.py
+@@ -41,6 +41,14 @@ def sherlockAndAnagrams(s):
+     visited_idxs = {}
+     anagram_idxs = {}
+ 
++    sss = {}
++    for l in range(ls):
++        for l2 in range(1, ls - l + 1):
++            left = l
++            right = l + l2
++            #print(f"added: {left}_{right}: {s[left:right]} -> {sorted(s[left:right])}")
++            sss[f"{left}_{right}"] = "".join(sorted(s[left:right]))
++
+     for c, idxs in chars.items():
+         #print(f"c: {c}, idxs: {idxs}")
+         if len(idxs) < 2:
+@@ -74,15 +82,17 @@ def sherlockAndAnagrams(s):
+                                 right1 = last + offset1 + lss + 1
+                                 left2 = next_ + offset2 + 1
+ 
+-                                desc = f"{left1}_{right1}-{left2}_{right2}"
+-                                ss1 = s[left1:right1]
+-                                ss2 = s[left2:right2]
++                                desc1 = f"{left1}_{right1}"
++                                desc2 = f"{left2}_{right2}"
++                                desc = f"{desc1}-{desc2}"
++                                ss1 = sss[desc1]
++                                ss2 = sss[desc2]
+ 
+                                 #print(f"len ss: {lss }, offset1: {offset1}, offset2: {offset2} ranges: {desc}, comparing ss1: {ss1}, ss2: {ss2}")
+                                 #if left1 < 0 or right2 > ls:
+                                 #    continue
+ 
+-                                if sorted(ss1) == sorted(ss2):
++                                if ss1 == ss2:
+                                     if desc not in anagram_idxs:
+                                         anagram_idxs[desc] = 1
+                                         #print(f"anagram! len ss: {lss}, offset1: {offset1}, offset2: {offset2} ranges: {desc}, comparing ss1: {ss1}, ss2: {ss2}")
+-- 
+2.23.0
+
