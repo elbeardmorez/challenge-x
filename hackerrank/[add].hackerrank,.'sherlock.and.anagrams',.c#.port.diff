@@ -1,0 +1,80 @@
+From e65696a8355e4df2d120cb42b4e168104e28c0de Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 31 Aug 2019 23:26:29 +0100
+Subject: [add] hackerrank, 'sherlock and anagrams', c# port
+
+---
+ .../sherlock.and.anagrams.cs                  | 50 +++++++++++++++++++
+ 1 file changed, 50 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.anagrams/sherlock.and.anagrams.cs b/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.anagrams/sherlock.and.anagrams.cs
+index 9de0478..47d36ec 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.anagrams/sherlock.and.anagrams.cs
++++ b/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.anagrams/sherlock.and.anagrams.cs
+@@ -11,13 +11,63 @@ using System.Runtime.Serialization;
+ using System.Text.RegularExpressions;
+ using System.Text;
+ using System;
++using System.Numerics;
++
++using static System.Console;
++
+ 
+ class Solution {
+ 
++    static BigInteger factorial(BigInteger n) {
++        return n > new BigInteger(1) ? n * factorial(n - new BigInteger(1)) : new BigInteger(1);
++    }
++
+     // Complete the sherlockAndAnagrams function below.
+     static int sherlockAndAnagrams(string s) {
++        /*
++        # inbetween substrings, at least one unless the chars are adjacent
++        acbdefgcbaaa  ..nCr n > 2 instances per dupe char e.g. a 4!/2!(4-2)!
++
++        a|a 4!/2!2!=6
++        aa|aa acb|cba acbdefg|defgcba acbdefgcb|cbdefgcba acbdefgcba|cbdefgcbaa acbdefgcbaa|cbdefgcbaaa 6
++
++        c|c 1
++        cbdefg|bdefgc 1
++        cbdefg|defgcb 1
++        cb|cb 1
++
++        b|b 1
++        bdefgc|defgcb 1
++
++        18
++        */
++
++        //WriteLine($"{s}");
++
++        var ls = s.Length;
++        int anagrams = 0;
++        var sss = new List<string>();
++        int left, right;
++        string ss, ss_;
++        for (var l = 0; l < ls; l++) {
++            for (var l2 = 1; l2 < ls - l + 1; l2++) {
++                left = l;
++                right = l + l2;
++                ss = s.Substring(left, right - left);
++                ss_ = String.Join("", ss.ToCharArray().OrderBy(x => x));
++                //WriteLine($"added: {left}_{right}: {ss} -> {ss_}");
++                sss.Add(ss_);
++            }
++        }
++
++        sss = sss.OrderBy(x => x).ToList<string>();
++        //WriteLine($"{String.Join("\n", sss)}");
++
++        anagrams = sss.GroupBy(x => x).Select(g => g.Count() > 1 ? factorial(new BigInteger(g.Count())) / (factorial(new BigInteger(g.Count() - 2)) * 2) : 0).Select(x => (int)x).Sum();
+ 
++        //WriteLine($"anagrams: {anagrams}");
+ 
++        return anagrams;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
