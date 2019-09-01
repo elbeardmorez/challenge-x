@@ -1,0 +1,92 @@
+From b441c3a2885350053b10956c199f15395f4c8d76 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 1 Sep 2019 20:54:02 +0100
+Subject: [add] hackerrank, 'sherlock and anagrams', javascript port
+
+---
+ .../sherlock.and.anagrams.js                  | 67 +++++++++++++++++++
+ 1 file changed, 67 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.anagrams/sherlock.and.anagrams.js b/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.anagrams/sherlock.and.anagrams.js
+index d6a5b45..5ed80c7 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.anagrams/sherlock.and.anagrams.js
++++ b/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.anagrams/sherlock.and.anagrams.js
+@@ -26,8 +26,75 @@ function readLine() {
+ 
+ // Complete the sherlockAndAnagrams function below.
+ function sherlockAndAnagrams(s) {
++    /*
++    # inbetween substrings, at least one unless the chars are adjacent
++    acbdefgcbaaa  ..nCr n > 2 instances per dupe char e.g. a 4!/2!(4-2)!
+ 
++    a|a 4!/2!2!=6
++    aa|aa acb|cba acbdefg|defgcba acbdefgcb|cbdefgcba acbdefgcba|cbdefgcbaa acbdefgcbaa|cbdefgcbaaa 6
+ 
++    c|c 1
++    cbdefg|bdefgc 1
++    cbdefg|defgcb 1
++    cb|cb 1
++
++    b|b 1
++    bdefgc|defgcb 1
++
++    18
++    */
++
++    //console.log(`\n${s}`);
++
++    let factorial = n => {
++      return n > BigInt(1) ? n * factorial(n - BigInt(1)) : BigInt(1);
++    }
++
++    let ls = s.length;
++    let anagrams = 0;
++    let sss = [];
++    let left, right;
++    let ss, ss_;
++    for (let l = 0; l < ls; l++) {
++        for (let l2 = 1; l2 < ls - l + 1; l2++) {
++            left = l;
++            right = l + l2;
++            ss = s.substr(left, right - left);
++            ss_ = ss.split('').sort().join("");
++            //console.log(`added: ${left}_${right}: ${ss} -> ${ss_}`);
++            sss.push(ss_);
++        }
++    }
++
++    sss = sss.sort();
++    //console.log(`${sss.join('\n')}`);
++
++    let grouped = new Map();
++    let last = sss[0];
++    grouped.set(last, 0);
++    let next_;
++    for (let l = 0; l < sss.length; l++) {
++        next_ = sss[l];
++        if (next_ !== last)
++            grouped.set(next_, 1);
++        else
++            grouped.set(last, grouped.get(last) + 1);
++        last = next_;
++    }
++
++    let l;
++    for (let kvp of grouped.entries()) {
++        //console.log(`group: ${kvp[0]} | ${kvp[1]}`);
++        l = kvp[1];
++        if (l > 2)
++            anagrams += parseInt(factorial(BigInt(l)) / (2n * factorial(BigInt(l - 2))));
++        else if (l === 2)
++            anagrams += 1;
++    }
++
++    //console.log(`anagrams: ${anagrams}`);
++
++    return anagrams;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
