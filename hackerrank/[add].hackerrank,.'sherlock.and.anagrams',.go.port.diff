@@ -1,0 +1,119 @@
+From 62c249fbde2255e1e7dab3d6c34d9b5f04a77fbe Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 2 Sep 2019 20:33:55 +0100
+Subject: [add] hackerrank, 'sherlock and anagrams', go port
+
+---
+ .../sherlock.and.anagrams.go                  | 90 +++++++++++++++++++
+ 1 file changed, 90 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.anagrams/sherlock.and.anagrams.go b/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.anagrams/sherlock.and.anagrams.go
+index 8edefd0..7363fef 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.anagrams/sherlock.and.anagrams.go
++++ b/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.anagrams/sherlock.and.anagrams.go
+@@ -7,12 +7,102 @@ import (
+     "os"
+     "strconv"
+     "strings"
++    "math/big"
++    "sort"
+ )
+ 
+ // Complete the sherlockAndAnagrams function below.
+ func sherlockAndAnagrams(s string) int32 {
++    /*
++    # inbetween substrings, at least one unless the chars are adjacent
++    acbdefgcbaaa  ..nCr n > 2 instances per dupe char e.g. a 4!/2!(4-2)!
++
++    a|a 4!/2!2!=6
++    aa|aa acb|cba acbdefg|defgcba acbdefgcb|cbdefgcba acbdefgcba|cbdefgcbaa acbdefgcbaa|cbdefgcbaaa 6
++
++    c|c 1
++    cbdefg|bdefgc 1
++    cbdefg|defgcb 1
++    cb|cb 1
++
++    b|b 1
++    bdefgc|defgcb 1
++
++    18
++    */
++
++    //fmt.Printf("\n%v", s);
++
++    var factorial func (n *big.Int) *big.Int
++    factorial = func (n *big.Int) *big.Int {
++        if n.Cmp(big.NewInt(1)) > 0 {
++            n_ := new(big.Int).Add(n, big.NewInt(-1))
++            __ := new(big.Int).Mul(n, factorial(n_))
++            return __
++        } else {
++            return big.NewInt(1)
++        }
++    }
++
++    /*
++    for l := int64(0); l < 10; l++ {
++        fmt.Printf("%d! = %v\n", l, factorial(big.NewInt(l)))
++    }
++    return(0)
++    */
++
++    var ls = len(s)
++    var anagrams = int32(0)
++    var sss = make([]string, 0, 0)
++    var left int
++    var right int
++    var ss, ss_ string
++    var a_ss []string
++    for l := 0; l < ls; l++ {
++        for l2 := 1; l2 < ls - l + 1; l2++ {
++            left = l
++            right = l + l2
++            ss = s[left:right][:]
++            a_ss = strings.Split(ss, "")
++            sort.Strings(a_ss)
++            ss_ = strings.Join(a_ss, "")
++            //fmt.Printf("added: %v_%v: %v -> %v\n", left, right, ss, ss_)
++            sss = append(sss, ss_)
++        }
++    }
++
++    sort.Strings(sss)
++    //fmt.Printf("%v\n", strings.Join(sss, "\n"))
++
++    var grouped = make(map[string]int)
++    var last = sss[0]
++    grouped[last] = 0
++    var next_ string
++    for l := 0; l < len(sss); l++ {
++        next_ = sss[l]
++        if next_ != last {
++            grouped[next_] = 1
++        } else {
++            grouped[last] = grouped[last] + 1
++        }
++        last = next_
++    }
++
++    var l int64 = 0
++    for k, v := range(grouped) {
++        _ = k
++        //fmt.Printf("group: %v | %v\n", k, v)
++        l = int64(v)
++        if l > 2 {
++            anagrams += int32(new(big.Int).Div(factorial(big.NewInt(l)), new(big.Int).Mul(big.NewInt(2), factorial(big.NewInt(l - 2)))).Int64())
++        } else if l == 2 {
++            anagrams += int32(1)
++        }
++    }
+ 
++    //fmt.Printf("anagrams: %v\n", anagrams)
+ 
++    return anagrams
+ }
+ 
+ func main() {
+-- 
+2.23.0
+
