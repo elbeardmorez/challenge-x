@@ -1,0 +1,26 @@
+From 2cba740770dbc7f4b1d9a9fd76460337ebf01e31 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 3 Sep 2019 22:14:44 +0100
+Subject: [add] hackerrank, 'game of thrones - i', c# solution
+
+---
+ .../game.of.thrones...i.cs                                     | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.game.of.thrones...i/game.of.thrones...i.cs b/hackerrank/algorithms.-.strings.-.easy.-.game.of.thrones...i/game.of.thrones...i.cs
+index 99c8408..ca3f3ac 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.game.of.thrones...i/game.of.thrones...i.cs
++++ b/hackerrank/algorithms.-.strings.-.easy.-.game.of.thrones...i/game.of.thrones...i.cs
+@@ -16,7 +16,8 @@ class Solution {
+ 
+     // Complete the gameOfThrones function below.
+     static string gameOfThrones(string s) {
+-
++        var numberOfOddGroups = s.ToCharArray().GroupBy(c => c).Where(g => g.Count() % 2 == 1).Count();
++        return numberOfOddGroups == 1 ? "YES" : "NO";
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
