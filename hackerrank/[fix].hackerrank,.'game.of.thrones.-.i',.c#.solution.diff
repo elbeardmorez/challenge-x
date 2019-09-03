@@ -1,0 +1,26 @@
+From ea78919c8d791dc635ae06bd05aa8ef3eda656c8 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 3 Sep 2019 22:16:57 +0100
+Subject: [fix] hackerrank, 'game of thrones - i', c# solution
+
+-conditional was missing the '0 odd groups' case
+---
+ .../game.of.thrones...i.cs                                      | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.game.of.thrones...i/game.of.thrones...i.cs b/hackerrank/algorithms.-.strings.-.easy.-.game.of.thrones...i/game.of.thrones...i.cs
+index ca3f3ac..5748c41 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.game.of.thrones...i/game.of.thrones...i.cs
++++ b/hackerrank/algorithms.-.strings.-.easy.-.game.of.thrones...i/game.of.thrones...i.cs
+@@ -17,7 +17,7 @@ class Solution {
+     // Complete the gameOfThrones function below.
+     static string gameOfThrones(string s) {
+         var numberOfOddGroups = s.ToCharArray().GroupBy(c => c).Where(g => g.Count() % 2 == 1).Count();
+-        return numberOfOddGroups == 1 ? "YES" : "NO";
++        return numberOfOddGroups <= 1 ? "YES" : "NO";
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
