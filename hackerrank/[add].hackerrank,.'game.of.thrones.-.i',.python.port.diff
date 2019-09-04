@@ -1,0 +1,31 @@
+From d6a57df9aab45dd917ab29c61b384fdfa34360e6 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 4 Sep 2019 21:48:02 +0100
+Subject: [add] hackerrank, 'game of thrones - i', python port
+
+---
+ .../game.of.thrones...i.py                                  | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.game.of.thrones...i/game.of.thrones...i.py b/hackerrank/algorithms.-.strings.-.easy.-.game.of.thrones...i/game.of.thrones...i.py
+index a7d5091..28e53ca 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.game.of.thrones...i/game.of.thrones...i.py
++++ b/hackerrank/algorithms.-.strings.-.easy.-.game.of.thrones...i/game.of.thrones...i.py
+@@ -6,8 +6,14 @@ import random
+ import re
+ import sys
+ 
++
+ # Complete the gameOfThrones function below.
+ def gameOfThrones(s):
++    from itertools import groupby
++    grouped = groupby(sorted(list(s)))
++    numberOfOddGroups = len([k for k, v in grouped if len(list(v))% 2 == 1])
++    return "YES" if numberOfOddGroups <= 1 else "NO"
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
