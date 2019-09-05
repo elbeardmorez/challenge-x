@@ -1,0 +1,71 @@
+From 26689c7d31c8954ccbc3656016e60a31607493f3 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 5 Sep 2019 21:52:27 +0100
+Subject: [add] hackerrank, 'game of thrones - i', javascript port
+
+---
+ .../game.of.thrones...i.js                    | 54 +++++++++++++++++++
+ 1 file changed, 54 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.game.of.thrones...i/game.of.thrones...i.js b/hackerrank/algorithms.-.strings.-.easy.-.game.of.thrones...i/game.of.thrones...i.js
+index e69de29..e56f82b 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.game.of.thrones...i/game.of.thrones...i.js
++++ b/hackerrank/algorithms.-.strings.-.easy.-.game.of.thrones...i/game.of.thrones...i.js
+@@ -0,0 +1,54 @@
++'use strict';
++
++const fs = require('fs');
++
++process.stdin.resume();
++process.stdin.setEncoding('utf-8');
++
++let inputString = '';
++let currentLine = 0;
++
++process.stdin.on('data', inputStdin => {
++    inputString += inputStdin;
++});
++
++process.stdin.on('end', _ => {
++    inputString = inputString.replace(/\s*$/, '')
++        .split('\n')
++        .map(str => str.replace(/\s*$/, ''));
++
++    main();
++});
++
++function readLine() {
++    return inputString[currentLine++];
++}
++
++// Complete the gameOfThrones function below.
++function gameOfThrones(s) {
++    let map_ = new Map();
++    s.split("").forEach(c => {
++        map_.set(c, map_.has(c) ? map_.get(c) + 1 : 1);
++    });
++
++    let number_of_odd_groups = 0;
++    for (let v of map_.values()) {
++        if (v % 2 == 1)
++            number_of_odd_groups++;
++    }
++
++    return number_of_odd_groups <= 1 ? "YES" : "NO";
++}
++
++function main() {
++    const ws = fs.createWriteStream(process.env.OUTPUT_PATH);
++
++    const s = readLine();
++
++    let result = gameOfThrones(s);
++
++    ws.write(result + "\n");
++
++    ws.end();
++}
++
+-- 
+2.23.0
+
