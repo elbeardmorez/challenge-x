@@ -1,0 +1,68 @@
+From 48e6d99a0927db2bfd11ae911fe96da0066b42f6 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 7 Sep 2019 14:41:35 +0100
+Subject: [add] hackerrank, 'game of thrones - i', go port
+
+---
+ .../game.of.thrones...i.go                    | 34 ++++++++++++++++++-
+ 1 file changed, 33 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.game.of.thrones...i/game.of.thrones...i.go b/hackerrank/algorithms.-.strings.-.easy.-.game.of.thrones...i/game.of.thrones...i.go
+index 0d5b39c..57c4c1f 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.game.of.thrones...i/game.of.thrones...i.go
++++ b/hackerrank/algorithms.-.strings.-.easy.-.game.of.thrones...i/game.of.thrones...i.go
+@@ -6,12 +6,44 @@ import (
+     "io"
+     "os"
+     "strings"
++    "sort"
+ )
+ 
+ // Complete the gameOfThrones function below.
+ func gameOfThrones(s string) string {
+ 
++    chars := strings.Split(s, "")
++    sort.Strings(chars)
++    //fmt.Printf("%v\n", strings.Join(chars, "\n"))
++
++    var map_ = make(map[string]int)
++    var last = chars[0]
++    map_[last] = 0
++    var next_ string
++    for l := 0; l < len(chars); l++ {
++        next_ = chars[l]
++        if next_ != last {
++            map_[next_] = 1
++        } else {
++            map_[last] = map_[last] + 1
++        }
++        last = next_
++    }
++
++    var number_of_odd_groups int64 = 0
++    for k, v := range(map_) {
++        _ = k
++        //fmt.Printf("group: %v | %v\n", k, v)
++        if v % 2 == 1 {
++            number_of_odd_groups++
++        }
++    }
+ 
++    if number_of_odd_groups <= 1 {
++        return "YES"
++    } else {
++        return "NO"
++    }
+ }
+ 
+ func main() {
+@@ -46,5 +78,5 @@ func checkError(err error) {
+     if err != nil {
+         panic(err)
+     }
+-}
++  }
+ 
+-- 
+2.23.0
+
