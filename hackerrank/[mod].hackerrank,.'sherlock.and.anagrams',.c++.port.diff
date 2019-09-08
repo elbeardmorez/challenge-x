@@ -1,0 +1,26 @@
+From 56a5f02fe36fa84faadf2bf7b72d13cd5131e27b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 8 Sep 2019 07:42:28 +0100
+Subject: [mod] hackerrank, 'sherlock and anagrams', c++ port
+
+-speed-up, drop the nCr implementation precision
+---
+ .../sherlock.and.anagrams.cpp                                   | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.anagrams/sherlock.and.anagrams.cpp b/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.anagrams/sherlock.and.anagrams.cpp
+index 58d2efe..7f9fdc0 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.anagrams/sherlock.and.anagrams.cpp
++++ b/hackerrank/algorithms.-.strings.-.medium.-.sherlock.and.anagrams/sherlock.and.anagrams.cpp
+@@ -384,7 +384,7 @@ string divide_(string s1, string s2) {
+     int ip;
+     string buf;
+     string buf2;
+-    int max_significant_digits = 50;
++    int max_significant_digits = 15;
+ 
+     // idx is fixed to the dividend!
+     while (idx <= l_dividend) {
+-- 
+2.23.0
+
