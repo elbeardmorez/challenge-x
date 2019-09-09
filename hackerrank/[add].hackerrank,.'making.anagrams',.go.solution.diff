@@ -1,0 +1,80 @@
+From ca60884319c212c0850b016b253616c23a65d3b9 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 9 Sep 2019 08:01:48 +0100
+Subject: [add] hackerrank, 'making anagrams', go solution
+
+---
+ .../making.anagrams.go                        | 57 +++++++++++++++++++
+ 1 file changed, 57 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.making.anagrams/making.anagrams.go b/hackerrank/algorithms.-.strings.-.easy.-.making.anagrams/making.anagrams.go
+index fd53c04..45d606d 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.making.anagrams/making.anagrams.go
++++ b/hackerrank/algorithms.-.strings.-.easy.-.making.anagrams/making.anagrams.go
+@@ -12,6 +12,63 @@ import (
+ // Complete the makingAnagrams function below.
+ func makingAnagrams(s1 string, s2 string) int32 {
+ 
++    a_s1 := strings.Split(s1, "")
++    a_s2 := strings.Split(s2, "")
++    sort.Strings(a_s1)
++    sort.Strings(a_s2)
++    var l_s1 = len(a_s1)
++    var l_s2 = len(a_s2)
++
++    //fmt.Printf("sorted s1 [%v]: %v\n", l_s1, a_s1)
++    //fmt.Printf("sorted s2 [%v]: %v\n", l_s2, a_s2)
++
++    var diff int32 = 0
++    var l1 int = 0
++    var l2 int = 0
++    for l1 < l_s1 || l2 < l_s2 {
++        //fmt.Printf("l1: %v, l2: %v, diff: %v\n", l1, l2, diff)
++        if l1 == l_s1 {
++            diff += int32(l_s2 - l2)
++            break
++        } else if l2 == l_s2 {
++            diff += int32(l_s1 - l1)
++            break
++        }
++        if l1 < l_s1 {
++            for a_s1[l1] < a_s2[l2] {
++                l1 += 1
++                diff += 1
++                if l1 == l_s1 {
++                    break
++                }
++            }
++            if l1 == l_s1 {
++                continue
++            }
++        }
++        if l2 < l_s2 {
++            for a_s2[l2] < a_s1[l1] {
++                l2 += 1
++                diff += 1
++                if l2 == l_s2 {
++                    break
++                }
++            }
++            if l2 == l_s2 {
++                continue
++            }
++        }
++        if l1 < l_s1 && l2 < l_s2 {
++            for a_s1[l1] == a_s2[l2] {
++                l1 += 1
++                l2 += 1
++                if l1 == l_s1 || l2 == l_s2 {
++                    break
++                }
++            }
++        }
++    }
++    return diff
+ }
+ 
+ func main() {
+-- 
+2.23.0
+
