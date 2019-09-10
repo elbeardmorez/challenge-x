@@ -1,0 +1,85 @@
+From 727410531a42e7faff789f9f29c8edacda52c635 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 10 Sep 2019 07:12:16 +0100
+Subject: [add] hackerrank, 'making anagrams', c# port
+
+---
+ .../making.anagrams.cs                        | 56 +++++++++++++++++++
+ 1 file changed, 56 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.making.anagrams/making.anagrams.cs b/hackerrank/algorithms.-.strings.-.easy.-.making.anagrams/making.anagrams.cs
+index b3d0192..9c12f46 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.making.anagrams/making.anagrams.cs
++++ b/hackerrank/algorithms.-.strings.-.easy.-.making.anagrams/making.anagrams.cs
+@@ -12,12 +12,68 @@ using System.Text.RegularExpressions;
+ using System.Text;
+ using System;
+ 
++using static System.Console;
++
+ class Solution {
+ 
+     // Complete the makingAnagrams function below.
+     static int makingAnagrams(string s1, string s2) {
+ 
++        var a_s1 = s1.ToCharArray().OrderBy(x => x).ToArray();
++        var a_s2 = s2.ToCharArray().OrderBy(x => x).ToArray();
++        var l_s1 = a_s1.Length;
++        var l_s2 = a_s2.Length;
++
++        //WriteLine($"sorted s1 [{l_s1}]: {String.Join(" ", a_s1)}");
++        //WriteLine($"sorted s2 [{l_s2}]: {String.Join(" ", a_s2)}");
+ 
++        var diff = 0;
++        var l1 = 0;
++        var l2 = 0;
++        while (l1 < l_s1 || l2 < l_s2) {
++            //WriteLine($"l1: {l1}, l2: {l2}, diff: {diff}");
++            if (l1 == l_s1) {
++                diff += l_s2 - l2;
++                break;
++            } else if (l2 == l_s2) {
++                diff += l_s1 - l1;
++                break;
++            }
++            if (l1 < l_s1) {
++                while (a_s1[l1] < a_s2[l2]) {
++                    l1 += 1;
++                    diff += 1;
++                    if (l1 == l_s1) {
++                        break;
++                    }
++                }
++                if (l1 == l_s1) {
++                    continue;
++                }
++            }
++            if (l2 < l_s2) {
++                while (a_s2[l2] < a_s1[l1]) {
++                    l2 += 1;
++                    diff += 1;
++                    if (l2 == l_s2) {
++                        break;
++                    }
++                }
++                if (l2 == l_s2) {
++                    continue;
++                }
++            }
++            if (l1 < l_s1 && l2 < l_s2) {
++                while (a_s1[l1] == a_s2[l2]) {
++                    l1 += 1;
++                    l2 += 1;
++                    if (l1 == l_s1 || l2 == l_s2) {
++                        break;
++                    }
++                }
++            }
++        }
++        return diff;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
