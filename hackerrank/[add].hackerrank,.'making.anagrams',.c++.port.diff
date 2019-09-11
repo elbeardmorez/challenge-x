@@ -1,0 +1,82 @@
+From 6bafa86398d5c7d97158702c2472976d7cf133a1 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 11 Sep 2019 08:27:23 +0100
+Subject: [add] hackerrank, 'making anagrams', c++ port
+
+---
+ .../making.anagrams.cpp                       | 58 +++++++++++++++++++
+ 1 file changed, 58 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.making.anagrams/making.anagrams.cpp b/hackerrank/algorithms.-.strings.-.easy.-.making.anagrams/making.anagrams.cpp
+index 8dd6d8b..295fa37 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.making.anagrams/making.anagrams.cpp
++++ b/hackerrank/algorithms.-.strings.-.easy.-.making.anagrams/making.anagrams.cpp
+@@ -5,7 +5,65 @@ using namespace std;
+ // Complete the makingAnagrams function below.
+ int makingAnagrams(string s1, string s2) {
+ 
++    vector<char> a_s1;
++    copy(s1.begin(), s1.end(), back_inserter(a_s1));
++    sort(a_s1.begin(), a_s1.end());
++    vector<char> a_s2;
++    copy(s2.begin(), s2.end(), back_inserter(a_s2));
++    sort(a_s2.begin(), a_s2.end());
++    auto l_s1 = a_s1.size();
++    auto l_s2 = a_s2.size();
+ 
++    //cout << "sorted s1 [" << l_s1 << "]: "; for (auto itr = a_s1.begin(); itr != a_s1.end(); ++itr) cout << *itr; cout << endl;
++    //cout << "sorted s2 [" << l_s2 << "]: "; for (auto itr = a_s2.begin(); itr != a_s2.end(); ++itr) cout << *itr; cout << endl;
++
++    int diff = 0;
++    int l1 = 0;
++    int l2 = 0;
++    while (l1 < l_s1 || l2 < l_s2) {
++        //cout << "l1: " << l1 << ", l2: " << l2 << ", diff: " << diff << endl;
++        if (l1 == l_s1) {
++            diff += l_s2 - l2;
++            break;
++        } else if (l2 == l_s2) {
++            diff += l_s1 - l1;
++            break;
++        }
++        if (l1 < l_s1) {
++            while (a_s1[l1] < a_s2[l2]) {
++                l1 += 1;
++                diff += 1;
++                if (l1 == l_s1) {
++                    break;
++                }
++            }
++            if (l1 == l_s1) {
++                continue;
++            }
++        }
++        if (l2 < l_s2) {
++            while (a_s2[l2] < a_s1[l1]) {
++                l2 += 1;
++                diff += 1;
++                if (l2 == l_s2) {
++                    break;
++                }
++            }
++            if (l2 == l_s2) {
++                continue;
++            }
++        }
++        if (l1 < l_s1 && l2 < l_s2) {
++            while (a_s1[l1] == a_s2[l2]) {
++                l1 += 1;
++                l2 += 1;
++                if (l1 == l_s1 || l2 == l_s2) {
++                    break;
++                }
++            }
++        }
++    }
++    return diff;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
