@@ -1,0 +1,80 @@
+From 76aaa868c783d43c5691521b1984601e7e253ff9 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 12 Sep 2019 08:51:36 +0100
+Subject: [add] hackerrank, 'making anagrams', javascript port
+
+---
+ .../making.anagrams.js                        | 57 ++++++++++++++++++-
+ 1 file changed, 55 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.making.anagrams/making.anagrams.js b/hackerrank/algorithms.-.strings.-.easy.-.making.anagrams/making.anagrams.js
+index 49e9f8d..4a7c55f 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.making.anagrams/making.anagrams.js
++++ b/hackerrank/algorithms.-.strings.-.easy.-.making.anagrams/making.anagrams.js
+@@ -26,8 +26,61 @@ function readLine() {
+ 
+ // Complete the makingAnagrams function below.
+ function makingAnagrams(s1, s2) {
+-
+-
++    let a_s1 = s1.split("").sort();
++    let a_s2 = s2.split("").sort();
++    let l_s1 = a_s1.length;
++    let l_s2 = a_s2.length;
++
++    //console.log(`sorted s1 [${l_s1}]: ${a_s1}`);
++    //console.log(`sorted s2 [${l_s2}]: ${a_s2}`);
++
++    let diff = 0;
++    let l1 = 0;
++    let l2 = 0;
++    while (l1 < l_s1 || l2 < l_s2) {
++        //console.log(`l1: ${l1}, l2: ${l2}, diff: ${diff}`);
++        if (l1 === l_s1) {
++            diff += l_s2 - l2;
++            break;
++        } else if (l2 === l_s2) {
++            diff += l_s1 - l1;
++            break;
++        }
++        if (l1 < l_s1) {
++            while (a_s1[l1] < a_s2[l2]) {
++                l1 += 1;
++                diff += 1;
++                if (l1 === l_s1) {
++                    break;
++                }
++            }
++            if (l1 === l_s1) {
++                continue;
++            }
++        }
++        if (l2 < l_s2) {
++            while (a_s2[l2] < a_s1[l1]) {
++                l2 += 1;
++                diff += 1;
++                if (l2 === l_s2) {
++                    break;
++                }
++            }
++            if (l2 === l_s2) {
++                continue;
++            }
++        }
++        if (l1 < l_s1 && l2 < l_s2) {
++            while (a_s1[l1] === a_s2[l2]) {
++                l1 += 1;
++                l2 += 1;
++                if (l1 === l_s1 || l2 === l_s2) {
++                    break;
++                }
++            }
++        }
++    }
++    return diff;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
