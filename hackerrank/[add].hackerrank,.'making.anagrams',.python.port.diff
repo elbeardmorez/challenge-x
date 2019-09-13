@@ -1,0 +1,70 @@
+From 63595208422dc7621d4e840156d9d9d9545013bb Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 13 Sep 2019 07:35:04 +0100
+Subject: [add] hackerrank, 'making anagrams', python port
+
+---
+ .../making.anagrams.py                        | 47 +++++++++++++++++++
+ 1 file changed, 47 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.making.anagrams/making.anagrams.py b/hackerrank/algorithms.-.strings.-.easy.-.making.anagrams/making.anagrams.py
+index 8ce5395..8d175c5 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.making.anagrams/making.anagrams.py
++++ b/hackerrank/algorithms.-.strings.-.easy.-.making.anagrams/making.anagrams.py
+@@ -8,6 +8,53 @@ import sys
+ 
+ # Complete the makingAnagrams function below.
+ def makingAnagrams(s1, s2):
++    a_s1 = sorted(list(s1))
++    a_s2 = sorted(list(s2))
++    l_s1 = len(a_s1)
++    l_s2 = len(a_s2)
++
++    #print(f"sorted s1 [{l_s1}]: {a_s1}")
++    #print(f"sorted s2 [{l_s2}]: {a_s2}")
++
++    diff = 0
++    l1 = 0
++    l2 = 0
++    while l1 < l_s1 or l2 < l_s2:
++        #print(f"l1: {l1}, l2: {l2}, diff: {diff}")
++        if l1 == l_s1:
++            diff += l_s2 - l2
++            break
++        elif l2 == l_s2:
++            diff += l_s1 - l1
++            break
++
++        if l1 < l_s1:
++            while a_s1[l1] < a_s2[l2]:
++                l1 += 1
++                diff += 1
++                if l1 == l_s1:
++                    break
++            if l1 == l_s1:
++                continue
++
++        if l2 < l_s2:
++            while a_s2[l2] < a_s1[l1]:
++                l2 += 1
++                diff += 1
++                if l2 == l_s2:
++                    break
++            if l2 == l_s2:
++                continue
++
++        if l1 < l_s1 and l2 < l_s2:
++            while a_s1[l1] == a_s2[l2]:
++                l1 += 1
++                l2 += 1
++                if l1 == l_s1 or l2 == l_s2:
++                    break
++
++    return diff
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
