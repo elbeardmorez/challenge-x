@@ -1,0 +1,60 @@
+From d6392e8c9083e33134da7fe4cff28dd044f44b9c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 14 Sep 2019 10:19:46 +0100
+Subject: [add] hackerrank, 'permuting two arrays', python solution
+
+---
+ .../permuting.two.arrays.py                   | 37 +++++++++++++++++++
+ 1 file changed, 37 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.permuting.two.arrays/permuting.two.arrays.py b/hackerrank/algorithms.-.greedy.-.easy.-.permuting.two.arrays/permuting.two.arrays.py
+index af00a94..a8cf990 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.permuting.two.arrays/permuting.two.arrays.py
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.permuting.two.arrays/permuting.two.arrays.py
+@@ -8,6 +8,43 @@ import sys
+ 
+ # Complete the twoArrays function below.
+ def twoArrays(k, A, B):
++    """
++    find all 'a' < k
++    take A - k as diffs array
++
++    A [ 10 12 14 11 ]
++    k 12
++    A_ [ -2  0  2 -1 ] <- note idxs < 0
++    B  [  0 12  0  2 ] <- invalid given test for sums >=0 for all idxs where a < 0
++    B_1 [ 12  0  2  0 ] <- cycled, invalid
++    B_2 [  0  2  0 12 ] <- cycled, invalid
++    B_3 [  2  0 12  0 ] <- cycled, invalid, cycles = length - 1 so stop
++
++    optimise by sorting idxs by magnitude, the most negative being the idx most
++    likely to fail, and we want to fail fast for each cycle
++    """
++
++    l_a = len(A)
++    A_ = list(map(lambda a, a_: a - a_, list(A), [k] * l_a))
++    idx_diffs = [[l, A_[l]] for l in range(l_a) if A_[l] < 0]
++    idx_diffs.sort(key=(lambda x: x[1]))
++    print(f"idx_diffs: {idx_diffs}")
++
++    offset = 0
++    for l in range(l_a):
++        print(f"B: {B}, cycle offset: {offset}")
++        invalid = 0
++        for [idx, diff] in idx_diffs:
++            if B[(idx + offset) % l_a] + diff < 0:
++                # invalid
++                print(f"invalid, cycling")
++                invalid = 1
++                break
++        # success
++        if invalid == 0:
++            return "YES"
++        offset += 1
++    return "NO"
+ 
+ 
+ if __name__ == '__main__':
+-- 
+2.23.0
+
