@@ -1,0 +1,39 @@
+From 98f8cf05bdc3ea0cc38a1cfa3777b847ffb71829 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 15 Sep 2019 21:40:58 +0100
+Subject: [add] hackerrank, 'permuting two arrays', javascript port
+
+---
+ .../permuting.two.arrays.js                      | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.permuting.two.arrays/permuting.two.arrays.js b/hackerrank/algorithms.-.greedy.-.easy.-.permuting.two.arrays/permuting.two.arrays.js
+index 959b384..a2cc4e3 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.permuting.two.arrays/permuting.two.arrays.js
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.permuting.two.arrays/permuting.two.arrays.js
+@@ -27,7 +27,21 @@ function readLine() {
+ // Complete the twoArrays function below.
+ function twoArrays(k, A, B) {
+ 
+-
++    /*
++    redux.. there are no constraints on permuting
++
++    order each array in alternate directions and sum, find any values under minimum
++    */
++
++    let A_ = A.sort();
++    let B_ = B.sort().reverse();
++    let l_a = A.length;
++    let lt = 0;
++    for (let l = 0; l < l_a; l++) {
++      if (A_[l] + B[l] < k)
++        lt++;
++    }
++    return lt == 0 ? "YES" : "NO";
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
