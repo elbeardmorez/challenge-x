@@ -1,0 +1,42 @@
+From 39a6a73594ffecf71584e04a7a7fc8694855c4de Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 15 Sep 2019 22:23:34 +0100
+Subject: [fix] hackerrank, 'permuting two arrays', javascript port
+
+-javascript's array sort implicitly casts its arguments to strings
+which means by default, a lexographic sort will be performed, even
+for a set of integers
+---
+ .../permuting.two.arrays.js                            | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.permuting.two.arrays/permuting.two.arrays.js b/hackerrank/algorithms.-.greedy.-.easy.-.permuting.two.arrays/permuting.two.arrays.js
+index 8a452ac..6b6f9bb 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.permuting.two.arrays/permuting.two.arrays.js
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.permuting.two.arrays/permuting.two.arrays.js
+@@ -26,15 +26,19 @@ function readLine() {
+ 
+ // Complete the twoArrays function below.
+ function twoArrays(k, A, B) {
+-
+     /*
+     redux.. there are no constraints on permuting
+ 
+     order each array in alternate directions and sum, find any values under minimum
+     */
+ 
+-    let A_ = A.sort();
+-    let B_ = B.sort().reverse();
++    let cmp = (x, y) => { return parseInt(x) < parseInt(y) ? -1 : 1; }
++
++    let A_ = A.sort(cmp);
++    let B_ = B.sort(cmp).reverse();
++    //console.log(`A_: ${A_}`)
++    //console.log(`B_: ${B_}`)
++
+     let l_a = A.length;
+     let lt = 0;
+     for (let l = 0; l < l_a; l++) {
+-- 
+2.23.0
+
