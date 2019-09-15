@@ -1,0 +1,26 @@
+From c779f7959f79017218389a39181896a3c38bd8c1 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 15 Sep 2019 21:45:53 +0100
+Subject: [fix] hackerrank, 'permuting two arrays', javascript port
+
+-wrong array used due to variable typo
+---
+ .../permuting.two.arrays.js                                     | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.permuting.two.arrays/permuting.two.arrays.js b/hackerrank/algorithms.-.greedy.-.easy.-.permuting.two.arrays/permuting.two.arrays.js
+index a2cc4e3..8a452ac 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.permuting.two.arrays/permuting.two.arrays.js
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.permuting.two.arrays/permuting.two.arrays.js
+@@ -38,7 +38,7 @@ function twoArrays(k, A, B) {
+     let l_a = A.length;
+     let lt = 0;
+     for (let l = 0; l < l_a; l++) {
+-      if (A_[l] + B[l] < k)
++      if (A_[l] + B_[l] < k)
+         lt++;
+     }
+     return lt == 0 ? "YES" : "NO";
+-- 
+2.23.0
+
