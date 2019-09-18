@@ -1,0 +1,56 @@
+From 8164321683550edf47b94ad75ee6d4f2304b9c96 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 18 Sep 2019 08:01:40 +0100
+Subject: [add] hackerrank, 'permuting two arrays', go port
+
+---
+ .../permuting.two.arrays.go                   | 29 +++++++++++++++++--
+ 1 file changed, 27 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.permuting.two.arrays/permuting.two.arrays.go b/hackerrank/algorithms.-.greedy.-.easy.-.permuting.two.arrays/permuting.two.arrays.go
+index ed91b0d..94af64f 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.permuting.two.arrays/permuting.two.arrays.go
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.permuting.two.arrays/permuting.two.arrays.go
+@@ -7,12 +7,37 @@ import (
+     "os"
+     "strconv"
+     "strings"
++    "sort"
+ )
+ 
+ // Complete the twoArrays function below.
+ func twoArrays(k int32, A []int32, B []int32) string {
+-
+-
++    /*
++    redux.. there are no constraints on permuting
++
++    order each array in alternate directions and sum, find any values under minimum
++    */
++
++    A_ := A[:]
++    B_ := B[:]
++    sort.Slice(A_, func(a1, a2 int) bool { return A_[a1] < A_[a2] })
++    sort.Slice(B_, func(b1, b2 int) bool { return B_[b1] > B_[b2] })
++    //fmt.Printf("A_: %v\n", A_)
++    //fmt.Printf("B_: %v\n", B_)
++
++    var l_a = len(A)
++    var lt = 0
++    var l = 0
++    for l = 0; l < l_a; l++ {
++        if A_[l] + B_[l] < k {
++            lt++
++        }
++    }
++    if lt == 0 {
++        return "YES"
++    } else {
++        return "NO"
++    }
+ }
+ 
+ func main() {
+-- 
+2.23.0
+
