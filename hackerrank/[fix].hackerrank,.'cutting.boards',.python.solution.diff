@@ -1,0 +1,80 @@
+From c9b5a0e06f5250d7e4ce392db216fb7679dd9e86 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 19 Sep 2019 07:47:48 +0100
+Subject: [fix] hackerrank, 'cutting boards', python solution
+
+-cut based purely on max cost of single cut as opposed total cost of
+cut x segments to cut
+---
+ .../cutting.boards.py                         | 28 +++++++++----------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.hard.-.cutting.boards/cutting.boards.py b/hackerrank/algorithms.-.greedy.-.hard.-.cutting.boards/cutting.boards.py
+index 693b64b..c122f55 100644
+--- a/hackerrank/algorithms.-.greedy.-.hard.-.cutting.boards/cutting.boards.py
++++ b/hackerrank/algorithms.-.greedy.-.hard.-.cutting.boards/cutting.boards.py
+@@ -38,7 +38,7 @@ def boardCutting(cost_y, cost_x):
+ 
+     so we just have horizontal and vertical segments to track per cut
+ 
+-    chose cut plain based on max(cost * segments)
++    chose cut plain based on max(cost_x_i, cost_y_i)
+     """
+ 
+     l_x = len(cost_x)
+@@ -53,8 +53,8 @@ def boardCutting(cost_y, cost_x):
+         y_idx_sorted.append([cost_y[l], l])
+     y_idx_sorted.sort(key=lambda y: y[0])
+ 
+-    print(f"x_idx_sorted: {x_idx_sorted}")
+-    print(f"y_idx_sorted: {y_idx_sorted}")
++    #print(f"x_idx_sorted: {x_idx_sorted}")
++    #print(f"y_idx_sorted: {y_idx_sorted}")
+ 
+     cost = 0
+     l1 = l_x - 1
+@@ -65,30 +65,30 @@ def boardCutting(cost_y, cost_x):
+     mod_v = 10 ** 9 + 7
+ 
+     while l1 + l2 > -2:
+-        print(f"l1: {l1}, l2: {l2}")
++        #print(f"l1: {l1}, l2: {l2}")
+         while (l2 == -1 and l1 > -1) or \
+-              (l1 > -1 and x_idx_sorted[l1][0] * y_segments >= \
+-                           y_idx_sorted[l2][0] * x_segments):
+-            print(f"cutting along x{x_idx_sorted[l1][1]} @ cost: "
+-                  f"{x_idx_sorted[l1][0]} x {y_segments}")
++              (l1 > -1 and x_idx_sorted[l1][0] >= \
++                           y_idx_sorted[l2][0]):
++            #print(f"cutting along x{x_idx_sorted[l1][1]} @ cost: "
++            #      f"{x_idx_sorted[l1][0]} x {y_segments}")
+             cost = (cost + x_idx_sorted[l1][0] * y_segments) % mod_v
+             x_segments += 1
+             l1 -= 1
+             if l1 == -1:
+                 break
+-            print(f"l1: {l1}, l2: {l2}")
++            #print(f"l1: {l1}, l2: {l2}")
+ 
+         while (l1 == -1 and l2 > -1) or \
+-              (l2 > -1 and y_idx_sorted[l2][0] * x_segments >= \
+-                           x_idx_sorted[l1][0] * y_segments):
+-            print(f"cutting along y{y_idx_sorted[l2][1]} @ cost: "
+-                  f"{y_idx_sorted[l2][0]} x {x_segments}")
++              (l2 > -1 and y_idx_sorted[l2][0] >= \
++                           x_idx_sorted[l1][0]):
++            #print(f"cutting along y{y_idx_sorted[l2][1]} @ cost: "
++            #      f"{y_idx_sorted[l2][0]} x {x_segments}")
+             cost = (cost + y_idx_sorted[l2][0] * x_segments) % mod_v
+             y_segments += 1
+             l2 -= 1
+             if l2 == -1:
+                 break
+-            print(f"l1: {l1}, l2: {l2}")
++            #print(f"l1: {l1}, l2: {l2}")
+ 
+     return cost
+ 
+-- 
+2.23.0
+
