@@ -1,0 +1,117 @@
+From 0f65c2fddbd5166d0667a4155cd6c379d188bb74 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 21 Sep 2019 19:34:56 +0100
+Subject: [add] hackerrank, 'cutting boards', c++ port
+
+---
+ .../cutting.boards.cpp                        | 87 +++++++++++++++++++
+ 1 file changed, 87 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.hard.-.cutting.boards/cutting.boards.cpp b/hackerrank/algorithms.-.greedy.-.hard.-.cutting.boards/cutting.boards.cpp
+index fa65728..347da7c 100644
+--- a/hackerrank/algorithms.-.greedy.-.hard.-.cutting.boards/cutting.boards.cpp
++++ b/hackerrank/algorithms.-.greedy.-.hard.-.cutting.boards/cutting.boards.cpp
+@@ -1,4 +1,5 @@
+ #include <bits/stdc++.h>
++#include <array>
+ 
+ using namespace std;
+ 
+@@ -6,8 +7,94 @@ vector<string> split_string(string);
+ 
+ // Complete the boardCutting function below.
+ int boardCutting(vector<int> cost_y, vector<int> cost_x) {
++    /*
++    xxxx
++    xxxx
+ 
++    cutting horizontally yields 3 x cuts x1,x2,x3 to get 4 2x1 pieces, then 4 y1 cuts ..7 cuts total
++    or.. 1 y1 cut and 6 x cuts 2 x1, 2 x2, 2 x3 ..7 cuts total
+ 
++    xxxx
++    xxxx
++    xxxx
++
++    x1,x2,x3 ..4 y1,y2 ..11 cuts
++
++    w x h - 1 cuts total
++    optimise cutting most expensive first
++
++    maintain piece count per column / row
++    e.g 3x2
++      [111]                 [1 11]                 [1 1 1]                 [2 2 2]
++    [1]xxx  -> x1 cut ->  [2]x xx  -> x2 cut ->  [3]x x x  -> y1 cut -> [3] x x x
++    [1]xxx                [2]x xx                [3]x x x
++                                                                        [3] x x x
++      [1111]                 [2222]                [222 2]
++    [1]xxxx                [1]xxxx               [2]xxx x
++    [1]xxxx  -> y1 cut ->  [1]xxxx  -> x3 cut -> [2]xxx x
++    [1]xxxx
++                           [1]xxxx               [2]xxx x
++
++    so we just have horizontal and vertical segments to track per cut
++
++    chose cut plain based on max(cost_x_i, cost_y_i)
++    */
++
++    auto l_x = cost_x.size();
++    auto l_y = cost_y.size();
++
++    vector<array<long, 2>> x_idx_sorted(l_x);
++    for (long l = 0; l < l_x; l++) {
++        x_idx_sorted[l] = array<long, 2>{cost_x[l], l};
++    }
++    sort(x_idx_sorted.begin(), x_idx_sorted.end(), [](array<long, 2> i1, array<long, 2> i2) -> int { return i1[0] < i2[0];});
++
++    vector<array<long, 2>> y_idx_sorted(l_y);
++    for (long l = 0; l < l_y; l++) {
++        y_idx_sorted[l] = array<long, 2>{cost_y[l], l};
++    }
++    sort(y_idx_sorted.begin(), y_idx_sorted.end(), [](array<long, 2> i1, array<long, 2> i2) -> int { return i1[0] < i2[0];});
++
++    //cout << "x_idx_sorted: "; for (auto itr = x_idx_sorted.begin(); itr < x_idx_sorted.end(); ++itr) cout << " " << (*itr)[0] << "|" << (*itr)[1]; cout << endl;
++    //cout << "y_idx_sorted: "; for (auto itr = y_idx_sorted.begin(); itr < y_idx_sorted.end(); ++itr) cout << " " << (*itr)[0] << "|" << (*itr)[1]; cout << endl;
++
++    long cost = 0;
++    long l1 = l_x - 1;
++    long l2 = l_y - 1;
++    long x_segments = 1;
++    long y_segments = 1;
++
++    long mod_v = pow(10L, 9L) + 7L;
++    while (l1 + l2 > -2) {
++        //cout << "l1: " << l1 << ", l2: " << l2 << endl;
++        while ((l2 == -1 && l1 > -1) || \
++              (l1 > -1 && x_idx_sorted[l1][0] >= \
++                           y_idx_sorted[l2][0])) {
++            //cout << "cutting along x" << x_idx_sorted[l1][1] << \
++            //        " @ cost: " << x_idx_sorted[l1][0] << " x " << y_segments << endl;
++            cost = (cost + x_idx_sorted[l1][0] * y_segments) % mod_v;
++            x_segments += 1;
++            l1 -= 1;
++            if (l1 == -1)
++                break;
++            //cout << "l1: " << l1 << ", l2: " << l2 << endl;
++        }
++
++        while ((l1 == -1 && l2 > -1) || \
++              (l2 > -1 && y_idx_sorted[l2][0] >= \
++                           x_idx_sorted[l1][0])) {
++            //cout << "cutting along y" << y_idx_sorted[l2][1] << \
++            //        " @ cost: " << y_idx_sorted[l2][0] << " x " << x_segments << endl;
++            cost = (cost + y_idx_sorted[l2][0] * x_segments) % mod_v;
++            y_segments += 1;
++            l2 -= 1;
++            if (l2 == -1)
++                break;
++            //cout << "l1: " << l1 << ", l2: " << l2 << endl;
++        }
++    }
++
++    return (int)cost;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
