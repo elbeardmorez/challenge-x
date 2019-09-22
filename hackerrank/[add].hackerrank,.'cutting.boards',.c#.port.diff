@@ -1,0 +1,115 @@
+From 834e86fc0ff59a26794e4d8d9543d424f029ceb3 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 22 Sep 2019 08:37:00 +0100
+Subject: [add] hackerrank, 'cutting boards', c# port
+
+---
+ .../cutting.boards.cs                         | 86 +++++++++++++++++++
+ 1 file changed, 86 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.hard.-.cutting.boards/cutting.boards.cs b/hackerrank/algorithms.-.greedy.-.hard.-.cutting.boards/cutting.boards.cs
+index 09062c9..b1cba47 100644
+--- a/hackerrank/algorithms.-.greedy.-.hard.-.cutting.boards/cutting.boards.cs
++++ b/hackerrank/algorithms.-.greedy.-.hard.-.cutting.boards/cutting.boards.cs
+@@ -12,12 +12,98 @@ using System.Text.RegularExpressions;
+ using System.Text;
+ using System;
+ 
++using static System.Console;
++
+ class Solution {
+ 
+     // Complete the boardCutting function below.
+     static int boardCutting(int[] cost_y, int[] cost_x) {
++        /*
++        xxxx
++        xxxx
++
++        cutting horizontally yields 3 x cuts x1,x2,x3 to get 4 2x1 pieces, then 4 y1 cuts ..7 cuts total
++        or.. 1 y1 cut and 6 x cuts 2 x1, 2 x2, 2 x3 ..7 cuts total
++
++        xxxx
++        xxxx
++        xxxx
++
++        x1,x2,x3 ..4 y1,y2 ..11 cuts
++
++        w x h - 1 cuts total
++        optimise cutting most expensive first
++
++        maintain piece count per column / row
++        e.g 3x2
++          [111]                 [1 11]                 [1 1 1]                 [2 2 2]
++        [1]xxx  -> x1 cut ->  [2]x xx  -> x2 cut ->  [3]x x x  -> y1 cut -> [3] x x x
++        [1]xxx                [2]x xx                [3]x x x
++                                                                            [3] x x x
++          [1111]                 [2222]                [222 2]
++        [1]xxxx                [1]xxxx               [2]xxx x
++        [1]xxxx  -> y1 cut ->  [1]xxxx  -> x3 cut -> [2]xxx x
++        [1]xxxx
++                               [1]xxxx               [2]xxx x
++
++        so we just have horizontal and vertical segments to track per cut
++
++        chose cut plain based on max(cost_x_i, cost_y_i)
++        */
++
++        var l_x = cost_x.Length;
++        var l_y = cost_y.Length;
+ 
++        var x_idx_sorted = new List<long[]>();
++        for (long l = 0; l < l_x; l++) {
++            x_idx_sorted.Add(new long[2]{cost_x[l], l});
++        }
++        x_idx_sorted = x_idx_sorted.OrderBy(x => x[0]).ToList();
++
++        var y_idx_sorted = new List<long[]>();
++        for (long l = 0; l < l_y; l++) {
++            y_idx_sorted.Add(new long[2]{cost_y[l], l});
++        }
++        y_idx_sorted = y_idx_sorted.OrderBy(x => x[0]).ToList();
++
++        //WriteLine($"x_idx_sorted: [{String.Join(" ", x_idx_sorted.Select(x => x[0].ToString() + "|" + x[1].ToString()))}]");
++        //WriteLine($"y_idx_sorted: [{String.Join(" ", y_idx_sorted.Select(y => y[0].ToString() + "|" + y[1].ToString()))}]");
++
++        long cost = 0;
++        int l1 = l_x - 1;
++        int l2 = l_y - 1;
++        long x_segments = 1;
++        long y_segments = 1;
++
++        long mod_v = Convert.ToInt64(Math.Pow(10L, 9L) + 7L);
++        while (l1 + l2 > -2) {
++            //WriteLine($"l1: {l1}, l2: {l2}");
++            while ((l2 == -1 && l1 > -1) ||
++                  (l1 > -1 && x_idx_sorted[l1][0] >=
++                   y_idx_sorted[l2][0])) {
++                //WriteLine($"cutting along x{x_idx_sorted[l1][1]} @ cost: {x_idx_sorted[l1][0]} x {y_segments}");
++                cost = (cost + x_idx_sorted[l1][0] * y_segments) % mod_v;
++                x_segments += 1;
++                l1 -= 1;
++                if (l1 == -1)
++                    break;
++                //WriteLine($"l1: {l1}, l2: {l2}");
++            }
++
++            while ((l1 == -1 && l2 > -1) ||
++                  (l2 > -1 && y_idx_sorted[l2][0] >=
++                               x_idx_sorted[l1][0])) {
++                //WriteLine($"cutting along y{y_idx_sorted[l2][1]} @ cost: {y_idx_sorted[l2][0]} x {x_segments}");
++                cost = (cost + y_idx_sorted[l2][0] * x_segments) % mod_v;
++                y_segments += 1;
++                l2 -= 1;
++                if (l2 == -1)
++                    break;
++                //WriteLine($"l1: {l1}, l2: {l2}");
++            }
++        }
+ 
++        return (int)cost;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
