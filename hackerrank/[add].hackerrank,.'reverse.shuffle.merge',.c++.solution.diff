@@ -1,0 +1,111 @@
+From 49c18db9dc7ad23450c62f12420b6998a1dc0de8 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 24 Sep 2019 13:49:49 +0100
+Subject: [add] hackerrank, 'reverse shuffle merge', c++ solution
+
+---
+ .../reverse.shuffle.merge.cpp                 | 85 +++++++++++++++++++
+ 1 file changed, 85 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.advanced.-.reverse.shuffle.merge/reverse.shuffle.merge.cpp b/hackerrank/algorithms.-.greedy.-.advanced.-.reverse.shuffle.merge/reverse.shuffle.merge.cpp
+index be7bfcc..300562a 100644
+--- a/hackerrank/algorithms.-.greedy.-.advanced.-.reverse.shuffle.merge/reverse.shuffle.merge.cpp
++++ b/hackerrank/algorithms.-.greedy.-.advanced.-.reverse.shuffle.merge/reverse.shuffle.merge.cpp
+@@ -2,9 +2,94 @@
+ 
+ using namespace std;
+ 
++template <typename I, typename K, typename V, typename... Mx>
++void groupby(I input, map<K, vector<V>, Mx...> &groups, K (*f)(V&) = [](V& x) -> K { return x; }) {
++    for (auto itr = input.begin(); itr != input.end(); ++itr) {
++        K k = f(*itr);
++        auto itr2 = groups.find(k);
++        if (itr2 == groups.end()) {
++            //cout << "adding new key: '" << k << "'" << endl;
++            groups[k] = vector<V> {*itr};
++        } else {
++            //cout << "searched for k: " << k << ", found: " << itr2->first << endl;
++            //cout << "appending to existing key: '" << k << "'" << endl;
++            itr2->second.emplace_back(*itr);
++        }
++    }
++}
++
++bool is_sparse_substring(string& s, string& s_test) {
++    //cout << "testing: " << s_test << endl;
++    int last = -1;
++    for (auto itr_test = s_test.begin(); itr_test != s_test.end(); ++itr_test) {
++        if ((last = s.find(*itr_test, ++last)) == -1) return false;
++    }
++    return true;
++}
++
+ // Complete the reverseShuffleMerge function below.
+ string reverseShuffleMerge(string s) {
++    /*
++    merge(reverse(A), shuffle(A))
++    solution is alway half the length of s
++
++    iterate from the best case (lexicographically smallest) string and
++    deduce valid or not
++
++    shuffled(A), coupled with the merge gives carte blanche, shuffled(A)
++    is ANY order of chars, the reversed chunk is the fixed chunk, where
++    order matters so so long as a 'sparse substring' can be found then
++    the intermediate chars are guaranteed
++
++    s = 'abcddacb'
++    grouped 'abcd'
++
++    'abcd' | reverse 'dcba' ..not a 'sparse substring' | FAIL
++    'abdc' | reverse 'cdba' ..not a 'sparse substring' | FAIL
++    'acbd' | reverse 'dbca' ..not a 'sparse substring' | FAIL
++    'acdb' | reverse 'bdca' ..not a 'sparse substring' | FAIL
++    'adbc' | reverse 'cbda' ..not a 'sparse substring' | FAIL
++    'adcb' | reverse 'bcda' ..is a 'sparse substring' | SUCCESS
++    ..
++    'bacd' | reverse 'dcab' ..not a 'sparse substring' | FAIL
++    'bcad' | reverse 'dacb' ..is a 'sparse substring'  | ..
++
++    lowest lexicographical A is 'adcb'
++
++    ..easier to work backwards, i.e. look for lowest in reversed s
++  
++    s_ = 'bcaddcba' <- sparse substring 'adcb' exists
++
++    algorithm more about creation of correct / efficient lexicographical
++    permutation
++
++    # speed-up?!
++    -'jump logic' ..if we know the pushing 'a' along will never result
++    in valid sparse substring, then skip?
++
++    */
++
++    // construct s_test
++    string s_test("");
++
++    map<char, vector<char>> map_;
++    groupby(s, map_);
++
++    for (auto itr = map_.begin(); itr != map_.end(); ++itr)
++        s_test += string((int)(itr->second.size() / 2), itr->first);
++    sort(s_test.begin(), s_test.end());
++
++    reverse(s.begin(), s.end());
++
++    //cout << "reversed string: " << s << endl;
++    //cout << "test string: " << s_test << endl;
++
++    if (!is_sparse_substring(s, s_test)) {
++        while (next_permutation(s_test.begin(), s_test.end()))
++            if (is_sparse_substring(s, s_test)) break;
++    }
+ 
++    return s_test;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
