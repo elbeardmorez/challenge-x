@@ -1,0 +1,203 @@
+From fbdfd4cd8f4481294d7e0713683fa3fceccc31ff Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 26 Sep 2019 07:14:47 +0100
+Subject: [add] hackerrank, 'reverse shuffle merge', c# port
+
+---
+ .../reverse.shuffle.merge.cs                  | 177 ++++++++++++++++++
+ 1 file changed, 177 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.advanced.-.reverse.shuffle.merge/reverse.shuffle.merge.cs b/hackerrank/algorithms.-.greedy.-.advanced.-.reverse.shuffle.merge/reverse.shuffle.merge.cs
+index 3f87ab7..c6ac0d8 100644
+--- a/hackerrank/algorithms.-.greedy.-.advanced.-.reverse.shuffle.merge/reverse.shuffle.merge.cs
++++ b/hackerrank/algorithms.-.greedy.-.advanced.-.reverse.shuffle.merge/reverse.shuffle.merge.cs
+@@ -16,9 +16,186 @@ using static System.Console;
+ 
+ class Solution {
+ 
++    /*
++    merge(reverse(A), shuffle(A))
++    solution is always half the length of s
++
++    iterate from the best case (lexicographically smallest) string and
++    deduce valid or not
++
++    shuffled(A), coupled with the merge gives carte blanche, shuffled(A)
++    is ANY order of chars, the reversed chunk is the fixed chunk, where
++    order matters so so long as a 'sparse substring' can be found then
++    the intermediate chars are guaranteed
++
++    s = 'abcddacb'
++    grouped 'abcd'
++
++    'abcd' | reverse 'dcba' ..not a 'sparse substring' | FAIL
++    'abdc' | reverse 'cdba' ..not a 'sparse substring' | FAIL
++    'acbd' | reverse 'dbca' ..not a 'sparse substring' | FAIL
++    'acdb' | reverse 'bdca' ..not a 'sparse substring' | FAIL
++    'adbc' | reverse 'cbda' ..not a 'sparse substring' | FAIL
++    'adcb' | reverse 'bcda' ..is a 'sparse substring' | SUCCESS
++    ..
++    'bacd' | reverse 'dcab' ..not a 'sparse substring' | FAIL
++    'bcad' | reverse 'dacb' ..is a 'sparse substring'  | ..
++
++    lowest lexicographical A is 'adcb'
++
++    ..easier to work backwards, i.e. look for lowest in reversed s
++
++    s_ = 'bcaddcba' <- sparse substring 'adcb' exists
++
++    algorithm more about creation of correct / efficient lexicographical
++    permutation
++
++    # speed-up?!
++    -'jump logic' ..if we know the pushing 'a' along will never result
++    in valid sparse substring, then skip?
++
++    # redux, too many permutations for naive test all approach
++
++    test #2
++    reversed string: adigiibbgegjeiagjjiidhfdgdgijaaijfihbjjabchadcigaicgjaihidafigfhhecjgfacijgidgbhhehgfhjgiibggjddcjjd
++    test string: aaaaabbbcccdddddeefffgggggggghhhhhiiiiiiiiijjjjjjj
++    target:      aaaaabccigicgjihidfiejfijgidgbhhehgfhjgiibggjddjjd
++
++    ---
++
++    look at number of characters available, e.g. ideal test string has 5 As,
++    but supposee that that can be satisfied, what idx is the last A at? if
++    it's idx 50 of 55 say, clearly having all As contiguous isn't feasible
++
++    test string: aaaaabbbcccdddddeefffgggggggghhhhhiiiiiiiiijjjjjjj
++
++    required:  a [5]
++               b [3]
++               c [3]
++               d [4]
++
++    available:
++
++           idx1:  0  1  2 ...     ...14
++
++                  a 10  9  9             9  8
++                  b  6  6  6
++                  c  6  6  6
++                  d 10 10  9
++                                         a              aa        a
++    reversed string: a  d  i  giibbgegjeia  gjjiidhfdgdgijaaijfihbjjabchadcigaicgjaihidafigfhhecjgfacijgidgbhhehgfhjgiibggjddcjjd
++
++    so, count number 'x' chars left at each position (i.e. [l_s][26] 2d array)
++    then sort this by first index ..when first index is the same, look at the
++    second index etc. like a multi-column sort. after sort, iterate,
++    and the first idx1 entry which satisfies the test string char counts, should
++    be the optimal solution ..as if there are enough characters left in each
++    char catergory, it's valid, and given the sort order, it's optimal
++             j  i  h  g  f  e  d  c  b  a
++      test   7  9  5  8  3  2  5  3  3  5
++
++    [39|a]:  7  9  8 10  4  2  6  6  3  6  | aaaaa ..still valid, next pick = 'b'
++    ..
++    [40|b]:  7  9  8 10  4  2  6  6  3  5  | aaaaab ..still valid, next pick = 'b'
++    ..
++    [78|b]:  4  2  4  4  1  1  3  1  2  0  | aaaaabb ..not valid, next best pick = 'c'
++    ..
++    [41|c]:  7  9  8 10  4  2  6  6  2  5  | aaaaabc ..valid! ..etc. etc.
++
++             j  i  h  g  f  e  d  c  b  a
++
++    */
++
++    static bool valid_jump(int[] table, int[] test, int l_size) {
++        // ensure all table values >= test values
++        for (int l = 0; l < l_size; l++) {
++            //WriteLine($"testing table[{l}] '{table[l]}' vs test[{l}] '{test[l]}'");
++            if (table[l] < test[l]) return false;
++        }
++        return true;
++    }
++
+     // Complete the reverseShuffleMerge function below.
+     static string reverseShuffleMerge(string s) {
+ 
++        // construct sb_test
++        int l_s = s.Length;
++        var sb_test = new StringBuilder("");
++        int l_test = Convert.ToInt32(l_s / 2);
++        Dictionary<char, int> map_;
++        map_ = s.ToCharArray().GroupBy(x => x).Select(g => new Tuple<char, int>(g.Key, g.Count())).ToDictionary<Tuple<char, int>, char, int>(x => x.Item1, x => x.Item2);
++        int l_groups = map_.Count;
++
++        var a_s = s.ToCharArray();
++        Array.Reverse(a_s);
++        s = new string(a_s);
++        //WriteLine($"reversed string: {s}");
++        var s_ = s.ToCharArray();
++
++        List<Tuple<char, int>> group_sorted;
++        group_sorted = map_.OrderBy(x => x.Key).Select(x => new Tuple<char, int>(x.Key, x.Value)).ToList();
++
++        var chars = new List<int[]>();
++        var test_char_counts = new int[l_groups];
++        var map_char_idx = new Dictionary<char, int>();
++
++        // populate table of 'chars remaining at each idx of s
++        int l, l2;
++        char last = ' ';
++        l = 0;
++
++        for (l = 0; l < s.Length; l++) {
++            chars.Add(new int[l_groups]);
++            //WriteLine($"chars, length: {chars.Count}, last: {last}");
++            var itr_s = s_[l];
++            if (l == 0) {
++                // zero idx / full sets
++                l2 = 0;
++                for (l2 = 0; l2 < group_sorted.Count; l2++) {
++                    var itr = group_sorted[l2];
++                    chars[0][l2] = itr.Item2;
++                    test_char_counts[l2] = (int)(itr.Item2 / 2);
++                    map_char_idx[itr.Item1] = l2;
++                }
++            } else {
++                for (l2 = 0; l2 < l_groups; l2++)
++                    chars[l][l2] = chars[l - 1][l2];
++                chars[l][map_char_idx[last]]--;
++            }
++            last = itr_s;
++        }
++
++        /*
++        // dump
++        l = 0;
++        WriteLine("        " + String.Join(" ", group_sorted.Select(x => String.Format("{0,3}", x.Item1))));
++        for (l = 0; l < s.Length; l++) {
++            var itr_s = s[l];
++            WriteLine("[" + String.Format("{0,2}", l) + "|" + itr_s + "]: " + String.Join(" ", chars[l].Select(x => String.Format("{0,3}", x))));
++        }
++        */
++
++        int idx_last_valid_jump = -1;
++        int idx_search;
++        char c_jump;
++        for (l = 0; l < l_test; l++) {
++            for (l2 = 0; l2 < group_sorted.Count; l2++) {
++                var itr = group_sorted[l2];
++                c_jump = itr.Item1;
++                if (test_char_counts[map_char_idx[c_jump]] == 0) continue;
++                idx_search = s.IndexOf(c_jump, idx_last_valid_jump + 1);
++                if (valid_jump(chars[idx_search], test_char_counts, l_groups)) {
++                    //WriteLine($"valid jump, next char: {c_jump}");
++                    test_char_counts[map_char_idx[c_jump]]--;
++                    //WriteLine($"test_char_counts: {String.Join(" ", test_char_counts.Select(x => x.ToString()))}");
++                    idx_last_valid_jump = idx_search;
++                    sb_test.Append(c_jump);
++                    break;
++                }
++            }
++        }
++
++        return sb_test.ToString();
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
