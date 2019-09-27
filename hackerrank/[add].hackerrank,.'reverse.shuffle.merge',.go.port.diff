@@ -1,0 +1,237 @@
+From a95de33d8021c8a40a94b9aa6fb9ed1e2cc30726 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 27 Sep 2019 07:40:52 +0100
+Subject: [add] hackerrank, 'reverse shuffle merge', go port
+
+---
+ .../reverse.shuffle.merge.go                  | 209 ++++++++++++++++++
+ 1 file changed, 209 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.advanced.-.reverse.shuffle.merge/reverse.shuffle.merge.go b/hackerrank/algorithms.-.greedy.-.advanced.-.reverse.shuffle.merge/reverse.shuffle.merge.go
+index 3872891..a04eac8 100644
+--- a/hackerrank/algorithms.-.greedy.-.advanced.-.reverse.shuffle.merge/reverse.shuffle.merge.go
++++ b/hackerrank/algorithms.-.greedy.-.advanced.-.reverse.shuffle.merge/reverse.shuffle.merge.go
+@@ -6,11 +6,220 @@ import (
+     "io"
+     "os"
+     "strings"
++    "sort"
+ )
+ 
++/*
++merge(reverse(A), shuffle(A))
++solution is always half the length of s
++
++iterate from the best case (lexicographically smallest) string and
++deduce valid or not
++
++shuffled(A), coupled with the merge gives carte blanche, shuffled(A)
++is ANY order of chars, the reversed chunk is the fixed chunk, where
++order matters so so long as a 'sparse substring' can be found then
++the intermediate chars are guaranteed
++
++s = 'abcddacb'
++grouped 'abcd'
++
++'abcd' | reverse 'dcba' ..not a 'sparse substring' | FAIL
++'abdc' | reverse 'cdba' ..not a 'sparse substring' | FAIL
++'acbd' | reverse 'dbca' ..not a 'sparse substring' | FAIL
++'acdb' | reverse 'bdca' ..not a 'sparse substring' | FAIL
++'adbc' | reverse 'cbda' ..not a 'sparse substring' | FAIL
++'adcb' | reverse 'bcda' ..is a 'sparse substring' | SUCCESS
++..
++'bacd' | reverse 'dcab' ..not a 'sparse substring' | FAIL
++'bcad' | reverse 'dacb' ..is a 'sparse substring'  | ..
++
++lowest lexicographical A is 'adcb'
++
++..easier to work backwards, i.e. look for lowest in reversed s
++
++s_ = 'bcaddcba' <- sparse substring 'adcb' exists
++
++algorithm more about creation of correct / efficient lexicographical
++permutation
++
++# speed-up?!
++-'jump logic' ..if we know the pushing 'a' along will never result
++in valid sparse substring, then skip?
++
++# redux, too many permutations for naive test all approach
++
++test #2
++reversed string: adigiibbgegjeiagjjiidhfdgdgijaaijfihbjjabchadcigaicgjaihidafigfhhecjgfacijgidgbhhehgfhjgiibggjddcjjd
++test string: aaaaabbbcccdddddeefffgggggggghhhhhiiiiiiiiijjjjjjj
++target:      aaaaabccigicgjihidfiejfijgidgbhhehgfhjgiibggjddjjd
++
++---
++
++look at number of characters available, e.g. ideal test string has 5 As,
++but supposee that that can be satisfied, what idx is the last A at? if
++it's idx 50 of 55 say, clearly having all As contiguous isn't feasible
++
++test string: aaaaabbbcccdddddeefffgggggggghhhhhiiiiiiiiijjjjjjj
++
++required:  a [5]
++           b [3]
++           c [3]
++           d [4]
++
++available:
++
++       idx1:  0  1  2 ...     ...14
++
++              a 10  9  9             9  8
++              b  6  6  6
++              c  6  6  6
++              d 10 10  9
++                                     a              aa        a
++reversed string: a  d  i  giibbgegjeia  gjjiidhfdgdgijaaijfihbjjabchadcigaicgjaihidafigfhhecjgfacijgidgbhhehgfhjgiibggjddcjjd
++
++so, count number 'x' chars left at each position (i.e. [l_s][26] 2d array)
++then sort this by first index ..when first index is the same, look at the
++second index etc. like a multi-column sort. after sort, iterate,
++and the first idx1 entry which satisfies the test string char counts, should
++be the optimal solution ..as if there are enough characters left in each
++char catergory, it's valid, and given the sort order, it's optimal
++         j  i  h  g  f  e  d  c  b  a
++  test   7  9  5  8  3  2  5  3  3  5
++
++[39|a]:  7  9  8 10  4  2  6  6  3  6  | aaaaa ..still valid, next pick = 'b'
++..
++[40|b]:  7  9  8 10  4  2  6  6  3  5  | aaaaab ..still valid, next pick = 'b'
++..
++[78|b]:  4  2  4  4  1  1  3  1  2  0  | aaaaabb ..not valid, next best pick = 'c'
++..
++[41|c]:  7  9  8 10  4  2  6  6  2  5  | aaaaabc ..valid! ..etc. etc.
++
++         j  i  h  g  f  e  d  c  b  a
++
++*/
++
++func valid_jump(table, test *[]int, l_size int) bool {
++    // ensure all table values >= test values
++    for l := 0; l < l_size; l++ {
++        if (*table)[l] < (*test)[l] {
++            return false
++        }
++    }
++    return true
++}
++
++func reverse_string(s string) string {
++    s_ := ""
++    a_s := s[:]
++    for l := len(a_s) - 1; l > -1; l-- {
++        s_ += string(a_s[l])
++    }
++    return s_
++}
++
+ // Complete the reverseShuffleMerge function below.
+ func reverseShuffleMerge(s string) string {
+ 
++    type char_count struct {c rune; n int}
++
++    // construct s_test
++    l_s := len(s)
++    var s_test string = ""
++    l_test := int(l_s / 2)
++    s = reverse_string(s)
++    var s_ []rune = []rune(s)
++    //fmt.Printf("reversed string: %v\n", s)
++
++    map_ := make(map[rune]int, 0)
++    for _, c := range(s_) {
++        if _, ok := map_[c]; ok {
++            map_[c]++
++        } else {
++            map_[c] = 1
++        }
++    }
++    l_groups := len(map_)
++    group_sorted := make([]char_count, 0)
++    for k, v := range(map_) {
++        group_sorted = append(group_sorted, char_count{k, v})
++    }
++    sort.Slice(group_sorted, func(i1, i2 int) bool {return group_sorted[i1].c < group_sorted[i2].c})
++
++    chars := make([][]int, l_s)
++    test_char_counts := make([]int, l_groups)
++    map_char_idx := make(map[rune]int, l_groups)
++
++    // populate table of 'chars remaining at each idx of s
++    var last rune = ' '
++    for l := 0; l < len(s); l++ {
++        chars[l] = make([]int, l_groups)
++        var itr_s = s_[l]
++        //fmt.Printf("chars [%v]%v, last: %v\n", l, string(itr_s), string(last))
++        if l == 0 {
++            // zero idx / full sets
++            for l2 := 0; l2 < len(group_sorted); l2++ {
++                var itr = group_sorted[l2]
++                chars[0][l2] = itr.n
++                test_char_counts[l2] = int(itr.n / 2)
++                map_char_idx[itr.c] = l2
++            }
++        } else {
++            for l2 := 0; l2 < l_groups; l2++ {
++                chars[l][l2] = chars[l - 1][l2]
++            }
++            chars[l][map_char_idx[last]]--
++        }
++        last = itr_s
++    }
++
++    /*
++    // dump
++    var header string = "        "
++    for _, v := range(group_sorted) {
++        header += fmt.Sprintf("%3v", string(v.c))
++    }
++    fmt.Printf("%v\n", header)
++    for l := 0; l < len(s); l++ {
++        var itr_s = s[l]
++        fmt.Printf("[%2v|%v]: %v\n", l, string(itr_s), chars[l])
++    }
++    */
++
++    var idx_search int
++    var idx_last_jump int = -1
++    var idx_table int
++    var c_jump rune
++    s__ := s
++    for l := 0; l < l_test; l++ {
++        for l2 := 0; l2 < len(group_sorted); l2++ {
++            var itr = group_sorted[l2]
++            c_jump = itr.c
++            if test_char_counts[map_char_idx[c_jump]] == 0 {
++                continue
++            }
++            idx_search = strings.Index(s__, string(c_jump))
++            //fmt.Printf("searched for char '%v', match idx '%v'\n", string(c_jump), idx_search)
++            idx_table = idx_last_jump + 1 + idx_search
++            //fmt.Printf("testing table[%v] vs test chars:\n%v\n%v'\n", idx_table, chars[idx_table], test_char_counts)
++            if valid_jump(&chars[idx_table], &test_char_counts, l_groups) {
++                idx_last_jump = idx_table
++                //fmt.Printf("valid jump, next char: %v\n", string(c_jump))
++                test_char_counts[map_char_idx[c_jump]]--
++                //fmt.Printf("test_char_counts: %v\n", test_char_counts)
++                s_test += string(c_jump)
++                if (idx_search + 1 >= len(s__)) {
++                    s__ = ""
++                } else {
++                    s__ = s__[idx_search + 1:]
++                }
++                //fmt.Printf("[%v] s__: %v\n", len(s__), s__)
++                break
++            }
++        }
++    }
++
++    return s_test
+ }
+ 
+ func main() {
+-- 
+2.23.0
+
