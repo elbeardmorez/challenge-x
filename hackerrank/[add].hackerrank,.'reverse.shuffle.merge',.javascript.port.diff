@@ -1,0 +1,228 @@
+From b419c07eb8e494623a12ac44dc592485371b3294 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 28 Sep 2019 11:39:09 +0100
+Subject: [add] hackerrank, 'reverse shuffle merge', javascript port
+
+---
+ .../reverse.shuffle.merge.js                  | 205 +++++++++++++++++-
+ 1 file changed, 204 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.advanced.-.reverse.shuffle.merge/reverse.shuffle.merge.js b/hackerrank/algorithms.-.greedy.-.advanced.-.reverse.shuffle.merge/reverse.shuffle.merge.js
+index 28d1176..2f28ab0 100644
+--- a/hackerrank/algorithms.-.greedy.-.advanced.-.reverse.shuffle.merge/reverse.shuffle.merge.js
++++ b/hackerrank/algorithms.-.greedy.-.advanced.-.reverse.shuffle.merge/reverse.shuffle.merge.js
+@@ -27,7 +27,210 @@ function readLine() {
+ // Complete the reverseShuffleMerge function below.
+ function reverseShuffleMerge(s) {
+ 
+-
++    /*
++    merge(reverse(A), shuffle(A))
++    solution is always half the length of s
++
++    iterate from the best case (lexicographically smallest) string and
++    deduce valid or not
++
++    shuffled(A), coupled with the merge gives carte blanche, shuffled(A)
++    is ANY order of chars, the reversed chunk is the fixed chunk, where
++    order matters so so long as a 'sparse substring' can be found then
++    the intermediate chars are guaranteed
++
++    s = 'abcddacb'
++    grouped 'abcd'
++
++    'abcd' | reverse 'dcba' ..not a 'sparse substring' | FAIL
++    'abdc' | reverse 'cdba' ..not a 'sparse substring' | FAIL
++    'acbd' | reverse 'dbca' ..not a 'sparse substring' | FAIL
++    'acdb' | reverse 'bdca' ..not a 'sparse substring' | FAIL
++    'adbc' | reverse 'cbda' ..not a 'sparse substring' | FAIL
++    'adcb' | reverse 'bcda' ..is a 'sparse substring' | SUCCESS
++    ..
++    'bacd' | reverse 'dcab' ..not a 'sparse substring' | FAIL
++    'bcad' | reverse 'dacb' ..is a 'sparse substring'  | ..
++
++    lowest lexicographical A is 'adcb'
++
++    ..easier to work backwards, i.e. look for lowest in reversed s
++
++    s_ = 'bcaddcba' <- sparse substring 'adcb' exists
++
++    algorithm more about creation of correct / efficient lexicographical
++    permutation
++
++    # speed-up?!
++    -'jump logic' ..if we know the pushing 'a' along will never result
++    in valid sparse substring, then skip?
++
++    # redux, too many permutations for naive test all approach
++
++    test #2
++    reversed string: adigiibbgegjeiagjjiidhfdgdgijaaijfihbjjabchadcigaicgjaihidafigfhhecjgfacijgidgbhhehgfhjgiibggjddcjjd
++    test string: aaaaabbbcccdddddeefffgggggggghhhhhiiiiiiiiijjjjjjj
++    target:      aaaaabccigicgjihidfiejfijgidgbhhehgfhjgiibggjddjjd
++
++    ---
++
++    look at number of characters available, e.g. ideal test string has 5 As,
++    but supposee that that can be satisfied, what idx is the last A at? if
++    it's idx 50 of 55 say, clearly having all As contiguous isn't feasible
++
++    test string: aaaaabbbcccdddddeefffgggggggghhhhhiiiiiiiiijjjjjjj
++
++    required:  a [5]
++               b [3]
++               c [3]
++               d [4]
++
++    available:
++
++           idx1:  0  1  2 ...     ...14
++
++                  a 10  9  9             9  8
++                  b  6  6  6
++                  c  6  6  6
++                  d 10 10  9
++                                         a              aa        a
++    reversed string: a  d  i  giibbgegjeia  gjjiidhfdgdgijaaijfihbjjabchadcigaicgjaihidafigfhhecjgfacijgidgbhhehgfhjgiibggjddcjjd
++
++    so, count number 'x' chars left at each position (i.e. [l_s][26] 2d array)
++    then sort this by first index ..when first index is the same, look at the
++    second index etc. like a multi-column sort. after sort, iterate,
++    and the first idx1 entry which satisfies the test string char counts, should
++    be the optimal solution ..as if there are enough characters left in each
++    char catergory, it's valid, and given the sort order, it's optimal
++             j  i  h  g  f  e  d  c  b  a
++      test   7  9  5  8  3  2  5  3  3  5
++
++    [39|a]:  7  9  8 10  4  2  6  6  3  6  | aaaaa ..still valid, next pick = 'b'
++    ..
++    [40|b]:  7  9  8 10  4  2  6  6  3  5  | aaaaab ..still valid, next pick = 'b'
++    ..
++    [78|b]:  4  2  4  4  1  1  3  1  2  0  | aaaaabb ..not valid, next best pick = 'c'
++    ..
++    [41|c]:  7  9  8 10  4  2  6  6  2  5  | aaaaabc ..valid! ..etc. etc.
++
++             j  i  h  g  f  e  d  c  b  a
++
++    */
++
++    let valid_jump = (table, test, l_size) => {
++        // ensure all table values >= test values
++        for (let l = 0; l < l_size; l++) {
++            if (table[l] < test[l]) {
++                return false;
++            }
++        }
++        return true;
++    };
++
++    let reverse_string = s => { return s.split('').reverse().join(''); };
++
++    // construct s_test
++    let l_s = s.length;
++    let s_test = "";
++    let l_test = parseInt(l_s / 2);
++    s = reverse_string(s);
++    let s_ = s.split('');
++    //console.log(`reversed string: ${s}`);
++
++    let map_ = new Map();
++    s_.forEach(c => {
++        if (map_.has(c)) {
++            map_.set(c, map_.get(c) + 1);
++        } else {
++            map_.set(c, 1);
++        }
++    });
++    let l_groups = map_.size;
++    let group_sorted = [];
++    //console.log(`map_ size: ${l_groups}`);
++    for (let o of map_.entries()) {
++        //console.log(`adding: ${o}`);
++        group_sorted.push(o);
++    }
++    group_sorted.sort((o1, o2) => { return o1[0] === o2[0] ? 0 : (o1[0] < o2[0] ? -1 : 1); });
++    //console.log(`group_sorted: ${group_sorted}`);
++
++    let chars = new Array(l_s);
++    let test_char_counts = new Array(0, l_groups);
++    let map_char_idx = new Map();
++
++    // populate table of 'chars remaining at each idx of s
++    let last = ' ';
++    for (let l = 0; l < s.length; l++) {
++        chars[l] = new Array(l_groups);
++        let itr_s = s_[l];
++        //console.log(`chars [${l}]${itr_s}, last: ${last}`);
++        if (l === 0) {
++            // zero idx / full sets
++            for (let l2 = 0; l2 < group_sorted.length; l2++) {
++                let itr = group_sorted[l2];
++                chars[0][l2] = itr[1];
++                test_char_counts[l2] = parseInt(itr[1] / 2);
++                map_char_idx.set(itr[0], l2);
++            }
++            //console.log(`map_char_idx: ${map_char_idx}`);
++        } else {
++            for (let l2 = 0; l2 < l_groups; l2++) {
++                chars[l][l2] = chars[l - 1][l2];
++            }
++            chars[l][map_char_idx.get(last)]--;
++        }
++        last = itr_s;
++    }
++
++    /*
++    // dump
++    let header = "        ";
++    group_sorted.forEach(v => {
++        header += v[0].padStart(3);
++    });
++    //console.log(`${header}`);
++    for (let l = 0; l < l_s; l++) {
++        let s_a = "";
++        for (let l2 = 0; l2 < l_groups; l2++)
++            s_a += chars[l][l2].toString().padStart(3);
++        //console.log(`[${l.toString().padStart(2)}|${s_[l]}]: ${s_a}`);
++    }
++    */
++
++    let idx_search = 0;
++    let idx_last_jump = -1;
++    let idx_table = 0;
++    let c_jump = '';
++    let s__ = s;
++    for (let l = 0; l < l_test; l++) {
++        for (let l2 = 0; l2 < group_sorted.length; l2++) {
++            let itr = group_sorted[l2];
++            let c_jump = itr[0];
++            if (test_char_counts[map_char_idx.get(c_jump)] === 0) {
++                continue;
++            }
++            let idx_search = s__.indexOf(c_jump);
++            //console.log(`searched for '${c_jump}', match idx '${idx_search}'`);
++            let idx_table = idx_last_jump + 1 + idx_search;
++            //console.log(`testing table[${idx_table}] vs test chars:\n${chars[idx_table]}\n${test_char_counts}'`);
++            if (valid_jump(chars[idx_table], test_char_counts, l_groups)) {
++                idx_last_jump = idx_table;
++                //console.log(`valid jump, next char: ${c_jump}`);
++                test_char_counts[map_char_idx.get(c_jump)]--;
++                //console.log(`test_char_counts: ${test_char_counts}`);
++                s_test += c_jump;
++                if (idx_search + 1 >= s__.length)
++                    s__ = "";
++                else
++                    s__ = s__.substr(idx_search + 1);
++                //console.log(`[${s__.length}] s__: ${s__}`);
++                break;
++            }
++        }
++    }
++
++    return s_test;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
