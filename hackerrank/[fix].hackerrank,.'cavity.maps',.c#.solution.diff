@@ -1,0 +1,35 @@
+From 36f0fd8ba0f058dc7fe2e47e53e49cf073906d4c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 30 Sep 2019 07:29:56 +0100
+Subject: [fix] hackerrank, 'cavity maps', c# solution
+
+-incomplete string -> int array conversion due to index and limit
+bugs
+---
+ .../cavity.map.cs                                           | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.cavity.map/cavity.map.cs b/hackerrank/algorithms.-.implementation.-.easy.-.cavity.map/cavity.map.cs
+index 733bba1..88a7379 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.cavity.map/cavity.map.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.cavity.map/cavity.map.cs
+@@ -21,13 +21,13 @@ class Solution {
+         var grid_ = new int[l_y, l_x];
+ 
+         var cavities = new List<Tuple<int, int>>();
+-        for (int l1 = 1; l1 < l_y - 1; l1++) {
++        for (int l1 = 0; l1 < l_y; l1++) {
+             var s_ = grid[l1].ToCharArray();
+-            for (int l2 = 1; l2 < l_y - 1; l2++)
++            for (int l2 = 0; l2 < l_x; l2++)
+                 grid_[l1, l2] = Convert.ToInt32(s_[l2]);
+         }
+         for (int l1 = 1; l1 < l_y - 1; l1++) {
+-            for (int l2 = 1; l2 < l_y - 1; l2++) {
++            for (int l2 = 1; l2 < l_x - 1; l2++) {
+                 if (grid_[l1, l2] <= grid_[l1, l2 - 1])
+                     continue;
+                 if (grid_[l1, l2] <= grid_[l1, l2 + 1])
+-- 
+2.23.0
+
