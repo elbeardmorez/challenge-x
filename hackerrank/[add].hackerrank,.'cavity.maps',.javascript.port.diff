@@ -1,0 +1,52 @@
+From 2f6c3f1fcfde2b8614aff1c80511f9d85e6b92f6 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 1 Oct 2019 07:43:50 +0100
+Subject: [add] hackerrank, 'cavity maps', javascript port
+
+---
+ .../cavity.map.js                             | 29 +++++++++++++++++--
+ 1 file changed, 27 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.cavity.map/cavity.map.js b/hackerrank/algorithms.-.implementation.-.easy.-.cavity.map/cavity.map.js
+index 40e20ec..8a6a3da 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.cavity.map/cavity.map.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.cavity.map/cavity.map.js
+@@ -26,8 +26,33 @@ function readLine() {
+ 
+ // Complete the cavityMap function below.
+ function cavityMap(grid) {
+-
+-
++    let l_y = grid.length;
++    let l_x = grid[0].length;
++    let grid_ = new Array(l_y);
++
++    let cavities = [];
++    for (let l1 = 0; l1 < l_y; l1++) {
++        let s_ = grid[l1].split('');
++        grid_[l1] = new Array(l_x);
++        for (let l2 = 0; l2 < l_x; l2++)
++            grid_[l1][l2] = parseInt(s_[l2]);
++    }
++    for (let l1 = 1; l1 < l_y - 1; l1++) {
++        for (let l2 = 1; l2 < l_x - 1; l2++) {
++            if (grid_[l1][l2] <= grid_[l1][l2 - 1])
++                continue;
++            if (grid_[l1][l2] <= grid_[l1][l2 + 1])
++                continue;
++            if (grid_[l1][l2] <= grid_[l1 - 1][l2])
++                continue;
++            if (grid_[l1][l2] <= grid_[l1 + 1][l2])
++                continue;
++            cavities.push([l1, l2]);
++        }
++    }
++    for (let l = 0; l < cavities.length; l++)
++        grid[cavities[l][0]] = grid[cavities[l][0]].substr(0, cavities[l][1]) + "X" + grid[cavities[l][0]].substr(cavities[l][1] + 1);
++    return grid;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
