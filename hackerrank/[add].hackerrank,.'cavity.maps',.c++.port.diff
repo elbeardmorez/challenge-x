@@ -1,0 +1,50 @@
+From 933de93933c1836445786af09090a45aecb44a44 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 2 Oct 2019 07:17:24 +0100
+Subject: [add] hackerrank, 'cavity maps', c++ port
+
+---
+ .../cavity.map.cpp                            | 27 +++++++++++++++++--
+ 1 file changed, 25 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.cavity.map/cavity.map.cpp b/hackerrank/algorithms.-.implementation.-.easy.-.cavity.map/cavity.map.cpp
+index f6c711a..1105122 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.cavity.map/cavity.map.cpp
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.cavity.map/cavity.map.cpp
+@@ -4,8 +4,31 @@ using namespace std;
+ 
+ // Complete the cavityMap function below.
+ vector<string> cavityMap(vector<string> grid) {
+-
+-
++    auto l_y = grid.size();
++    auto l_x = grid[0].length();
++    int grid_[l_y][l_x];
++
++    vector<array<int, 2>> cavities;
++    for (int l1 = 0; l1 < l_y; l1++) {
++        for (int l2 = 0; l2 < l_x; l2++)
++            grid_[l1][l2] = stoi(grid[l1].substr(l2, 1));
++    }
++    for (int l1 = 1; l1 < l_y - 1; l1++) {
++        for (int l2 = 1; l2 < l_x - 1; l2++) {
++            if (grid_[l1][l2] <= grid_[l1][l2 - 1])
++                continue;
++            if (grid_[l1][l2] <= grid_[l1][l2 + 1])
++                continue;
++            if (grid_[l1][l2] <= grid_[l1 - 1][l2])
++                continue;
++            if (grid_[l1][l2] <= grid_[l1 + 1][l2])
++                continue;
++            cavities.push_back(array<int, 2>{l1, l2});
++        }
++    }
++    for (int l = 0; l < cavities.size(); l++)
++        grid[cavities[l][0]] = grid[cavities[l][0]].substr(0, cavities[l][1]) + "X" + grid[cavities[l][0]].substr(cavities[l][1] + 1);
++    return grid;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
