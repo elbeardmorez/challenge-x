@@ -1,0 +1,58 @@
+From acb01145b49c11aa36c12e971b1267d169c4aa50 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 3 Oct 2019 08:42:51 +0100
+Subject: [add] hackerrank, 'cavity maps', go port
+
+---
+ .../cavity.map.go                             | 35 +++++++++++++++++--
+ 1 file changed, 33 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.cavity.map/cavity.map.go b/hackerrank/algorithms.-.implementation.-.easy.-.cavity.map/cavity.map.go
+index c116562..8f78070 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.cavity.map/cavity.map.go
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.cavity.map/cavity.map.go
+@@ -11,8 +11,39 @@ import (
+ 
+ // Complete the cavityMap function below.
+ func cavityMap(grid []string) []string {
+-
+-
++    l_y := len(grid)
++    l_x := len(grid[0])
++    grid_ := make([][]int, l_y)
++
++    cavities := make([][]int, 0)
++    for l1 := 0; l1 < l_y; l1++ {
++        grid_[l1] = make([]int, l_x)
++        s_ := grid[l1][:]
++        for l2 := 0; l2 < l_x; l2++ {
++            grid_[l1][l2] = int(s_[l2])
++        }
++    }
++    for l1 := 1; l1 < l_y - 1; l1++ {
++        for l2 := 1; l2 < l_x - 1; l2++ {
++            if grid_[l1][l2] <= grid_[l1][l2 - 1] {
++                continue
++            }
++            if grid_[l1][l2] <= grid_[l1][l2 + 1] {
++                continue
++            }
++            if grid_[l1][l2] <= grid_[l1 - 1][l2] {
++                continue
++            }
++            if grid_[l1][l2] <= grid_[l1 + 1][l2] {
++                continue
++            }
++            cavities = append(cavities, []int{l1, l2})
++        }
++    }
++    for l := 0; l < len(cavities); l++ {
++      grid[cavities[l][0]] = grid[cavities[l][0]][0:cavities[l][1]] + "X" + grid[cavities[l][0]][cavities[l][1] + 1:]
++    }
++    return grid
+ }
+ 
+ func main() {
+-- 
+2.23.0
+
