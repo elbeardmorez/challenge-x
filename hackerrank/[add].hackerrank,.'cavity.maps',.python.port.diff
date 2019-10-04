@@ -1,0 +1,58 @@
+From d2a3b9a12b9d32832af02677c254f3635649160a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 4 Oct 2019 08:12:48 +0100
+Subject: [add] hackerrank, 'cavity maps', python port
+
+---
+ .../cavity.map.py                             | 33 +++++++++++++++++++
+ 1 file changed, 33 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.cavity.map/cavity.map.py b/hackerrank/algorithms.-.implementation.-.easy.-.cavity.map/cavity.map.py
+index 8663ecd..31acfdd 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.cavity.map/cavity.map.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.cavity.map/cavity.map.py
+@@ -6,8 +6,41 @@ import random
+ import re
+ import sys
+ 
++
+ # Complete the cavityMap function below.
+ def cavityMap(grid):
++    l_y = len(grid)
++    l_x = len(grid[0])
++    grid_ = []
++
++    cavities = []
++    for l1 in range(l_y):
++        grid_.append([])
++        for l2 in range(l_x):
++            grid_[l1].append(int(grid[l1][l2]))
++
++    for l1 in range(1, l_y - 1):
++        for l2 in range(1, l_x - 1):
++            if grid_[l1][l2] <= grid_[l1][l2 - 1]:
++                continue
++
++            if grid_[l1][l2] <= grid_[l1][l2 + 1]:
++                continue
++
++            if grid_[l1][l2] <= grid_[l1 - 1][l2]:
++                continue
++
++            if grid_[l1][l2] <= grid_[l1 + 1][l2]:
++                continue
++
++            cavities.append([l1, l2])
++
++
++    for l in range(0, len(cavities)):
++      grid[cavities[l][0]] = grid[cavities[l][0]][0:cavities[l][1]] + "X" + grid[cavities[l][0]][cavities[l][1] + 1:]
++
++    return grid
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
