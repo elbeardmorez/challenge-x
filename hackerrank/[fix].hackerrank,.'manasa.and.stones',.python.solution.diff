@@ -1,0 +1,26 @@
+From 6b36ba4d582538d609b0ff4ecb12e4896a3a8a67 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 5 Oct 2019 09:14:42 +0100
+Subject: [fix] hackerrank, 'manasa and stones', python solution
+
+-remove duplicates
+---
+ .../manasa.and.stones.py                                        | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.manasa.and.stones/manasa.and.stones.py b/hackerrank/algorithms.-.implementation.-.easy.-.manasa.and.stones/manasa.and.stones.py
+index ea5b7cd..1a0433c 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.manasa.and.stones/manasa.and.stones.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.manasa.and.stones/manasa.and.stones.py
+@@ -13,7 +13,7 @@ def stones(n, a, b):
+     combinations of up to n-1 (account for 0 stone) a or b stones
+     calc x*a + ((n-1)-x)*b for 0 <= x < n - 1 ..order ascending
+     """
+-    return sorted([x * a + ((n - 1) - x) * b for x in range(0, n)])
++    return sorted(set([x * a + ((n - 1) - x) * b for x in range(0, n)]))
+ 
+ 
+ if __name__ == '__main__':
+-- 
+2.23.0
+
