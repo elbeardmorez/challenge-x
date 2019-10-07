@@ -1,0 +1,30 @@
+From 86969df74f55229e5bd46b9e227d978ee4fe7ac6 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 7 Oct 2019 07:23:41 +0100
+Subject: [add] hackerrank, 'manasa and stones', c# port
+
+---
+ .../manasa.and.stones.cs                                   | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.manasa.and.stones/manasa.and.stones.cs b/hackerrank/algorithms.-.implementation.-.easy.-.manasa.and.stones/manasa.and.stones.cs
+index 071134a..11a3c0c 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.manasa.and.stones/manasa.and.stones.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.manasa.and.stones/manasa.and.stones.cs
+@@ -16,8 +16,11 @@ class Solution {
+ 
+     // Complete the stones function below.
+     static int[] stones(int n, int a, int b) {
+-
+-
++        /*
++        combinations of up to n-1 (account for 0 stone) a or b stones
++        calc x*a + ((n-1)-x)*b for 0 <= x < n - 1 ..order ascending
++        */
++        return Enumerable.Range(0, n).Select(x => x * a + ((n - 1) - x) * b).Distinct().OrderBy(x => x).ToArray();
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
