@@ -1,0 +1,34 @@
+From d51acd1d537a1ab892742e1907a07fc0e606229c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 8 Oct 2019 08:08:42 +0100
+Subject: [add] hackerrank, 'manasa and stones', javascript port
+
+---
+ .../manasa.and.stones.js                              | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.manasa.and.stones/manasa.and.stones.js b/hackerrank/algorithms.-.implementation.-.easy.-.manasa.and.stones/manasa.and.stones.js
+index 4990b19..c211300 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.manasa.and.stones/manasa.and.stones.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.manasa.and.stones/manasa.and.stones.js
+@@ -26,8 +26,15 @@ function readLine() {
+ 
+ // Complete the stones function below.
+ function stones(n, a, b) {
+-
+-
++    /*
++    combinations of up to n-1 (account for 0 stone) a or b stones
++    calc x*a + ((n-1)-x)*b for 0 <= x < n - 1 ..order ascending
++    */
++    let sums = new Set();
++    for (let x = 0; x < n; x++)
++        sums.add(x * a + ((n - 1) - x) * b);
++    let sums_ = Array.from(sums).sort((x, y) => { return x == y ? 0 : (x < y ? -1 : 1);});
++    return sums_;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
