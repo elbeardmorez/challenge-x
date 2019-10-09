@@ -1,0 +1,46 @@
+From 617f168ba50573b9f2543b5269dc8ae25591902d Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 9 Oct 2019 08:40:01 +0100
+Subject: [add] hackerrank, 'manasa and stones', go port
+
+---
+ .../manasa.and.stones.go                      | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.manasa.and.stones/manasa.and.stones.go b/hackerrank/algorithms.-.implementation.-.easy.-.manasa.and.stones/manasa.and.stones.go
+index 6813817..002ef99 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.manasa.and.stones/manasa.and.stones.go
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.manasa.and.stones/manasa.and.stones.go
+@@ -7,12 +7,27 @@ import (
+     "os"
+     "strconv"
+     "strings"
++    "sort"
+ )
+ 
+ // Complete the stones function below.
+ func stones(n int32, a int32, b int32) []int32 {
+-
+-
++    /*
++    combinations of up to n-1 (account for 0 stone) a or b stones
++    calc x*a + ((n-1)-x)*b for 0 <= x < n - 1 ..order ascending
++    */
++    sums := make(map[int32]int32, 0)
++    var v int32
++    for x := int32(0); x < n; x++ {
++        v = x * a + ((n - 1) - x) * b
++        sums[v] = v
++    }
++    sums_ := make([]int32, 0)
++    for _, v := range(sums) {
++      sums_ = append(sums_, v)
++    }
++    sort.Slice(sums_, func(i1, i2 int) bool { return sums_[i1] < sums_[i2] })
++    return sums_
+ }
+ 
+ func main() {
+-- 
+2.23.0
+
