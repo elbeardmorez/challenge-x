@@ -1,0 +1,99 @@
+From 5a97ae35600643db115d2eed0d374fc8c90308ae Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 10 Oct 2019 08:50:17 +0100
+Subject: [fix] hackerrank, 'absolute permutation', python solution
+
+-algorithm missing group switching technique as per n=4 k=2 example
+---
+ .../absolute.permutation.py                   | 47 +++++++++++++------
+ 1 file changed, 32 insertions(+), 15 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.absolute.permutation/absolute.permutation.py b/hackerrank/algorithms.-.implementation.-.medium.-.absolute.permutation/absolute.permutation.py
+index c3ec70e..81131cf 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.absolute.permutation/absolute.permutation.py
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.absolute.permutation/absolute.permutation.py
+@@ -5,7 +5,8 @@ import os
+ import random
+ import re
+ import sys
+-
++import functools
++import operator
+ 
+ # Complete the absolutePermutation function below.
+ def absolutePermutation(n, k):
+@@ -14,28 +15,29 @@ def absolutePermutation(n, k):
+     absolute difference must be k
+     smallest lexographical.. 10 > 2
+     if k > n / 2, impossible
+-    in fact, if k < n / 2, impossible
+-
+-    n=15 k=3
+-    1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+-    4  5  6  7  8  9 10 11 12 13 14 15  1  2  3  // shift left
+-    13 14 15 1  2  3  4  5  6  7  8  9 10 11 12  // shift right
+ 
+-    n=15 k=8
++    n=15 k=8 | invalid
+     1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+     9 10 11 12 13 14 15  1  2  3  4  5  6  7  8  // shift left
+     8  9 10 11 12  3 14 15  1  2  3  4  5  6  7  // shift right
+ 
+-    so only n % 2 = 0 and k = n/2 valid unless k = 0, then 0-rotation valid too
++    n=6 k=4 | invalid
++    1 2 3 4 5 6
++    5 6 1 2 3 4
++
++    for k <= n / 2, use 'groups of x' switches..
++
++    n=15 k=3 | invalid
++    1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
++    4  5  6  1  2  3 10 11 12  7  8  9  ?  ?  ?
++
++    so only n % k = 0 and (n / k) % 2 = 0 cases valid
+ 
+     n=6 k=3
+     1 2 3 4 5 6
+     4 5 6 1 2 3  // no diff left / right shift
+ 
+-    n=6 k=4
+-    1 2 3 4 5 6
+-    5 6 1 2 3 4  // nope
+-
++    if k = 0 then 0-rotation valid
+     valid lexographic dependent permutation order example?
+ 
+     n=3 k=1
+@@ -43,12 +45,27 @@ def absolutePermutation(n, k):
+ 
+     n=4 k=3
+     1 2 3 4
++
++     n  k
++    92 14 | 92/14 = 6.? .. -1
++    96  2 | 96/2 = 48 .. which is divisible by 2
++    98  7 | 98/7 = 14 .. which is divisible by 2
++
+     """
+ 
++    #print(f"n = {n}, k = {k}")
+     if k == 0:
+         return list(range(1, n + 1))
+-    elif n % 2 == 0 and int(n / 2) == k:
+-        return list(range(int(n / 2) + 1, n + 1)) + list(range(1, int(n / 2) + 1))
++    elif n % k == 0 and (n / k) % 2 == 0:
++        switched_groups = []
++        for x in range(int(int(n / k) / 2)):
++            x1 = x * 2 * k + 1
++            x2 = x * (2 * k) + k + 1
++            #print(f"subsets starting: {x1} | {x2}")
++            switched_groups.append(list(range(x2, x2 + k)))
++            switched_groups.append(list(range(x1, x1 + k)))
++        #print(f"{switched_groups}")
++        return functools.reduce(operator.iconcat, switched_groups, [])
+     else:
+         return [-1]
+ 
+-- 
+2.23.0
+
