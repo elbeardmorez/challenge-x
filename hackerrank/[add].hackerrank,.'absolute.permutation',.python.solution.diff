@@ -1,0 +1,68 @@
+From 8a789235650271d68a8bf0ddd7766b6c8623e49f Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 10 Oct 2019 08:01:09 +0100
+Subject: [add] hackerrank, 'absolute permutation', python solution
+
+---
+ .../absolute.permutation.py                   | 43 +++++++++++++++++++
+ 1 file changed, 43 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.absolute.permutation/absolute.permutation.py b/hackerrank/algorithms.-.implementation.-.medium.-.absolute.permutation/absolute.permutation.py
+index b5052eb..c3ec70e 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.absolute.permutation/absolute.permutation.py
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.absolute.permutation/absolute.permutation.py
+@@ -6,8 +6,51 @@ import random
+ import re
+ import sys
+ 
++
+ # Complete the absolutePermutation function below.
+ def absolutePermutation(n, k):
++    """
++    no constraint on permutation type
++    absolute difference must be k
++    smallest lexographical.. 10 > 2
++    if k > n / 2, impossible
++    in fact, if k < n / 2, impossible
++
++    n=15 k=3
++    1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
++    4  5  6  7  8  9 10 11 12 13 14 15  1  2  3  // shift left
++    13 14 15 1  2  3  4  5  6  7  8  9 10 11 12  // shift right
++
++    n=15 k=8
++    1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
++    9 10 11 12 13 14 15  1  2  3  4  5  6  7  8  // shift left
++    8  9 10 11 12  3 14 15  1  2  3  4  5  6  7  // shift right
++
++    so only n % 2 = 0 and k = n/2 valid unless k = 0, then 0-rotation valid too
++
++    n=6 k=3
++    1 2 3 4 5 6
++    4 5 6 1 2 3  // no diff left / right shift
++
++    n=6 k=4
++    1 2 3 4 5 6
++    5 6 1 2 3 4  // nope
++
++    valid lexographic dependent permutation order example?
++
++    n=3 k=1
++    1 2 3
++
++    n=4 k=3
++    1 2 3 4
++    """
++
++    if k == 0:
++        return list(range(1, n + 1))
++    elif n % 2 == 0 and int(n / 2) == k:
++        return list(range(int(n / 2) + 1, n + 1)) + list(range(1, int(n / 2) + 1))
++    else:
++        return [-1]
+ 
+ 
+ if __name__ == '__main__':
+-- 
+2.23.0
+
