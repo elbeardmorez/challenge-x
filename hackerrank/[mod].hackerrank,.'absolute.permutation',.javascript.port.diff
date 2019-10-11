@@ -1,0 +1,36 @@
+From 2ccd8ab95b8a5cb37934487c7e54946c9e52fb2b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 11 Oct 2019 09:20:51 +0100
+Subject: [mod] hackerrank, 'absolute permutation', javascript port
+
+-speedup, use 'spread push' over either push reduce or concat avoiding
+reallocation / copy of elements
+---
+ .../absolute.permutation.js                                | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.absolute.permutation/absolute.permutation.js b/hackerrank/algorithms.-.implementation.-.medium.-.absolute.permutation/absolute.permutation.js
+index 056f74e..e310bef 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.absolute.permutation/absolute.permutation.js
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.absolute.permutation/absolute.permutation.js
+@@ -80,14 +80,13 @@ function absolutePermutation(n, k) {
+             let x1 = x * 2 * k + 1;
+             let x2 = x * (2 * k) + k + 1;
+             //console.log(`subsets starting: ${x1} | ${x2}`);
+-            switched_groups.push(range(x2, x2 + k, 1));
+-            switched_groups.push(range(x1, x1 + k, 1));
++            switched_groups.push(...range(x2, x2 + k, 1));
++            switched_groups.push(...range(x1, x1 + k, 1));
+         }
+         //console.log(`${switched_groups}`);
+-        return switched_groups.reduce((a, x) => { return a.concat(x); } );
++        return switched_groups;
+     } else
+         return [-1];
+-    
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
