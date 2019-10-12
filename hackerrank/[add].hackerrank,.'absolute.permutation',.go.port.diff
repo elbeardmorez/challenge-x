@@ -1,0 +1,87 @@
+From 733f91eb4c821c0d87c0452aeda92751e83800e3 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 12 Oct 2019 08:12:58 +0100
+Subject: [add] hackerrank, 'absolute permutation', go port
+
+---
+ .../absolute.permutation.go                   | 64 ++++++++++++++++++-
+ 1 file changed, 62 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.absolute.permutation/absolute.permutation.go b/hackerrank/algorithms.-.implementation.-.medium.-.absolute.permutation/absolute.permutation.go
+index 66bbc4e..e3045c0 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.absolute.permutation/absolute.permutation.go
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.absolute.permutation/absolute.permutation.go
+@@ -11,8 +11,68 @@ import (
+ 
+ // Complete the absolutePermutation function below.
+ func absolutePermutation(n int32, k int32) []int32 {
+-
+-
++    /*
++    no constraint on permutation type
++    absolute difference must be k
++    smallest lexographical.. 10 > 2
++    if k > n / 2, impossible
++
++    n=15 k=8 | invalid
++    1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
++    9 10 11 12 13 14 15  1  2  3  4  5  6  7  8  // shift left
++    8  9 10 11 12  3 14 15  1  2  3  4  5  6  7  // shift right
++
++    n=6 k=4 | invalid
++    1 2 3 4 5 6
++    5 6 1 2 3 4
++
++    for k <= n / 2, use 'groups of x' switches..
++
++    n=15 k=3 | invalid
++    1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
++    4  5  6  1  2  3 10 11 12  7  8  9  ?  ?  ?
++
++    so only n % k = 0 and (n / k) % 2 = 0 cases valid
++
++    n=6 k=3
++    1 2 3 4 5 6
++    4 5 6 1 2 3  // no diff left / right shift
++
++    if k = 0 then 0-rotation valid
++    valid lexographic dependent permutation order example?
++
++    n=3 k=1
++    1 2 3
++
++    n=4 k=3
++    1 2 3 4
++
++     n  k
++    92 14 | 92/14 = 6.? .. -1
++    96  2 | 96/2 = 48 .. which is divisible by 2
++    98  7 | 98/7 = 14 .. which is divisible by 2
++
++    */
++
++    range_ := func(n1, n2, x int32) []int32 { res := make([]int32, 0); for l := n1; l < n2; l += x { res = append(res, l); }; return res; }
++
++    //fmt.Printf("n := %v, k = %v\n", n, k)
++    if k == 0 {
++        return range_(1, n + 1, 1)
++    } else if n % k == 0 && (n / k) % 2 == 0 {
++        var switched_groups = make([]int32, 0)
++        for x := int32(0); x < int32(int32(n / k) / 2); x++ {
++            x1 := x * 2 * k + 1
++            x2 := x * (2 * k) + k + 1
++            //fmt.Printf("subsets starting: %v | %v\n", x1, x2)
++            switched_groups = append(switched_groups, range_(x2, x2 + k, 1)...)
++            switched_groups = append(switched_groups, range_(x1, x1 + k, 1)...)
++        }
++        //fmt.Printf("%v\n", switched_groups)
++        return switched_groups
++    } else {
++        return []int32 {-1}
++    }
+ }
+ 
+ func main() {
+-- 
+2.23.0
+
