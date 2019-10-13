@@ -1,0 +1,100 @@
+From 69a7997fc527daa03aa347ffdd7565b67914f511 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 13 Oct 2019 07:35:57 +0100
+Subject: [add] hackerrank, 'absolute permutation', c++ port
+
+---
+ .../absolute.permutation.cpp                  | 75 ++++++++++++++++++-
+ 1 file changed, 73 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.absolute.permutation/absolute.permutation.cpp b/hackerrank/algorithms.-.implementation.-.medium.-.absolute.permutation/absolute.permutation.cpp
+index 075ab7b..f056365 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.absolute.permutation/absolute.permutation.cpp
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.absolute.permutation/absolute.permutation.cpp
+@@ -4,10 +4,81 @@ using namespace std;
+ 
+ vector<string> split_string(string);
+ 
++template <typename T>
++vector<T> range(T n1, T n2, T x) {
++    vector<T> res;
++    res.reserve(T(n2 - n1 / x));
++    for (T l = n1; l < n2; l += x) res.push_back(l);
++    return res;
++}
++
+ // Complete the absolutePermutation function below.
+ vector<int> absolutePermutation(int n, int k) {
+-
+-
++    /*
++    no constraint on permutation type
++    absolute difference must be k
++    smallest lexographical.. 10 > 2
++    if k > n / 2, impossible
++
++    n=15 k=8 | invalid
++    1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
++    9 10 11 12 13 14 15  1  2  3  4  5  6  7  8  // shift left
++    8  9 10 11 12  3 14 15  1  2  3  4  5  6  7  // shift right
++
++    n=6 k=4 | invalid
++    1 2 3 4 5 6
++    5 6 1 2 3 4
++
++    for k <= n / 2, use 'groups of x' switches..
++
++    n=15 k=3 | invalid
++    1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
++    4  5  6  1  2  3 10 11 12  7  8  9  ?  ?  ?
++
++    so only n % k = 0 and (n / k) % 2 = 0 cases valid
++
++    n=6 k=3
++    1 2 3 4 5 6
++    4 5 6 1 2 3  // no diff left / right shift
++
++    if k = 0 then 0-rotation valid
++    valid lexographic dependent permutation order example?
++
++    n=3 k=1
++    1 2 3
++
++    n=4 k=3
++    1 2 3 4
++
++     n  k
++    92 14 | 92/14 = 6.? .. -1
++    96  2 | 96/2 = 48 .. which is divisible by 2
++    98  7 | 98/7 = 14 .. which is divisible by 2
++
++    */
++
++    //cout << "n = " << n << ", k = " << k << endl;
++    if (k == 0) {
++        return range(1, n + 1, 1);
++    } else if (n % k == 0 && (n / k) % 2 == 0) {
++        vector<int> switched_groups;
++        vector<int> v;
++        for (int x = 0; x < int(int(n / k) / 2); x++) {
++            auto x1 = x * 2 * k + 1;
++            auto x2 = x * (2 * k) + k + 1;
++            //cout << "subset length: " << k << ", starting: " << x1 << " | " << x2 << endl;
++            v = range(x2, x2 + k, 1);
++            //cout << "["; for(auto x2 : v) cout << " " << x2; cout << " ]" << endl;
++            copy(v.begin(), v.end(), back_inserter(switched_groups));
++            v = range(x1, x1 + k, 1);
++            //cout << "["; for(auto x2 : v) cout << " " << x2; cout << " ]" << endl;
++            copy(v.begin(), v.end(), back_inserter(switched_groups));
++        }
++        //cout << "res:\n["; for (auto x : switched_groups) cout << " " << x; cout << " ]" << endl;
++        return switched_groups;
++    } else {
++        return vector<int> {-1};
++    }
+ }
+ 
+ int main()
+-- 
+2.23.0
+
