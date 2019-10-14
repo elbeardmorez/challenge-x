@@ -1,0 +1,88 @@
+From 86a2cfe725807dc56d63ccb32bb9c70059817845 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 14 Oct 2019 07:01:49 +0100
+Subject: [add] hackerrank, 'absolute permutation', c# port
+
+---
+ .../absolute.permutation.cs                   | 59 +++++++++++++++++++
+ 1 file changed, 59 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.absolute.permutation/absolute.permutation.cs b/hackerrank/algorithms.-.implementation.-.medium.-.absolute.permutation/absolute.permutation.cs
+index 743e648..2ceef3c 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.absolute.permutation/absolute.permutation.cs
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.absolute.permutation/absolute.permutation.cs
+@@ -12,12 +12,71 @@ using System.Text.RegularExpressions;
+ using System.Text;
+ using System;
+ 
++using static System.Console;
++
+ class Solution {
+ 
+     // Complete the absolutePermutation function below.
+     static int[] absolutePermutation(int n, int k) {
++        /*
++        no constraint on permutation type
++        absolute difference must be k
++        smallest lexographical.. 10 > 2
++        if k > n / 2, impossible
++
++        n=15 k=8 | invalid
++        1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
++        9 10 11 12 13 14 15  1  2  3  4  5  6  7  8  // shift left
++        8  9 10 11 12  3 14 15  1  2  3  4  5  6  7  // shift right
++
++        n=6 k=4 | invalid
++        1 2 3 4 5 6
++        5 6 1 2 3 4
++
++        for k <= n / 2, use 'groups of x' switches..
++
++        n=15 k=3 | invalid
++        1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
++        4  5  6  1  2  3 10 11 12  7  8  9  ?  ?  ?
++
++        so only n % k = 0 and (n / k) % 2 = 0 cases valid
++
++        n=6 k=3
++        1 2 3 4 5 6
++        4 5 6 1 2 3  // no diff left / right shift
++
++        if k = 0 then 0-rotation valid
++        valid lexographic dependent permutation order example?
++
++        n=3 k=1
++        1 2 3
++
++        n=4 k=3
++        1 2 3 4
++
++         n  k
++        92 14 | 92/14 = 6.? .. -1
++        96  2 | 96/2 = 48 .. which is divisible by 2
++        98  7 | 98/7 = 14 .. which is divisible by 2
+ 
++        */
+ 
++        //WriteLine($"n = {n}, k = {k}");
++        if (k == 0)
++            return Enumerable.Range(1, n).ToArray();
++        else if (n % k == 0 && (n / k) % 2 == 0) {
++            var switched_groups = new List<int>();
++            for (int x = 0; x < (n / k) / 2; x++) {
++                var x1 = x * 2 * k + 1;
++                var x2 = x * (2 * k) + k + 1;
++                //WriteLine($"subsets starting: {x1} | {x2}");
++                switched_groups.AddRange(Enumerable.Range(x2, k));
++                switched_groups.AddRange(Enumerable.Range(x1, k));
++            }
++            //WriteLine($"[" + String.Join(" ", switched_groups.Select(x => x.ToString())) + "]");
++            return switched_groups.ToArray();
++        } else
++            return new int[]{-1};
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
