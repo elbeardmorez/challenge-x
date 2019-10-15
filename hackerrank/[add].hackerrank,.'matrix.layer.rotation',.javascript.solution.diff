@@ -1,0 +1,74 @@
+From 1264d1de702bddaac3995772d6a384b9921d6ddd Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 15 Oct 2019 17:44:32 +0100
+Subject: [add] hackerrank, 'matrix layer rotation', javascript solution
+
+---
+ .../matrix.layer.rotation.js                  | 51 ++++++++++++++++++-
+ 1 file changed, 49 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.hard.-.matrix.layer.rotation/matrix.layer.rotation.js b/hackerrank/algorithms.-.implementation.-.hard.-.matrix.layer.rotation/matrix.layer.rotation.js
+index d7fd538..4a8c836 100644
+--- a/hackerrank/algorithms.-.implementation.-.hard.-.matrix.layer.rotation/matrix.layer.rotation.js
++++ b/hackerrank/algorithms.-.implementation.-.hard.-.matrix.layer.rotation/matrix.layer.rotation.js
+@@ -22,8 +22,55 @@ function readLine() {
+ 
+ // Complete the matrixRotation function below.
+ function matrixRotation(matrix, r) {
+-
+-
++    /*
++    concentric circles of rotation
++
++    from outside to in, iterate circles collecting values to forms
++    flattened subsets of the matrix
++    then starting from r offset, replace numbers and wrap back to the
++    start (i.e. cycle r times)
++    */
++
++    let d1 = matrix[0].length;
++    let d2 = matrix.length;
++
++    /*
++    console.log(`matrix: ${d2}x${d1} rotated ${r} times`);
++    for (let l = 0; l < d2; l++)
++        console.log(`${matrix[l].join(' ')}`);
++    */
++    let h1 = 0;
++    let h2 = d1 - 1;
++    let v1 = 0;
++    let v2 = d2 - 1;
++    let ring = 1;
++    let idx = undefined;
++    while (h2 - h1 > 0 || v2 - v1 > 0) {
++        let numbers = [];
++
++        // iterate ring
++        for (let l = h1; l <= h2; l++) numbers.push(matrix[v1][l]);
++        for (let l = v1 + 1; l < v2; l++) numbers.push(matrix[l][h2]);
++        for (let l = h2; l >= h1; l--) numbers.push(matrix[v2][l]);
++        for (let l = v2 - 1; l > v1; l--) numbers.push(matrix[l][h1]);
++        //console.log(`ring: ${ring}: ${numbers}`);
++
++        idx = r % (numbers.length); // rotated / cycled start offset
++        //console.log(`rotated / cycled start offset: ${idx}`);
++        for (let l = h1; l <= h2; l++) matrix[v1][l] = numbers[idx++ % numbers.length];
++        for (let l = v1 + 1; l < v2; l++) matrix[l][h2] = numbers[idx++ % numbers.length];
++        for (let l = h2; l >= h1; l--) matrix[v2][l] = numbers[idx++ % numbers.length];
++        for (let l = v2 - 1; l > v1; l--) matrix[l][h1] = numbers[idx++ % numbers.length];
++
++        // contract
++        h1++;
++        h2--;
++        v1++;
++        v2--;
++        ring++;
++    }
++    for (let l = 0; l < d2; l++)
++        console.log(`${matrix[l].join(' ')}`);
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
