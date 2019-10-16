@@ -1,0 +1,59 @@
+From bb8d5cc8c21a32be7fb039c0f2ff843f32ea935c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 16 Oct 2019 13:49:51 +0100
+Subject: [fix] hackerrank, 'matrix layer rotation', javascript solution
+
+-simple conditional operator bug caused inverted ring writes and
+thus havoc
+---
+ .../matrix.layer.rotation.js                         | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.hard.-.matrix.layer.rotation/matrix.layer.rotation.js b/hackerrank/algorithms.-.implementation.-.hard.-.matrix.layer.rotation/matrix.layer.rotation.js
+index 4a8c836..80dc0cc 100644
+--- a/hackerrank/algorithms.-.implementation.-.hard.-.matrix.layer.rotation/matrix.layer.rotation.js
++++ b/hackerrank/algorithms.-.implementation.-.hard.-.matrix.layer.rotation/matrix.layer.rotation.js
+@@ -37,7 +37,8 @@ function matrixRotation(matrix, r) {
+     /*
+     console.log(`matrix: ${d2}x${d1} rotated ${r} times`);
+     for (let l = 0; l < d2; l++)
+-        console.log(`${matrix[l].join(' ')}`);
++        console.log(`[${l}] ${matrix[l].join(' ')}`);
++    console.log("");
+     */
+     let h1 = 0;
+     let h2 = d1 - 1;
+@@ -45,7 +46,7 @@ function matrixRotation(matrix, r) {
+     let v2 = d2 - 1;
+     let ring = 1;
+     let idx = undefined;
+-    while (h2 - h1 > 0 || v2 - v1 > 0) {
++    while (h2 - h1 > 0 && v2 - v1 > 0) {
+         let numbers = [];
+ 
+         // iterate ring
+@@ -53,10 +54,10 @@ function matrixRotation(matrix, r) {
+         for (let l = v1 + 1; l < v2; l++) numbers.push(matrix[l][h2]);
+         for (let l = h2; l >= h1; l--) numbers.push(matrix[v2][l]);
+         for (let l = v2 - 1; l > v1; l--) numbers.push(matrix[l][h1]);
+-        //console.log(`ring: ${ring}: ${numbers}`);
+ 
+-        idx = r % (numbers.length); // rotated / cycled start offset
+-        //console.log(`rotated / cycled start offset: ${idx}`);
++        idx = r % numbers.length; // rotated / cycled start offset
++        //console.log(`[ring:${('' + ring).padStart(2, 0)}|rotate:${('' + idx).padStart(2, 0)}] ${numbers}`);
++
+         for (let l = h1; l <= h2; l++) matrix[v1][l] = numbers[idx++ % numbers.length];
+         for (let l = v1 + 1; l < v2; l++) matrix[l][h2] = numbers[idx++ % numbers.length];
+         for (let l = h2; l >= h1; l--) matrix[v2][l] = numbers[idx++ % numbers.length];
+@@ -69,6 +70,7 @@ function matrixRotation(matrix, r) {
+         v2--;
+         ring++;
+     }
++    //console.log("");
+     for (let l = 0; l < d2; l++)
+         console.log(`${matrix[l].join(' ')}`);
+ }
+-- 
+2.23.0
+
