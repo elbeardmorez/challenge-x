@@ -1,0 +1,105 @@
+From d4c8bf782c1549ed4a58abde41935e3cbb192e4e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 17 Oct 2019 09:30:44 +0100
+Subject: [add] hackerrank, 'matrix layer rotation', go port
+
+---
+ .../matrix.layer.rotation.go                  | 80 +++++++++++++++++++
+ 1 file changed, 80 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.hard.-.matrix.layer.rotation/matrix.layer.rotation.go b/hackerrank/algorithms.-.implementation.-.hard.-.matrix.layer.rotation/matrix.layer.rotation.go
+index 7ffffc1..989aa6c 100644
+--- a/hackerrank/algorithms.-.implementation.-.hard.-.matrix.layer.rotation/matrix.layer.rotation.go
++++ b/hackerrank/algorithms.-.implementation.-.hard.-.matrix.layer.rotation/matrix.layer.rotation.go
+@@ -11,8 +11,88 @@ import (
+ 
+ // Complete the matrixRotation function below.
+ func matrixRotation(matrix [][]int32, r int32) {
++    /*
++    concentric circles of rotation
++
++    from outside to in, iterate circles collecting values to forms
++    flattened subsets of the matrix
++    then starting from r offset, replace numbers and wrap back to the
++    start (i.e. cycle r times)
++    */
++
++    d1 := len(matrix[0])
++    d2 := len(matrix)
++
++    /*
++    fmt.Printf("matrix: %vx%v rotated %v times\n", d2, d1, r)
++    for l := 0; l < d2; l++ {
++        s_ := ""
++        for l2 := 0; l2 < d1; l2++ {
++            s_ += " " + strconv.FormatInt(int64(matrix[l][l2]), 10)
++        }
++        fmt.Printf("[%v] %v\n", l, s_[1:])
++    }
++    fmt.Printf("")
++    */
++    var h1 = 0
++    var h2 = d1 - 1
++    var v1 = 0
++    var v2 = d2 - 1
++    var ring = 1
++    var idx int32
++    for h2 - h1 > 0 && v2 - v1 > 0 {
++        numbers := make([]int32, 0)
++
++        // iterate ring
++        for l := h1; l <= h2; l++ {
++            numbers = append(numbers, matrix[v1][l])
++        }
++        for l := v1 + 1; l < v2; l++ {
++            numbers = append(numbers, matrix[l][h2])
++        }
++        for l := h2; l >= h1; l-- {
++            numbers = append(numbers, matrix[v2][l])
++        }
++        for l := v2 - 1; l > v1; l-- {
++            numbers = append(numbers, matrix[l][h1])
++        }
++        l_numbers := int32(len(numbers))
++        idx = r % l_numbers; // rotated / cycled start offset
++        //fmt.Printf("[ring:%02v|rotate:%02v] %v\n", ring, idx, numbers)
+ 
++        for l := h1; l <= h2; l++ {
++            matrix[v1][l] = numbers[idx % l_numbers]
++            idx += 1
++        }
++        for l := v1 + 1; l < v2; l++ {
++            matrix[l][h2] = numbers[idx % l_numbers]
++            idx += 1
++        }
++        for l := h2; l >= h1; l-- {
++            matrix[v2][l] = numbers[idx % l_numbers]
++            idx += 1
++        }
++        for l := v2 - 1; l > v1; l-- {
++            matrix[l][h1] = numbers[idx % l_numbers]
++            idx += 1
++        }
+ 
++        // contract
++        h1++
++        h2--
++        v1++
++        v2--
++        ring++
++    }
++    //fmt.Printf("")
++    for l := 0; l < d2; l++ {
++        s_ := ""
++        for l2 := 0; l2 < d1; l2++ {
++            s_ += " " + strconv.FormatInt(int64(matrix[l][l2]), 10)
++        }
++        //fmt.Printf("[%v] %v\n", l, s_[1:])
++        fmt.Printf("%v\n", s_[1:])
++    }
+ }
+ 
+ func main() {
+-- 
+2.23.0
+
