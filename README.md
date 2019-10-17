@@ -8,14 +8,14 @@ worth noting is that writing code that is easily portable code between my favour
 this repository contains a heck of a lot of my programming faux-pas, but i've decided that it's healthy to expose my limits and one would hope i can only get better!
 
 ## hackerrank
-### breakdown
+### attempts
 - expert | 0
-- advanced | 1
-- hard | 11
-- medium | 48
-- easy | 207
+- advanced | 3
+- hard | 15
+- medium | 61
+- easy | 219
 
-### stuck
+### incomplete
 - [algorithms|strings|advanced] ashton and string | 33.33/100
 - [algorithms|implementation|medium] forming a magic square | 0/20
 - [data structures|heap|hard] find the running median | 0/50
