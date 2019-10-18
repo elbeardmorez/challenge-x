@@ -1,0 +1,101 @@
+From aaff69d42abba24e0272a69238435f58d276cbe8 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 18 Oct 2019 06:49:18 +0100
+Subject: [add] hackerrank, 'matrix layer rotation', python port
+
+---
+ .../matrix.layer.rotation.py                  | 76 +++++++++++++++++++
+ 1 file changed, 76 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.hard.-.matrix.layer.rotation/matrix.layer.rotation.py b/hackerrank/algorithms.-.implementation.-.hard.-.matrix.layer.rotation/matrix.layer.rotation.py
+index 1564ad6..2c60dc7 100644
+--- a/hackerrank/algorithms.-.implementation.-.hard.-.matrix.layer.rotation/matrix.layer.rotation.py
++++ b/hackerrank/algorithms.-.implementation.-.hard.-.matrix.layer.rotation/matrix.layer.rotation.py
+@@ -6,8 +6,84 @@ import random
+ import re
+ import sys
+ 
++
+ # Complete the matrixRotation function below.
+ def matrixRotation(matrix, r):
++    """
++    concentric circles of rotation
++
++    from outside to in, iterate circles collecting values to forms
++    flattened subsets of the matrix
++    then starting from r offset, replace numbers and wrap back to the
++    start (i.e. cycle r times)
++    """
++
++    d1 = len(matrix[0])
++    d2 = len(matrix)
++
++    """
++    print(f"matrix: {d2}x{d1} rotated {r} times")
++    for l in range(0, d2):
++        #print(f"[{l}] {' '.join([str(x) for x in matrix[l]])}")
++        print(f"{' '.join([str(x) for x in matrix[l]])}")
++
++    print(f"")
++    """
++
++    h1 = 0
++    h2 = d1 - 1
++    v1 = 0
++    v2 = d2 - 1
++    ring = 1
++    idx = 0
++    while h2 - h1 > 0 and v2 - v1 > 0:
++        numbers = []
++
++        # iterate ring
++        for l in range(h1, h2 + 1):
++            numbers.append(matrix[v1][l])
++
++        for l in range(v1 + 1, v2):
++            numbers.append(matrix[l][h2])
++
++        for l in range(h2, h1 - 1, -1):
++            numbers.append(matrix[v2][l])
++
++        for l in range(v2 - 1, v1, -1):
++            numbers.append(matrix[l][h1])
++
++        l_numbers = len(numbers)
++        idx = r % l_numbers  # rotated / cycled start offset
++        #print("[ring:" + "{:02d}".format(ring) + "|rotate:" + "{:02d}".format(idx) + f"{numbers}")
++
++        for l in range(h1, h2 + 1):
++            matrix[v1][l] = numbers[idx % l_numbers]
++            idx += 1
++
++        for l in range(v1 + 1, v2):
++            matrix[l][h2] = numbers[idx % l_numbers]
++            idx += 1
++
++        for l in range(h2, h1 - 1, -1):
++            matrix[v2][l] = numbers[idx % l_numbers]
++            idx += 1
++
++        for l in range(v2 - 1, v1, -1):
++            matrix[l][h1] = numbers[idx % l_numbers]
++            idx += 1
++
++        # contract
++        h1 += 1
++        h2 -= 1
++        v1 += 1
++        v2 -= 1
++        ring += 1
++
++    #print(f"")
++    for l in range(0, d2):
++        #print(f"[{l}] {' '.join([str(x) for x in matrix[l]])}")
++        print(f"{' '.join([str(x) for x in matrix[l]])}")
++
+ 
+ if __name__ == '__main__':
+     mnr = input().rstrip().split()
+-- 
+2.23.0
+
