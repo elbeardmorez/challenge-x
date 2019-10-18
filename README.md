@@ -23,6 +23,7 @@ this repository contains a heck of a lot of my programming faux-pas, but i've de
 - [algorithms|implementation|medium] non-divisible subset | 9.33/20
 
 ### hardest / favourite successes
+- [algorithms|search|hard] maximizing mission points | python solution
 - [algorithms|strings|medium] common child | python solution
 - [algorithms|strings|advanced] two two | c++ solution
 - [algorithms|sorting|easy] big sorting | c# port
