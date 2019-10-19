@@ -37,14 +37,14 @@ i refuse to 'work around' bugs like others have done, hard-coding results on a p
 #### live
 - [algorithms|constructive algorithms|medium] bonetrousle | javascript, out of bounds use of ParseInt in stub
 - [algorithms|graph theory|medium] journey to the moon | c# stub use 'int's (signed 32-bit) but output 11 4999949998, which is > 2^31-1
-- [data structures|linked lists|easy] insert a node at the head of a linked list | c#, attempted use of pointer notation in locket code area, probably a c++ copy/paste error
-- [data structures|linked lists|medium] cylce detection | javascript, use of 'int' in locked code area
+- [data structures|linked lists|easy] insert a node at the head of a linked list | c#, attempted use of pointer notation in locked code area, probably a c++ copy/paste error
+- [data structures|linked lists|medium] cycle detection | javascript, use of 'int' in locked code area
 - [python|regex and parsing|easy] validating uid | python, copy/paste error in test case 3
 - [linux shell|text processing|easy] cut #1 | test case 2 output bares no correlation to input. copy/paste error
 - [linux shell|text processing|easy] cut #2 | test case 2 output bares no correlation to input. copy/paste error
 - [linux shell|text processing|easy] cut #3 | test case 2 output bares no correlation to input. copy/paste error
 - [linux shell|text processing|easy] cut #4 | test case 2 output bares no correlation to input. copy/paste error
-- [linux shell|text processing|easy] cut #6 | test case 2 output bares no correlation to input. copy/paste error. there all also line termination differences between test case 2 and 0 / 3
+- [linux shell|text processing|easy] cut #6 | test case 2 output bares no correlation to input. copy/paste error. there are also line termination differences between test case 2 and 0 / 3
 - [linux shell|text processing|easy] cut #7 | invalid / total nonsense example used for test case 0
 
 #### fixed
