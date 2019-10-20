@@ -1,0 +1,119 @@
+From a777ae62ecf018fd0ab8db7633fa1b06cac08eae Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 20 Oct 2019 07:29:32 +0100
+Subject: [add] hackerrank, 'matrix layer rotation', c++ port
+
+---
+ .../matrix.layer.rotation.cpp                 | 89 +++++++++++++++++++
+ 1 file changed, 89 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.hard.-.matrix.layer.rotation/matrix.layer.rotation.cpp b/hackerrank/algorithms.-.implementation.-.hard.-.matrix.layer.rotation/matrix.layer.rotation.cpp
+index e001a6b..cb51c26 100644
+--- a/hackerrank/algorithms.-.implementation.-.hard.-.matrix.layer.rotation/matrix.layer.rotation.cpp
++++ b/hackerrank/algorithms.-.implementation.-.hard.-.matrix.layer.rotation/matrix.layer.rotation.cpp
+@@ -1,4 +1,6 @@
+ #include <bits/stdc++.h>
++#include <sstream>
++#include <iomanip>
+ 
+ using namespace std;
+ 
+@@ -8,8 +10,95 @@ vector<string> split(const string &);
+ 
+ // Complete the matrixRotation function below.
+ void matrixRotation(vector<vector<int>> matrix, int r) {
++    /*
++    concentric circles of rotation
++
++    from outside to in, iterate circles collecting values to forms
++    flattened subsets of the matrix
++    then starting from r offset, replace numbers and wrap back to the
++    start (i.e. cycle r times)
++    */
++
++    int d1 = matrix[0].size();
++    int d2 = matrix.size();
++    stringstream ss;
++
++    /*;
++    cout << "matrix: " << d2 << "x" << d1 << " rotated " << r << " times" << endl;
++    for (int l = 0; l < d2; l++) {
++        ss.str("");
++        for (auto i_ : matrix[l]) ss << " " << i_;
++        //cout << "[" << l << "]" << ss.str() << endl;
++        cout << ss.str().substr(1) << endl;
++    }
++    cout << endl;
++    */;
++
++    int h1 = 0;
++    auto h2 = d1 - 1;
++    int v1 = 0;
++    auto v2 = d2 - 1;
++    int ring = 1;
++    int l_numbers;
++    vector<int> numbers;
++    int idx;
++    while (h2 - h1 > 0 && v2 - v1 > 0) {
++        // iterate ring;
++        for (auto l = h1; l <= h2; l++) {
++            numbers.push_back(matrix[v1][l]);
++        }
++        for (auto l = v1 + 1; l < v2; l++) {
++            numbers.push_back(matrix[l][h2]);
++        }
++        for (auto l = h2; l >= h1; l--) {
++            numbers.push_back(matrix[v2][l]);
++        }
++        for (auto l = v2 - 1; l > v1; l--) {
++            numbers.push_back(matrix[l][h1]);
++        }
++
++        l_numbers = numbers.size();
++        idx = r % l_numbers;  // rotated / cycled start offset;
+ 
++        /*
++        cout << "[ring:" << setw(2) << setfill('0') << ring << "|rotate:" << setw(2) << setfill('0') << idx << "] ";
++        ss.str("");
++        for (auto i_ : numbers) ss << " " << i_;
++        cout << ss.str().substr(1) << endl;
++        */
+ 
++        for (auto l = h1; l <= h2; l++) {
++            matrix[v1][l] = numbers[idx % l_numbers];
++            idx += 1;
++        }
++        for (auto l = v1 + 1; l < v2; l++) {
++            matrix[l][h2] = numbers[idx % l_numbers];
++            idx += 1;
++        }
++        for (auto l = h2; l >= h1; l--) {
++            matrix[v2][l] = numbers[idx % l_numbers];
++            idx += 1;
++        }
++        for (auto l = v2 - 1; l > v1; l--) {
++            matrix[l][h1] = numbers[idx % l_numbers];
++            idx += 1;
++        }
++        // contract;
++        h1 += 1;
++        h2 -= 1;
++        v1 += 1;
++        v2 -= 1;
++        ring += 1;
++        numbers.clear();
++    }
++
++    //cout << endl;
++    for (int l = 0; l < d2; l++) {
++        ss.str("");
++        for (auto i_ : matrix[l]) ss << " " << i_;
++        //cout << "[" << l << "]" << ss.str() << endl;
++        cout << ss.str().substr(1) << endl;
++    }
+ }
+ 
+ int main()
+-- 
+2.23.0
+
