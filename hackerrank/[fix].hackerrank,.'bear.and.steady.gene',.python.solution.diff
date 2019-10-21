@@ -1,0 +1,28 @@
+From ac693297d409724aebd851afafafbca2b7dee3f9 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 21 Oct 2019 10:50:18 +0100
+Subject: [fix] hackerrank, 'bear and steady gene', python solution
+
+-short-circuit for pre-balanced corner-case
+---
+ .../bear.and.steady.gene.py                                   | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.bear.and.steady.gene/bear.and.steady.gene.py b/hackerrank/algorithms.-.strings.-.medium.-.bear.and.steady.gene/bear.and.steady.gene.py
+index c0c3e72..d89ff0a 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.bear.and.steady.gene/bear.and.steady.gene.py
++++ b/hackerrank/algorithms.-.strings.-.medium.-.bear.and.steady.gene/bear.and.steady.gene.py
+@@ -72,6 +72,10 @@ def steadyGene(gene):
+     l_remove = len(remove)
+     global_min = l_chars
+ 
++    if l_remove == 0:
++        # already balanced
++        return 0
++
+     balance = sum([count for [letter, count] in remove])  # remove chars
+ 
+     idx_left = l_chars
+-- 
+2.23.0
+
