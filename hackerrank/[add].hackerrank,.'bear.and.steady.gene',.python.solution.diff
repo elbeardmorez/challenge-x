@@ -1,0 +1,144 @@
+From 66a60f4b291c3e9d21105e24bb50363f01602c97 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 21 Oct 2019 10:40:45 +0100
+Subject: [add] hackerrank, 'bear and steady gene', python solution
+
+---
+ .../bear.and.steady.gene.py                   | 119 ++++++++++++++++++
+ 1 file changed, 119 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.bear.and.steady.gene/bear.and.steady.gene.py b/hackerrank/algorithms.-.strings.-.medium.-.bear.and.steady.gene/bear.and.steady.gene.py
+index c4ea0bc..c0c3e72 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.bear.and.steady.gene/bear.and.steady.gene.py
++++ b/hackerrank/algorithms.-.strings.-.medium.-.bear.and.steady.gene/bear.and.steady.gene.py
+@@ -6,8 +6,127 @@ import random
+ import re
+ import sys
+ 
++from itertools import groupby
++from collections import deque
++
++
+ # Complete the steadyGene function below.
+ def steadyGene(gene):
++    """
++    group gene, deduce quantity of each letter over n/4
++    look for smallest substring containing all those letters
++
++    single iteration with char counts increase / decrease per
++    iteration.. store char idx with each char. when counts of
++    target replace letters hit, max char idx - min char idx of
++    collected set is 'a' possibility
++
++    continue iteration, replacing the minimum of any char visited
++    by the current visisted char|idx pair ..each time asserting
++    whether 'global mininum set' or not
++
++    e.g.
++
++      1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16
++      A  D  D  D  A  B  C  C  A  C  C  D  D  C  A  A
++
++    replace the extra A C and D with BBB
++
++                                     7-4+1
++    min| -     -     -     -     -     4     4       4     4     4     4     4     4     3
++
++      A| 1  A| 1  A| 1  A| 1  A| 5  A| 5  A| 5    A| 9  A| 9  A| 9  A| 9  A| 9  A| 9  A|15
++      C|    C|    C|    C|    C|    C| 7  C| 8    C| 8  C|10  C|11  C|11  C|11  C|14  C|14
++      D|    D| 2  D| 3  D| 4  D| 4  D| 4  D| 4    D| 4  D| 4  D| 4  D|12  D|13  D|12  D|13
++
++    also short circuit on min = #replace_letters (e.g. 3 above) as
++    it's a global minimum
++    """
++
++    letters = list("ACGT")
++    target = int(len(gene) / 4)
++
++    grouped = groupby(sorted(list(gene)))
++    counts = {letter: len(list(group)) - target for letter, group in grouped}
++    gene_letters = counts.keys()
++
++    remove = [[letter, counts[letter]]
++                for letter in gene_letters if counts[letter] > 0]
++    add = [[letter, abs(counts[letter])]
++                for letter in gene_letters if counts[letter] < 0]
++    if len(gene_letters) < len(letters):
++        add = add + [[letter, target] for letter in letters if letter not in gene_letters]
++    """
++    print(f"remove: {remove}")
++    print(f"add: {add}")
++    print("replace " + ", ".join([
++          f"{letter_count[1]} {letter_count[0]}" +
++          ("" if letter_count[1] == 1 else "s") for letter_count in remove]) +
++          " with " + ", ".join([
++          f"{letter_count[1]} {letter_count[0]}" +
++          ("" if letter_count[1] == 1 else "s") for letter_count in add]))
++    """
++
++    chars = list(gene)
++    l_chars = len(chars)
++    l_remove = len(remove)
++    global_min = l_chars
++
++    balance = sum([count for [letter, count] in remove])  # remove chars
++
++    idx_left = l_chars
++    idx_right = 0
++    char_counts = []
++    # zero case
++    for [letter, count] in remove:
++        idx = gene.find(letter)
++        char_counts.append([letter, deque([idx])])
++        idx_left = min(idx_left, idx)
++        idx_right = max(idx_right, idx)
++    balance -= l_remove
++
++    #print(f"idx_left: {idx_left}, idx_right: {idx_right}, balance: {balance}")
++    idx = idx_right + 1
++    while idx < l_chars:
++        char = chars[idx]
++        idx2 = 0
++        while idx2 < l_remove:
++            [c, q] = char_counts[idx2]
++            #print(f"idx: {idx}, char: {char}, idx2: {idx2}, c: {c}, balance: {balance}")
++            if char == c:
++                if len(q) < remove[idx2][1]:
++                    #print(f"char: {char}, reducing balance: {balance}")
++                    balance -= 1
++                q.append(idx)
++                #print(f"comparing char: {char}'s length: {len(q)} to remove count: {target}")
++                if len(q) > remove[idx2][1]:
++                    # pop
++                    if q[0] == idx_left:
++                        # set next min
++                        q.popleft()
++                        idx_left = min([idxs[0] for [_, idxs] in char_counts])
++                    else:
++                        q.popleft()
++                if balance == 0:
++                    # possible set
++                    if idx - idx_left + 1 < global_min:
++                        global_min = idx - idx_left + 1
++
++            idx2 += 1
++
++        if global_min == l_remove:
++            break
++
++        """
++        print(f"idx: {idx}, balance: {balance}, idx_left: {idx_left}, global_min: {global_min}")
++        for [letter, q] in char_counts:
++            print(f"[{letter}] {q}")
++        """
++
++        idx += 1
++
++    return global_min
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
