@@ -1,0 +1,155 @@
+From 5928ffd03138453a40e8e8e6ea40f40447c7ee3d Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 22 Oct 2019 20:08:51 +0100
+Subject: [mod] hackerrank, 'bear and steady gene', c++ port
+
+-speed-up. beware 'std::pair' and pass by copy! ensure pair items
+are explicitly accessed by reference. RBFL iteration short form
+is particularly easy to get wrong on this front. the difference
+was ~10x improvement for test 10 @500k length
+---
+ .../bear.and.steady.gene.cpp                  | 72 ++++++++++++-------
+ 1 file changed, 45 insertions(+), 27 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.bear.and.steady.gene/bear.and.steady.gene.cpp b/hackerrank/algorithms.-.strings.-.medium.-.bear.and.steady.gene/bear.and.steady.gene.cpp
+index 3b175dd..5207c81 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.bear.and.steady.gene/bear.and.steady.gene.cpp
++++ b/hackerrank/algorithms.-.strings.-.medium.-.bear.and.steady.gene/bear.and.steady.gene.cpp
+@@ -1,7 +1,14 @@
+ #include <bits/stdc++.h>
++#include <chrono>
+ 
+ using namespace std;
+ 
++template <typename T>
++double elapsed(chrono::time_point<T> tp_last) {
++    chrono::duration<double> tp_diff = T::now() - tp_last;
++    return chrono::duration_cast<chrono::microseconds>(tp_diff).count();
++}
++
+ template <typename I, typename K, typename V, typename... Mx>
+ void groupby(I input, map<K, vector<V>, Mx...> &groups, K (*f)(V&) = [](V& x) -> K { return x; }) {
+     for (auto itr = input.begin(); itr != input.end(); ++itr) {
+@@ -51,6 +58,9 @@ int steadyGene(string gene) {
+     it's a global minimum
+     */
+ 
++    //double elapsed_ = 0;
++    //chrono::high_resolution_clock::time_point tp_mark;
++
+     auto letters = {'A', 'C', 'G', 'T'};
+     auto target = int(gene.length() / 4);
+ 
+@@ -64,8 +74,7 @@ int steadyGene(string gene) {
+     vector<pair<const char, int>> add;
+ 
+     int count, idx;
+-    char letter, c, chr;
+-    deque<int>* q;
++    char letter, chr;
+ 
+     for (auto letter : letters) {
+         count = target;
+@@ -100,13 +109,13 @@ int steadyGene(string gene) {
+ 
+     int idx_left = l_chars;
+     int idx_right = 0;
+-    vector<pair<char, deque<int>>> char_counts;
++    vector<pair<char, deque<int>>> char_visited_idxs;
+     // zero case;
+     for (auto p : remove) {
+         letter = p.first;
+         idx = gene.find(letter);
+-        char_counts.push_back(pair<char, deque<int>>(letter, deque<int>()));
+-        char_counts.back().second.push_back(idx);
++        char_visited_idxs.push_back(pair<char, deque<int>>(letter, deque<int>()));
++        char_visited_idxs.back().second.push_back(idx);
+         idx_left = min(idx_left, idx);
+         idx_right = max(idx_right, idx);
+     }
+@@ -118,51 +127,60 @@ int steadyGene(string gene) {
+         chr = gene.at(idx);
+         int idx2 = 0;
+         while (idx2 < l_remove) {
+-            c = char_counts[idx2].first;
+-            q = &(char_counts[idx2].second);
++            char& c = char_visited_idxs[idx2].first;
++            deque<int>& q = char_visited_idxs[idx2].second;
+             //cout << "idx: " << idx << ", chr: " << chr << ", idx2: " << idx2 << ", c: " << c << ", balance: " << balance << endl;
+             if (chr == c) {
+-                if (q->size() < remove[idx2].second) {
++                if (q.size() < remove[idx2].second) {
+                     //cout << "char: " << chr << ", reducing balance: " << balance << endl;
+-                    balance -= 1;
++                    balance--;
+                 }
+-                q->push_back(idx);
++                q.push_back(idx);
+                 //cout << "comparing char: " << chr << "'s length: " << q->size() << " to remove count: " << target << endl;
+-                if (q->size() > remove[idx2].second) {
++                if (q.size() > remove[idx2].second) {
+                     // pop;
+-                    if ((*q)[0] == idx_left) {
++                    if (q[0] == idx_left) {
+                         // set next min;
+-                        q->pop_front();
+-                        idx_left = idx;
+-                        for (auto letter_q : char_counts)
+-                            idx_left = min(idx_left, letter_q.second[0]);
++                        q.pop_front();
++                        idx_left = q[0];
++//tp_mark = chrono::high_resolution_clock::now();
++                        //for (auto c_q : char_visited_idxs) {
++                        //    deque<int>& q_ = c_q.second;
++                        for (auto itr = char_visited_idxs.begin(); itr != char_visited_idxs.end(); ++itr) {
++                            deque<int>& q_ = itr->second;
++                            if (q_[0] < idx_left)
++                                idx_left = q_[0];
++                        }
++//elapsed_ += elapsed(tp_mark);
+                     } else
+-                        q->pop_front();
++                        q.pop_front();
+                 }
+                 if (balance == 0) {
+                     // possible set;
+                     if (idx - idx_left + 1 < global_min) {
+                         global_min = idx - idx_left + 1;
+                         //cout << "global_min improved: " << global_min << endl;
++                        if (global_min == l_remove)
++                            return global_min;
+                     }
+                 }
+             }
+-            idx2 += 1;
++            idx2++;
+         }
+ 
+-        if (global_min == l_remove)
+-            break;
+-
+-        /*;
+-        cout << "idx: " << idx << ", balance: " << balance << ", idx_left: " << idx_left << ", global_min: " << global_min << endl;
+-        for (auto p : char_counts) {
+-            cout << "[" << p.first << "]"; for (auto i : p.second) cout << " " << i; cout << endl;
++        /*
++        if (idx % 50000 == 0) {
++            cout << "idx: " << idx << ", balance: " << balance << ", idx_left: " << idx_left << ", global_min: " << global_min << endl;
++            for (auto p : char_visited_idxs) {
++                cout << "[" << p.first << "] " << p.second.size() << endl;
++                //cout << "[" << p.first << "]"; for (auto i : p.second) cout << " " << i; cout << endl;
++            }
+         }
+-        */;
++        */
+ 
+         idx += 1;
+     }
+-
++    //cout << "[debug] " << elapsed4_ << "us elapsed" << endl;
+     return global_min;
+ }
+ 
+-- 
+2.23.0
+
