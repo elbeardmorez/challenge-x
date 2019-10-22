@@ -1,0 +1,46 @@
+From 90a03ccbc6a358a4bd44a2c0d3ab246893ec90a7 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 22 Oct 2019 20:20:49 +0100
+Subject: [mod] hackerrank, 'bear and steady gene', c++ port
+
+-switch back to reference version of RBFL short form, e.g. 'auto&'
+and long form code
+-clean up commented profiling code
+---
+ .../bear.and.steady.gene.cpp                           | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.bear.and.steady.gene/bear.and.steady.gene.cpp b/hackerrank/algorithms.-.strings.-.medium.-.bear.and.steady.gene/bear.and.steady.gene.cpp
+index 5207c81..cea92c7 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.bear.and.steady.gene/bear.and.steady.gene.cpp
++++ b/hackerrank/algorithms.-.strings.-.medium.-.bear.and.steady.gene/bear.and.steady.gene.cpp
+@@ -60,6 +60,8 @@ int steadyGene(string gene) {
+ 
+     //double elapsed_ = 0;
+     //chrono::high_resolution_clock::time_point tp_mark;
++    //tp_mark = chrono::high_resolution_clock::now();
++    //elapsed_ += elapsed(tp_mark);
+ 
+     auto letters = {'A', 'C', 'G', 'T'};
+     auto target = int(gene.length() / 4);
+@@ -143,15 +145,11 @@ int steadyGene(string gene) {
+                         // set next min;
+                         q.pop_front();
+                         idx_left = q[0];
+-//tp_mark = chrono::high_resolution_clock::now();
+-                        //for (auto c_q : char_visited_idxs) {
+-                        //    deque<int>& q_ = c_q.second;
+-                        for (auto itr = char_visited_idxs.begin(); itr != char_visited_idxs.end(); ++itr) {
+-                            deque<int>& q_ = itr->second;
++                        for (auto &c_q : char_visited_idxs) {
++                            deque<int>& q_ = c_q.second;
+                             if (q_[0] < idx_left)
+                                 idx_left = q_[0];
+                         }
+-//elapsed_ += elapsed(tp_mark);
+                     } else
+                         q.pop_front();
+                 }
+-- 
+2.23.0
+
