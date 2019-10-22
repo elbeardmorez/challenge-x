@@ -1,0 +1,185 @@
+From 0cee86726128b5be36793089830f15d7cfd6b519 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 22 Oct 2019 10:29:28 +0100
+Subject: [add] hackerrank, 'bear and steady gene', c++ port
+
+---
+ .../bear.and.steady.gene.cpp                  | 158 ++++++++++++++++++
+ 1 file changed, 158 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.bear.and.steady.gene/bear.and.steady.gene.cpp b/hackerrank/algorithms.-.strings.-.medium.-.bear.and.steady.gene/bear.and.steady.gene.cpp
+index b4e4eb6..3b175dd 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.bear.and.steady.gene/bear.and.steady.gene.cpp
++++ b/hackerrank/algorithms.-.strings.-.medium.-.bear.and.steady.gene/bear.and.steady.gene.cpp
+@@ -2,10 +2,168 @@
+ 
+ using namespace std;
+ 
++template <typename I, typename K, typename V, typename... Mx>
++void groupby(I input, map<K, vector<V>, Mx...> &groups, K (*f)(V&) = [](V& x) -> K { return x; }) {
++    for (auto itr = input.begin(); itr != input.end(); ++itr) {
++        K k = f(*itr);
++        auto itr2 = groups.find(k);
++        if (itr2 == groups.end()) {
++            //cout << "adding new key: '" << k << "'" << endl;
++            groups[k] = vector<V> {*itr};
++        } else {
++            //cout << "searched for k: " << k << ", found: " << itr2->first << endl;
++            //cout << "appending to existing key: '" << k << "'" << endl;
++            itr2->second.emplace_back(*itr);
++        }
++    }
++}
++
+ // Complete the steadyGene function below.
+ int steadyGene(string gene) {
++    /*
++    group gene, deduce quantity of each letter over n/4
++    look for smallest substring containing all those letters
++
++    single iteration with char counts increase / decrease per
++    iteration.. store char idx with each char. when counts of
++    target replace letters hit, max char idx - min char idx of
++    collected set is 'a' possibility
++
++    continue iteration, replacing the minimum of any char visited
++    by the current visisted char|idx pair ..each time asserting
++    whether 'global mininum set' or not
++
++    e.g.
++
++      1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16
++      A  D  D  D  A  B  C  C  A  C  C  D  D  C  A  A
++
++    replace the extra A C and D with BBB
++
++                                     7-4+1
++    min| -     -     -     -     -     4     4       4     4     4     4     4     4     3
++
++      A| 1  A| 1  A| 1  A| 1  A| 5  A| 5  A| 5    A| 9  A| 9  A| 9  A| 9  A| 9  A| 9  A|15
++      C|    C|    C|    C|    C|    C| 7  C| 8    C| 8  C|10  C|11  C|11  C|11  C|14  C|14
++      D|    D| 2  D| 3  D| 4  D| 4  D| 4  D| 4    D| 4  D| 4  D| 4  D|12  D|13  D|12  D|13
++
++    also short circuit on min = #replace_letters (e.g. 3 above) as
++    it's a global minimum
++    */
++
++    auto letters = {'A', 'C', 'G', 'T'};
++    auto target = int(gene.length() / 4);
++
++    map<const char, vector<char>> grouped;
++    groupby(gene, grouped);
++    /*
++    for (auto group : grouped)
++        cout << "k: " << group.first << ", [v]: " << group.second.size() << endl;
++    */
++    vector<pair<const char, int>> remove;
++    vector<pair<const char, int>> add;
++
++    int count, idx;
++    char letter, c, chr;
++    deque<int>* q;
++
++    for (auto letter : letters) {
++        count = target;
++        auto group = grouped.find(letter);
++        if (group != grouped.end()) {
++            count = group->second.size() - target;
++            if (count > 0)
++                remove.push_back(pair<char, int>(letter, count));
++            else if (count < 0)
++                add.push_back(pair<char, int>(letter, target - group->second.size()));
++        } else
++            add.push_back(pair<char, int>(letter, count));
++    }
++    /*;
++    cout << "remove:"; for (auto p : remove) cout << " " << p.first << "|" << p.second; cout << endl;
++    cout << "add:"; for (auto p : add) cout << " " << p.first << "|" << p.second; cout << endl;
++
++    cout << "replace:"; for (auto p : remove) cout << " " << p.second << " " << p.first << (p.second != 1 ? "s" : "");
++    cout << " with:"; for (auto p : add) cout << " " << p.second << " " << p.first << (p.second != 1 ? "s" : ""); cout << endl;
++    */;
++
++    auto l_chars = gene.length();
++    auto l_remove = remove.size();
++    auto global_min = l_chars;
++
++    if (l_remove == 0) {
++        // already balanced;
++        return 0;
++    }
++
++    auto balance = accumulate(remove.begin(), remove.end(), 0, [](int a, pair<char, int> p) {return a + p.second;});
++
++    int idx_left = l_chars;
++    int idx_right = 0;
++    vector<pair<char, deque<int>>> char_counts;
++    // zero case;
++    for (auto p : remove) {
++        letter = p.first;
++        idx = gene.find(letter);
++        char_counts.push_back(pair<char, deque<int>>(letter, deque<int>()));
++        char_counts.back().second.push_back(idx);
++        idx_left = min(idx_left, idx);
++        idx_right = max(idx_right, idx);
++    }
++    balance -= l_remove;
++
++    //cout << "idx_left: " << idx_left << ", idx_right: " << idx_right << ", balance: " << balance << endl;
++    idx = idx_right + 1;
++    while (idx < l_chars) {
++        chr = gene.at(idx);
++        int idx2 = 0;
++        while (idx2 < l_remove) {
++            c = char_counts[idx2].first;
++            q = &(char_counts[idx2].second);
++            //cout << "idx: " << idx << ", chr: " << chr << ", idx2: " << idx2 << ", c: " << c << ", balance: " << balance << endl;
++            if (chr == c) {
++                if (q->size() < remove[idx2].second) {
++                    //cout << "char: " << chr << ", reducing balance: " << balance << endl;
++                    balance -= 1;
++                }
++                q->push_back(idx);
++                //cout << "comparing char: " << chr << "'s length: " << q->size() << " to remove count: " << target << endl;
++                if (q->size() > remove[idx2].second) {
++                    // pop;
++                    if ((*q)[0] == idx_left) {
++                        // set next min;
++                        q->pop_front();
++                        idx_left = idx;
++                        for (auto letter_q : char_counts)
++                            idx_left = min(idx_left, letter_q.second[0]);
++                    } else
++                        q->pop_front();
++                }
++                if (balance == 0) {
++                    // possible set;
++                    if (idx - idx_left + 1 < global_min) {
++                        global_min = idx - idx_left + 1;
++                        //cout << "global_min improved: " << global_min << endl;
++                    }
++                }
++            }
++            idx2 += 1;
++        }
++
++        if (global_min == l_remove)
++            break;
++
++        /*;
++        cout << "idx: " << idx << ", balance: " << balance << ", idx_left: " << idx_left << ", global_min: " << global_min << endl;
++        for (auto p : char_counts) {
++            cout << "[" << p.first << "]"; for (auto i : p.second) cout << " " << i; cout << endl;
++        }
++        */;
+ 
++        idx += 1;
++    }
+ 
++    return global_min;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
