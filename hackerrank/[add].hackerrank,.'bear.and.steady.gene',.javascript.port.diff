@@ -1,0 +1,177 @@
+From f917cb8dbc399ca16c4b5b7a9e03b3636fa1243a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 23 Oct 2019 08:14:33 +0100
+Subject: [add] hackerrank, 'bear and steady gene', javascript port
+
+---
+ .../bear.and.steady.gene.js                   | 154 +++++++++++++++++-
+ 1 file changed, 152 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.bear.and.steady.gene/bear.and.steady.gene.js b/hackerrank/algorithms.-.strings.-.medium.-.bear.and.steady.gene/bear.and.steady.gene.js
+index 80a0261..ecdebd1 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.bear.and.steady.gene/bear.and.steady.gene.js
++++ b/hackerrank/algorithms.-.strings.-.medium.-.bear.and.steady.gene/bear.and.steady.gene.js
+@@ -26,8 +26,158 @@ function readLine() {
+ 
+ // Complete the steadyGene function below.
+ function steadyGene(gene) {
+-
+-
++    /*
++    group gene, deduce quantity of each letter over n/4
++    look for smallest substring containing all those letters
++
++    single iteration with char counts increase / decrease per
++    iteration.. store char idx with each char. when counts of
++    target replace letters hit, max char idx - min char idx of
++    collected set is 'a' possibility
++
++    continue iteration, replacing the minimum of any char visited
++    by the current visisted char|idx pair ..each time asserting
++    whether 'global mininum set' or not
++
++    e.g.
++
++      1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16
++      A  D  D  D  A  B  C  C  A  C  C  D  D  C  A  A
++
++    replace the extra A C and D with BBB
++
++                                     7-4+1
++    min| -     -     -     -     -     4     4       4     4     4     4     4     4     3
++
++      A| 1  A| 1  A| 1  A| 1  A| 5  A| 5  A| 5    A| 9  A| 9  A| 9  A| 9  A| 9  A| 9  A|15
++      C|    C|    C|    C|    C|    C| 7  C| 8    C| 8  C|10  C|11  C|11  C|11  C|14  C|14
++      D|    D| 2  D| 3  D| 4  D| 4  D| 4  D| 4    D| 4  D| 4  D| 4  D|12  D|13  D|12  D|13
++
++    also short circuit on min = #replace_letters (e.g. 3 above) as
++    it's a global minimum
++    */
++
++    let letters = ['A', 'C', 'G', 'T'];
++    let target = parseInt(gene.length / 4);
++
++    let grouped = new Map();
++    gene.split('').sort().forEach(c => {
++        if (grouped.has(c))
++            grouped.set(c, grouped.get(c) + 1);
++        else
++            grouped.set(c, 1);
++    });
++    /*
++    for (let kvp of grouped.entries())
++        console.log(`k: ${kvp[0]}, v: ${kvp[1]}`);
++    */
++    let remove = [];
++    let add = [];
++
++    let count, idx, idx2, last;
++    let letter, chr, c;
++
++    letters.forEach(letter => {
++        count = target;
++        if (grouped.has(letter)) {
++            count = grouped.get(letter) - target;
++            if (count > 0)
++                remove.push([letter, count]);
++            else if (count < 0)
++                add.push([letter, target - grouped.get(letter)]);
++        } else
++            add.push([letter, count]);
++    });
++    /*
++    console.log(`remove: ${remove}`);
++    console.log(`add: ${add}`);
++    console.log(`replace: ${remove.map(c_count => c_count[1] + " " + c_count[0] + (c_count[1] !== 1 ? "s" : "")).join(", ")}` +
++                ` with: ${add.map(c_count => c_count[1] + " " + c_count[0] + (c_count[1] !== 1 ? "s" : "")).join(", ")}`);
++    */
++
++    let l_chars = gene.length;
++    let l_remove = remove.length;
++    let global_min = l_chars;
++
++    if (l_remove === 0) {
++        // already balanced;
++        return 0;
++    }
++
++    let balance = remove.map(c_count => c_count[1]).reduce((a, x) => a + x);
++
++    let idx_left = l_chars;
++    let idx_right = 0;
++    let char_visited_idxs = [];
++    // zero case;
++    remove.forEach(c_count => {
++        letter = c_count[0];
++        idx = gene.indexOf(letter);
++        char_visited_idxs.push([letter, [idx], 0]);
++        idx_left = Math.min(idx_left, idx);
++        idx_right = Math.max(idx_right, idx);
++    });
++    balance -= l_remove;
++
++    //console.log(`idx_left: ${idx_left}, idx_right: ${idx_right}, balance: ${balance}`);
++    idx = idx_right + 1;
++    let q = undefined;  // fake queue
++    while (idx < l_chars) {
++        chr = gene[idx];
++        idx2 = 0;
++        while (idx2 < l_remove) {
++            c = char_visited_idxs[idx2][0];
++            q = char_visited_idxs[idx2][1];
++            last = char_visited_idxs[idx2][2];
++            //console.log(`idx: ${idx}, chr: ${chr}, idx2: ${idx2}, c: ${c}, balance: ${balance}`);
++            if (chr === c) {
++                if ((q.length - last) < remove[idx2][1]) {
++                    //console.log(`char: ${chr}, reducing balance: ${balance}`);
++                    balance--;
++                }
++                q.push(idx);
++                //console.log(`comparing char: ${chr}'s length - last: ${q.length - last} to remove count: ${target}`);
++                if ((q.length - last) > remove[idx2][1]) {
++                    // fake pop;
++                    if (q[last] === idx_left) {
++                        // set next min;
++                        char_visited_idxs[idx2][2]++;
++                        last++;
++                        idx_left = q[last];
++                        for (let l = 0; l < char_visited_idxs.length; l++) {
++                            if (char_visited_idxs[l][1][char_visited_idxs[l][2]] < idx_left)
++                                idx_left = char_visited_idxs[l][1][char_visited_idxs[l][2]];
++                        }
++                    } else
++                        char_visited_idxs[idx2][2]++;
++                }
++                if (balance === 0) {
++                    // possible set;
++                    if (idx - idx_left + 1 < global_min) {
++                        global_min = idx - idx_left + 1;
++                        //console.log(`global_min improved: ${global_min}`);
++                        if (global_min === l_remove)
++                            return global_min;
++                    }
++                }
++            }
++            idx2++;
++        }
++
++        /*
++        if (idx % 50000 === 0) {
++            console.log(`idx: ${idx}, balance: ${balance}, idx_left: ${idx_left}, global_min: ${global_min}`);
++            char_visited_idxs.forEach(t => {
++                console.log(`[${t[0]}] ${t[1].length - t[2]}`);
++                //console.log(`[${t[0]}] ${t[1].slice(t[2])}`);
++            });
++        }
++        */
++
++        idx++;
++    }
++    //console.log(`[debug] ${elapsed4_}us elapsed`);
++    return global_min;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
