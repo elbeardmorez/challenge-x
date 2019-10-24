@@ -1,0 +1,251 @@
+From 345079c861e80a10da8601a2d2c4e3c7a74b18ed Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 24 Oct 2019 08:30:58 +0100
+Subject: [add] hackerrank, 'bear and steady gene', go port
+
+---
+ .../bear.and.steady.gene.go                   | 215 ++++++++++++++++++
+ 1 file changed, 215 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.bear.and.steady.gene/bear.and.steady.gene.go b/hackerrank/algorithms.-.strings.-.medium.-.bear.and.steady.gene/bear.and.steady.gene.go
+index 8089e53..bc32676 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.bear.and.steady.gene/bear.and.steady.gene.go
++++ b/hackerrank/algorithms.-.strings.-.medium.-.bear.and.steady.gene/bear.and.steady.gene.go
+@@ -7,12 +7,226 @@ import (
+     "os"
+     "strconv"
+     "strings"
++    "sort"
+ )
+ 
++func min(x int32, y int32) int32 {
++    if x <= y {
++        return x
++    } else {
++        return y
++    }
++}
++
++func max(x int32, y int32) int32 {
++    if x > y {
++        return x
++    } else {
++        return y
++    }
++}
++
+ // Complete the steadyGene function below.
+ func steadyGene(gene string) int32 {
++    /*
++    group gene, deduce quantity of each letter over n/4
++    look for smallest substring containing all those letters
++
++    single iteration with char counts increase / decrease per
++    iteration.. store char idx with each char. when counts of
++    target replace letters hit, max char idx - min char idx of
++    collected set is 'a' possibility
++
++    continue iteration, replacing the minimum of any char visited
++    by the current visisted char|idx pair ..each time asserting
++    whether 'global mininum set' or not
++
++    e.g.
++
++      1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16
++      A  D  D  D  A  B  C  C  A  C  C  D  D  C  A  A
+ 
++    replace the extra A C and D with BBB
+ 
++                                     7-4+1
++    min| -     -     -     -     -     4     4       4     4     4     4     4     4     3
++
++      A| 1  A| 1  A| 1  A| 1  A| 5  A| 5  A| 5    A| 9  A| 9  A| 9  A| 9  A| 9  A| 9  A|15
++      C|    C|    C|    C|    C|    C| 7  C| 8    C| 8  C|10  C|11  C|11  C|11  C|14  C|14
++      D|    D| 2  D| 3  D| 4  D| 4  D| 4  D| 4    D| 4  D| 4  D| 4  D|12  D|13  D|12  D|13
++
++    also short circuit on min = #replace_letters (e.g. 3 above) as
++    it's a global minimum
++    */
++
++    var letters []rune = []rune{'A', 'C', 'G', 'T'}
++    var target int32 = int32(len(gene) / 4)
++    var l_chars int32 = int32(len(gene))
++
++    grouped := make(map[rune]int32, 0)
++    gene_chars := []rune(gene)
++    gene_chars_sorted := make([]rune, l_chars)
++    copy(gene_chars_sorted, gene_chars)
++    sort.Slice(gene_chars_sorted, func(i1, i2 int)  bool { return gene_chars_sorted[i1] < gene_chars_sorted[i2] })
++
++    for _, c := range(gene_chars_sorted) {
++        if _, ok := grouped[c]; !ok {
++            grouped[c] = 1
++        } else {
++            grouped[c]++
++        }
++    }
++    /*
++    for k, v := range(grouped) {
++        fmt.Printf("k: %v, v: %v\n", k, v)
++    }
++    */
++
++    type c_count struct {
++        c rune
++        count int32
++    }
++    type c_visited_last struct {
++        c rune
++        visited []int32
++        last int32
++    }
++
++    remove := make([]c_count, 0)
++    add := make([]c_count, 0)
++
++    var count, idx, idx2, last int32
++    var letter, chr, c rune
++    var q *[]int32  // fake queue
++
++    for _, letter := range(letters) {
++        count = target
++        if v, ok := grouped[letter]; !ok {
++            add = append(add, c_count{letter, count})
++        } else {
++            count = v - target
++            if count > 0 {
++                remove = append(remove, c_count{letter, count})
++            } else if count < 0 {
++                add = append(add, c_count{letter, target - v})
++            }
++        }
++    }
++    /*
++    fmt.Printf("remove: %v\n", remove)
++    fmt.Printf("add: %v\n", add)
++    fmt.Printf("replace: ")
++    s_ := ""
++    for _, c_count_ := range(remove) {
++        s_ += fmt.Sprintf(", %v%v", c_count_.count, string(c_count_.c))
++        if c_count_.count != 1 {
++            s_ += "s"
++        }
++    }
++    if len(s_) > 0 {
++        fmt.Printf("%v", s_[2:])
++    }
++    fmt.Printf(" with: ")
++    s_ = ""
++    for _, c_count_ := range(add) {
++        s_ += fmt.Sprintf(", %v%v", c_count_.count, string(c_count_.c))
++        if c_count_.count != 1 {
++            s_ += "s"
++        }
++    }
++    if len(s_) > 0 {
++        fmt.Printf("%v", s_[2:])
++    }
++    fmt.Println();
++    */
++
++    var l_remove int32 = int32(len(remove))
++    var global_min int32 = l_chars
++
++    if l_remove == 0 {
++        // already balanced
++        return 0
++    }
++
++    var balance int32 = 0
++    for _, c_count_ := range(remove) {
++        balance += c_count_.count
++    }
++
++    var idx_left int32 = l_chars
++    var idx_right int32 = 0
++    char_visited_idxs := make([]c_visited_last, 0)
++    // zero case
++    for _, c_count_ := range(remove) {
++        letter = c_count_.c
++        idx = int32(strings.Index(gene, string(letter)))
++        char_visited_idxs = append(char_visited_idxs, c_visited_last{letter, []int32{idx}, 0})
++        idx_left = min(idx_left, idx)
++        idx_right = max(idx_right, idx)
++    }
++    balance -= l_remove
++
++    //fmt.Printf("idx_left: %v, idx_right: %v, balance: %v\n", idx_left, idx_right, balance)
++    idx = idx_right + 1
++    for idx < l_chars {
++        chr = gene_chars[idx]
++        idx2 = 0
++        for idx2 < l_remove {
++            c = char_visited_idxs[idx2].c
++            q = &char_visited_idxs[idx2].visited
++            last = char_visited_idxs[idx2].last
++            //fmt.Printf("idx: %v, chr: %v, idx2: %v, c: %v, balance: %v, [q]: %v, last: %v\n", idx, string(chr), idx2, string(c), balance, len(*q), last)
++            if chr == c {
++                if (int32(len(*q)) - last) < remove[idx2].count {
++                    //fmt.Printf("char: %v, reducing balance: %v\n", string(chr), balance)
++                    balance--
++                }
++                *q = append(*q, idx)
++                //fmt.Printf("comparing char: %v's length - last: %v to remove count: %v\n", string(chr), int32(len(*q)) - last, target)
++                if (int32(len(*q)) - last) > remove[idx2].count {
++                    // fake pop
++                    if (*q)[last] == idx_left {
++                        // set next min
++                        char_visited_idxs[idx2].last++
++                        last++
++                        idx_left = (*q)[last]
++                        for l := int32(0); l < int32(len(char_visited_idxs)); l++ {
++                            if char_visited_idxs[l].visited[char_visited_idxs[l].last] < idx_left {
++                                idx_left = char_visited_idxs[l].visited[char_visited_idxs[l].last]
++                            }
++                        }
++                    } else {
++                        char_visited_idxs[idx2].last++
++                    }
++                }
++                if balance == 0 {
++                    // possible set
++                    if idx - idx_left + 1 < global_min {
++                        global_min = idx - idx_left + 1
++                        //fmt.Printf("global_min improved: %v\n", global_min)
++                        if global_min == l_remove {
++                            return global_min
++                        }
++                    }
++                }
++            }
++            idx2++
++        }
++
++        /*
++        if idx % 50000 == 0 {
++            fmt.Printf("idx: %v, balance: %v, idx_left: %v, global_min: %v\n", idx, balance, idx_left, global_min)
++            for _, c_visited_last_ := range(char_visited_idxs) {
++                fmt.Printf("[%v] %v\n", string(c_visited_last_.c), int32(len(c_visited_last_.visited)) - c_visited_last_.last)
++                //fmt.Printf("[%v] %v\n", string(c_visited_last_.c), c_visited_last_.visited[c_visited_last_.last:])
++            }
++        }
++        */
++
++        idx++
++    }
++    //fmt.Printf("[debug] %vus elapsed\n", elapsed4_)
++    return global_min
+ }
+ 
+ func main() {
+@@ -28,6 +242,7 @@ func main() {
+     nTemp, err := strconv.ParseInt(readLine(reader), 10, 64)
+     checkError(err)
+     n := int32(nTemp)
++    _ = n
+ 
+     gene := readLine(reader)
+ 
+-- 
+2.23.0
+
