@@ -1,0 +1,173 @@
+From c8acf2ca390115465ffe01d1d9aafe29db2dcb30 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 25 Oct 2019 09:01:43 +0100
+Subject: [add] hackerrank, 'bear and steady gene', c# port
+
+---
+ .../bear.and.steady.gene.cs                   | 144 ++++++++++++++++++
+ 1 file changed, 144 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.medium.-.bear.and.steady.gene/bear.and.steady.gene.cs b/hackerrank/algorithms.-.strings.-.medium.-.bear.and.steady.gene/bear.and.steady.gene.cs
+index 597b349..cbce42f 100644
+--- a/hackerrank/algorithms.-.strings.-.medium.-.bear.and.steady.gene/bear.and.steady.gene.cs
++++ b/hackerrank/algorithms.-.strings.-.medium.-.bear.and.steady.gene/bear.and.steady.gene.cs
+@@ -12,12 +12,156 @@ using System.Text.RegularExpressions;
+ using System.Text;
+ using System;
+ 
++using static System.Console;
++
+ class Solution {
+ 
+     // Complete the steadyGene function below.
+     static int steadyGene(string gene) {
++        /*
++        group gene, deduce quantity of each letter over n/4
++        look for smallest substring containing all those letters
++
++        single iteration with char counts increase / decrease per
++        iteration.. store char idx with each char. when counts of
++        target replace letters hit, max char idx - min char idx of
++        collected set is 'a' possibility
++
++        continue iteration, replacing the minimum of any char visited
++        by the current visisted char|idx pair ..each time asserting
++        whether 'global mininum set' or not
++
++        e.g.
++
++          1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16
++          A  D  D  D  A  B  C  C  A  C  C  D  D  C  A  A
++
++        replace the extra A C and D with BBB
++
++                                         7-4+1
++        min| -     -     -     -     -     4     4       4     4     4     4     4     4     3
++
++          A| 1  A| 1  A| 1  A| 1  A| 5  A| 5  A| 5    A| 9  A| 9  A| 9  A| 9  A| 9  A| 9  A|15
++          C|    C|    C|    C|    C|    C| 7  C| 8    C| 8  C|10  C|11  C|11  C|11  C|14  C|14
++          D|    D| 2  D| 3  D| 4  D| 4  D| 4  D| 4    D| 4  D| 4  D| 4  D|12  D|13  D|12  D|13
++
++        also short circuit on min = #replace_letters (e.g. 3 above) as
++        it's a global minimum
++        */
++
++        var letters = new char[]{'A', 'C', 'G', 'T'};
++        var target = Convert.ToInt32(gene.Length / 4);
++
++        var grouped = gene.ToCharArray().OrderBy(x => x).GroupBy(x => x).ToDictionary(g => g.Key, g => g.Count());
++        /*
++        foreach (var k_v in grouped)
++            WriteLine($"k: {k_v.Key}, [v]: {k_v.Value}");
++        */
++        var remove = new List<(char c, int count)>();
++        var add = new List<(char c, int count)>();
++
++        int count, idx, idx2, last;
++        char chr, c;
++        List<int> q;
++
++        foreach (var c_ in letters) {
++            count = target;
++            if (grouped.ContainsKey(c_)) {
++                count = grouped[c_] - target;
++                if (count > 0)
++                    remove.Add((c_, count));
++                else if (count < 0)
++                    add.Add((c_, target - grouped[c_]));
++            } else
++                add.Add((c_, count));
++        }
++        /*
++        WriteLine("remove: " + String.Join(", ", remove.Select(x => "[" + x.c + "," + x.count.ToString() + "]")));
++        WriteLine("add: " + String.Join(", ", add.Select(x => "[" + x.c + "," + x.count.ToString() + "]")));
++        WriteLine("replace: " + String.Join(" ", remove.Select(x => x.count.ToString() + " " + x.c + (x.count!= 1 ? "s" : ""))) +
++                  " with: " + String.Join(" ", add.Select(x => x.count.ToString() + " " + x.c + (x.count != 1 ? "s" : ""))));
++        */
++        var l_chars = gene.Length;
++        var l_remove = remove.Count;
++        var global_min = l_chars;
++
++        if (l_remove == 0) {
++            // already balanced
++            return 0;
++        }
++
++        var balance = remove.Select(x => x.count).Sum();
++
++        int idx_left = l_chars;
++        int idx_right = 0;
++        var char_visited_idxs = new List<(char c, List<int> visited, int[] last)>();
++
++        // zero case
++        foreach (var c_count in remove) {
++            idx = gene.IndexOf(c_count.c);
++            char_visited_idxs.Add((c_count.c, new List<int>(new int[]{idx}), new int[]{0}));
++            idx_left = Math.Min(idx_left, idx);
++            idx_right = Math.Max(idx_right, idx);
++        }
++        balance -= l_remove;
++
++        //WriteLine($"idx_left: {idx_left}, idx_right: {idx_right}, balance: {balance}");
++        idx = idx_right + 1;
++        while (idx < l_chars) {
++            chr = gene[idx];
++            idx2 = 0;
++            while (idx2 < l_remove) {
++                c = char_visited_idxs[idx2].c;
++                q = char_visited_idxs[idx2].visited;
++                last = char_visited_idxs[idx2].last[0];
++                //WriteLine($"idx: {idx}, chr: {chr}, idx2: {idx2}, c: {c}, balance: {balance}, [q]: {q.Count}, last: {last}");
++                if (chr == c) {
++                    if (q.Count - last < remove[idx2].count) {
++                        balance--;
++                        //WriteLine($"char: {chr}, reduced balance: {balance}");
++                    }
++                    q.Add(idx);
++                    //WriteLine($"comparing char: {chr}'s length - last: {q.Count - last} to remove count: {target}");
++                    if (q.Count - last > remove[idx2].count) {
++                        // fake pop
++                        if (q[last] == idx_left) {
++                            // set next min
++                            char_visited_idxs[idx2].last[0]++;
++                            last++;
++                            idx_left = q[last];
++                            foreach (var c_visited_last in char_visited_idxs) {
++                                if (c_visited_last.visited[c_visited_last.last[0]] < idx_left)
++                                    idx_left = c_visited_last.visited[c_visited_last.last[0]];
++                            }
++                        } else
++                            char_visited_idxs[idx2].last[0]++;
++                    }
++                    if (balance == 0) {
++                        // possible set
++                        if (idx - idx_left + 1 < global_min) {
++                            global_min = idx - idx_left + 1;
++                            //WriteLine($"global_min improved: {global_min}");
++                            if (global_min == l_remove)
++                                return global_min;
++                        }
++                    }
++                }
++                idx2++;
++            }
+ 
++            /*
++            if (idx % 50000 == 0) {
++                WriteLine($"idx: {idx}, balance: {balance}, idx_left: {idx_left}, global_min: {global_min}");
++                foreach (var p in char_visited_idxs) {
++                    WriteLine($"[{p.c}] {p.visited.Count - p.last[0]}");
++                    //WriteLine($"[{p.c}] {String.Join(" ", p.visited.Skip(p.last[0]).Select(x => x.ToString()))}");
++                }
++            }
++            */
+ 
++            idx++;
++        }
++        return global_min;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
