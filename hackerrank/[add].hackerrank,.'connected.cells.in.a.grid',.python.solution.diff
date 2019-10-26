@@ -1,0 +1,94 @@
+From 127626a69648338c2071bda6854a63db255b10c1 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 26 Oct 2019 09:46:01 +0100
+Subject: [add] hackerrank, 'connected cells in a grid', python solution
+
+---
+ .../connected.cells.in.a.grid.py              | 69 +++++++++++++++++++
+ 1 file changed, 69 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.search.-.medium.-.connected.cells.in.a.grid/connected.cells.in.a.grid.py b/hackerrank/algorithms.-.search.-.medium.-.connected.cells.in.a.grid/connected.cells.in.a.grid.py
+index 0a7632a..8e0075b 100644
+--- a/hackerrank/algorithms.-.search.-.medium.-.connected.cells.in.a.grid/connected.cells.in.a.grid.py
++++ b/hackerrank/algorithms.-.search.-.medium.-.connected.cells.in.a.grid/connected.cells.in.a.grid.py
+@@ -6,8 +6,77 @@ import random
+ import re
+ import sys
+ 
++from collections import deque
++from itertools import product
++
++
+ # Complete the connectedCell function below.
+ def connectedCell(matrix):
++    """
++    queue the set of 'filled' cells
++    create a map of those coordinate
++
++    iterate the queue
++        continue if the filled cell is not present in the map (visited)
++    new group
++    pool all connected cells filled to investigate
++    iterate pool, potentially extending it each time
++
++    on pool exhaustion
++    deduce if group global max
++    continue top level iteration
++
++    return global max
++    """
++
++    n = len(matrix)
++    m = len(matrix[0])
++
++    filled = []
++    filled_ = {}
++
++    def valid(p):
++        return True if (p[0] >= 0 and p[0] < n) and \
++                       (p[1] >= 0 and p[1] < m) else False
++
++    def get_connected(p):
++        connected = []
++        x_ = [-1, 0, 1]
++        for adjacent in [p__ for p__ in product(x_, x_) if p__ != (0, 0)]:
++            p_ = [p[0] + adjacent[0], p[1] + adjacent[1]]
++            if valid(p_):
++                connected.append(p_)
++        return connected
++
++    group_max = 0
++    group_count = 0
++
++    for l in range(n):
++        for l2 in range(m):
++            if matrix[l][l2] == 1:
++                filled.append([l, l2])
++                filled_[f"{l}|{l2}"] = 1
++    for p in filled:
++        #print(f"iterating point: {p}")
++        if f"{p[0]}|{p[1]}" not in filled_:
++            continue
++        # new group
++        pool = deque([p])
++        group_count = 0
++        while len(pool) > 0:
++            p_ = pool.popleft()
++            #print(f"inspecting filled point: {p_}")
++            if f"{p_[0]}|{p_[1]}" in filled_:
++                group_count += 1
++                del filled_[f"{p_[0]}|{p_[1]}"]
++            pool.extend([p__ for p__ in get_connected(p_)
++                         if f"{p__[0]}|{p__[1]}" in filled_])
++        if group_count > group_max:
++            group_max = group_count
++
++    #print(f"group max: {group_max}")
++    return group_max
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
