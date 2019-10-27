@@ -1,0 +1,114 @@
+From aee9cd8b1df59dbf40da8ed8dcaaf45b01158bf7 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 27 Oct 2019 08:45:29 +0000
+Subject: [add] hackerrank, 'connected cells in a grid', c# port
+
+---
+ .../connected.cells.in.a.grid.cs              | 85 +++++++++++++++++++
+ 1 file changed, 85 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.search.-.medium.-.connected.cells.in.a.grid/connected.cells.in.a.grid.cs b/hackerrank/algorithms.-.search.-.medium.-.connected.cells.in.a.grid/connected.cells.in.a.grid.cs
+index ded864d..8c60e72 100644
+--- a/hackerrank/algorithms.-.search.-.medium.-.connected.cells.in.a.grid/connected.cells.in.a.grid.cs
++++ b/hackerrank/algorithms.-.search.-.medium.-.connected.cells.in.a.grid/connected.cells.in.a.grid.cs
+@@ -12,12 +12,97 @@ using System.Text.RegularExpressions;
+ using System.Text;
+ using System;
+ 
++using static System.Console;
++
+ class Solution {
+ 
++    static List<int[]> product(List<int> a) {
++        var res = new List<int[]>();
++        foreach (var v1 in a) {
++            foreach (var v2 in a)
++                res.Add(new int[2]{v1, v2});
++        }
++        return res;
++    }
++
++    static bool valid(int[] p, int n, int m) {
++        return ((p[0] >= 0 && p[0] < n) && (p[1] >= 0 && p[1] < m)) ? true : false;
++    }
++
++    static List<int[]> get_connected(int[] p, int n, int m) {
++        var connected = new List<int[]>();
++        var offsets = product(new List<int>(new int[]{-1, 0, 1}));
++
++        foreach(var offset in offsets) {
++            if (offset == new int[2]{0, 0}) continue;
++            var p_ = new int[]{p[0] + offset[0], p[1] + offset[1]};
++            if (valid(p_, n, m))
++                connected.Add(p_);
++        }
++        return connected;
++    }
++
+     // Complete the connectedCell function below.
+     static int connectedCell(int[][] matrix) {
++        /*
++        queue the set of 'filled' cells
++        create a map of those coordinate
++
++        iterate the queue
++            continue if the filled cell is not present in the map (visited)
++        new group
++        pool all connected cells filled to investigate
++        iterate pool, potentially extending it each time
++
++        on pool exhaustion
++        deduce if group global max
++        continue top level iteration
++
++        return global max
++        */
++
++        var n = matrix.Length;
++        var m = matrix[0].Length;
+ 
++        var filled = new Queue<int[]>();
++        var filled_ = new Dictionary<string, int>();
++
++        var group_max = 0;
++        var group_count = 0;
++        Queue<int[]> pool;
++
++        for (var l = 0; l < n; l++) {
++            for (var l2 = 0; l2 < m; l2++) {
++                if (matrix[l][l2] == 1) {
++                    filled.Enqueue(new int[]{l, l2});
++                    filled_[l + "|" + l2] = 1;
++                }
++            }
++        }
++        foreach (var p in filled) {
++            //WriteLine($"iterating point: {p[0]}|{p[1]}");
++            if (!filled_.ContainsKey(p[0] + "|" + p[1]))
++                continue;
++            // new group;
++            pool = new Queue<int[]>();
++            pool.Enqueue(p);
++            group_count = 0;
++            while (pool.Count > 0) {
++                var p_ = pool.Dequeue();
++                //WriteLine($"inspecting filled point: {p_[0]}|{p_[1]}");
++                if (filled_.ContainsKey(p_[0] + "|" + p_[1])) {
++                    group_count += 1;
++                    filled_.Remove(p_[0] + "|" + p_[1]);
++                }
++                foreach(var p__ in get_connected(p_, n, m).Where(p__ => filled_.ContainsKey(p__[0] + "|" + p__[1])))
++                    pool.Enqueue(p__);
++            }
++            if (group_count > group_max)
++                group_max = group_count;
++        }
+ 
++        WriteLine($"group max: {group_max}");
++        return group_max;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
