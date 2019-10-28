@@ -1,0 +1,110 @@
+From 7812623672be149be2c4f479244a60ca03e980d2 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 28 Oct 2019 17:06:30 +0000
+Subject: [add] hackerrank, 'connected cells in a grid', javascript port
+
+---
+ .../connected.cells.in.a.grid.js              | 87 ++++++++++++++++++-
+ 1 file changed, 85 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.search.-.medium.-.connected.cells.in.a.grid/connected.cells.in.a.grid.js b/hackerrank/algorithms.-.search.-.medium.-.connected.cells.in.a.grid/connected.cells.in.a.grid.js
+index e715487..a0ed90c 100644
+--- a/hackerrank/algorithms.-.search.-.medium.-.connected.cells.in.a.grid/connected.cells.in.a.grid.js
++++ b/hackerrank/algorithms.-.search.-.medium.-.connected.cells.in.a.grid/connected.cells.in.a.grid.js
+@@ -26,8 +26,91 @@ function readLine() {
+ 
+ // Complete the connectedCell function below.
+ function connectedCell(matrix) {
+-
+-
++    /*
++    queue the set of 'filled' cells
++    create a map of those coordinate
++
++    iterate the queue
++        continue if the filled cell is not present in the map (visited)
++    new group
++    pool all connected cells filled to investigate
++    iterate pool, potentially extending it each time
++
++    on pool exhaustion
++    deduce if group global max
++    continue top level iteration
++
++    return global max
++    */
++
++    let product = a => {
++        let res = [];
++        a.forEach(v1 => {
++            a.forEach(v2 => {
++                res.push([v1, v2]);
++            });
++        });
++        return res;
++    };
++
++    let valid = (p, n, m) => {
++        return ((p[0] >= 0 && p[0] < n) && (p[1] >= 0 && p[1] < m)) ? true : false;
++    };
++
++    let get_connected = (p, n, m) => {
++        let connected = [];
++        let offsets = product([-1, 0, 1]);
++
++        offsets.forEach(offset => {
++            if (offset !== [0, 0]) {
++                let p_ = [p[0] + offset[0], p[1] + offset[1]];
++                if (valid(p_, n, m))
++                    connected.push(p_);
++            }
++        });
++        return connected;
++    };
++
++    let n = matrix.length;
++    let m = matrix[0].length;
++
++    let filled = [];
++    let filled_ = new Map();
++
++    let group_max = 0;
++    let group_count = 0;
++    let pool = undefined;
++
++    for (let l = 0; l < n; l++) {
++        for (let l2 = 0; l2 < m; l2++) {
++            if (matrix[l][l2] === 1) {
++                filled.push([l, l2]);
++                filled_.set(l + "|" + l2, 1);
++            }
++        }
++    }
++    filled.forEach(p => {
++        //console.log(`iterating point: ${p}`);
++        if (filled_.has(p[0] + "|" + p[1])) {
++            // NEw group;
++            pool = [p];
++            group_count = 0;
++            while (pool.length > 0) {
++                let p_ = pool.pop();
++                //console.log(`inspecting filled point: ${p}`);
++                if (filled_.has(p_[0] + "|" + p_[1])) {
++                    group_count += 1;
++                    filled_.delete(p_[0] + "|" + p_[1]);
++                }
++                pool.push(...get_connected(p_, n, m).filter(p__ => filled_.has(p__[0] + "|" + p__[1])));
++            }
++            if (group_count > group_max)
++                group_max = group_count;
++        }
++    });
++
++    //console.log(`group max: ${group_max}`);
++    return group_max;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
