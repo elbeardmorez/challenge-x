@@ -1,0 +1,130 @@
+From f3e43d72b5cfaff723bae299258e1d257f81eea6 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 29 Oct 2019 08:06:48 +0000
+Subject: [add] hackerrank, 'connected cells in a grid', go port
+
+---
+ .../connected.cells.in.a.grid.go              | 105 ++++++++++++++++++
+ 1 file changed, 105 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.search.-.medium.-.connected.cells.in.a.grid/connected.cells.in.a.grid.go b/hackerrank/algorithms.-.search.-.medium.-.connected.cells.in.a.grid/connected.cells.in.a.grid.go
+index 545e1a6..86e96d7 100644
+--- a/hackerrank/algorithms.-.search.-.medium.-.connected.cells.in.a.grid/connected.cells.in.a.grid.go
++++ b/hackerrank/algorithms.-.search.-.medium.-.connected.cells.in.a.grid/connected.cells.in.a.grid.go
+@@ -11,8 +11,113 @@ import (
+ 
+ // Complete the connectedCell function below.
+ func connectedCell(matrix [][]int32) int32 {
++    /*
++    queue the set of 'filled' cells
++    create a map of those coordinate
++
++    iterate the queue
++        continue if the filled cell is not present in the map (visited)
++    new group
++    pool all connected cells filled to investigate
++    iterate pool, potentially extending it each time
++
++    on pool exhaustion
++    deduce if group global max
++    continue top level iteration
++
++    return global max
++    */
++
++    product := func(a *[]int) [][]int {
++        res := make([][]int, 0)
++        for _, v1 := range(*a) {
++            for _, v2 := range(*a) {
++                res = append(res, []int{v1, v2})
++            }
++        }
++        return res
++    }
++
++    valid := func(p []int, n int, m int) bool {
++        if ((p[0] >= 0 && p[0] < n) && (p[1] >= 0 && p[1] < m)) {
++            return true
++        } else {
++            return false
++        }
++    }
++
++    get_connected := func(p []int, n int, m int) [][]int {
++        connected := make([][]int, 0)
++        offsets := product(&[]int{-1, 0, 1})
++
++        for _, offset := range(offsets) {
++            if !(offset[0] == 0 && offset[1] == 0) {
++                p_ := []int{p[0] + offset[0], p[1] + offset[1]};
++                if valid(p_, n, m) {
++                    //fmt.Printf("p: %v|%v is connected to p_: %v|%v\n", p[0], p[1], p_[0], p_[1])
++                    connected = append(connected, p_)
++                }
++            }
++        }
++        return connected
++    }
+ 
++    n := len(matrix)
++    m := len(matrix[0])
++
++    filled := make([][]int, 0)
++    filled_ := make(map[string]int)
++
++    group_max := int32(0)
++    group_count := int32(0)
++    var pool [][]int
++
++    for l := 0; l < n; l++ {
++        for l2 := 0; l2 < m; l2++ {
++            if matrix[l][l2] == 1 {
++                filled = append(filled, []int{l, l2})
++                filled_[strconv.Itoa(l) + "|" + strconv.Itoa(l2)] = 1
++            }
++        }
++    }
++    /*
++    fmt.Printf("map elements:")
++    for k, v := range(filled_) {
++        fmt.Printf("%v %v\n", k, v)
++    }
++    */
++
++    for _, p := range(filled) {
++        //fmt.Printf("iterating point: %v\n", p)
++        if _, ok := filled_[strconv.Itoa(p[0]) + "|" + strconv.Itoa(p[1])]; ok {
++            // NEw group
++            pool = make([][]int, 0)
++            pool = append(pool, p)
++            var p_ []int
++            group_count = 0
++            for len(pool) > 0 {
++                p_, pool = pool[0], pool[1:]
++                //fmt.Printf("inspecting filled point: %v\n", p_)
++                if _, ok := filled_[strconv.Itoa(p_[0]) + "|" + strconv.Itoa(p_[1])]; ok {
++                    group_count += 1
++                    delete(filled_, strconv.Itoa(p_[0]) + "|" + strconv.Itoa(p_[1]))
++                    //fmt.Printf("deleted pool point p_: %v|%v\n", p_[0], p_[1])
++                }
++                for _, p__ := range(get_connected(p_, n, m)) {
++                    if _, ok := filled_[strconv.Itoa(p__[0]) + "|" + strconv.Itoa(p__[1])]; ok {
++                        pool = append(pool, p__)
++                        //fmt.Printf("appending p__: %v|%v\n", p__[0], p__[1])
++                    }
++                }
++            }
++            if group_count > group_max {
++                group_max = group_count
++            }
++        }
++    }
+ 
++    //fmt.Printf("group max: %v\n", group_max)
++    return group_max
+ }
+ 
+ func main() {
+-- 
+2.23.0
+
