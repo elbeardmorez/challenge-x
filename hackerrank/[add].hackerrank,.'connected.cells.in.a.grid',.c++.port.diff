@@ -1,0 +1,136 @@
+From 07c6a24033fa9de011252928d12683b487e28446 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 30 Oct 2019 08:04:11 +0000
+Subject: [add] hackerrank, 'connected cells in a grid', c++ port
+
+---
+ .../connected.cells.in.a.grid.cpp             | 108 ++++++++++++++++++
+ 1 file changed, 108 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.search.-.medium.-.connected.cells.in.a.grid/connected.cells.in.a.grid.cpp b/hackerrank/algorithms.-.search.-.medium.-.connected.cells.in.a.grid/connected.cells.in.a.grid.cpp
+index c20b594..378d7b8 100644
+--- a/hackerrank/algorithms.-.search.-.medium.-.connected.cells.in.a.grid/connected.cells.in.a.grid.cpp
++++ b/hackerrank/algorithms.-.search.-.medium.-.connected.cells.in.a.grid/connected.cells.in.a.grid.cpp
+@@ -1,11 +1,119 @@
+ #include <bits/stdc++.h>
++#include <cstring>
+ 
+ using namespace std;
+ 
+ // Complete the connectedCell function below.
+ int connectedCell(vector<vector<int>> matrix) {
++    /*
++    queue the set of 'filled' cells
++    create a map of those coordinate
+ 
++    iterate the queue
++        continue if the filled cell is not present in the map (visited)
++    new group
++    pool all connected cells filled to investigate
++    iterate pool, potentially extending it each time
+ 
++    on pool exhaustion
++    deduce if group global max
++    continue top level iteration
++
++    return global max
++    */
++
++    auto product = [](vector<int>& a, vector<std::array<int, 2>>& out) -> void {
++        for (auto x : a) {
++            for (auto y : a) {
++                out.push_back({x, y});
++            }
++        }
++        //cout << "product size: " << out.size() << endl;
++        return;
++    };
++
++    auto valid = [](array<int, 2> p, int n, int m) -> bool {
++        if (((p[0] >= 0 && p[0] < n) && (p[1] >= 0 && p[1] < m))) {
++            return true;
++        } else {
++            return false;
++        }
++    };
++
++    auto get_connected = [&](array<int, 2> p, int n, int m, vector<array<int, 2>>& out) -> void {
++        auto offsets_ = vector<int>({-1, 0, 1});
++        vector<array<int, 2>> offsets;
++        product(offsets_, offsets);
++        for (auto offset : offsets) {
++            //cout << "offset: " << offset[0] << "|" << offset[1] << endl;
++            if (!(offset[0] == 0 && offset[1] == 0)) {
++                array<int, 2> p_ = {p[0] + offset[0], p[1] + offset[1]};
++                if (valid(p_, n, m)) {
++                    //cout << "p: " << p[0] << "|" << p[1] << " is connected to p_: " << p_[0] << "|" << p_[1] << endl;
++                    out.push_back(p_);
++                }
++            }
++        }
++        return;
++    };
++
++    auto n = matrix.size();
++    auto m = matrix[0].size();
++
++    vector<array<int, 2>> filled;
++    map<string, int> filled_;
++
++    auto group_max = 0;
++    auto group_count = 0;
++
++    for (int l = 0; l < n; l++) {
++        for (int l2 = 0; l2 < m; l2++) {
++            if (matrix[l][l2] == 1) {
++                filled.push_back({l, l2});
++                filled_[to_string(l) + "|" + to_string(l2)] = 1;
++            }
++        }
++    }
++    /*;
++    cout << "map elements:" << endl;
++    for (auto kvp : filled_)
++        cout << kvp.first << " " << kvp.second << endl;
++    */;
++
++    for (auto p : filled) {
++        //cout << "iterating point: " << p[0] << "|" << p[1] << endl;
++        if (filled_.find(to_string(p[0]) + "|" + to_string(p[1])) != filled_.end()) {
++            // NEw group
++            deque<array<int, 2>> pool;
++            pool.push_back(p);
++            auto group_count = 0;
++            array<int, 2> p_;
++            while (pool.size() > 0) {
++                p_ = pool.front();
++                pool.pop_front();
++                //cout << "inspecting filled point: " << p_[0] << "|" << p_[1] << endl;
++                if (filled_.find(to_string(p_[0]) + "|" + to_string(p_[1])) != filled_.end()) {
++                    group_count += 1;
++                    filled_.erase(to_string(p_[0]) + "|" + to_string(p_[1]));
++                    //cout << "deleted pool point p_: " << p_[0] << "|" << p_[1] << endl;
++                }
++                vector<array<int, 2>> connected;
++                get_connected(p_, n, m, connected);
++                for (auto p__ : connected) {
++                    if (filled_.find(to_string(p__[0]) + "|" + to_string(p__[1])) != filled_.end()) {
++                        pool.push_back(p__);
++                        //cout << "appending p__: " << p__[0] << "|" << p__[1] << endl;
++                    }
++                }
++            }
++            if (group_count > group_max) {
++                group_max = group_count;
++            }
++        }
++    }
++
++    cout << "group max: " << group_max << endl;
++    return group_max;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
