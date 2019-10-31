@@ -1,0 +1,35 @@
+From c8178fd07bd8a95effa39b7f5493838645928623 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 31 Oct 2019 20:50:50 +0000
+Subject: [add] hackerrank, 'halloween sale', python solution
+
+---
+ .../halloween.sale.py                                    | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.halloween.sale/halloween.sale.py b/hackerrank/algorithms.-.implementation.-.easy.-.halloween.sale/halloween.sale.py
+index 71984c4..73c61a6 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.halloween.sale/halloween.sale.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.halloween.sale/halloween.sale.py
+@@ -5,9 +5,18 @@ import os
+ import random
+ import re
+ import sys
++import operator
++from itertools import accumulate
++
+ 
+ # Complete the howManyGames function below.
+ def howManyGames(p, d, m, s):
++    # Return the number of games you can buy
++    if p > s:
++        return 0
++    funds = [x for x in accumulate([s] + list(range(p, m, -d)), func=operator.sub) if x > 0][1:]
++    return len(funds) + int(funds[-1]/m)
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
