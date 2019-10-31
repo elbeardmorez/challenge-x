@@ -1,0 +1,31 @@
+From 0892c6e19ac4bd1f85a4cb5ff019df552efbe7e7 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 31 Oct 2019 21:32:35 +0000
+Subject: [fix] hackerrank, 'halloween sale', python solution
+
+-invalid logic for remainding funds when next purchase was too
+expensive
+---
+ .../halloween.sale.py                                       | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.halloween.sale/halloween.sale.py b/hackerrank/algorithms.-.implementation.-.easy.-.halloween.sale/halloween.sale.py
+index 1095f8c..ac1620d 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.halloween.sale/halloween.sale.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.halloween.sale/halloween.sale.py
+@@ -14,8 +14,10 @@ def howManyGames(p, d, m, s):
+     # Return the number of games you can buy
+     if p > s:
+         return 0
+-    funds = [x for x in accumulate([s] + list(range(p, m, -d)), func=operator.sub) if x > 0]
+-    return len(funds) - 1 + int(funds[-1]/m)
++    books = list(range(p, m, -d))
++    funds = [x for x in accumulate([s] + books, func=operator.sub) if x > 0]
++    last_book = m if len(books) == 0 else books[len(funds) - 1 - 1]
++    return len(funds) - 1 + (int(funds[-1]/m) if last_book <= funds[-1] else 0)
+ 
+ 
+ if __name__ == '__main__':
+-- 
+2.23.0
+
