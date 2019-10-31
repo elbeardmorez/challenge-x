@@ -1,0 +1,28 @@
+From 695faeaf2a742cf76eda16f0f8382b1e7f6ae362 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 31 Oct 2019 20:58:32 +0000
+Subject: [fix] hackerrank, 'halloween sale', python solution
+
+-boundary case
+---
+ .../halloween.sale.py                                         | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.halloween.sale/halloween.sale.py b/hackerrank/algorithms.-.implementation.-.easy.-.halloween.sale/halloween.sale.py
+index 73c61a6..1095f8c 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.halloween.sale/halloween.sale.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.halloween.sale/halloween.sale.py
+@@ -14,8 +14,8 @@ def howManyGames(p, d, m, s):
+     # Return the number of games you can buy
+     if p > s:
+         return 0
+-    funds = [x for x in accumulate([s] + list(range(p, m, -d)), func=operator.sub) if x > 0][1:]
+-    return len(funds) + int(funds[-1]/m)
++    funds = [x for x in accumulate([s] + list(range(p, m, -d)), func=operator.sub) if x > 0]
++    return len(funds) - 1 + int(funds[-1]/m)
+ 
+ 
+ if __name__ == '__main__':
+-- 
+2.23.0
+
