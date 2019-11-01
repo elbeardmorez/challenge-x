@@ -1,0 +1,75 @@
+From 041c8b5eeb0911496a76c5e9647c82ad2d108600 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 1 Nov 2019 11:43:50 +0000
+Subject: [add] hackerrank, 'halloween sale', c# port
+
+---
+ .../halloween.sale.cs                         | 56 +++++++++++++++++++
+ 1 file changed, 56 insertions(+)
+ create mode 100644 hackerrank/algorithms.-.implementation.-.easy.-.halloween.sale/halloween.sale.cs
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.halloween.sale/halloween.sale.cs b/hackerrank/algorithms.-.implementation.-.easy.-.halloween.sale/halloween.sale.cs
+new file mode 100644
+index 0000000..2bcd6f8
+--- /dev/null
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.halloween.sale/halloween.sale.cs
+@@ -0,0 +1,56 @@
++using System.CodeDom.Compiler;
++using System.Collections.Generic;
++using System.Collections;
++using System.ComponentModel;
++using System.Diagnostics.CodeAnalysis;
++using System.Globalization;
++using System.IO;
++using System.Linq;
++using System.Reflection;
++using System.Runtime.Serialization;
++using System.Text.RegularExpressions;
++using System.Text;
++using System;
++
++class Solution {
++
++    // Complete the howManyGames function below.
++    static int howManyGames(int p, int d, int m, int s) {
++        // Return the number of games you can buy
++        var funds = s;
++        var min = m;
++        var last_book = p;
++        var drop = d;
++        if (last_book > funds)
++            return 0;
++        var count = 0;
++        while (last_book > min && funds > last_book) {
++            funds -= last_book;
++            last_book -= drop;
++            count++;
++        }
++        return count + (last_book <= funds ? Convert.ToInt32(funds / min) : 0);
++    }
++
++    static void Main(string[] args) {
++        TextWriter textWriter = new StreamWriter(@System.Environment.GetEnvironmentVariable("OUTPUT_PATH"), true);
++
++        string[] pdms = Console.ReadLine().Split(' ');
++
++        int p = Convert.ToInt32(pdms[0]);
++
++        int d = Convert.ToInt32(pdms[1]);
++
++        int m = Convert.ToInt32(pdms[2]);
++
++        int s = Convert.ToInt32(pdms[3]);
++
++        int answer = howManyGames(p, d, m, s);
++
++        textWriter.WriteLine(answer);
++
++        textWriter.Flush();
++        textWriter.Close();
++    }
++}
++
+-- 
+2.23.0
+
