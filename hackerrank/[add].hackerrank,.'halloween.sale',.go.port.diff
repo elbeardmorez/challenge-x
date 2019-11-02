@@ -1,0 +1,41 @@
+From bc1b20aa95da4f5d64ab4b7a50229cbcd2aaf122 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 2 Nov 2019 13:53:11 +0000
+Subject: [add] hackerrank, 'halloween sale', go port
+
+---
+ .../halloween.sale.go                          | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.halloween.sale/halloween.sale.go b/hackerrank/algorithms.-.implementation.-.easy.-.halloween.sale/halloween.sale.go
+index fc6dec1..d69e1fb 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.halloween.sale/halloween.sale.go
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.halloween.sale/halloween.sale.go
+@@ -12,7 +12,23 @@ import (
+ // Complete the howManyGames function below.
+ func howManyGames(p int32, d int32, m int32, s int32) int32 {
+     // Return the number of games you can buy
+-
++    funds := s
++    min := m
++    last_book := p
++    drop := d
++    if last_book > funds {
++        return 0
++    }
++    count := int32(0)
++    for last_book > min && funds > last_book {
++        funds -= last_book
++        last_book -= drop
++        count++
++    }
++    if last_book <= funds {
++        count += int32(funds / min)
++    }
++    return count
+ }
+ 
+ func main() {
+-- 
+2.23.0
+
