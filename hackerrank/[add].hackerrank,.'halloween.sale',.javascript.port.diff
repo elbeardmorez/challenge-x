@@ -1,0 +1,41 @@
+From 44749df8045020f1a45e680107edb1b1c4494343 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 4 Nov 2019 21:37:52 +0000
+Subject: [add] hackerrank, 'halloween sale', javascript port
+
+---
+ .../halloween.sale.js                          | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.halloween.sale/halloween.sale.js b/hackerrank/algorithms.-.implementation.-.easy.-.halloween.sale/halloween.sale.js
+index 5ca6303..cfaa73b 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.halloween.sale/halloween.sale.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.halloween.sale/halloween.sale.js
+@@ -27,7 +27,23 @@ function readLine() {
+ // Complete the howManyGames function below.
+ function howManyGames(p, d, m, s) {
+     // Return the number of games you can buy
+-
++    let funds = s;
++    let min = m;
++    let last_book = p;
++    let drop = d;
++    if (last_book > funds) {
++        return 0;
++    }
++    let count = 0;
++    while (last_book > min && funds > last_book) {
++        funds -= last_book;
++        last_book -= drop;
++        count++;
++    }
++    if (last_book <= funds) {
++        count += parseInt(funds / min);
++    }
++    return count;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
