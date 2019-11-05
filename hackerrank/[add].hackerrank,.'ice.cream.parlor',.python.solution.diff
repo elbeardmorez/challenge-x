@@ -1,0 +1,65 @@
+From 2d489cf32e6d4a1ba7eab9e8f2d94a7439ccaa3e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 5 Nov 2019 23:51:58 +0000
+Subject: [add] hackerrank, 'ice cream parlor', python solution
+
+---
+ .../ice.cream.parlor.py                       | 42 +++++++++++++++++++
+ 1 file changed, 42 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.search.-.easy.-.ice.cream.parlor/ice.cream.parlor.py b/hackerrank/algorithms.-.search.-.easy.-.ice.cream.parlor/ice.cream.parlor.py
+index 004af9e..2abf182 100644
+--- a/hackerrank/algorithms.-.search.-.easy.-.ice.cream.parlor/ice.cream.parlor.py
++++ b/hackerrank/algorithms.-.search.-.easy.-.ice.cream.parlor/ice.cream.parlor.py
+@@ -8,6 +8,48 @@ import sys
+ 
+ # Complete the icecreamParlor function below.
+ def icecreamParlor(m, arr):
++    #print(f"arr: {arr}, target: {m}")
++    l_arr = len(arr)
++    costs = {}
++    # map costs to indexes (flavours)
++    l = 0
++    while l < l_arr:
++        cost = arr[l]
++        if cost in costs:
++            costs[cost].append(l + 1)
++        else:
++            costs[cost] = [l + 1]
++        l += 1
++    arr.sort()
++    l1 = l2 = 0
++    while arr[l1] + arr[l2] < m and l2 < l_arr - 1:
++        l2 += 1
++    while l1 < l_arr - 1:
++        if arr[l1] + arr[l2] == m:
++            break
++        while arr[l1] + arr[l2] < m and l2 < l_arr - 1:
++            l2 += 1
++        if arr[l1] + arr[l2] == m:
++            break
++        while arr[l1] + arr[l2] > m and l2 > l1 + 1:
++            l2 -= 1
++        if arr[l1] + arr[l2] == m:
++            break
++        l1 += 1
++        if l2 == l1:
++            l2 += 1
++
++    res_costs = [arr[l1], arr[l2]]
++    #print(f"res_costs: {res_costs}")
++    res_flavours = []
++    res_flavours.append(costs[res_costs[0]][0])
++    if res_costs[1] == res_costs[0]:
++        res_flavours.append(costs[res_costs[1]][1])
++    else:
++        res_flavours.append(costs[res_costs[1]][0])
++    #print(f"res_flavours: {res_flavours}")
++    return sorted(res_flavours)
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
