@@ -1,0 +1,41 @@
+From 233bf66d9a56c9b5f208af1f7fb4a2684657c7a2 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 6 Nov 2019 07:01:56 +0000
+Subject: [fix] hackerrank, 'ice cream parlor', javascript port
+
+-port errors, lexigraphical sort by default and broken conditional
+-amend l2 start index
+---
+ .../ice.cream.parlor.js                                   | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.search.-.easy.-.ice.cream.parlor/ice.cream.parlor.js b/hackerrank/algorithms.-.search.-.easy.-.ice.cream.parlor/ice.cream.parlor.js
+index 8c921ff..3311ec3 100644
+--- a/hackerrank/algorithms.-.search.-.easy.-.ice.cream.parlor/ice.cream.parlor.js
++++ b/hackerrank/algorithms.-.search.-.easy.-.ice.cream.parlor/ice.cream.parlor.js
+@@ -39,10 +39,10 @@ function icecreamParlor(m, arr) {
+             costs.set(cost, [l + 1]);
+         l++;
+     }
+-    arr.sort();
++    arr.sort((x, y) => (x === y ? 0 : (parseInt(x) < parseInt(y) ? -1 : 1)));
+     let l1 = 0;
+-    let l2 = 0;
+-    while (arr[l1] + arr[l2] < m)
++    let l2 = 1;
++    while (arr[l1] + arr[l2] < m && l2 < l_arr - 1)
+         l2++;
+     while (l1 < l_arr - 1) {
+         if (arr[l1] + arr[l2] == m)
+@@ -68,7 +68,7 @@ function icecreamParlor(m, arr) {
+     else
+         res_flavours.push(costs.get(res_costs[1])[0]);
+     //console.log(`res_flavours: ${res_flavours}`);
+-    return res_flavours;
++    return res_flavours.sort((x, y) => (x === y ? 0 : (parseInt(x) < parseInt(y) ? -1 : 1)));
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
