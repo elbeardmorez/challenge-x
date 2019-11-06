@@ -1,0 +1,68 @@
+From 0d607f22bc9be1eb052de7e6e5704a78b4761349 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 6 Nov 2019 06:47:23 +0000
+Subject: [add] hackerrank, 'ice cream parlor', javascript port
+
+---
+ .../ice.cream.parlor.js                       | 45 ++++++++++++++++++-
+ 1 file changed, 43 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.search.-.easy.-.ice.cream.parlor/ice.cream.parlor.js b/hackerrank/algorithms.-.search.-.easy.-.ice.cream.parlor/ice.cream.parlor.js
+index 86ce280..8c921ff 100644
+--- a/hackerrank/algorithms.-.search.-.easy.-.ice.cream.parlor/ice.cream.parlor.js
++++ b/hackerrank/algorithms.-.search.-.easy.-.ice.cream.parlor/ice.cream.parlor.js
+@@ -26,8 +26,49 @@ function readLine() {
+ 
+ // Complete the icecreamParlor function below.
+ function icecreamParlor(m, arr) {
+-
+-
++    //console.log(`arr: ${arr}, target: ${m}`);
++    let l_arr = arr.length;
++    let costs = new Map();
++    // map costs to indexes (flavours)
++    let l = 0;
++    while (l < l_arr) {
++        let cost = arr[l];
++        if (costs.has(cost))
++            costs.get(cost).push(l + 1);
++        else
++            costs.set(cost, [l + 1]);
++        l++;
++    }
++    arr.sort();
++    let l1 = 0;
++    let l2 = 0;
++    while (arr[l1] + arr[l2] < m)
++        l2++;
++    while (l1 < l_arr - 1) {
++        if (arr[l1] + arr[l2] == m)
++            break;
++        while (arr[l1] + arr[l2] < m && l2 < l_arr - 1)
++            l2++;
++        if (arr[l1] + arr[l2] == m)
++            break;
++        while (arr[l1] + arr[l2] > m && l2 > l1 + 1)
++            l2--;
++        if (arr[l1] + arr[l2] == m)
++            break;
++        l1++;
++        if (l2 == l1)
++            l2++;
++    }
++    let res_costs = [arr[l1], arr[l2]];
++    //console.log(`res_costs: ${res_costs}`);
++    let res_flavours = [];
++    res_flavours.push(costs.get(res_costs[0])[0]);
++    if (res_costs[1] == res_costs[0])
++        res_flavours.push(costs.get(res_costs[1])[1]);
++    else
++        res_flavours.push(costs.get(res_costs[1])[0]);
++    //console.log(`res_flavours: ${res_flavours}`);
++    return res_flavours;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
