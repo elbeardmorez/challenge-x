@@ -1,0 +1,69 @@
+From e06d6e02da5c37d2e14bf09b9fff4631bbbb6b0f Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 7 Nov 2019 08:16:45 +0000
+Subject: [add] hackerrank, 'ice cream parlor', c++ port
+
+---
+ .../ice.cream.parlor.cpp                      | 46 ++++++++++++++++++-
+ 1 file changed, 44 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.search.-.easy.-.ice.cream.parlor/ice.cream.parlor.cpp b/hackerrank/algorithms.-.search.-.easy.-.ice.cream.parlor/ice.cream.parlor.cpp
+index 3e235a4..045f033 100644
+--- a/hackerrank/algorithms.-.search.-.easy.-.ice.cream.parlor/ice.cream.parlor.cpp
++++ b/hackerrank/algorithms.-.search.-.easy.-.ice.cream.parlor/ice.cream.parlor.cpp
+@@ -6,8 +6,50 @@ vector<string> split_string(string);
+ 
+ // Complete the icecreamParlor function below.
+ vector<int> icecreamParlor(int m, vector<int> arr) {
+-
+-
++    //cout << "arr:"; for (auto i : arr) cout << " " << i; cout << ", target: " << m << endl;
++    auto l_arr = arr.size();
++    map<int, vector<int>> costs;
++    // map costs to indexes (flavours)
++    int l = 0;
++    while (l < l_arr) {
++        auto cost = arr[l];
++        if (costs.find(cost) != costs.end())
++            costs[cost].push_back(l + 1);
++        else
++            costs[cost] = vector<int>{l + 1};
++        l++;
++    }
++    sort(arr.begin(), arr.end());
++    int l1 = 0;
++    int l2 = 1;
++    while (arr[l1] + arr[l2] < m && l2 < l_arr - 1)
++        l2++;
++    while (l1 < l_arr - 1) {
++        if (arr[l1] + arr[l2] == m)
++            break;
++        while (arr[l1] + arr[l2] < m && l2 < l_arr - 1)
++            l2++;
++        if (arr[l1] + arr[l2] == m)
++            break;
++        while (arr[l1] + arr[l2] > m && l2 > l1 + 1)
++            l2--;
++        if (arr[l1] + arr[l2] == m)
++            break;
++        l1++;
++        if (l2 == l1)
++            l2++;
++    }
++    int res_costs[2] = {arr[l1], arr[l2]};
++    //cout << "res_costs: " << res_costs << endl;
++    int res_flavours[2];
++    res_flavours[0] = costs[res_costs[0]][0];
++    if (res_costs[1] == res_costs[0])
++        res_flavours[1] = costs[res_costs[1]][1];
++    else
++        res_flavours[1] = costs[res_costs[1]][0];
++    //cout << "res_flavours: " << res_flavours << endl;
++    sort(res_flavours, res_flavours + 2);
++    return vector<int>(res_flavours, res_flavours + 2);
+ }
+ 
+ int main()
+-- 
+2.23.0
+
