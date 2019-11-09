@@ -1,0 +1,83 @@
+From 8518f01ac303f32a38bba1479be6be274fb41780 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 9 Nov 2019 10:47:09 +0000
+Subject: [add] hackerrank, 'ice cream parlor', go port
+
+---
+ .../ice.cream.parlor.go                       | 56 ++++++++++++++++++-
+ 1 file changed, 54 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.search.-.easy.-.ice.cream.parlor/ice.cream.parlor.go b/hackerrank/algorithms.-.search.-.easy.-.ice.cream.parlor/ice.cream.parlor.go
+index 8390d53..7ef0f0e 100644
+--- a/hackerrank/algorithms.-.search.-.easy.-.ice.cream.parlor/ice.cream.parlor.go
++++ b/hackerrank/algorithms.-.search.-.easy.-.ice.cream.parlor/ice.cream.parlor.go
+@@ -7,12 +7,64 @@ import (
+     "os"
+     "strconv"
+     "strings"
++    "sort"
+ )
+ 
+ // Complete the icecreamParlor function below.
+ func icecreamParlor(m int32, arr []int32) []int32 {
+-
+-
++    //fmt.Printf("arr: %v, target: %v\n", arr, m)
++    l_arr := int32(len(arr))
++    costs := make(map[int32][]int32, 0)
++    // map costs to indexes (flavours)
++    l := int32(0)
++    for l < l_arr {
++        var cost = arr[l]
++        if _, ok := costs[cost]; !ok {
++            costs[cost] = make([]int32, 0)
++        }
++        costs[cost] = append(costs[cost], l + 1)
++        l++
++    }
++    //fmt.Printf("costs: %v\n", costs)
++    sort.Slice(arr, func(i1, i2 int) bool {return arr[i1] < arr[i2]})
++    l1 := int32(0)
++    l2 := int32(1)
++    for arr[l1] + arr[l2] < m && l2 < l_arr - 1 {
++        l2++
++    }
++    for l1 < l_arr - 1 {
++        if arr[l1] + arr[l2] == m {
++            break
++        }
++        for arr[l1] + arr[l2] < m && l2 < l_arr - 1 {
++            l2++
++        }
++        if arr[l1] + arr[l2] == m {
++            break
++        }
++        for arr[l1] + arr[l2] > m && l2 > l1 + 1 {
++            l2--
++        }
++        if arr[l1] + arr[l2] == m {
++            break
++        }
++        l1++
++        if l2 == l1 {
++            l2++
++        }
++    }
++    res_costs := []int32{arr[l1], arr[l2]}
++    //fmt.Printf("res_costs: %v\n", res_costs)
++    res_flavours := make([]int32, 2)
++    res_flavours[0] = costs[res_costs[0]][0]
++    if res_costs[1] == res_costs[0] {
++        res_flavours[1] = costs[res_costs[1]][1]
++    } else {
++        res_flavours[1] = costs[res_costs[1]][0]
++    }
++    //fmt.Printf("res_flavours: %v\n", res_flavours)
++    sort.Slice(res_flavours, func(i1, i2 int) bool {return res_flavours[i1] < res_flavours[i2]})
++    return res_flavours
+ }
+ 
+ func main() {
+-- 
+2.23.0
+
