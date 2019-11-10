@@ -1,0 +1,41 @@
+From d9bb7cc091e34438008e324aaf96a5ba16b0f8b6 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 10 Nov 2019 23:36:42 +0000
+Subject: [add] hackerrank, 'minimum distances', python solution
+
+---
+ .../minimum.distances.py                         | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.minimum.distances/minimum.distances.py b/hackerrank/algorithms.-.implementation.-.easy.-.minimum.distances/minimum.distances.py
+index d0335b9..4e155db 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.minimum.distances/minimum.distances.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.minimum.distances/minimum.distances.py
+@@ -6,8 +6,24 @@ import random
+ import re
+ import sys
+ 
++from itertools import groupby
++
++
+ # Complete the minimumDistances function below.
+ def minimumDistances(a):
++    l_a = len(a)
++    groups = [sorted([x[0] for x in list(g)])
++              for k, g in groupby(sorted(zip(range(l_a), a),
++                                         key=(lambda x: x[1])),
++                                  key=(lambda x: x[1]))]
++    global_minimum = -1
++    for g in filter(lambda g: len(g) > 1, groups):
++        print(f"g: {g}")
++        for l in range(len(g) - 1):
++            if global_minimum < 0 or g[l + 1] - g[l] < global_minimum:
++                global_minimum = g[l + 1] - g[l]
++    return global_minimum
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
