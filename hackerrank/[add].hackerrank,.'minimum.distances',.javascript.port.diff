@@ -1,0 +1,44 @@
+From 690c31917f8c5eb4be693d595e51c3574c61fdf2 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 12 Nov 2019 21:06:44 +0000
+Subject: [add] hackerrank, 'minimum distances', javascript port
+
+---
+ .../minimum.distances.js                      | 21 +++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.minimum.distances/minimum.distances.js b/hackerrank/algorithms.-.implementation.-.easy.-.minimum.distances/minimum.distances.js
+index e0001f8..7a2c64b 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.minimum.distances/minimum.distances.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.minimum.distances/minimum.distances.js
+@@ -26,8 +26,25 @@ function readLine() {
+ 
+ // Complete the minimumDistances function below.
+ function minimumDistances(a) {
+-
+-
++    let l_a = a.length;
++    let groups = new Map();
++    for (let l=0; l < l_a; l++) {
++        if (groups.has(a[l]))
++            groups.get(a[l]).push(l);
++        else
++            groups.set(a[l], [l]);
++    }
++    let global_minimum = -1;
++    groups.forEach(g => {
++        if (g.length > 1) {
++            //console.log(`g: ${g}`);
++            for (let l = 0; l < g.length - 1; l++) {
++                if (global_minimum < 0 || g[l + 1] - g[l] < global_minimum)
++                    global_minimum = g[l + 1] - g[l];
++            }
++        }
++    });
++    return global_minimum;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
