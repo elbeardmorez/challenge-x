@@ -1,0 +1,45 @@
+From 28ca9a4e5face14355d63f62d865e5fe4c7b265e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 13 Nov 2019 20:35:23 +0000
+Subject: [add] hackerrank, 'minimum distances', go port
+
+---
+ .../minimum.distances.go                      | 22 +++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.minimum.distances/minimum.distances.go b/hackerrank/algorithms.-.implementation.-.easy.-.minimum.distances/minimum.distances.go
+index 95ab39b..52c2be0 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.minimum.distances/minimum.distances.go
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.minimum.distances/minimum.distances.go
+@@ -11,8 +11,26 @@ import (
+ 
+ // Complete the minimumDistances function below.
+ func minimumDistances(a []int32) int32 {
+-
+-
++    l_a := len(a)
++    groups := make(map[int32][]int32, 0)
++    for l := 0; l < l_a; l++ {
++        if _, ok := groups[a[l]]; !ok {
++            groups[a[l]] = make([]int32, 0)
++        }
++        groups[a[l]] = append(groups[a[l]], int32(l))
++    }
++    global_minimum := int32(-1)
++    for _, g := range(groups) {
++        if int32(len((g))) > 1 {
++            //fmt.Printf("g: %v\n", g)
++            for l := 0; l < len(g) - 1; l++ {
++                if global_minimum < 0 || g[l + 1] - g[l] < global_minimum {
++                    global_minimum = g[l + 1] - g[l]
++                }
++            }
++        }
++    }
++    return int32(global_minimum)
+ }
+ 
+ func main() {
+-- 
+2.23.0
+
