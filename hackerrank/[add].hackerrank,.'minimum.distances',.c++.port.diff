@@ -1,0 +1,44 @@
+From de58861e6547a9ead5174bd26dc4ad7071bb5d67 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 14 Nov 2019 22:52:16 +0000
+Subject: [add] hackerrank, 'minimum distances', c++ port
+
+---
+ .../minimum.distances.cpp                     | 21 +++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.minimum.distances/minimum.distances.cpp b/hackerrank/algorithms.-.implementation.-.easy.-.minimum.distances/minimum.distances.cpp
+index 7dd89aa..d9d542a 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.minimum.distances/minimum.distances.cpp
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.minimum.distances/minimum.distances.cpp
+@@ -6,8 +6,25 @@ vector<string> split_string(string);
+ 
+ // Complete the minimumDistances function below.
+ int minimumDistances(vector<int> a) {
+-
+-
++    auto l_a = a.size();
++    map<int, vector<int>> groups;
++    for (auto l=0; l < l_a; l++) {
++        if (groups.find(a[l]) == groups.end())
++            groups[a[l]] = vector<int>();
++        groups[a[l]].push_back(l);
++    } 
++    int global_minimum = -1;
++    for (auto kvp: groups) {
++        auto g = kvp.second;
++        if (g.size() > 1) {
++            //cout << "g:"; for (auto i: g) cout << " " << i; cout << endl;
++            for (int l = 0; l < g.size() - 1; l++) {
++                if (global_minimum < 0 || g[l + 1] - g[l] < global_minimum)
++                    global_minimum = g[l + 1] - g[l];
++            }
++        }
++    }
++    return global_minimum;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
