@@ -1,0 +1,40 @@
+From 5b2f4fbe5cc5c0b02ac5c1201e6a23406c31b5a4 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 15 Nov 2019 23:56:11 +0000
+Subject: [add] hackerrank, 'flatland space stations', python solution
+
+---
+ .../flatland.space.stations.py                    | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.flatland.space.stations/flatland.space.stations.py b/hackerrank/algorithms.-.implementation.-.easy.-.flatland.space.stations/flatland.space.stations.py
+index 5aed513..f1586b2 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.flatland.space.stations/flatland.space.stations.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.flatland.space.stations/flatland.space.stations.py
+@@ -6,8 +6,23 @@ import random
+ import re
+ import sys
+ 
++
+ # Complete the flatlandSpaceStations function below.
+ def flatlandSpaceStations(n, c):
++    #print(f"n: {n}, c: {c}")
++    # edge
++    max_ = max((n - 1) - c[-1], c[0])
++    # distances
++    last = c[0]
++    for s in sorted(c):
++        diff = s - last
++        dist = int(diff / 2) if diff % 2 == 0 else int((diff - 1) / 2)
++        #print(f"diff: {diff}, dist: {dist}")
++        if dist > max_:
++            max_ = dist
++        last = s
++    return max_
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+-- 
+2.23.0
+
