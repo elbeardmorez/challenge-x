@@ -1,0 +1,46 @@
+From 483bf23229ba16b07bdb6f16b77704f13d3c1e78 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 16 Nov 2019 23:54:36 +0000
+Subject: [add] hackerrank, 'flatland space stations', c# port
+
+---
+ .../flatland.space.stations.cs                | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.flatland.space.stations/flatland.space.stations.cs b/hackerrank/algorithms.-.implementation.-.easy.-.flatland.space.stations/flatland.space.stations.cs
+index 96f94f1..034c475 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.flatland.space.stations/flatland.space.stations.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.flatland.space.stations/flatland.space.stations.cs
+@@ -12,12 +12,27 @@ using System.Text.RegularExpressions;
+ using System.Text;
+ using System;
+ 
++using static System.Console;
++
+ class Solution {
+ 
+     // Complete the flatlandSpaceStations function below.
+     static int flatlandSpaceStations(int n, int[] c) {
+-
+-
++        //WriteLine($"n: {n}, c: {String.Join(' ', c.Select(x => x.ToString()))}");
++        // edge
++        var c_ = c.OrderBy(x => x).ToArray();
++        var max_ = Math.Max((n - 1) - c_[c_.Length - 1], c_[0]);
++        // distances
++        var last = c_[0];
++        foreach (var s in c_) {
++            var diff = s - last;
++            var dist = diff % 2 == 0 ? Convert.ToInt32(diff / 2) : Convert.ToInt32((diff - 1) / 2);
++            //WriteLine($"diff: {diff}, dist: {dist}");
++            if (dist > max_)
++                max_ = dist;
++            last = s;
++        }
++        return max_;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
