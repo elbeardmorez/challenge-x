@@ -1,0 +1,26 @@
+From 47f66f125ec7c4ce7c2634d4eec4ffc8d1360416 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 17 Nov 2019 23:00:57 +0000
+Subject: [fix] hackerrank, 'flatland space stations', javascript port
+
+-invalid lexicographical search as default
+---
+ .../flatland.space.stations.js                                  | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.flatland.space.stations/flatland.space.stations.js b/hackerrank/algorithms.-.implementation.-.easy.-.flatland.space.stations/flatland.space.stations.js
+index d5271fc..807567a 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.flatland.space.stations/flatland.space.stations.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.flatland.space.stations/flatland.space.stations.js
+@@ -27,7 +27,7 @@ function readLine() {
+ // Complete the flatlandSpaceStations function below.
+ function flatlandSpaceStations(n, c) {
+     // edge
+-    let c_ = c.sort((x, y) => x == y ? 0 : (x < y ? -1 : 1));
++    let c_ = c.sort((x, y) => x == y ? 0 : ((parseInt(x) < parseInt(y) ? -1 : 1)));
+     //console.log(`n: ${n}, c: ${c}`);
+     let max_ = (n - 1) - c_[c_.length - 1];
+     if (parseInt(c_[0]) > parseInt(max_))
+-- 
+2.23.0
+
