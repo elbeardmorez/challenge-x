@@ -1,0 +1,26 @@
+From 7400ff690c75a91c1e952a859f0fd79ed3bd1b3c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 17 Nov 2019 23:05:02 +0000
+Subject: [fix] hackerrank, 'flatland space stations', javascript port
+
+-variable name typo
+---
+ .../flatland.space.stations.js                                  | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.flatland.space.stations/flatland.space.stations.js b/hackerrank/algorithms.-.implementation.-.easy.-.flatland.space.stations/flatland.space.stations.js
+index 807567a..df1bbf6 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.flatland.space.stations/flatland.space.stations.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.flatland.space.stations/flatland.space.stations.js
+@@ -31,7 +31,7 @@ function flatlandSpaceStations(n, c) {
+     //console.log(`n: ${n}, c: ${c}`);
+     let max_ = (n - 1) - c_[c_.length - 1];
+     if (parseInt(c_[0]) > parseInt(max_))
+-        max = c_[0];
++        max_ = c_[0];
+     // distances
+     let last = c_[0];
+     for (let l = 0; l < c_.length; l++) {
+-- 
+2.23.0
+
