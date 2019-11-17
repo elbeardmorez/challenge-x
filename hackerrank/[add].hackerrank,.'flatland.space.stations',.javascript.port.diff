@@ -1,0 +1,43 @@
+From 7a94cfffa1db28af3f731da0313e20bbbe93e7b8 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 17 Nov 2019 22:56:45 +0000
+Subject: [add] hackerrank, 'flatland space stations', javascript port
+
+---
+ .../flatland.space.stations.js                | 20 +++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.flatland.space.stations/flatland.space.stations.js b/hackerrank/algorithms.-.implementation.-.easy.-.flatland.space.stations/flatland.space.stations.js
+index a74c42c..d5271fc 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.flatland.space.stations/flatland.space.stations.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.flatland.space.stations/flatland.space.stations.js
+@@ -26,8 +26,24 @@ function readLine() {
+ 
+ // Complete the flatlandSpaceStations function below.
+ function flatlandSpaceStations(n, c) {
+-
+-
++    // edge
++    let c_ = c.sort((x, y) => x == y ? 0 : (x < y ? -1 : 1));
++    //console.log(`n: ${n}, c: ${c}`);
++    let max_ = (n - 1) - c_[c_.length - 1];
++    if (parseInt(c_[0]) > parseInt(max_))
++        max = c_[0];
++    // distances
++    let last = c_[0];
++    for (let l = 0; l < c_.length; l++) {
++        let s = c[l] - 2;
++        let diff = s - last;
++        let dist = diff % 2 === 0 ? parseInt(diff / 2) : parseInt((diff - 1) / 2);
++        //console.log(`diff: ${diff}, dist: ${dist}`);
++        if (dist > max_)
++            max_ = dist;
++        last = s;
++    }
++    return max_;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
