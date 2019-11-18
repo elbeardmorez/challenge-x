@@ -1,0 +1,41 @@
+From 063174d39affc7b3b9a4eddbe167b4ced27cc86a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 18 Nov 2019 22:45:30 +0000
+Subject: [add] hackerrank, 'flatland space stations', c++ port
+
+---
+ .../flatland.space.stations.cpp                | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.flatland.space.stations/flatland.space.stations.cpp b/hackerrank/algorithms.-.implementation.-.easy.-.flatland.space.stations/flatland.space.stations.cpp
+index b2bbd0d..f4a0019 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.flatland.space.stations/flatland.space.stations.cpp
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.flatland.space.stations/flatland.space.stations.cpp
+@@ -6,8 +6,22 @@ vector<string> split_string(string);
+ 
+ // Complete the flatlandSpaceStations function below.
+ int flatlandSpaceStations(int n, vector<int> c) {
+-
+-
++    // edge
++    sort(c.begin(), c.end());
++    //cout << "n: " << n << ", c:"; for (auto i : c) cout << " " << i; cout << endl;
++    auto max_ = max((n - 1) - c[c.size() - 1], c[0]);
++    // distances
++    auto last = c[0];
++    for (int l = 0; l < c.size(); l++) {
++        auto s = c[l] - 2;
++        auto diff = s - last;
++        auto dist = diff % 2 == 0 ? (int)(diff / 2) : (int)((diff - 1) / 2);
++        //cout << "diff: " << diff << ", dist: " << dist << endl;
++        if (dist > max_)
++            max_ = dist;
++        last = s;
++    }
++    return max_;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
