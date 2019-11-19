@@ -1,0 +1,65 @@
+From 4f806c480417ec229004d10fc634c3721ed99a37 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 19 Nov 2019 22:09:46 +0000
+Subject: [add] hackerrank, 'flatland space stations', go port
+
+---
+ .../flatland.space.stations.go                | 33 ++++++++++++++++---
+ 1 file changed, 28 insertions(+), 5 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.flatland.space.stations/flatland.space.stations.go b/hackerrank/algorithms.-.implementation.-.easy.-.flatland.space.stations/flatland.space.stations.go
+index 61c0816..593b61f 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.flatland.space.stations/flatland.space.stations.go
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.flatland.space.stations/flatland.space.stations.go
+@@ -7,15 +7,39 @@ import (
+     "os"
+     "strconv"
+     "strings"
++    "sort"
+ )
+ 
+ // Complete the flatlandSpaceStations function below.
+ func flatlandSpaceStations(n int32, c []int32) int32 {
++    // edge
++    sort.Slice(c, func(l1, l2 int) bool {return c[l1] < c[l2]})
++    //fmt.Printf("n: %v, c: %v\n", n, c)
++    max_ := (n - 1) - c[len(c) - 1]
++    if c[0] > max_ {
++        max_ = c[0]
++    }
++    // distances
++    last := c[0]
++    var dist int32;
++    for l := 0; l < len(c); l++ {
++      s := c[l] - 2
++      diff := s - last
++      if diff % 2 == 0 {
++        dist = diff / 2
++      } else {
++        dist = (diff - 1) / 2
++      }
++      //fmt.Printf("diff: %v, dist: %v\n", diff, dist)
++      if dist > max_ {
++        max_ = dist
++      }
++      last = s
++    }
++    return max_
++  }
+ 
+-
+-}
+-
+-func main() {
++  func main() {
+     reader := bufio.NewReaderSize(os.Stdin, 1024 * 1024)
+ 
+     stdout, err := os.Create(os.Getenv("OUTPUT_PATH"))
+@@ -67,4 +91,3 @@ func checkError(err error) {
+         panic(err)
+     }
+ }
+-
+-- 
+2.23.0
+
