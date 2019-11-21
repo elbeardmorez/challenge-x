@@ -1,0 +1,42 @@
+From 0394aebbfa138c2f227ed4a4e325ed685097027d Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 21 Nov 2019 22:27:57 +0000
+Subject: [add] hackerrank, 'lisa's workbook', c++ solution
+
+---
+ .../lisa's.workbook.cpp                       | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.lisa's.workbook/lisa's.workbook.cpp b/hackerrank/algorithms.-.implementation.-.easy.-.lisa's.workbook/lisa's.workbook.cpp
+index 1b6347e..9abc5d7 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.lisa's.workbook/lisa's.workbook.cpp
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.lisa's.workbook/lisa's.workbook.cpp
+@@ -6,8 +6,23 @@ vector<string> split_string(string);
+ 
+ // Complete the workbook function below.
+ int workbook(int n, int k, vector<int> arr) {
+-
+-
++    int count = 0;
++    int page = 1;
++    int chapter = 1;
++    for (int xs : arr) {
++        for (int x = 1; x <= xs; x++) {
++            //cout << "chapter: " << chapter << ", exercise: " << x << ", page: " << page << endl;
++            if (x == page) {
++                //cout << "special!" << endl;
++                count++;
++            }
++            if (x % k == 0 and x < xs)
++                page++;
++        }
++        chapter++;
++        page++;
++   }
++   return count;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
