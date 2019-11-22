@@ -1,0 +1,49 @@
+From 683239fe47fd75d05c351cd421fde66336a1e117 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 22 Nov 2019 20:14:57 +0000
+Subject: [add] hackerrank, 'lisa's workbook', c# port
+
+---
+ .../lisa's.workbook.cs                        | 22 +++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.lisa's.workbook/lisa's.workbook.cs b/hackerrank/algorithms.-.implementation.-.easy.-.lisa's.workbook/lisa's.workbook.cs
+index 0254cf0..99c7707 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.lisa's.workbook/lisa's.workbook.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.lisa's.workbook/lisa's.workbook.cs
+@@ -12,12 +12,30 @@ using System.Text.RegularExpressions;
+ using System.Text;
+ using System;
+ 
++using static System.Console;
++
+ class Solution {
+ 
+     // Complete the workbook function below.
+     static int workbook(int n, int k, int[] arr) {
+-
+-
++        int count = 0;
++        int page = 1;
++        int chapter = 1;
++        for (int l = 0; l < arr.Length; l++) {
++            var xs = arr[l];
++            for (int x = 1; x <= xs; x++) {
++                //WriteLine($"chapter: {chapter}, exercise: {x}, page: {page}");
++                if (x == page) {
++                    //WriteLine($"special!");
++                    count++;
++                }
++                if (x % k == 0 && x < xs)
++                    page++;
++            }
++            chapter++;
++            page++;
++        }
++        return count;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.23.0
+
