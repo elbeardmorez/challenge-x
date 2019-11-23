@@ -1,0 +1,43 @@
+From e8f3bd21604060edeb3c414d4ba248c5416654a3 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 23 Nov 2019 20:21:11 +0000
+Subject: [add] hackerrank, 'lisa's workbook', javascript port
+
+---
+ .../lisa's.workbook.js                        | 20 +++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.lisa's.workbook/lisa's.workbook.js b/hackerrank/algorithms.-.implementation.-.easy.-.lisa's.workbook/lisa's.workbook.js
+index f130321..d02dd8e 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.lisa's.workbook/lisa's.workbook.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.lisa's.workbook/lisa's.workbook.js
+@@ -26,8 +26,24 @@ function readLine() {
+ 
+ // Complete the workbook function below.
+ function workbook(n, k, arr) {
+-
+-
++    let count = 0;
++    let page = 1;
++    let chapter = 1;
++    for (let l = 0; l < arr.length; l++) {
++        let xs = arr[l];
++        for (let x = 1; x <= xs; x++) {
++            //console.log(`chapter: ${chapter}, exercise: ${x}, page: ${page}`);
++            if (x === page) {
++                //console.log(`special!`);
++                count++;
++            }
++            if (x % k === 0 && x < xs)
++                page++;
++        }
++        chapter++;
++        page++;
++    }
++    return count;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
