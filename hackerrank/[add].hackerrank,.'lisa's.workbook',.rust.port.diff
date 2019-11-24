@@ -1,0 +1,85 @@
+From 8250d0acdd78de33575ab3770cf373e62a5eada0 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 24 Nov 2019 20:54:29 +0000
+Subject: [add] hackerrank, 'lisa's workbook', rust port
+
+---
+ .../lisa's.workbook.rs                        | 66 +++++++++++++++++++
+ 1 file changed, 66 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.lisa's.workbook/lisa's.workbook.rs b/hackerrank/algorithms.-.implementation.-.easy.-.lisa's.workbook/lisa's.workbook.rs
+index 9219c31..30d88e7 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.lisa's.workbook/lisa's.workbook.rs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.lisa's.workbook/lisa's.workbook.rs
+@@ -1,2 +1,68 @@
+ // Enter your code here 
+ 
++use std::io;
++use std::env;
++use std::fs::File;
++use std::io::Write;
++
++fn workbook(k: &i32, arr: &mut Vec<i32>) -> i32 {
++    let mut count: i32 = 0;
++    let mut page: i32 = 1;
++    let mut chapter: i32 = 1;
++    for xs in arr {
++        for x in 1..(*xs + 1) {
++            //println!("chapter: {:?}, exercise: {:?}, page: {:?}", x, chapter, page);
++            if x == page {
++                //println!("special!");
++                count += 1;
++            }
++            if x % k == 0 && x < *xs {
++                page += 1;
++            }
++        }
++        chapter += 1;
++        page += 1;
++    }
++    return count;
++}
++
++fn next_line(s: &mut String) {
++    s.clear();
++    let mut buf = String::new();
++    let res = io::stdin().read_line(&mut buf);
++    if res.is_ok() && res.unwrap() != 0 {
++        s.push_str(buf.trim_right_matches('\n'));
++    }
++}
++
++fn main() {
++
++    let key = "OUTPUT_PATH";
++    let mut target = String::new();
++    match env::var_os(key) {
++        Some(val) => target.push_str(val.to_str().unwrap()),
++        None => panic!("{} is not defined in the environment.", key),
++    }
++    let mut f = match File::create(target) {
++        Ok(f) => f,
++        Err(e) => panic!("file io error: {}", e),
++    };
++
++    let mut line = String::from("-");
++    let mut data: Vec<i32>;
++
++    while line.len() > 0 {
++        next_line(&mut line);
++
++        data = line.split(' ').map(|s| s.parse::<i32>().unwrap()).collect();
++        let k = data[1];
++
++        next_line(&mut line);
++        data = line.split(' ').map(|s| s.parse::<i32>().unwrap()).collect();
++
++        let res: i32 = workbook(&k, &mut data);
++        let _ = f.write_all(res.to_string().as_bytes());
++        next_line(&mut line);
++    }
++    f.write_all(b"\n").expect("file io error");
++}
+-- 
+2.23.0
+
