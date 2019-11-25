@@ -1,0 +1,49 @@
+From 5065d44389dc076f7efd30f9cc5fd1b91ce1a35a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 25 Nov 2019 08:42:28 +0000
+Subject: [add] hackerrank, 'lisa's workbook', python port
+
+---
+ .../lisa's.workbook.py                        | 20 ++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.lisa's.workbook/lisa's.workbook.py b/hackerrank/algorithms.-.implementation.-.easy.-.lisa's.workbook/lisa's.workbook.py
+index 7d1a3d1..37f326f 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.lisa's.workbook/lisa's.workbook.py
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.lisa's.workbook/lisa's.workbook.py
+@@ -6,8 +6,27 @@ import random
+ import re
+ import sys
+ 
++
+ # Complete the workbook function below.
+ def workbook(n, k, arr):
++    count = 0
++    page = 1
++    chapter = 1
++    for xs in arr:
++        for x in range(1, xs + 1):
++            #print(f"chapter: {chapter}, exercise: {x}, page: {page}")
++            if x == page:
++                #print(f"specialnot ")
++                count += 1
++
++            if x % k == 0 and x < xs:
++                page += 1
++
++        chapter += 1
++        page += 1
++
++    return count
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+@@ -25,4 +44,3 @@ if __name__ == '__main__':
+     fptr.write(str(result) + '\n')
+ 
+     fptr.close()
+-
+-- 
+2.23.0
+
