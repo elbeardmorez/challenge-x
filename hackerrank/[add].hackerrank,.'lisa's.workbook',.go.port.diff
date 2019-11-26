@@ -1,0 +1,43 @@
+From fd2c8ced8d4905fa883eb14fe8b89767bc5608ab Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 26 Nov 2019 20:40:38 +0000
+Subject: [add] hackerrank, 'lisa's workbook', go port
+
+---
+ .../lisa's.workbook.go                        | 20 +++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.lisa's.workbook/lisa's.workbook.go b/hackerrank/algorithms.-.implementation.-.easy.-.lisa's.workbook/lisa's.workbook.go
+index be478ef..72ab659 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.lisa's.workbook/lisa's.workbook.go
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.lisa's.workbook/lisa's.workbook.go
+@@ -11,8 +11,24 @@ import (
+ 
+ // Complete the workbook function below.
+ func workbook(n int32, k int32, arr []int32) int32 {
+-
+-
++    count := 0
++    page := int32(1)
++    chapter := 1
++    for _, xs := range(arr) {
++        for x := int32(1); x < (xs + int32(1)); x += int32(1) {
++            //fmt.Printf("chapter: %v, exercise: %v, page: %v\n", chapter, x, page)
++            if x == page {
++                //fmt.Printf("special!")
++                count += 1
++            }
++            if x % k == 0 && x < xs {
++                page += 1
++            }
++        }
++        chapter += 1
++        page += 1
++    }
++    return int32(count)
+ }
+ 
+ func main() {
+-- 
+2.23.0
+
