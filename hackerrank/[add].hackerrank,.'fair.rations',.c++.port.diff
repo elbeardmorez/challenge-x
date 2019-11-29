@@ -1,0 +1,65 @@
+From a4307f8e41efc0feb39bb359edad5c2410f46a38 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 29 Nov 2019 07:49:16 +0000
+Subject: [add] hackerrank, 'fair rations', c++ port
+
+---
+ .../fair.rations.cpp                          | 35 ++++++++++++++++---
+ 1 file changed, 31 insertions(+), 4 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.fair.rations/fair.rations.cpp b/hackerrank/algorithms.-.implementation.-.easy.-.fair.rations/fair.rations.cpp
+index 81b5698..1dc82e2 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.fair.rations/fair.rations.cpp
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.fair.rations/fair.rations.cpp
+@@ -5,9 +5,36 @@ using namespace std;
+ vector<string> split_string(string);
+ 
+ // Complete the fairRations function below.
+-int fairRations(vector<int> B) {
+-
+-
++string fairRations(vector<int> B) {
++    /*
++    1 2 3
++    2 3 3
++    2 4 4
++
++    1 3 1
++    2 4 1
++
++    reject odd number of odds
++    */
++
++    auto l_odds = 0;
++    for (auto x: B) {
++        if (x % 2 == 1)
++            l_odds += 1;
++    }
++    if (l_odds % 2 == 1)
++        return "NO";
++
++    auto mod = 0;
++    auto l_B = B.size();
++    for (int l = 0; l < l_B - 1; l += 1) {
++        if (B[l] % 2 == 1) {
++            B[l] += 1;
++            B[l + 1] += 1;
++            mod += 2;
++        }
++    }
++    return to_string(mod);
+ }
+ 
+ int main()
+@@ -31,7 +58,7 @@ int main()
+         B[i] = B_item;
+     }
+ 
+-    int result = fairRations(B);
++    string result = fairRations(B);
+ 
+     fout << result << "\n";
+ 
+-- 
+2.23.0
+
