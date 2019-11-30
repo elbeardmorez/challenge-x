@@ -1,0 +1,54 @@
+From 0a2212d71a5311c9dc177d60923f24fbe0803015 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 30 Nov 2019 23:01:16 +0000
+Subject: [add] hackerrank, 'fair rations', javascript port
+
+---
+ .../fair.rations.js                           | 31 +++++++++++++++++--
+ 1 file changed, 29 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.fair.rations/fair.rations.js b/hackerrank/algorithms.-.implementation.-.easy.-.fair.rations/fair.rations.js
+index 04e3cc8..548c06e 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.fair.rations/fair.rations.js
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.fair.rations/fair.rations.js
+@@ -26,8 +26,35 @@ function readLine() {
+ 
+ // Complete the fairRations function below.
+ function fairRations(B) {
+-
+-
++    /*
++    1 2 3
++    2 3 3
++    2 4 4
++
++    1 3 1
++    2 4 1
++
++    reject odd number of odds
++    */
++
++    let l_odds = 0;
++    B.forEach(x => {
++        if (x % 2 === 1)
++            l_odds += 1;
++    });
++    if (l_odds % 2 === 1)
++        return "NO";
++
++    let mod = 0;
++    let l_B = B.length;
++    for (let l = 0; l < l_B - 1; l += 1) {
++        if (B[l] % 2 === 1) {
++            B[l] += 1;
++            B[l + 1] += 1;
++            mod += 2;
++        }
++    }
++    return mod.toString();
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
