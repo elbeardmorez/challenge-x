@@ -1,0 +1,66 @@
+From 63dd9d81b7179540305002276c6c06379936d574 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 1 Dec 2019 10:09:28 +0000
+Subject: [add] hackerrank, 'fair rations', c# port
+
+---
+ .../fair.rations.cs                           | 34 ++++++++++++++++---
+ 1 file changed, 30 insertions(+), 4 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.fair.rations/fair.rations.cs b/hackerrank/algorithms.-.implementation.-.easy.-.fair.rations/fair.rations.cs
+index 088255f..aede4d2 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.fair.rations/fair.rations.cs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.fair.rations/fair.rations.cs
+@@ -15,9 +15,36 @@ using System;
+ class Solution {
+ 
+     // Complete the fairRations function below.
+-    static int fairRations(int[] B) {
++    static string fairRations(int[] B) {
++        /*
++        1 2 3
++        2 3 3
++        2 4 4
+ 
++        1 3 1
++        2 4 1
+ 
++        reject odd number of odds
++        */
++
++        var l_odds = 0;
++        foreach (var x in B) {
++            if (x % 2 == 1)
++                l_odds += 1;
++        }
++        if (l_odds % 2 == 1)
++            return "NO";
++
++        var mod = 0;
++        var l_B = B.Length;
++        for (var l = 0; l < l_B - 1; l += 1) {
++            if (B[l] % 2 == 1) {
++                B[l] += 1;
++                B[l + 1] += 1;
++                mod += 2;
++            }
++        }
++        return mod.ToString();
+     }
+ 
+     static void Main(string[] args) {
+@@ -25,9 +52,8 @@ class Solution {
+ 
+         int N = Convert.ToInt32(Console.ReadLine());
+ 
+-        int[] B = Array.ConvertAll(Console.ReadLine().Split(' '), BTemp => Convert.ToInt32(BTemp))
+-        ;
+-        int result = fairRations(B);
++        int[] B = Array.ConvertAll(Console.ReadLine().Split(' '), BTemp => Convert.ToInt32(BTemp));
++        string result = fairRations(B);
+ 
+         textWriter.WriteLine(result);
+ 
+-- 
+2.23.0
+
