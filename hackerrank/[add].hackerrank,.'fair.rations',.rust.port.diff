@@ -1,0 +1,101 @@
+From 291ccd5c04bde9f2b4c0eda3423740718030bf6a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 2 Dec 2019 23:41:32 +0000
+Subject: [add] hackerrank, 'fair rations', rust port
+
+---
+ .../fair.rations.rs                           | 82 ++++++++++++++++++-
+ 1 file changed, 81 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.fair.rations/fair.rations.rs b/hackerrank/algorithms.-.implementation.-.easy.-.fair.rations/fair.rations.rs
+index 5f0e87f..890d918 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.fair.rations/fair.rations.rs
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.fair.rations/fair.rations.rs
+@@ -1,3 +1,83 @@
+-// Enter your code here
++// Enter your code here 
+ 
++use std::io;
++use std::env;
++use std::fs::File;
++use std::io::Write;
+ 
++fn fair_rations(b: &mut Vec<i32>, res: &mut String) {
++    /*
++    1 2 3
++    2 3 3
++    2 4 4
++
++    1 3 1
++    2 4 1
++
++    reject odd number of odds
++    */
++
++    let mut l_odds: u32 = 0;
++    for x in b.clone() {
++        if x % 2 == 1 {
++            l_odds += 1;
++        }
++    }
++    if l_odds % 2 == 1 {
++        res.push_str("NO");
++        return;
++    }
++
++    let mut mod_: u32 = 0;
++    let l_b = b.len();
++    for l in 0..(l_b - 1) {
++        if b[l as usize] % 2 == 1 {
++            b[l as usize] += 1;
++            b[(l + 1) as usize] += 1;
++            mod_ += 2;
++        }
++    }
++    res.push_str(mod_.to_string().as_str());
++}
++
++fn next_line(s: &mut String) {
++    s.clear();
++    let mut buf = String::new();
++    let res = io::stdin().read_line(&mut buf);
++    if res.is_ok() && res.unwrap() != 0 {
++        s.push_str(buf.trim_right_matches('\n'));
++    }
++}
++
++fn main() {
++
++    let key = "OUTPUT_PATH";
++    let mut target = String::new();
++    match env::var_os(key) {
++        Some(val) => target.push_str(val.to_str().unwrap()),
++        None => panic!("{} is not defined in the environment.", key),
++    }
++    let mut f = match File::create(target) {
++        Ok(f) => f,
++        Err(e) => panic!("file io error: {}", e),
++    };
++
++    let mut line = String::from("-");
++    let mut data: Vec<i32>;
++
++    while line.len() > 0 {
++        next_line(&mut line);
++
++        data = line.split(' ').map(|s| s.parse::<i32>().unwrap()).collect();
++        let _n = data[0];
++
++        next_line(&mut line);
++        data = line.split(' ').map(|s| s.parse::<i32>().unwrap()).collect();
++
++        let mut res: String = String::new();
++        fair_rations(&mut data, &mut res);
++        let _ = f.write_all(res.to_string().as_bytes());
++        next_line(&mut line);
++    }
++    f.write_all(b"\n").expect("file io error");
++}
+-- 
+2.23.0
+
