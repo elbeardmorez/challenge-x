@@ -1,0 +1,75 @@
+From cddd13cf8ee3998e6ff908e42783fe77c40d0f6e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 4 Dec 2019 07:59:17 +0000
+Subject: [add] hackerrank, 'service lane', javascript port
+
+---
+ .../service.lane.js                           | 56 +++++++++++++++++++
+ 1 file changed, 56 insertions(+)
+ create mode 100644 hackerrank/algorithms.-.implementation.-.easy.-.service.lane/service.lane.js
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.service.lane/service.lane.js b/hackerrank/algorithms.-.implementation.-.easy.-.service.lane/service.lane.js
+new file mode 100644
+index 0000000..0450531
+--- /dev/null
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.service.lane/service.lane.js
+@@ -0,0 +1,56 @@
++'use strict';
++
++const fs = require('fs');
++
++process.stdin.resume();
++process.stdin.setEncoding('utf-8');
++
++let inputString = '';
++let currentLine = 0;
++
++process.stdin.on('data', inputStdin => {
++    inputString += inputStdin;
++});
++
++process.stdin.on('end', _ => {
++    inputString = inputString.replace(/\s*$/, '')
++        .split('\n')
++        .map(str => str.replace(/\s*$/, ''));
++
++    main();
++});
++
++function readLine() {
++    return inputString[currentLine++];
++}
++
++// Complete the serviceLane function below.
++function serviceLane(n, widths, cases) {
++    //console.log(`widths ${widths} | cases: ${cases}`);
++    return Array.from(cases.map((x) => { return Math.min(...widths.slice(x[0], x[1] + 1)) }));
++}
++
++function main() {
++    const ws = fs.createWriteStream(process.env.OUTPUT_PATH);
++
++    const nt = readLine().split(' ');
++
++    const n = parseInt(nt[0], 10);
++
++    const t = parseInt(nt[1], 10);
++
++    const width = readLine().split(' ').map(widthTemp => parseInt(widthTemp, 10));
++
++    let cases = Array(t);
++
++    for (let i = 0; i < t; i++) {
++        cases[i] = readLine().split(' ').map(casesTemp => parseInt(casesTemp, 10));
++    }
++
++    let result = serviceLane(n, width, cases);
++
++    ws.write(result.join("\n") + "\n");
++
++    ws.end();
++}
++
+-- 
+2.23.0
+
