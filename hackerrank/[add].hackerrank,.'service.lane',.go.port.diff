@@ -1,0 +1,53 @@
+From 3efd3b18dbb8debe04a6963bd4a880a8aef10308 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 5 Dec 2019 08:10:15 +0000
+Subject: [add] hackerrank, 'service lane', go port
+
+---
+ .../service.lane.go                           | 22 +++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.service.lane/service.lane.go b/hackerrank/algorithms.-.implementation.-.easy.-.service.lane/service.lane.go
+index 84ea889..646c738 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.service.lane/service.lane.go
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.service.lane/service.lane.go
+@@ -9,10 +9,24 @@ import (
+     "strings"
+ )
+ 
+-// Complete the serviceLane function below.
+-func serviceLane(n int32, cases [][]int32) []int32 {
+-
++func min_(a []int32) int32 {
++    res := a[0]
++    for _, x := range(a) {
++        if x < res {
++            res = x
++        }
++    }
++    return res
++}
+ 
++// Complete the serviceLane function below.
++func serviceLane(n int32, widths []int32, cases [][]int32) []int32 {
++    //fmt.Printf("widths: %v, cases: %v\n", widths, cases)
++    res := make([]int32, 0);
++    for _, case_ := range(cases) {
++         res = append(res, min_(widths[case_[0]:(case_[1] + 1)]))
++    }
++    return res
+ }
+ 
+ func main() {
+@@ -65,7 +79,7 @@ func main() {
+         cases = append(cases, casesRow)
+     }
+ 
+-    result := serviceLane(n, cases)
++    result := serviceLane(n, width, cases)
+ 
+     for i, resultItem := range result {
+         fmt.Fprintf(writer, "%d", resultItem)
+-- 
+2.23.0
+
