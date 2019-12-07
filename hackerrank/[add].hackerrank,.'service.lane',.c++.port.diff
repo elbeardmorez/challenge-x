@@ -1,0 +1,56 @@
+From 9dccb0b30ce088d0b4335244f58968f89f570faf Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 7 Dec 2019 11:29:41 +0000
+Subject: [add] hackerrank, 'service lane', c++ port
+
+---
+ .../service.lane.cpp                          | 24 ++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.easy.-.service.lane/service.lane.cpp b/hackerrank/algorithms.-.implementation.-.easy.-.service.lane/service.lane.cpp
+index 4ed89da..57ab402 100644
+--- a/hackerrank/algorithms.-.implementation.-.easy.-.service.lane/service.lane.cpp
++++ b/hackerrank/algorithms.-.implementation.-.easy.-.service.lane/service.lane.cpp
+@@ -4,10 +4,28 @@ using namespace std;
+ 
+ vector<string> split_string(string);
+ 
++int min_(int* a, int count) {
++    int res = a[0];
++    for (int l = 0; l < count; l++) {
++        if (a[l] < res) {
++            res = a[l];
++        }
++    }
++    return res;
++}
++
+ // Complete the serviceLane function below.
+ vector<int> serviceLane(int n, vector<int> widths, vector<vector<int>> cases) {
+-
+-
++    /*
++    cout << "widths:"; for (auto x: widths) cout << " " << x;
++    cout << ", cases:"; for (auto x: cases) cout << " [" << x[0] << " " << x[1] << "]";
++    cout << endl;
++    */
++    vector<int> res;
++    for (auto case_ : cases) {
++         res.push_back(min_(&widths[case_[0]], case_[1] + 1 - case_[0]));
++    }
++    return res;
+ }
+ 
+ int main()
+@@ -47,7 +65,7 @@ int main()
+         cin.ignore(numeric_limits<streamsize>::max(), '\n');
+     }
+ 
+-    vector<int> result = serviceLane(n, cases);
++    vector<int> result = serviceLane(n, width, cases);
+ 
+     for (int i = 0; i < result.size(); i++) {
+         fout << result[i];
+-- 
+2.23.0
+
