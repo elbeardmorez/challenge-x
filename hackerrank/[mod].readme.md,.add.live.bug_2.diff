@@ -1,0 +1,25 @@
+From 25ea331fb2c48fcb75f9d07e8fac2f0d6b5ff0bf Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 8 Dec 2019 23:19:09 +0000
+Subject: [mod] README.md, add live bug
+
+-service lane, all languages
+---
+ README.md | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/README.md b/README.md
+index f02180f..a23833f 100644
+--- a/README.md
++++ b/README.md
+@@ -35,6 +35,7 @@ this repository contains a heck of a lot of my programming faux-pas, but i've de
+ i refuse to 'work around' bugs like others have done, hard-coding results on a per broken test case basis in order to dishonestly achieve the maximum score. doing so means they'll never get fixed! i have raised the following bugs through the hackerrank 'suggestions' medium with no feedback
+ 
+ #### live
++- [algorithms|implementation|easy] service lane | all stubs, 'width' input is parsed but not passed to the problem function
+ - [algorithms|implementation|easy] fair rations | c++ / c# / go, stubs for all statically typed languages use an invalid numeric return type when a string is required by the solution
+ - [algorithms|constructive algorithms|medium] bonetrousle | javascript, out of bounds use of ParseInt in stub
+ - [algorithms|graph theory|medium] journey to the moon | c# stub use 'int's (signed 32-bit) but output 11 4999949998, which is > 2^31-1
+-- 
+2.23.0
+
