@@ -1,0 +1,50 @@
+From 7ef5e02b506c576ed42f7cd038ccfd32638fa353 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 9 Dec 2019 22:06:47 +0000
+Subject: [add] hackerrank, 'weighted uniform strings', go solution
+
+---
+ .../weighted.uniform.strings.go               | 26 +++++++++++++++++++
+ 1 file changed, 26 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.weighted.uniform.strings/weighted.uniform.strings.go b/hackerrank/algorithms.-.strings.-.easy.-.weighted.uniform.strings/weighted.uniform.strings.go
+index f1dcb8e..37884a6 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.weighted.uniform.strings/weighted.uniform.strings.go
++++ b/hackerrank/algorithms.-.strings.-.easy.-.weighted.uniform.strings/weighted.uniform.strings.go
+@@ -11,7 +11,33 @@ import (
+ 
+ // Complete the weightedUniformStrings function below.
+ func weightedUniformStrings(s string, queries []int32) []string {
++    tallies := make(map[int32]bool, 0)
++    chars := []rune(s)
++    last := int32(chars[0]) - 96
++    //fmt.Printf("last: %v\n", last)
++    count := int32(0)
++    for _, c := range(chars) {
++        c_ := int32(c) - 96
++        //fmt.Printf("considering: %v|%v|%v\n", string(c), c, c_)
++        if c_ == last {
++            count += c_
++        } else {
++            last = c_
++            count = last
++        }
++        tallies[count] = true
++    }
+ 
++    //fmt.Printf("tallies: %v\n", tallies)
++    res := make([]string, len(queries))
++    for idx, q := range(queries) {
++        if _, ok := tallies[q]; ok {
++            res[idx] = "Yes"
++        } else {
++            res[idx] = "No"
++        }
++    }
++    return res
+ }
+ 
+ func main() {
+-- 
+2.23.0
+
