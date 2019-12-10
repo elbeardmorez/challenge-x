@@ -1,0 +1,51 @@
+From 8f508b821e36aee62725e8d1beebe99786d4cd22 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 10 Dec 2019 19:51:24 +0000
+Subject: [add] hackerrank, 'weighted uniform strings', c++ port
+
+---
+ .../weighted.uniform.strings.cpp              | 27 +++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.weighted.uniform.strings/weighted.uniform.strings.cpp b/hackerrank/algorithms.-.strings.-.easy.-.weighted.uniform.strings/weighted.uniform.strings.cpp
+index c5d3ecb..935882f 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.weighted.uniform.strings/weighted.uniform.strings.cpp
++++ b/hackerrank/algorithms.-.strings.-.easy.-.weighted.uniform.strings/weighted.uniform.strings.cpp
+@@ -4,7 +4,34 @@ using namespace std;
+ 
+ // Complete the weightedUniformStrings function below.
+ vector<string> weightedUniformStrings(string s, vector<int> queries) {
++    map<int, bool> tallies;
++    auto chars = s.data();
++    int last = int(chars[0]) - 96;
++    cout << "last: " << last << endl;
++    int count = 0;
++    int c_;
++    for (auto c : s) {
++        c_ = int(c) - 96;
++        //cout << "considering: " << c << "|" << c_ << endl;
++        if (c_ == last) {
++            count += c_;
++        } else {
++            last = c_;
++            count = last;
++        }
++        tallies[count] = true;
++    }
+ 
++    //cout << "tallies:"; for (auto kvp : tallies) cout << " [" << kvp.first << ": " << kvp.second << "]"; cout << endl;
++    vector<string> res(queries.size());
++    for (int idx = 0; idx < queries.size(); idx++) {
++        if (tallies.find(queries[idx]) != tallies.end()) {
++            res[idx] = "Yes";
++        } else {
++            res[idx] = "No";
++        }
++    }
++    return res;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
