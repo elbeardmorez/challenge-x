@@ -1,0 +1,94 @@
+From d4e1b7a622cd14904f75d94632a75929d55b6a38 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 11 Dec 2019 23:39:20 +0000
+Subject: [add] hackerrank, 'weighted uniform strings', rust port
+
+---
+ .../weighted.uniform.strings.rs               | 74 +++++++++++++++++++
+ 1 file changed, 74 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.weighted.uniform.strings/weighted.uniform.strings.rs b/hackerrank/algorithms.-.strings.-.easy.-.weighted.uniform.strings/weighted.uniform.strings.rs
+index 75b9783..d1cd968 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.weighted.uniform.strings/weighted.uniform.strings.rs
++++ b/hackerrank/algorithms.-.strings.-.easy.-.weighted.uniform.strings/weighted.uniform.strings.rs
+@@ -1,3 +1,77 @@
+ // Enter your code here 
+ 
++use std::io;
++use std::env;
++use std::fs::File;
++use std::io::Write;
++use std::collections::HashMap;
++
++fn weighted_uniform_strings(s: &String, queries: &mut Vec<i32>, res: &mut Vec<&str>) {
++
++    //println!("queries: {:?}", queries);
++    let mut tallies = HashMap::new();
++    let chars = s.chars().collect::<Vec<char>>();
++    let mut last: i32 = (chars[0] as i32) - 96;
++    //println!("last: {:?}", last);
++    let mut count: i32 = 0;
++    let mut c_: i32;
++    for c in chars {
++        c_ = (c as i32) - 96;
++        //println!("considering: {:?} | {:?}", c, c_);
++        if c_ == last {
++            count += c_;
++        } else {
++            last = c_;
++            count = last;
++        }
++        tallies.insert(count, true);
++    }
++
++    //println!("tallies: {:?}", tallies);
++    for q in queries {
++        match tallies.get(q) {
++            Some(_) => res.push("Yes"),
++            None => res.push("No")
++        };
++    }
++}
++
++fn next_line(s: &mut String) {
++    s.clear();
++    let mut buf = String::new();
++    let res = io::stdin().read_line(&mut buf);
++    if res.is_ok() && res.unwrap() != 0 {
++        s.push_str(buf.trim_right_matches('\n'));
++    }
++}
++
++fn main() {
++
++    let key = "OUTPUT_PATH";
++    let mut target = String::new();
++    match env::var_os(key) {
++        Some(val) => target.push_str(val.to_str().unwrap()),
++        None => panic!("{} is not defined in the environment.", key),
++    }
++    let mut f = match File::create(target) {
++        Ok(f) => f,
++        Err(e) => panic!("file io error: {}", e),
++    };
++
++    let mut line = String::from("-");
++    let mut data: Vec<i32> = vec!();
++
++    let mut res: Vec<&str> = vec!();
++    next_line(&mut line);
++    let s: String = line.clone();  // string
++    next_line(&mut line);  // ignore count
++    next_line(&mut line);  // data
++    while line.len() > 0 {
++        data.push(line.parse::<i32>().unwrap());
++        next_line(&mut line);
++    }
++    weighted_uniform_strings(&s, &mut data, &mut res);
++    let _ = f.write_all(res.join('\n' .to_string().as_str()).as_bytes());
++    f.write_all(b"\n").expect("file io error");
++}
+ 
+-- 
+2.23.0
+
