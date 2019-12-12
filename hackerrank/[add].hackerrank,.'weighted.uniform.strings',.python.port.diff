@@ -1,0 +1,52 @@
+From 4d8a18aeec7be10fed8247d97a23bd780338dbc9 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 12 Dec 2019 08:12:37 +0000
+Subject: [add] hackerrank, 'weighted uniform strings', python port
+
+---
+ .../weighted.uniform.strings.py               | 23 ++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.weighted.uniform.strings/weighted.uniform.strings.py b/hackerrank/algorithms.-.strings.-.easy.-.weighted.uniform.strings/weighted.uniform.strings.py
+index 63f5d1b..b4d5b6f 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.weighted.uniform.strings/weighted.uniform.strings.py
++++ b/hackerrank/algorithms.-.strings.-.easy.-.weighted.uniform.strings/weighted.uniform.strings.py
+@@ -6,8 +6,30 @@ import random
+ import re
+ import sys
+ 
++
+ # Complete the weightedUniformStrings function below.
+ def weightedUniformStrings(s, queries):
++    tallies = {}
++    chars = list(s)
++    last = ord(chars[0]) - 96
++    #print(f"last: {last}")
++    count = 0
++    for c in chars:
++        c_ = ord(c) - 96
++        #print(f"considering: {c}|{c_}")
++        if c_ == last:
++            count += c_
++        else:
++            last = c_
++            count = last
++        tallies[count] = True
++
++    #print(f"tallies: {tallies}")
++    res = []
++    for q in queries:
++        res.append("Yes" if q in tallies else "No")
++    return res
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+@@ -28,4 +50,3 @@ if __name__ == '__main__':
+     fptr.write('\n')
+ 
+     fptr.close()
+-
+-- 
+2.23.0
+
