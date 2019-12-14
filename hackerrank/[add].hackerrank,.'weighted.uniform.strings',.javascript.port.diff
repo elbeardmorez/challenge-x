@@ -1,0 +1,49 @@
+From 434b91dd6f0d22df07592257f3b75ffd4db15349 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 14 Dec 2019 21:33:39 +0000
+Subject: [add] hackerrank, 'weighted uniform strings', javascript port
+
+---
+ .../weighted.uniform.strings.js               | 26 +++++++++++++++++--
+ 1 file changed, 24 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.weighted.uniform.strings/weighted.uniform.strings.js b/hackerrank/algorithms.-.strings.-.easy.-.weighted.uniform.strings/weighted.uniform.strings.js
+index 2f5adb4..8db70c3 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.weighted.uniform.strings/weighted.uniform.strings.js
++++ b/hackerrank/algorithms.-.strings.-.easy.-.weighted.uniform.strings/weighted.uniform.strings.js
+@@ -26,8 +26,30 @@ function readLine() {
+ 
+ // Complete the weightedUniformStrings function below.
+ function weightedUniformStrings(s, queries) {
+-
+-
++    let tallies = new Map();
++    let chars = s.split('');
++    let last = chars[0].charCodeAt(0) - 96;
++    //console.log(`last: ${last}`);
++    let count = 0;
++    let c_;
++    chars.forEach(c => {
++        let c_ = c.charCodeAt(0) - 96;
++        //console.log(`considering: ${c}|${c_}`);
++        if (c_ === last)
++            count += c_;
++        else {
++            last = c_;
++            count = last;
++        }
++        tallies.set(count, true);
++    });
++
++    //console.log(`tallies: ${tallies}`);
++    let res = [];
++    queries.forEach(q => {
++        res.push(tallies.has(q) ? "Yes" : "No");
++    });
++    return res;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
