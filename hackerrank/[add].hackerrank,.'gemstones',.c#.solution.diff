@@ -1,0 +1,40 @@
+From eb57dedbb5eae7c491c71b375136eee8caa11307 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 15 Dec 2019 21:07:17 +0000
+Subject: [add] hackerrank, 'gemstones', c# solution
+
+---
+ .../gemstones.cs                                    | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.gemstones/gemstones.cs b/hackerrank/algorithms.-.strings.-.easy.-.gemstones/gemstones.cs
+index 0423daf..2ad1616 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.gemstones/gemstones.cs
++++ b/hackerrank/algorithms.-.strings.-.easy.-.gemstones/gemstones.cs
+@@ -16,7 +16,17 @@ class Solution {
+ 
+     // Complete the gemstones function below.
+     static int gemstones(string[] arr) {
+-
++        var map = new Dictionary<char, HashSet<int>>();
++        var idx = 0;
++        foreach (var desc in arr) {
++            foreach (var c in desc.ToCharArray()) {
++                if (!map.ContainsKey(c))
++                    map[c] = new HashSet<int>();
++                map[c].Add(idx);
++            }
++            idx++;
++        }
++        return map.Keys.Where(x => map[x].Count == arr.Length).Count();
+     }
+ 
+     static void Main(string[] args) {
+@@ -39,4 +49,3 @@ class Solution {
+         textWriter.Close();
+     }
+ }
+-
+-- 
+2.23.0
+
