@@ -1,0 +1,43 @@
+From a84b3692647b6595b1acf3d23aa5ea141d9a47ac Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 16 Dec 2019 08:55:09 +0000
+Subject: [add] hackerrank, 'gemstones', python port
+
+---
+ .../gemstones.py                                   | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.gemstones/gemstones.py b/hackerrank/algorithms.-.strings.-.easy.-.gemstones/gemstones.py
+index 42465c9..e7e07eb 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.gemstones/gemstones.py
++++ b/hackerrank/algorithms.-.strings.-.easy.-.gemstones/gemstones.py
+@@ -6,8 +6,21 @@ import random
+ import re
+ import sys
+ 
++
+ # Complete the gemstones function below.
+ def gemstones(arr):
++    map_ = {}
++    idx = 0
++    for desc in arr:
++        for c in list(desc):
++            if not c in map_:
++                map_[c] = set()
++            map_[c].add(idx)
++        idx += 1
++    #print(f"map_: {map_}")
++
++    return len([idx for idx, x in map_.items() if len(x) == len(arr)])
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+@@ -25,4 +38,3 @@ if __name__ == '__main__':
+     fptr.write(str(result) + '\n')
+ 
+     fptr.close()
+-
+-- 
+2.23.0
+
