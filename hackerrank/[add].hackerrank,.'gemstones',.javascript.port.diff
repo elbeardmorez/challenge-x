@@ -1,0 +1,44 @@
+From aa68515d7e73bc2d76fdb64ecb0757d5261e5b9d Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 17 Dec 2019 22:13:07 +0000
+Subject: [add] hackerrank, 'gemstones', javascript port
+
+---
+ .../gemstones.js                              | 21 +++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.gemstones/gemstones.js b/hackerrank/algorithms.-.strings.-.easy.-.gemstones/gemstones.js
+index a48a7c8..bd52a77 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.gemstones/gemstones.js
++++ b/hackerrank/algorithms.-.strings.-.easy.-.gemstones/gemstones.js
+@@ -26,8 +26,25 @@ function readLine() {
+ 
+ // Complete the gemstones function below.
+ function gemstones(arr) {
+-
+-
++    let map_ = new Map();
++    let idx = 0;
++    arr.forEach(desc => {
++        desc.split('').forEach(c => {
++            if (!map_.has(c))
++                map_.set(c, new Set());
++            map_.get(c).add(idx);
++        });
++        idx += 1;
++    });
++    //console.log(`map_: ${Array.from(map_).map(x => x[0] + "|[" + `${Array.from(x[1])}` + ']')}`);
++
++    let res = 0;
++    for (let [k, v] of map_.entries()) {
++        //console.log(`comparing: ${v.size} with arr length: ${arr.length}`)
++        if (v.size === arr.length)
++            res += 1;
++    }
++    return res;
+ }
+ 
+ function main() {
+-- 
+2.23.0
+
