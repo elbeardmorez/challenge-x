@@ -1,0 +1,52 @@
+From b4f0d69007fb07b49e42f336c7627a6836eea34b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 18 Dec 2019 13:32:34 +0000
+Subject: [add] hackerrank, 'gemstones', c++ port
+
+---
+ .../gemstones.cpp                             | 29 +++++++++++++++++--
+ 1 file changed, 27 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.gemstones/gemstones.cpp b/hackerrank/algorithms.-.strings.-.easy.-.gemstones/gemstones.cpp
+index 5739e23..cc4a133 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.gemstones/gemstones.cpp
++++ b/hackerrank/algorithms.-.strings.-.easy.-.gemstones/gemstones.cpp
+@@ -4,8 +4,33 @@ using namespace std;
+ 
+ // Complete the gemstones function below.
+ int gemstones(vector<string> arr) {
+-
+-
++    map<char, set<int>> map_;
++    int idx = 0;
++    for (auto desc: arr) {
++        for (auto c: desc) {
++            if (map_.find(c) == map_.end())
++                map_[c] = set<int>();
++            map_[c].insert(idx);
++        }
++        idx += 1;
++    }
++    /*
++    cout << "map_:";
++    for (auto kvp: map_) {
++        cout << " " << kvp.first << "|[";
++        for (auto x: kvp.second)
++            cout << " " << x;
++        cout << " ]";
++    }
++    cout << endl;
++    */
++    int res = 0;
++    for (auto kvp: map_) {
++        //cout << "comparing: " << kvp.second.size() << " with arr length(): " << arr.size() << endl;
++        if (kvp.second.size() == arr.size())
++            res += 1;
++    }
++    return res;
+ }
+ 
+ int main()
+-- 
+2.23.0
+
