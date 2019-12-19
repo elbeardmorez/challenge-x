@@ -1,0 +1,48 @@
+From e5a4b926a3e3bac470255706902efc9f4d5afe3a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 19 Dec 2019 19:32:03 +0000
+Subject: [add] hackerrank, 'gemstones', go port
+
+---
+ .../gemstones.go                              | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.gemstones/gemstones.go b/hackerrank/algorithms.-.strings.-.easy.-.gemstones/gemstones.go
+index ffef30e..964caf1 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.gemstones/gemstones.go
++++ b/hackerrank/algorithms.-.strings.-.easy.-.gemstones/gemstones.go
+@@ -11,8 +11,26 @@ import (
+ 
+ // Complete the gemstones function below.
+ func gemstones(arr []string) int32 {
++    map_ := make(map[rune](map[int]bool), 0)
++    for idx, desc := range(arr) {
++        for _, c := range(desc) {
++            if _, ok := map_[c]; !ok {
++                map_[c] = make(map[int]bool, 0)
++            }
++            map_[c][idx] = true
++        }
++    }
+ 
++    //fmt.Printf("map_: %v\n", map_)
+ 
++    res := int32(0)
++    for _, v := range(map_) {
++        //fmt.Printf("comparing: %v with arr length: %v\n", len(v), len(arr))
++        if (len(v) == len(arr)) {
++            res += 1
++        }
++    }
++    return res
+ }
+ 
+ func main() {
+@@ -57,4 +75,3 @@ func checkError(err error) {
+         panic(err)
+     }
+ }
+-
+-- 
+2.23.0
+
