@@ -1,0 +1,25 @@
+From ee04b766ae39bafbb1b598cbf14ec9cd0c00acb8 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 21 Dec 2019 22:21:57 +0000
+Subject: [add] hackerrank, 'pangrams', c# solution
+
+---
+ hackerrank/algorithms.-.strings.-.easy.-.pangrams/pangrams.cs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.pangrams/pangrams.cs b/hackerrank/algorithms.-.strings.-.easy.-.pangrams/pangrams.cs
+index 9edbc78..a92c9e4 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.pangrams/pangrams.cs
++++ b/hackerrank/algorithms.-.strings.-.easy.-.pangrams/pangrams.cs
+@@ -16,7 +16,7 @@ class Solution {
+ 
+     // Complete the pangrams function below.
+     static string pangrams(string s) {
+-
++        return (s.Replace(" ", "").ToLower().ToCharArray().GroupBy(x => x).Count() != 26 ? "not " : "") + "pangram";
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.24.1
+
