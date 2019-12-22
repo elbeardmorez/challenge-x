@@ -1,0 +1,44 @@
+From 90f6e6fe78044abec5e1e7b1c8e0473f3f740170 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 22 Dec 2019 17:50:06 +0000
+Subject: [add] hackerrank, 'pangrams', go port
+
+---
+ .../pangrams.go                                 | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.pangrams/pangrams.go b/hackerrank/algorithms.-.strings.-.easy.-.pangrams/pangrams.go
+index bc014b6..1c9ed55 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.pangrams/pangrams.go
++++ b/hackerrank/algorithms.-.strings.-.easy.-.pangrams/pangrams.go
+@@ -10,8 +10,20 @@ import (
+ 
+ // Complete the pangrams function below.
+ func pangrams(s string) string {
+-
+-
++    s_ := strings.ReplaceAll(s, " ", "");
++    s_ = strings.ToLower(s_)
++    map_ := make(map[rune]bool, 0)
++    for _, c := range(s_) {
++        if _, ok := map_[c]; !ok {
++            map_[c] = true
++        }
++    }
++    //fmt.Printf("map_: %v\n", map_)
++    if len(map_) != 26 {
++        return "not pangram"
++    } else {
++        return "pangram"
++    }
+ }
+ 
+ func main() {
+@@ -47,4 +59,3 @@ func checkError(err error) {
+         panic(err)
+     }
+ }
+-
+-- 
+2.24.1
+
