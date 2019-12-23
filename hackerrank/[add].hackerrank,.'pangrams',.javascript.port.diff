@@ -1,0 +1,43 @@
+From 38fb0f7dcd7581626657541cb0b8e8e86d47b6b7 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 23 Dec 2019 23:54:29 +0000
+Subject: [add] hackerrank, 'pangrams', javascript port
+
+---
+ .../pangrams.js                                  | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.pangrams/pangrams.js b/hackerrank/algorithms.-.strings.-.easy.-.pangrams/pangrams.js
+index 5066e79..b06d2e3 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.pangrams/pangrams.js
++++ b/hackerrank/algorithms.-.strings.-.easy.-.pangrams/pangrams.js
+@@ -26,8 +26,19 @@ function readLine() {
+ 
+ // Complete the pangrams function below.
+ function pangrams(s) {
+-
+-
++    let s_ = s.replace(/ /g, "").toLowerCase();
++    let map_ = new Map();
++    s_.split('').forEach((c) => {
++        if (!map_.has(c)) {
++            map_.set(c, true);
++        }
++    });
++    //console.log(`map_: ${Array.from(map_.entries()).map((k, v) => k + ": " + v).join(" ")}`);
++    if (map_.size != 26) {
++        return "not pangram"
++    } else {
++        return "pangram"
++    }
+ }
+ 
+ function main() {
+@@ -41,4 +52,3 @@ function main() {
+ 
+     ws.end();
+ }
+-
+-- 
+2.24.1
+
