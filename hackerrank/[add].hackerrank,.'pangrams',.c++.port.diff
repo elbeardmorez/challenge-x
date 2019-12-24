@@ -1,0 +1,48 @@
+From 5c133b16ef259e6d0b6376c691c064bc723e001c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 24 Dec 2019 19:35:51 +0000
+Subject: [add] hackerrank, 'pangrams', c++ port
+
+---
+ .../pangrams.cpp                               | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.pangrams/pangrams.cpp b/hackerrank/algorithms.-.strings.-.easy.-.pangrams/pangrams.cpp
+index d52135b..94ba17a 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.pangrams/pangrams.cpp
++++ b/hackerrank/algorithms.-.strings.-.easy.-.pangrams/pangrams.cpp
+@@ -1,11 +1,24 @@
+ #include <bits/stdc++.h>
++#include <cctype>
+ 
+ using namespace std;
+ 
+ // Complete the pangrams function below.
+ string pangrams(string s) {
+-
+-
++    string s_(s.begin(), remove(s.begin(), s.end(), ' '));
++    transform(s_.begin(), s_.end(), s_.begin(), [](char x) {return tolower(x);});
++    map<char, bool> map_;
++    for (auto c : s_) {
++        if (map_.find(c) == map_.end()) {
++            map_[c] = true;
++        }
++    }
++    //cout << "map_:"; for (auto kvp: map_) cout << " " << kvp.first << ": " << kvp.second; cout << endl;
++    if (map_.size() != 26) {
++        return "not pangram";
++    } else {
++        return "pangram";
++    }
+ }
+ 
+ int main()
+@@ -23,4 +36,3 @@ int main()
+ 
+     return 0;
+ }
+-
+-- 
+2.24.1
+
