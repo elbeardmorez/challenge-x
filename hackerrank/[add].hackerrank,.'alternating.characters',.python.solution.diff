@@ -1,0 +1,44 @@
+From 3fb1ca42ef1640b4ec3ce9dbd6785c47180baad0 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 26 Dec 2019 21:35:40 +0000
+Subject: [add] hackerrank, 'alternating characters', python solution
+
+---
+ .../alternating.characters.py                     | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.alternating.characters/alternating.characters.py b/hackerrank/algorithms.-.strings.-.easy.-.alternating.characters/alternating.characters.py
+index a001761..acd16bb 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.alternating.characters/alternating.characters.py
++++ b/hackerrank/algorithms.-.strings.-.easy.-.alternating.characters/alternating.characters.py
+@@ -6,8 +6,22 @@ import random
+ import re
+ import sys
+ 
++
+ # Complete the alternatingCharacters function below.
+ def alternatingCharacters(s):
++    repeated = 0
++    l = 0
++    l_s = len(s)
++    chars = list(s)
++    last = ""
++    while l < l_s:
++        if chars[l] == last:
++            repeated += 1
++        else:
++            last = chars[l]
++        l += 1
++    return repeated
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+@@ -22,4 +36,3 @@ if __name__ == '__main__':
+         fptr.write(str(result) + '\n')
+ 
+     fptr.close()
+-
+-- 
+2.24.1
+
