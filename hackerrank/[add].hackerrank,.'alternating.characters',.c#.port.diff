@@ -1,0 +1,43 @@
+From 2190400c9c54c21989bbe4e7c950db64d0cb4bb8 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 27 Dec 2019 08:10:06 +0000
+Subject: [add] hackerrank, 'alternating characters', c# port
+
+---
+ .../alternating.characters.cs                    | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.alternating.characters/alternating.characters.cs b/hackerrank/algorithms.-.strings.-.easy.-.alternating.characters/alternating.characters.cs
+index be6f695..e8f6dc9 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.alternating.characters/alternating.characters.cs
++++ b/hackerrank/algorithms.-.strings.-.easy.-.alternating.characters/alternating.characters.cs
+@@ -16,8 +16,19 @@ class Solution {
+ 
+     // Complete the alternatingCharacters function below.
+     static int alternatingCharacters(string s) {
+-
+-
++        var repeated = 0;
++        var l = 0;
++        var l_s = s.Length;
++        var chars = s.ToCharArray();
++        var last = ' ';
++        while (l < l_s) {
++            if (chars[l] == last)
++                repeated += 1;
++            else
++                last = chars[l];
++            l++;
++        }
++        return repeated;
+     }
+ 
+     static void Main(string[] args) {
+@@ -37,4 +48,3 @@ class Solution {
+         textWriter.Close();
+     }
+ }
+-
+-- 
+2.24.1
+
