@@ -1,0 +1,44 @@
+From 7284b928de20f739208babd4ab18cc6b2fde5d55 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 28 Dec 2019 13:44:15 +0000
+Subject: [add] hackerrank, 'alternating characters', c++ port
+
+---
+ .../alternating.characters.cpp                  | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.alternating.characters/alternating.characters.cpp b/hackerrank/algorithms.-.strings.-.easy.-.alternating.characters/alternating.characters.cpp
+index 1846938..263a864 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.alternating.characters/alternating.characters.cpp
++++ b/hackerrank/algorithms.-.strings.-.easy.-.alternating.characters/alternating.characters.cpp
+@@ -4,8 +4,20 @@ using namespace std;
+ 
+ // Complete the alternatingCharacters function below.
+ int alternatingCharacters(string s) {
+-
+-
++    int repeated = 0;
++    int l = 0;
++    auto l_s = s.length();
++    auto chars = s.c_str();
++    auto last = ' ';
++    while (l < l_s) {
++        //cout << "comparing: " << chars[l] << " with last: " << last << endl;
++        if (chars[l] == last)
++            repeated += 1;
++        else
++            last = chars[l];
++        l++;
++    }
++    return repeated;
+ }
+ 
+ int main()
+@@ -29,4 +41,3 @@ int main()
+ 
+     return 0;
+ }
+-
+-- 
+2.24.1
+
