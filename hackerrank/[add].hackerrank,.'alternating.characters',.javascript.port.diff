@@ -1,0 +1,44 @@
+From 2cb7fe6557eb92326f5ccbfbe6ee008dc7b1ef43 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 30 Dec 2019 20:25:26 +0000
+Subject: [add] hackerrank, 'alternating characters', javascript port
+
+---
+ .../alternating.characters.js                   | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.alternating.characters/alternating.characters.js b/hackerrank/algorithms.-.strings.-.easy.-.alternating.characters/alternating.characters.js
+index 49624a6..3becd2e 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.alternating.characters/alternating.characters.js
++++ b/hackerrank/algorithms.-.strings.-.easy.-.alternating.characters/alternating.characters.js
+@@ -26,8 +26,20 @@ function readLine() {
+ 
+ // Complete the alternatingCharacters function below.
+ function alternatingCharacters(s) {
+-
+-
++    let repeated = 0;
++    let l = 0;
++    let l_s = s.length;
++    let chars = s.split('');
++    let last = ' ';
++    while (l < l_s) {
++        //console.log(`comparing: ${chars[l]} with last: ${last}`);
++        if (chars[l] === last)
++            repeated += 1;
++        else
++            last = chars[l];
++        l++;
++    }
++    return repeated;
+ }
+ 
+ function main() {
+@@ -45,4 +57,3 @@ function main() {
+ 
+     ws.end();
+ }
+-
+-- 
+2.24.1
+
