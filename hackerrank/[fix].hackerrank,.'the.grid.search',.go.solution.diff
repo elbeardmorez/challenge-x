@@ -1,0 +1,26 @@
+From 626a490f9802daa7fb22e491672d0f8cf15b35fd Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 1 Jan 2020 09:47:34 +0000
+Subject: [fix] hackerrank, 'the grid search', go solution
+
+-off-by-one bug
+---
+ .../the.grid.search.go                                          | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.the.grid.search/the.grid.search.go b/hackerrank/algorithms.-.implementation.-.medium.-.the.grid.search/the.grid.search.go
+index 22c46c8..ce18d4d 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.the.grid.search/the.grid.search.go
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.the.grid.search/the.grid.search.go
+@@ -33,7 +33,7 @@ func gridSearch(G []string, P []string) string {
+     //fmt.Printf("dim G: %v, dim P: %v\n", l_G, l_P)
+     var s *string;
+     ridx := 0;
+-    ridx_max := l_G[0] - l_P[0]
++    ridx_max := l_G[0] - l_P[0] + 1
+     for ridx < ridx_max {
+         s = &G[ridx]
+         if cidx := strings.Index(*s, P[0]); cidx > -1 {
+-- 
+2.24.1
+
