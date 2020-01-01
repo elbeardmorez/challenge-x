@@ -1,0 +1,46 @@
+From 39e3f2ecc933f6523bdfe964c82324a9db73399a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 1 Jan 2020 10:52:16 +0000
+Subject: [fix] hackerrank, 'the grid search', go solution
+
+-implementation, test for multiple matches of first pattern row in any
+given grid row
+---
+ .../the.grid.search.go                            | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.the.grid.search/the.grid.search.go b/hackerrank/algorithms.-.implementation.-.medium.-.the.grid.search/the.grid.search.go
+index ce18d4d..76e7af5 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.the.grid.search/the.grid.search.go
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.the.grid.search/the.grid.search.go
+@@ -31,16 +31,23 @@ func gridSearch(G []string, P []string) string {
+     l_G := []int{len(G), len(G[0])}
+     l_P := []int{len(P), len(P[0])}
+     //fmt.Printf("dim G: %v, dim P: %v\n", l_G, l_P)
+-    var s *string;
++    var s *string
++    var cidx, ssidx int
+     ridx := 0;
+     ridx_max := l_G[0] - l_P[0] + 1
+     for ridx < ridx_max {
+         s = &G[ridx]
+-        if cidx := strings.Index(*s, P[0]); cidx > -1 {
+-            //fmt.Printf("matched substring P[0]: '%v' at cidx: %v\n", P[0], cidx)
+-            if fnMatch(&G, &P, &([]int{ridx, cidx}), &l_P) {
++        ssidx = 0
++        cidx = strings.Index(*s, P[0])
++        for cidx > -1 {
++            ssidx += cidx
++            //fmt.Printf("matched substring P[0]: '%v' at point: [%v,%v]\n", P[0], ridx, ssidx + cidx)
++            if fnMatch(&G, &P, &([]int{ridx, ssidx}), &l_P) {
+                 return "YES"
+             }
++            ssidx += 1
++            //fmt.Printf("cidx: %v, ssidx: %v, searching s[%v] substring: %v\n", cidx, ssidx, *s, (*s)[ssidx:])
++            cidx = strings.Index((*s)[ssidx:], P[0])
+         }
+         ridx += 1
+     }
+-- 
+2.24.1
+
