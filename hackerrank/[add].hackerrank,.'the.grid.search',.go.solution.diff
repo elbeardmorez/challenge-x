@@ -1,0 +1,61 @@
+From 2e6080739c6557138133f724692d7855e8dd6ba4 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 1 Jan 2020 09:26:34 +0000
+Subject: [add] hackerrank, 'the grid search', go solution
+
+---
+ .../the.grid.search.go                        | 34 ++++++++++++++++++-
+ 1 file changed, 33 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.the.grid.search/the.grid.search.go b/hackerrank/algorithms.-.implementation.-.medium.-.the.grid.search/the.grid.search.go
+index a5aa4f8..22c46c8 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.the.grid.search/the.grid.search.go
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.the.grid.search/the.grid.search.go
+@@ -12,6 +12,39 @@ import (
+ // Complete the gridSearch function below.
+ func gridSearch(G []string, P []string) string {
+ 
++    fnMatch := func(G *[]string, P *[]string, pt *[]int, dim *[]int) bool {
++        cidx := (*pt)[1]
++        cidx2 := (*pt)[1] + (*dim)[1] - 1 + 1
++        l := 0
++        for l < (*dim)[0] {
++            //fmt.Printf("testing P[%v]: %v vs G[%v:%v-%v]: %v\n",
++            //           l, (*P)[l], (*pt)[0] + l, cidx, cidx2, (*G)[(*pt)[0] + l][cidx:cidx2])
++            if (*G)[(*pt)[0] + l][cidx:cidx2] != (*P)[l] {
++                return false
++            }
++            l += 1
++        }
++        //fmt.Printf("match at point: %v\n", *pt)
++        return true
++    }
++
++    l_G := []int{len(G), len(G[0])}
++    l_P := []int{len(P), len(P[0])}
++    //fmt.Printf("dim G: %v, dim P: %v\n", l_G, l_P)
++    var s *string;
++    ridx := 0;
++    ridx_max := l_G[0] - l_P[0]
++    for ridx < ridx_max {
++        s = &G[ridx]
++        if cidx := strings.Index(*s, P[0]); cidx > -1 {
++            //fmt.Printf("matched substring P[0]: '%v' at cidx: %v\n", P[0], cidx)
++            if fnMatch(&G, &P, &([]int{ridx, cidx}), &l_P) {
++                return "YES"
++            }
++        }
++        ridx += 1
++    }
++    return "NO"
+ }
+ 
+ func main() {
+@@ -87,4 +120,3 @@ func checkError(err error) {
+         panic(err)
+     }
+ }
+-
+-- 
+2.24.1
+
