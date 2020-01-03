@@ -1,0 +1,77 @@
+From 3153ebc122d5b238b5727968ab2efd62ac6875bc Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 3 Jan 2020 23:58:04 +0000
+Subject: [add] hackerrank, 'the grid search', python port
+
+---
+ .../the.grid.search.py                        | 47 +++++++++++--------
+ 1 file changed, 27 insertions(+), 20 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.the.grid.search/the.grid.search.py b/hackerrank/algorithms.-.implementation.-.medium.-.the.grid.search/the.grid.search.py
+index d443ada..eaebbfa 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.the.grid.search/the.grid.search.py
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.the.grid.search/the.grid.search.py
+@@ -6,28 +6,36 @@ import random
+ import re
+ import sys
+ 
+-from collection import deque
+ 
+ # Complete the gridSearch function below.
+ def gridSearch(G, P):
+-    match_rows = 0
+-    l = 0
+-    l_g = len(G)
+-    l_p = len(P)
+-    r = 0
+-    P_ = [P[r].join('') for l in range(l_p)];
+-    G_ = deque()
+-    while r + (l_p - match_rows) < l_g:
+-        while 
+-        g = G[r].join('')
+-        p = P[matched_rows]
+-        c = -1
+-        while true:
+-            c = g.find(p, c + 1)
+-            if c > -1
+-
+-
+-        r += 1
++    def fnMatch(G, P, pt, dim):
++        cidx = pt[1]
++        cidx2 = pt[1] + dim[1] - 1 + 1
++        for l in range(dim[0]):
++            #print(f"testing P[{l}]: {P[l]} vs G[{pt[0] + l}:{cidx}-{cidx2}]: {G[pt[0] + l][cidx:cidx2]}")
++            if G[pt[0] + l][cidx:cidx2] != P[l]:
++                return False
++            l += 1
++        #print(f"match at point: {pt}")
++        return True
++
++    l_G = [len(G), len(G[0])]
++    l_P = [len(P), len(P[0])]
++    #print(f"dim G: {l_G}, dim P: {l_P}")
++    ridx_max = l_G[0] - l_P[0] + 1
++    for ridx in range(ridx_max):
++        s = G[ridx]
++        cidx = s.find(P[0])
++        while cidx > -1:
++            #print(f"matched substring P[0]: '{P[0]}' at point: [{ridx}, {cidx}]")
++            if fnMatch(G, P, [ridx, cidx], l_P):
++                return "YES"
++            cidx += 1
++            #print(f"cidx: {cidx}, searching s[{s}] substring: {s[cidx:]}")
++            cidx = s.find(P[0], cidx)
++        ridx += 1
++    return "NO"
+ 
+ 
+ if __name__ == '__main__':
+@@ -65,4 +73,3 @@ if __name__ == '__main__':
+         fptr.write(result + '\n')
+ 
+     fptr.close()
+-
+-- 
+2.24.1
+
