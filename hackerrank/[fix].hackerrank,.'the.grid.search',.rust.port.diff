@@ -1,0 +1,67 @@
+From 990d1e19c551b48ff19890ab9913bfb42050b2f4 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 4 Jan 2020 21:48:38 +0000
+Subject: [fix] hackerrank, 'the grid search', rust port
+
+-rust's string.match_indices yields disjoint match indices only,
+meaning no overlapping substring searches were being performed. use a
+different approach
+---
+ .../the.grid.search.rs                        | 33 ++++++++++++++-----
+ 1 file changed, 25 insertions(+), 8 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.the.grid.search/the.grid.search.rs b/hackerrank/algorithms.-.implementation.-.medium.-.the.grid.search/the.grid.search.rs
+index 97a7447..0177873 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.the.grid.search/the.grid.search.rs
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.the.grid.search/the.grid.search.rs
+@@ -18,7 +18,7 @@ fn grid_search(G: &Vec<String>, P: &Vec<String>) -> String {
+             }
+             l += 1;
+         }
+-        //println!("match at point: [{:?}, {:?}] <<", pt[0], pt[1]);
++        //println!("match at point: [{:?}, {:?}]", pt[0], pt[1]);
+         return true;
+     };
+ 
+@@ -28,14 +28,31 @@ fn grid_search(G: &Vec<String>, P: &Vec<String>) -> String {
+ 
+     let mut pt: [i32; 2] = [0, 0];
+     let mut ridx: i32 = 0;
+-    let ridx_max: i32 = (l_G[0] as i32) - (l_P[0] as i32) + 1;
++    let ridx_max: i32 = l_G[0] - l_P[0] as i32 + 1;
++    let cidx_max: i32 = l_G[1] - l_P[1] as i32 + 1;
++    //println!("ridx_max: {}, cidx_max: {}", ridx_max, cidx_max);
++    let (mut cidx, mut ssidx): (i32, i32);
++    let mut match_: Option<usize>;
+     while ridx < ridx_max {
+-        pt[0] = ridx;
+-        for (cidx, _) in G[ridx as usize].match_indices(P[0].as_str()) {
+-            //println!("matched substring P[0]: {:?} at point: [{:?}, {:?}] <<", P[0], ridx, cidx);
+-            pt[1] = cidx as i32;
+-            if fnMatch(G, P, &pt, &l_P) {
+-                return String::from("YES");
++        match_ = G[ridx as usize].find(P[0].as_str());
++        if match_.is_some() {
++            pt[0] = ridx;
++            ssidx = 0;
++            while match_.is_some() && ssidx < cidx_max {
++                cidx = match_.unwrap() as i32;
++                ssidx += cidx;
++                //println!("matched substring P[0]: {:?} at point: [{:?}, {:?}]", P[0], ridx, ssidx);
++                pt[1] = ssidx as i32;
++                if fnMatch(G, P, &pt, &l_P) {
++                    return String::from("YES");
++                }
++                ssidx += 1;
++                if ssidx < cidx_max {
++                    match_ = G[ridx as usize][(ssidx as usize)..].find(&P[0]);
++                    //println!("ssidx: {}, match_: {:?}", ssidx, match_)
++                } else {
++                    match_ = None;
++                }
+             }
+         }
+         ridx += 1;
+-- 
+2.24.1
+
