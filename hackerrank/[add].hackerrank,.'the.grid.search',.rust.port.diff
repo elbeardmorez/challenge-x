@@ -1,0 +1,109 @@
+From dd58c7ee0e539918e23cf11b55b151f33a35c0ff Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 4 Jan 2020 20:54:25 +0000
+Subject: [add] hackerrank, 'the grid search', rust port
+
+---
+ .../the.grid.search.rs                        | 89 +++++++++++++++++++
+ 1 file changed, 89 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.the.grid.search/the.grid.search.rs b/hackerrank/algorithms.-.implementation.-.medium.-.the.grid.search/the.grid.search.rs
+index 5f0e87f..97a7447 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.the.grid.search/the.grid.search.rs
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.the.grid.search/the.grid.search.rs
+@@ -1,3 +1,92 @@
+ // Enter your code here
+ 
++use std::io;
++use std::env;
++use std::fs::File;
++use std::io::Write;
+ 
++fn grid_search(G: &Vec<String>, P: &Vec<String>) -> String {
++    let fnMatch = |G: &Vec<String>, P: &Vec<String>, pt: &[i32], dim: &[i32]| -> bool {
++        let cidx: usize = pt[1] as usize;
++        let cidx2: usize = (pt[1] + dim[1]) as usize;
++        let mut l = 0;
++        while l < dim[0] {
++            //println!("testing P[{:?}]: {:?} vs G[{:?}:{:?}-{:?}]: {:?}",
++            //         l, P[l as usize], pt[0] + l, cidx as i32, cidx2 as i32, &G[(pt[0] + l) as usize][cidx..cidx2]);
++            if G[(pt[0] + l) as usize][cidx..cidx2] != P[l as usize] {
++                return false;
++            }
++            l += 1;
++        }
++        //println!("match at point: [{:?}, {:?}] <<", pt[0], pt[1]);
++        return true;
++    };
++
++    let l_G: [i32; 2] = [G.len() as i32, G[0].len() as i32];
++    let l_P: [i32; 2] = [P.len() as i32, P[0].len() as i32];
++    //println!("dim G: [{:?}, {:?}], dim P: [{:?}, {:?}]", l_G[0], l_G[1], l_P[0], l_P[1]);
++
++    let mut pt: [i32; 2] = [0, 0];
++    let mut ridx: i32 = 0;
++    let ridx_max: i32 = (l_G[0] as i32) - (l_P[0] as i32) + 1;
++    while ridx < ridx_max {
++        pt[0] = ridx;
++        for (cidx, _) in G[ridx as usize].match_indices(P[0].as_str()) {
++            //println!("matched substring P[0]: {:?} at point: [{:?}, {:?}] <<", P[0], ridx, cidx);
++            pt[1] = cidx as i32;
++            if fnMatch(G, P, &pt, &l_P) {
++                return String::from("YES");
++            }
++        }
++        ridx += 1;
++    }
++    return String::from("NO");
++}
++
++fn next_line(s: &mut String) {
++    s.clear();
++    let mut buf = String::new();
++    let res = io::stdin().read_line(&mut buf);
++    if res.is_ok() && res.unwrap() != 0 {
++        s.push_str(buf.trim_right_matches('\n'));
++    }
++}
++
++fn main() {
++    let key = "OUTPUT_PATH";
++    let mut target = String::new();
++    match env::var_os(key) {
++        Some(val) => target.push_str(val.to_str().unwrap()),
++        None => panic!("{} is not defined in the environment.", key),
++    }
++    let mut f = match File::create(target) {
++        Ok(f) => f,
++        Err(e) => panic!("file io error: {}", e),
++    };
++
++    let mut line = String::new();
++    let mut data: Vec<String> = vec!();
++    let mut data2: Vec<String> = vec!();
++    let (n, mut nG, mut nP): (i32, i32, i32);
++    next_line(&mut line);
++    n = line.clone().parse::<i32>().unwrap();
++    for _ in 0..n {
++        data.clear();
++        data2.clear();
++        next_line(&mut line);
++        nG = line.split(' ').map(|c| c.parse::<i32>().unwrap()).collect::<Vec<i32>>()[0];
++        for __ in 0..nG {
++            next_line(&mut line);
++            data.push(line.clone())
++        }
++        next_line(&mut line);
++        nP = line.split(' ').map(|c| c.parse::<i32>().unwrap()).collect::<Vec<i32>>()[0];
++        for __ in 0..nP {
++            next_line(&mut line);
++            data2.push(line.clone())
++        }
++        let res: String = grid_search(&data, &data2);
++        let _ = f.write_all(res.as_bytes());
++        f.write_all(b"\n").expect("file io error");
++    }
++}
+-- 
+2.24.1
+
