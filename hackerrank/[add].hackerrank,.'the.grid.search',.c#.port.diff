@@ -1,0 +1,69 @@
+From 0504016c94c021a01cedf5bf5b5d1089330d2dc3 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 5 Jan 2020 18:01:52 +0000
+Subject: [add] hackerrank, 'the grid search', c# port
+
+---
+ .../the.grid.search.cs                        | 40 ++++++++++++++++++-
+ 1 file changed, 38 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.implementation.-.medium.-.the.grid.search/the.grid.search.cs b/hackerrank/algorithms.-.implementation.-.medium.-.the.grid.search/the.grid.search.cs
+index d9551e6..89f56e1 100644
+--- a/hackerrank/algorithms.-.implementation.-.medium.-.the.grid.search/the.grid.search.cs
++++ b/hackerrank/algorithms.-.implementation.-.medium.-.the.grid.search/the.grid.search.cs
+@@ -16,9 +16,46 @@ using static System.Console;
+ 
+ class Solution {
+ 
++    static bool fnMatch(string[] G, string[] P, int[] pt, int[] dim) {
++        var cidx = pt[1];
++        var cidx2 = pt[1] + dim[1] - 1 + 1;
++        var l = 0;
++        while (l < dim[0]) {
++            //WriteLine($"testing P[{l}]: {P[l]} vs G[{pt[0] + l}:{cidx}{cidx2}]: {G[pt[0] + l].Substring(cidx, cidx2 - cidx)}");
++            if (G[pt[0] + l].Substring(cidx, cidx2 - cidx) != P[l])
++                return false;
++            l++;
++        }
++        //WriteLine($"match at point: [{pt[0]}, {pt[1]}]");
++        return true;
++    }
++
+     // Complete the gridSearch function below.
+     static string gridSearch(string[] G, string[] P) {
+-
++        var l_G = new int[]{G.Length, G[0].Length};
++        var l_P = new int[]{P.Length, P[0].Length};
++        //WriteLine($"dim G: [{l_G[0]}, {l_G[1]}], dim P: [{l_P[0]}, {l_P[1]}]");
++        string s;
++        int cidx;
++        int[] pt = new int[2];
++        var ridx = 0;
++        var ridx_max = l_G[0] - l_P[0] + 1;
++        while (ridx < ridx_max) {
++            s = G[ridx];
++            cidx = s.IndexOf(P[0]);
++            pt[0] = ridx;
++            while (cidx != -1) {
++                //WriteLine($"matched substring P[0]: '{P[0]}' at point: [{ridx},{cidx}]");
++                pt[1] = cidx;
++                if (fnMatch(G, P, pt, l_P)) {
++                    return "YES";
++                }
++                //WriteLine($"cidx: {cidx}, searching s[{s}] substring: {s.Substring(cidx)}");
++                cidx = s.IndexOf(P[0], cidx + 1);
++            }
++            ridx++;
++        }
++        return "NO";
+     }
+ 
+     static void Main(string[] args) {
+@@ -62,4 +99,3 @@ class Solution {
+         textWriter.Close();
+     }
+ }
+-
+-- 
+2.24.1
+
