@@ -1,0 +1,50 @@
+From d68ffa31671e8d47386cfe82aa8dd77997324089 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 7 Jan 2020 21:25:49 +0000
+Subject: [add] hackerrank, 'find the median', go solution
+
+---
+ .../find.the.median.go                        | 27 +++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.find.the.median/find.the.median.go b/hackerrank/algorithms.-.sorting.-.easy.-.find.the.median/find.the.median.go
+index 37fd4e6..6a9a75d 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.find.the.median/find.the.median.go
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.find.the.median/find.the.median.go
+@@ -12,6 +12,33 @@ import (
+ // Complete the findMedian function below.
+ func findMedian(arr []int32) int32 {
+ 
++    /*
++    guaranteed range -10000 <= arr[i] <= 10000
++    */
++
++    l_arr := len(arr);
++    idx_target := int((l_arr + 1) / 2);
++    //fmt.Printf("target: %v\n", idx_target);
++
++    // count sort
++    arr2 := make([]int, 20001);
++    for _, x := range(arr) {
++        arr2[x]++;
++    }
++    //fmt.Printf("arr2: %v", arr2)
++    count := 0;
++    for idx, x := range(arr2) {
++        count += x;
++        /*
++        if x > 0 {
++            fmt.Printf("idx: %v, idx_count: %v, count: %v\n", idx_target, x, count);
++        }
++        */
++        if count >= idx_target {
++            return int32(idx);
++        }
++    }
++    return -1;
+ }
+ 
+ func main() {
+-- 
+2.24.1
+
