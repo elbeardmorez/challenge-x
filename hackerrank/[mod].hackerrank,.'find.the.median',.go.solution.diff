@@ -1,0 +1,36 @@
+From 9a69f41c2432557afdd73846ba8b5d4130e1d4e5 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 8 Jan 2020 23:35:40 +0000
+Subject: [mod] hackerrank, 'find the median', go solution
+
+-support negative numbers, as per the specified constraints, even
+though no tests contain negative numbers
+---
+ .../find.the.median.go                                        | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.find.the.median/find.the.median.go b/hackerrank/algorithms.-.sorting.-.easy.-.find.the.median/find.the.median.go
+index 6a9a75d..ef2e293 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.find.the.median/find.the.median.go
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.find.the.median/find.the.median.go
+@@ -23,7 +23,7 @@ func findMedian(arr []int32) int32 {
+     // count sort
+     arr2 := make([]int, 20001);
+     for _, x := range(arr) {
+-        arr2[x]++;
++        arr2[x + 10000]++;
+     }
+     //fmt.Printf("arr2: %v", arr2)
+     count := 0;
+@@ -35,7 +35,7 @@ func findMedian(arr []int32) int32 {
+         }
+         */
+         if count >= idx_target {
+-            return int32(idx);
++            return int32(idx - 10000);
+         }
+     }
+     return -1;
+-- 
+2.24.1
+
