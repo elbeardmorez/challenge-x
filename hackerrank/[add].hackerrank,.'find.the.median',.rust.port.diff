@@ -1,0 +1,87 @@
+From b25983b2b07973f54a6dbee0d086072b7baf167c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 9 Jan 2020 22:48:56 +0000
+Subject: [add] hackerrank, 'find the median', rust port
+
+---
+ .../find.the.median.rs                        | 68 ++++++++++++++++++-
+ 1 file changed, 67 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.find.the.median/find.the.median.rs b/hackerrank/algorithms.-.sorting.-.easy.-.find.the.median/find.the.median.rs
+index 75b9783..856eef2 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.find.the.median/find.the.median.rs
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.find.the.median/find.the.median.rs
+@@ -1,3 +1,69 @@
+-// Enter your code here 
++// Enter your code here
+ 
++use std::io;
++use std::env;
++use std::fs::File;
++use std::io::Write;
+ 
++fn find_median(arr: &Vec<i32>) -> i32 {
++
++    /*
++    guaranteed range -10000 <= arr[i] <= 10000
++    */
++
++    let l_arr = arr.len() as i32;
++    let idx_target: i32 = (l_arr + 1) / 2;
++    //println!("target: {:?}", idx_target);
++
++    // count 'sort'
++    let mut arr2: [i32; 20001] = [0; 20001];
++    for x in arr {
++        arr2[(x + 10000) as usize] += 1;
++    }
++    //println!("arr2: {:?}", arr2.iter().cloned().collect::<Vec<i32>>());
++    let mut count = 0;
++    let mut idx = 0;
++    for x in arr2.iter() {
++        count += *x;
++        /*
++        if *x > 0 {
++            println!("idx: {:?}, idx_count: {:?}, count: {:?}", idx_target, x, count);
++        }
++        */
++        if count >= idx_target {
++            return idx - 10000;
++        }
++        idx += 1;
++    }
++    return -1;
++}
++
++fn next_line(s: &mut String) {
++    s.clear();
++    let mut buf = String::new();
++    let res = io::stdin().read_line(&mut buf);
++    if res.is_ok() && res.unwrap() != 0 {
++        s.push_str(buf.trim_right_matches('\n'));
++    }
++}
++
++fn main() {
++    let key = "OUTPUT_PATH";
++    let mut target = String::new();
++    match env::var_os(key) {
++        Some(val) => target.push_str(val.to_str().unwrap()),
++        None => panic!("{} is not defined in the environment.", key),
++    }
++    let mut f = match File::create(target) {
++        Ok(f) => f,
++        Err(e) => panic!("file io error: {}", e),
++    };
++
++    let mut line = String::new();
++    next_line(&mut line);  // ignore n
++    next_line(&mut line);
++    let data = line.split(' ').map(|c| c.parse::<i32>().unwrap()).collect::<Vec<i32>>();
++    let res: i32 = find_median(&data);
++    let _ = f.write_all(res.to_string().as_bytes());
++    f.write_all(b"\n").expect("file io error");
++}
+-- 
+2.24.1
+
