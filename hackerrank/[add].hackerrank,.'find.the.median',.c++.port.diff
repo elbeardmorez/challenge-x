@@ -1,0 +1,117 @@
+From dad19f393c7737fde4dc32a25829270bddb9f4e9 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 10 Jan 2020 19:10:36 +0000
+Subject: [add] hackerrank, 'find the median', c++ port
+
+---
+ .../find.the.median.cpp                       | 98 +++++++++++++++++++
+ 1 file changed, 98 insertions(+)
+ create mode 100644 hackerrank/algorithms.-.sorting.-.easy.-.find.the.median/find.the.median.cpp
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.find.the.median/find.the.median.cpp b/hackerrank/algorithms.-.sorting.-.easy.-.find.the.median/find.the.median.cpp
+new file mode 100644
+index 0000000..b3c4933
+--- /dev/null
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.find.the.median/find.the.median.cpp
+@@ -0,0 +1,98 @@
++#include <bits/stdc++.h>
++
++using namespace std;
++
++vector<string> split_string(string);
++
++// Complete the findMedian function below.
++int findMedian(vector<int> arr) {
++
++    /*
++    guaranteed range -10000 <= arr[i] <= 10000
++    */
++
++    auto l_arr = arr.size();
++    auto idx_target = int((l_arr + 1) / 2);
++    //cout << "target: " << idx_target << endl;
++
++    // count sort
++    int arr2[20001];
++    fill(arr2, end(arr2), 0);
++    for (auto x : arr)
++        arr2[x + 10000]++;
++    //cout << "arr2: ["; for (auto x : arr2) cout << " " << x; cout << " ]" << endl;
++    auto count = 0;
++    auto idx = 0;
++    for (auto x : arr2) {
++        count += x;
++        /*
++        if (x > 0) {
++            cout << "idx_target: " << idx_target << ", idx_count: " << x << ", count: " << count << endl;
++        }
++        */
++        if (count >= idx_target) {
++            return idx - 10000;
++        }
++        idx++;
++    }
++    return -1;
++}
++
++int main()
++{
++    ofstream fout(getenv("OUTPUT_PATH"));
++
++    int n;
++    cin >> n;
++    cin.ignore(numeric_limits<streamsize>::max(), '\n');
++
++    string arr_temp_temp;
++    getline(cin, arr_temp_temp);
++
++    vector<string> arr_temp = split_string(arr_temp_temp);
++
++    vector<int> arr(n);
++
++    for (int i = 0; i < n; i++) {
++        int arr_item = stoi(arr_temp[i]);
++
++        arr[i] = arr_item;
++    }
++
++    int result = findMedian(arr);
++
++    fout << result << "\n";
++
++    fout.close();
++
++    return 0;
++}
++
++vector<string> split_string(string input_string) {
++    string::iterator new_end = unique(input_string.begin(), input_string.end(), [] (const char &x, const char &y) {
++        return x == y and x == ' ';
++    });
++
++    input_string.erase(new_end, input_string.end());
++
++    while (input_string[input_string.length() - 1] == ' ') {
++        input_string.pop_back();
++    }
++
++    vector<string> splits;
++    char delimiter = ' ';
++
++    size_t i = 0;
++    size_t pos = input_string.find(delimiter);
++
++    while (pos != string::npos) {
++        splits.push_back(input_string.substr(i, pos - i));
++
++        i = pos + 1;
++        pos = input_string.find(delimiter, i);
++    }
++
++    splits.push_back(input_string.substr(i, min(pos, input_string.length()) - i + 1));
++
++    return splits;
++}
+-- 
+2.24.1
+
