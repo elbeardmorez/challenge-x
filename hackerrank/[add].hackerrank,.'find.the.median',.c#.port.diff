@@ -1,0 +1,58 @@
+From cd21cb2fbe3a4a58362ab19ff8926b7ec442dd1e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 11 Jan 2020 22:08:17 +0000
+Subject: [add] hackerrank, 'find the median', c# port
+
+---
+ .../find.the.median.cs                        | 29 +++++++++++++++++++
+ 1 file changed, 29 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.find.the.median/find.the.median.cs b/hackerrank/algorithms.-.sorting.-.easy.-.find.the.median/find.the.median.cs
+index 6d3fee3..59f2c77 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.find.the.median/find.the.median.cs
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.find.the.median/find.the.median.cs
+@@ -12,12 +12,41 @@ using System.Text.RegularExpressions;
+ using System.Text;
+ using System;
+ 
++using static System.Console;
++
+ class Solution {
+ 
+     // Complete the findMedian function below.
+     static int findMedian(int[] arr) {
+ 
++        /*
++        guaranteed range -10000 <= arr[i] <= 10000
++        */
++
++        var l_arr = arr.Length;
++        var idx_target = Convert.ToInt32((l_arr + 1) / 2);
++        //WriteLine($"target: {idx_target}");
+ 
++        // count sort
++        var arr2 = new int[20001];
++        foreach (var x in arr)
++            arr2[x + 10000]++;
++        //WriteLine("arr2: [{' '.Join(arr2.Select(x => x.ToString()))}]");
++        var count = 0;
++        var idx = 0;
++        foreach (var x in arr2) {
++            count += x;
++            /*
++            if (x > 0) {
++                WriteLine($"idx_target: {idx_target}, idx_count: {x}, count: {count}");
++            }
++            */
++            if (count >= idx_target) {
++                return idx - 10000;
++            }
++            idx++;
++        }
++        return -1;
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.24.1
+
