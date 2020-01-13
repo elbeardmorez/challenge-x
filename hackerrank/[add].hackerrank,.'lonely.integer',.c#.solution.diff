@@ -1,0 +1,30 @@
+From c67d03a940f8bf2151f5ffce43a36031ea5efd6e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 13 Jan 2020 23:56:58 +0000
+Subject: [add] hackerrank, 'lonely integer', c# solution
+
+---
+ .../lonely.integer.cs                                          | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.bit.manipulation.-.easy.-.lonely.integer/lonely.integer.cs b/hackerrank/algorithms.-.bit.manipulation.-.easy.-.lonely.integer/lonely.integer.cs
+index 23ee803..adacc9f 100644
+--- a/hackerrank/algorithms.-.bit.manipulation.-.easy.-.lonely.integer/lonely.integer.cs
++++ b/hackerrank/algorithms.-.bit.manipulation.-.easy.-.lonely.integer/lonely.integer.cs
+@@ -16,7 +16,7 @@ class Solution {
+ 
+     // Complete the lonelyinteger function below.
+     static int lonelyinteger(int[] a) {
+-
++        return a.GroupBy(x => x).Select(g => g.Count()).Where(x => x == 1).First();
+     }
+ 
+     static void Main(string[] args) {
+@@ -34,4 +34,3 @@ class Solution {
+         textWriter.Close();
+     }
+ }
+-
+-- 
+2.24.1
+
