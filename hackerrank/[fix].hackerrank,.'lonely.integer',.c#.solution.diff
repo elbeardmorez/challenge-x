@@ -1,0 +1,28 @@
+From 2d020995711315dae3edd1ee61893dfbcc5b9d0e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 14 Jan 2020 00:20:49 +0000
+Subject: [fix] hackerrank, 'lonely integer', c# solution
+
+-premature extraction of group count and then non-sensical filtering
+on numberic list would always return 1. filter the group objects by
+count and return the resultant unique group's key
+---
+ .../lonely.integer.cs                                           | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.bit.manipulation.-.easy.-.lonely.integer/lonely.integer.cs b/hackerrank/algorithms.-.bit.manipulation.-.easy.-.lonely.integer/lonely.integer.cs
+index adacc9f..aaa5bb1 100644
+--- a/hackerrank/algorithms.-.bit.manipulation.-.easy.-.lonely.integer/lonely.integer.cs
++++ b/hackerrank/algorithms.-.bit.manipulation.-.easy.-.lonely.integer/lonely.integer.cs
+@@ -16,7 +16,7 @@ class Solution {
+ 
+     // Complete the lonelyinteger function below.
+     static int lonelyinteger(int[] a) {
+-        return a.GroupBy(x => x).Select(g => g.Count()).Where(x => x == 1).First();
++        return a.GroupBy(x => x).Where(g => g.Count() == 1).Select(g => g.Key).First();
+     }
+ 
+     static void Main(string[] args) {
+-- 
+2.24.1
+
