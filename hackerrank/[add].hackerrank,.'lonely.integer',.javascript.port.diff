@@ -1,0 +1,34 @@
+From 24421d545a911cc0c0e7d7244c95d1f461458fb0 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 14 Jan 2020 20:39:01 +0000
+Subject: [add] hackerrank, 'lonely integer', javascript port
+
+---
+ .../lonely.integer.js                                      | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.bit.manipulation.-.easy.-.lonely.integer/lonely.integer.js b/hackerrank/algorithms.-.bit.manipulation.-.easy.-.lonely.integer/lonely.integer.js
+index e8e17e7..c7ff5dc 100644
+--- a/hackerrank/algorithms.-.bit.manipulation.-.easy.-.lonely.integer/lonely.integer.js
++++ b/hackerrank/algorithms.-.bit.manipulation.-.easy.-.lonely.integer/lonely.integer.js
+@@ -26,8 +26,10 @@ function readLine() {
+ 
+ // Complete the lonelyinteger function below.
+ function lonelyinteger(a) {
+-
+-
++    let map_ = new Map();
++    a.forEach(x => { if (map_.has(x)) map_.set(x, map_.get(x) + 1); else map_.set(x, 1); });
++    for (let [k, v] of map_.entries()) { if (v == 1) return k; }
++    return -1;
+ }
+ 
+ function main() {
+@@ -43,4 +45,3 @@ function main() {
+ 
+     ws.end();
+ }
+-
+-- 
+2.24.1
+
