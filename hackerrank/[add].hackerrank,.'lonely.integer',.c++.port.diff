@@ -1,0 +1,34 @@
+From 968d81572841005742351ba29b79b55fdfff5eba Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 15 Jan 2020 20:47:06 +0000
+Subject: [add] hackerrank, 'lonely integer', c++ port
+
+---
+ .../lonely.integer.cpp                                     | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.bit.manipulation.-.easy.-.lonely.integer/lonely.integer.cpp b/hackerrank/algorithms.-.bit.manipulation.-.easy.-.lonely.integer/lonely.integer.cpp
+index c77c919..f5e2424 100644
+--- a/hackerrank/algorithms.-.bit.manipulation.-.easy.-.lonely.integer/lonely.integer.cpp
++++ b/hackerrank/algorithms.-.bit.manipulation.-.easy.-.lonely.integer/lonely.integer.cpp
+@@ -6,8 +6,10 @@ vector<string> split_string(string);
+ 
+ // Complete the lonelyinteger function below.
+ int lonelyinteger(vector<int> a) {
+-
+-
++    map<int, int> map_;
++    for (auto x : a) { if (map_.find(x) != map_.end()) map_[x]++; else map_[x] = 1; }
++    for (auto kvp : map_) { if (kvp.second == 1) return kvp.first; }
++    return -1;
+ }
+ 
+ int main()
+@@ -68,4 +70,3 @@ vector<string> split_string(string input_string) {
+ 
+     return splits;
+ }
+-
+-- 
+2.24.1
+
