@@ -1,0 +1,34 @@
+From 2e85385d9df10334aa525dfe020fa5faeff1ba3d Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 18 Jan 2020 19:49:49 +0000
+Subject: [add] hackerrank, 'lonely integer', python port
+
+---
+ .../lonely.integer.py                                        | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.bit.manipulation.-.easy.-.lonely.integer/lonely.integer.py b/hackerrank/algorithms.-.bit.manipulation.-.easy.-.lonely.integer/lonely.integer.py
+index 3f445b9..f3aae58 100644
+--- a/hackerrank/algorithms.-.bit.manipulation.-.easy.-.lonely.integer/lonely.integer.py
++++ b/hackerrank/algorithms.-.bit.manipulation.-.easy.-.lonely.integer/lonely.integer.py
+@@ -6,8 +6,12 @@ import random
+ import re
+ import sys
+ 
++from itertools import groupby
++
+ # Complete the lonelyinteger function below.
+ def lonelyinteger(a):
++    return [g[0] for g in groupby(sorted(a)) if len(list(g[1])) == 1][0]
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+@@ -21,4 +25,3 @@ if __name__ == '__main__':
+     fptr.write(str(result) + '\n')
+ 
+     fptr.close()
+-
+-- 
+2.24.1
+
