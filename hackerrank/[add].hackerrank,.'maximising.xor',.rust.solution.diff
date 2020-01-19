@@ -1,0 +1,67 @@
+From d6c9a5bdfaa92b6b96810877a526955fcfe3dc13 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 19 Jan 2020 22:57:43 +0000
+Subject: [add] hackerrank, 'maximising xor', rust solution
+
+---
+ .../maximising.xor.rs                         | 47 +++++++++++++++++++
+ 1 file changed, 47 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.bit.manipulation.-.easy.-.maximising.xor/maximising.xor.rs b/hackerrank/algorithms.-.bit.manipulation.-.easy.-.maximising.xor/maximising.xor.rs
+index 75b9783..9adae6f 100644
+--- a/hackerrank/algorithms.-.bit.manipulation.-.easy.-.maximising.xor/maximising.xor.rs
++++ b/hackerrank/algorithms.-.bit.manipulation.-.easy.-.maximising.xor/maximising.xor.rs
+@@ -1,3 +1,50 @@
+ // Enter your code here 
+ 
++use std::io;
++use std::env;
++use std::fs::File;
++use std::io::Write;
+ 
++fn maximising_xor(l: i32, r: i32) -> i32 {
++    let mut max_: i32 = 0;
++    for x in l..(r + 1) {
++        for x2 in x..(r + 1) {
++            if x ^ x2 > max_ {
++                max_ = x ^ x2;
++                //println!("max_: {} [x|x2: {}|{}]", max_, x, x2);
++            }
++        }
++    }
++    return max_;
++}
++
++fn next_line(s: &mut String) {
++    s.clear();
++    let mut buf = String::new();
++    let res = io::stdin().read_line(&mut buf);
++    if res.is_ok() && res.unwrap() != 0 {
++        s.push_str(buf.trim_right_matches('\n'));
++    }
++}
++
++fn main() {
++    let key = "OUTPUT_PATH";
++    let mut target = String::new();
++    match env::var_os(key) {
++        Some(val) => target.push_str(val.to_str().unwrap()),
++        None => panic!("{} is not defined in the environment.", key),
++    }
++    let mut f = match File::create(target) {
++        Ok(f) => f,
++        Err(e) => panic!("file io error: {}", e),
++    };
++
++    let mut line = String::new();
++    next_line(&mut line);
++    let l = line.parse::<i32>().unwrap();
++    next_line(&mut line);
++    let r = line.parse::<i32>().unwrap();
++    let res: i32 = maximising_xor(l, r);
++    let _ = f.write_all(res.to_string().as_bytes());
++    f.write_all(b"\n").expect("file io error");
++}
+-- 
+2.24.1
+
