@@ -1,0 +1,35 @@
+From 567caf65166ab4889bced09fc3a320fb7fb68f40 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 20 Jan 2020 21:53:29 +0000
+Subject: [add] hackerrank, 'maximising xor', c++ port
+
+---
+ .../maximising.xor.cpp                               | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.bit.manipulation.-.easy.-.maximising.xor/maximising.xor.cpp b/hackerrank/algorithms.-.bit.manipulation.-.easy.-.maximising.xor/maximising.xor.cpp
+index ffd7390..1aa1ad7 100644
+--- a/hackerrank/algorithms.-.bit.manipulation.-.easy.-.maximising.xor/maximising.xor.cpp
++++ b/hackerrank/algorithms.-.bit.manipulation.-.easy.-.maximising.xor/maximising.xor.cpp
+@@ -4,8 +4,16 @@ using namespace std;
+ 
+ // Complete the maximizingXor function below.
+ int maximizingXor(int l, int r) {
+-
+-
++    int max_ = 0;
++    for (int x = l; x <= r; x++) {
++        for (int x2 = x; x2 <= r; x2++) {
++            if ((x ^ x2) > max_) {
++                max_ = x ^ x2;
++                //cout << "max_: " << max_ << " [x|x2: " << x << "|" << x2 << "]" << endl;
++            }
++        }
++    }
++    return max_;
+ }
+ 
+ int main()
+-- 
+2.24.1
+
