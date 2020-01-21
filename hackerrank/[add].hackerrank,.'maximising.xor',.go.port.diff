@@ -1,0 +1,39 @@
+From 591baff0e1a2651c812c0a2f6a7c07439eed52af Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 21 Jan 2020 07:11:16 +0000
+Subject: [add] hackerrank, 'maximising xor', go port
+
+---
+ .../maximising.xor.go                                | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.bit.manipulation.-.easy.-.maximising.xor/maximising.xor.go b/hackerrank/algorithms.-.bit.manipulation.-.easy.-.maximising.xor/maximising.xor.go
+index 277c7fa..c6e0293 100644
+--- a/hackerrank/algorithms.-.bit.manipulation.-.easy.-.maximising.xor/maximising.xor.go
++++ b/hackerrank/algorithms.-.bit.manipulation.-.easy.-.maximising.xor/maximising.xor.go
+@@ -11,7 +11,16 @@ import (
+ 
+ // Complete the maximizingXor function below.
+ func maximizingXor(l int32, r int32) int32 {
+-
++    var max_ int32 = 0
++    for x := int32(l); x <= r; x++ {
++        for x2 := x; x2 <= r; x2++ {
++            if (x ^ x2) > max_ {
++                max_ = x ^ x2
++                //fmt.Printf("max_: %v [x|x2: %v|%v]\n", max_ , x , x2)
++            }
++        }
++    }
++    return max_
+ }
+ 
+ func main() {
+@@ -53,4 +62,3 @@ func checkError(err error) {
+         panic(err)
+     }
+ }
+-
+-- 
+2.24.1
+
