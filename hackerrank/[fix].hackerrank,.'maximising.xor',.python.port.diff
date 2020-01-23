@@ -1,0 +1,28 @@
+From 5ec9a229ea051df1523cf8e335ad3810fbe79ade Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 23 Jan 2020 20:00:41 +0000
+Subject: [fix] hackerrank, 'maximising xor', python port
+
+-boundary off-by-one port bug
+---
+ .../maximising.xor.py                                         | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.bit.manipulation.-.easy.-.maximising.xor/maximising.xor.py b/hackerrank/algorithms.-.bit.manipulation.-.easy.-.maximising.xor/maximising.xor.py
+index 83955dc..766d609 100644
+--- a/hackerrank/algorithms.-.bit.manipulation.-.easy.-.maximising.xor/maximising.xor.py
++++ b/hackerrank/algorithms.-.bit.manipulation.-.easy.-.maximising.xor/maximising.xor.py
+@@ -10,8 +10,8 @@ import sys
+ # Complete the maximizingXor function below.
+ def maximizingXor(l, r):
+     max_ = 0
+-    for x in range(l, r):
+-        for x2 in range(x, r):
++    for x in range(l, r + 1):
++        for x2 in range(x, r + 1):
+             if (x ^ x2) > max_: 
+                 max_ = x ^ x2
+                 #print(f"max_: {max_} [x|x2: {x}|{x2}]")
+-- 
+2.24.1
+
