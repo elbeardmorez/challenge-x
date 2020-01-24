@@ -1,0 +1,46 @@
+From beacc09c06f51b5537c5ed0d9eea8e74cfc41e1c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 24 Jan 2020 08:04:16 +0000
+Subject: [add] hackerrank, 'maximising xor', c# port
+
+---
+ .../maximising.xor.cs                             | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.bit.manipulation.-.easy.-.maximising.xor/maximising.xor.cs b/hackerrank/algorithms.-.bit.manipulation.-.easy.-.maximising.xor/maximising.xor.cs
+index f369eba..f3ca9d3 100644
+--- a/hackerrank/algorithms.-.bit.manipulation.-.easy.-.maximising.xor/maximising.xor.cs
++++ b/hackerrank/algorithms.-.bit.manipulation.-.easy.-.maximising.xor/maximising.xor.cs
+@@ -12,12 +12,22 @@ using System.Text.RegularExpressions;
+ using System.Text;
+ using System;
+ 
++using static System.Console;
++
+ class Solution {
+ 
+     // Complete the maximizingXor function below.
+     static int maximizingXor(int l, int r) {
+-
+-
++        var max_ = 0;
++        for (var x = l; x <= r; x++) {
++            for (var x2 = x; x2 <= r; x2++) {
++                if ((x ^ x2) > max_) {
++                    max_ = x ^ x2;
++                    //WriteLine($"max_: {max_} [x|x2: {x}|{x2}]");
++                }
++            }
++        }
++        return max_;
+     }
+ 
+     static void Main(string[] args) {
+@@ -35,4 +45,3 @@ class Solution {
+         textWriter.Close();
+     }
+ }
+-
+-- 
+2.24.1
+
