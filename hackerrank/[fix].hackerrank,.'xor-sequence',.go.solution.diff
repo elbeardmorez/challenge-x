@@ -1,0 +1,45 @@
+From 976e12803565c5d271786a821949f642150f21a9 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 25 Jan 2020 21:41:58 +0000
+Subject: [fix] hackerrank, 'xor-sequence', go solution
+
+-switch to int64
+---
+ .../xor.sequence.go                                | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.bit.manipulation.-.medium.-.xor.sequence/xor.sequence.go b/hackerrank/algorithms.-.bit.manipulation.-.medium.-.xor.sequence/xor.sequence.go
+index f2d5017..d3b910c 100644
+--- a/hackerrank/algorithms.-.bit.manipulation.-.medium.-.xor.sequence/xor.sequence.go
++++ b/hackerrank/algorithms.-.bit.manipulation.-.medium.-.xor.sequence/xor.sequence.go
+@@ -11,20 +11,20 @@ import (
+ 
+ // Complete the xorSequence function below.
+ func xorSequence(l int64, r int64) int64 {
+-    arr := make([]int, 0)
+-    sum_ := 0
+-    var a int
+-    a_m1 := 0
+-    for x := 0; x < (int(r) + 1); x++ {
++    arr := make([]int64, 0)
++    sum_ := int64(0)
++    var a int64
++    a_m1 := int64(0)
++    for x := int64(0); x < (r + 1); x++ {
+         a = a_m1 ^ x
+         arr = append(arr, a)
+         a_m1 = a
+     }
+     //fmt.Printf("arr: %v\n", arr)
+-    for x := int(l); x < (int(r) + 1); x++ {
++    for x := l; x < (r + 1); x++ {
+         sum_ = sum_ ^ arr[x]
+     }
+-    return int64(sum_)
++    return sum_
+ }
+ 
+ func main() {
+-- 
+2.24.1
+
