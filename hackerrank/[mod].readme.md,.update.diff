@@ -1,0 +1,37 @@
+From 5bac007c3f92dff794ffe7963e1667e84b8c0579 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 26 Jan 2020 23:24:00 +0000
+Subject: [mod] README.md, update
+
+-update hackerrank counts
+-add additional incomplete challenge
+---
+ README.md | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/README.md b/README.md
+index a23833f..e34d15d 100644
+--- a/README.md
++++ b/README.md
+@@ -12,8 +12,8 @@ this repository contains a heck of a lot of my programming faux-pas, but i've de
+ - expert | 0
+ - advanced | 3
+ - hard | 15
+-- medium | 61
+-- easy | 219
++- medium | 65
++- easy | 234
+ 
+ ### incomplete
+ - [algorithms|strings|advanced] ashton and string | 33.33/100
+@@ -21,6 +21,7 @@ this repository contains a heck of a lot of my programming faux-pas, but i've de
+ - [data structures|heap|hard] find the running median | 0/50
+ - [algorithms|implementation|medium] the bomberman game | 20/40
+ - [algorithms|implementation|medium] non-divisible subset | 9.33/20
++- [algorithms|bit manipulation|medium] xor-sequence | 20/40
+ 
+ ### hardest / favourite successes
+ - [algorithms|search|hard] maximizing mission points | python solution
+-- 
+2.24.1
+
