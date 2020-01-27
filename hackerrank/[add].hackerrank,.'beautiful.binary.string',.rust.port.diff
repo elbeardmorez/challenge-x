@@ -1,0 +1,74 @@
+From 054493b2aadb59ca058b93df94599cebdd0e016c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 27 Jan 2020 21:36:58 +0000
+Subject: [add] hackerrank, 'beautiful binary string', rust port
+
+---
+ .../beautiful.binary.string.rs                | 55 ++++++++++++++++++-
+ 1 file changed, 54 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.beautiful.binary.string/beautiful.binary.string.rs b/hackerrank/algorithms.-.sorting.-.easy.-.beautiful.binary.string/beautiful.binary.string.rs
+index 75b9783..e4a7c4e 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.beautiful.binary.string/beautiful.binary.string.rs
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.beautiful.binary.string/beautiful.binary.string.rs
+@@ -1,3 +1,56 @@
+-// Enter your code here 
++// Enter your code here
+ 
++use std::io;
++use std::env;
++use std::fs::File;
++use std::io::Write;
+ 
++fn beautiful_binary_string(b: &str) -> i32 {
++    // found at i_x9, change i_x2 0->1, no possibility of match
++    // starting i_x2, so restart search at i_x3
++    let mut count = 0;
++    let mut b_ = b.clone();
++    loop {
++        match b_.find("010") {
++            Some(next_) => {
++                b_ = &b_[(next_ + 3)..];
++                count += 1;
++            },
++            None => {
++                break;
++            }
++        }
++    }
++    return count;
++}
++
++fn next_line(s: &mut String) {
++    s.clear();
++    let mut buf = String::new();
++    let res = io::stdin().read_line(&mut buf);
++    if res.is_ok() && res.unwrap() != 0 {
++        s.push_str(buf.trim_right_matches('\n'));
++    }
++}
++
++fn main() {
++    let key = "OUTPUT_PATH";
++    let mut target = String::new();
++    match env::var_os(key) {
++        Some(val) => target.push_str(val.to_str().unwrap()),
++        None => panic!("{} is not defined in the environment.", key),
++    }
++    let mut f = match File::create(target) {
++        Ok(f) => f,
++        Err(e) => panic!("file io error: {}", e),
++    };
++
++    let mut line = String::new();
++    next_line(&mut line); // ignore n
++    next_line(&mut line);
++    while line != "" {
++        let res: i32 = beautiful_binary_string(&line);
++        let _ = f.write_all((res.to_string() + &'\n'.to_string()).as_bytes()).expect("file io error");
++        next_line(&mut line);
++    }
++}
+-- 
+2.24.1
+
