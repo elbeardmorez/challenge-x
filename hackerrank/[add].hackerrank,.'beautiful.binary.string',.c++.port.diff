@@ -1,0 +1,39 @@
+From 62b20c230e039be826753c4bfd09d9c3a7d9d7b6 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 28 Jan 2020 22:11:34 +0000
+Subject: [add] hackerrank, 'beautiful binary string', c++ port
+
+---
+ .../beautiful.binary.string.cpp                      | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.beautiful.binary.string/beautiful.binary.string.cpp b/hackerrank/algorithms.-.sorting.-.easy.-.beautiful.binary.string/beautiful.binary.string.cpp
+index 3a0bfca..648554f 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.beautiful.binary.string/beautiful.binary.string.cpp
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.beautiful.binary.string/beautiful.binary.string.cpp
+@@ -4,8 +4,15 @@ using namespace std;
+ 
+ // Complete the beautifulBinaryString function below.
+ int beautifulBinaryString(string b) {
+-
+-
++    int count = 0;
++    int next_ = -3;
++    while (true) {
++        if ((next_ = b.find("010", next_ + 3)) != string::npos)
++            count++;
++        else
++            break;
++    }
++    return count;
+ }
+ 
+ int main()
+@@ -27,4 +34,3 @@ int main()
+ 
+     return 0;
+ }
+-
+-- 
+2.24.1
+
