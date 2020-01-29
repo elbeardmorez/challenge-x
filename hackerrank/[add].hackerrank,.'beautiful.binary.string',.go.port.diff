@@ -1,0 +1,52 @@
+From d68b60acbe7aba6e5187a90e8718938b95398446 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 29 Jan 2020 08:08:55 +0000
+Subject: [add] hackerrank, 'beautiful binary string', go port
+
+---
+ .../beautiful.binary.string.go                 | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.beautiful.binary.string/beautiful.binary.string.go b/hackerrank/algorithms.-.sorting.-.easy.-.beautiful.binary.string/beautiful.binary.string.go
+index fbed3a7..66fe49e 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.beautiful.binary.string/beautiful.binary.string.go
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.beautiful.binary.string/beautiful.binary.string.go
+@@ -11,8 +11,20 @@ import (
+ 
+ // Complete the beautifulBinaryString function below.
+ func beautifulBinaryString(b string) int32 {
+-
+-
++    count := 0
++    next_ := -3
++    b_ := &b
++    for {
++        next_ = strings.Index(b, "010")
++        if next_ > -1 {
++            count++
++            *b_ = (*b_)[next_ + 3:]
++            //fmt.Printf("b_: %v\n", *b_)
++        } else {
++            break
++        }
++    }
++    return int32(count)
+ }
+ 
+ func main() {
+@@ -28,6 +40,7 @@ func main() {
+     nTemp, err := strconv.ParseInt(readLine(reader), 10, 64)
+     checkError(err)
+     n := int32(nTemp)
++    _ = n;
+ 
+     b := readLine(reader)
+ 
+@@ -52,4 +65,3 @@ func checkError(err error) {
+         panic(err)
+     }
+ }
+-
+-- 
+2.24.1
+
