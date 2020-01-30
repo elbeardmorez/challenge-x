@@ -1,0 +1,40 @@
+From 9c2d2b92112e7487fbb8f4393ab2d961a7d4b361 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 30 Jan 2020 07:44:07 +0000
+Subject: [add] hackerrank, 'beautiful binary string', javascript port
+
+---
+ .../beautiful.binary.string.js                      | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.beautiful.binary.string/beautiful.binary.string.js b/hackerrank/algorithms.-.sorting.-.easy.-.beautiful.binary.string/beautiful.binary.string.js
+index 1f55445..28a6108 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.beautiful.binary.string/beautiful.binary.string.js
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.beautiful.binary.string/beautiful.binary.string.js
+@@ -26,8 +26,16 @@ function readLine() {
+ 
+ // Complete the beautifulBinaryString function below.
+ function beautifulBinaryString(b) {
+-
+-
++    let count = 0;
++    let next_ = -3;
++    while (true) {
++        next_ = b.indexOf("010", next_ + 3);
++        if (next_ > -1)
++            count++;
++        else
++            break;
++    }
++    return count;
+ }
+ 
+ function main() {
+@@ -43,4 +51,3 @@ function main() {
+ 
+     ws.end();
+ }
+-
+-- 
+2.24.1
+
