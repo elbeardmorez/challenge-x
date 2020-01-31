@@ -1,0 +1,41 @@
+From 10daa06c13b44a6fd779a56599097173678bb83d Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 31 Jan 2020 21:34:28 +0000
+Subject: [add] hackerrank, 'beautiful binary string', python port
+
+---
+ .../beautiful.binary.string.py                       | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.sorting.-.easy.-.beautiful.binary.string/beautiful.binary.string.py b/hackerrank/algorithms.-.sorting.-.easy.-.beautiful.binary.string/beautiful.binary.string.py
+index 9322882..818e3d5 100644
+--- a/hackerrank/algorithms.-.sorting.-.easy.-.beautiful.binary.string/beautiful.binary.string.py
++++ b/hackerrank/algorithms.-.sorting.-.easy.-.beautiful.binary.string/beautiful.binary.string.py
+@@ -6,8 +6,19 @@ import random
+ import re
+ import sys
+ 
++
+ # Complete the beautifulBinaryString function below.
+ def beautifulBinaryString(b):
++    count = 0
++    next_ = -3
++    while True:
++        next_ = b.find("010", next_ + 3)
++        if next_ > -1:
++            count += 1
++        else:
++            break
++
++    return count
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+@@ -21,4 +32,3 @@ if __name__ == '__main__':
+     fptr.write(str(result) + '\n')
+ 
+     fptr.close()
+-
+-- 
+2.24.1
+
