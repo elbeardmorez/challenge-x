@@ -1,0 +1,39 @@
+From 5540f8f93295a1caa1f6a6679f903e01bc8c90f9 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 2 Feb 2020 09:46:37 +0000
+Subject: [add] hackerrank, 'the love-letter mystery', c++ port
+
+---
+ .../the.love.letter.mystery.cpp                      | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.the.love.letter.mystery/the.love.letter.mystery.cpp b/hackerrank/algorithms.-.strings.-.easy.-.the.love.letter.mystery/the.love.letter.mystery.cpp
+index be4b1b8..3c261ec 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.the.love.letter.mystery/the.love.letter.mystery.cpp
++++ b/hackerrank/algorithms.-.strings.-.easy.-.the.love.letter.mystery/the.love.letter.mystery.cpp
+@@ -4,8 +4,15 @@ using namespace std;
+ 
+ // Complete the theLoveLetterMystery function below.
+ int theLoveLetterMystery(string s) {
+-
+-
++    auto ops = 0;
++    auto i = 0;
++    auto i2 = s.length() - 1;
++    while (i < i2) {
++        ops += abs(int(s[i2]) - int(s[i]));
++        i++;
++        i2--;
++    }
++    return ops;
+ }
+ 
+ int main()
+@@ -29,4 +36,3 @@ int main()
+ 
+     return 0;
+ }
+-
+-- 
+2.25.0
+
