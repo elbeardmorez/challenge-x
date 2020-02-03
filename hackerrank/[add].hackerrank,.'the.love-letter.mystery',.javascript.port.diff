@@ -1,0 +1,39 @@
+From 0ec4500bafb67ae276f0569a02a352267516a5cd Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 3 Feb 2020 18:29:49 +0000
+Subject: [add] hackerrank, 'the love-letter mystery', javascript port
+
+---
+ .../the.love.letter.mystery.js                       | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.the.love.letter.mystery/the.love.letter.mystery.js b/hackerrank/algorithms.-.strings.-.easy.-.the.love.letter.mystery/the.love.letter.mystery.js
+index f335e4b..0a32cf2 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.the.love.letter.mystery/the.love.letter.mystery.js
++++ b/hackerrank/algorithms.-.strings.-.easy.-.the.love.letter.mystery/the.love.letter.mystery.js
+@@ -26,8 +26,15 @@ function readLine() {
+ 
+ // Complete the theLoveLetterMystery function below.
+ function theLoveLetterMystery(s) {
+-
+-
++    let ops = 0;
++    let i = 0;
++    let i2 = s.length - 1;
++    while (i < i2) {
++        ops += Math.abs(s.codePointAt(i2) - s.codePointAt(i));
++        i++;
++        i2--;
++    }
++    return ops;
+ }
+ 
+ function main() {
+@@ -45,4 +52,3 @@ function main() {
+ 
+     ws.end();
+ }
+-
+-- 
+2.25.0
+
