@@ -1,0 +1,39 @@
+From 8b70ddc723818f7e488e0ee7475befbbae7ee959 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 5 Feb 2020 08:52:04 +0000
+Subject: [add] hackerrank, 'the love-letter mystery', c# port
+
+---
+ .../the.love.letter.mystery.cs                       | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.the.love.letter.mystery/the.love.letter.mystery.cs b/hackerrank/algorithms.-.strings.-.easy.-.the.love.letter.mystery/the.love.letter.mystery.cs
+index 89dbf73..dac3312 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.the.love.letter.mystery/the.love.letter.mystery.cs
++++ b/hackerrank/algorithms.-.strings.-.easy.-.the.love.letter.mystery/the.love.letter.mystery.cs
+@@ -16,8 +16,15 @@ class Solution {
+ 
+     // Complete the theLoveLetterMystery function below.
+     static int theLoveLetterMystery(string s) {
+-
+-
++        var ops = 0;
++        var i = 0;
++        var i2 = s.Length - 1;
++        while (i < i2) {
++            ops += Math.Abs(s[i2] - s[i]);
++            i++;
++            i2--;
++        }
++        return ops;
+     }
+ 
+     static void Main(string[] args) {
+@@ -37,4 +44,3 @@ class Solution {
+         textWriter.Close();
+     }
+ }
+-
+-- 
+2.25.0
+
