@@ -1,0 +1,41 @@
+From 139275bc696b64ad4727398e564885402482738f Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 6 Feb 2020 19:42:06 +0000
+Subject: [add] hackerrank, 'the love-letter mystery', python port
+
+---
+ .../the.love.letter.mystery.py                       | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.the.love.letter.mystery/the.love.letter.mystery.py b/hackerrank/algorithms.-.strings.-.easy.-.the.love.letter.mystery/the.love.letter.mystery.py
+index b455fd7..d4e83cc 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.the.love.letter.mystery/the.love.letter.mystery.py
++++ b/hackerrank/algorithms.-.strings.-.easy.-.the.love.letter.mystery/the.love.letter.mystery.py
+@@ -6,8 +6,19 @@ import random
+ import re
+ import sys
+ 
++
+ # Complete the theLoveLetterMystery function below.
+ def theLoveLetterMystery(s):
++    ops = 0
++    i = 0
++    i2 = len(s) - 1
++    while i < i2:
++        ops += abs(ord(s[i2]) - ord(s[i]))
++        i += 1
++        i2 -= 1
++
++    return ops
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+@@ -22,4 +33,3 @@ if __name__ == '__main__':
+         fptr.write(str(result) + '\n')
+ 
+     fptr.close()
+-
+-- 
+2.25.0
+
