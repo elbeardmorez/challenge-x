@@ -1,0 +1,67 @@
+From 54e7db7dd6cd962a37f487e2c58ac44d0647871b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 7 Feb 2020 20:47:12 +0000
+Subject: [fix] hackerrank, 'palindrome index', go solution
+
+-account for multiple potential 'correct' paths, and revert to the
+'other' path in the case where the first path fails further down the line
+---
+ .../palindrome.index.go                       | 31 ++++++++++++++++---
+ 1 file changed, 27 insertions(+), 4 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.palindrome.index/palindrome.index.go b/hackerrank/algorithms.-.strings.-.easy.-.palindrome.index/palindrome.index.go
+index c1618b9..5a20da6 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.palindrome.index/palindrome.index.go
++++ b/hackerrank/algorithms.-.strings.-.easy.-.palindrome.index/palindrome.index.go
+@@ -20,16 +20,40 @@ func palindromeIndex(s string) int32 {
+     idx := -1
+     l := 0
+     l2 := len(s) - 1
++    options := make([][]int, 0)
+     for l < l2 {
+         if chars[l] == chars[l2] {
+             l++
+             l2--
+         } else if idx != -1 {
+             // second non match
+-            idx = -1
+-            break
++            if len(options) > 0 {
++                //fmt.Printf("second non-match, but we've got options!\n")
++                idx = options[0][0]
++                l = options[0][1]
++                l2 = options[0][2]
++                options = options[1:]
++                //fmt.Printf("idx: %v, l: %v, l2: %v\n", idx, l, l2)
++            } else {
++                /*
++                fmt.Printf("idx: %v, l: %v, l2: %v\n", idx, l, l2)
++                fmt.Printf("lss:  %v %v %v ... %v %v %v  : l2ss\n",
++                           chars[l-4:l], chars[l], chars[l + 1:l + 5],
++                           chars[l2-4:l2], chars[l2], chars[l2 + 1:l2 + 5])
++                fmt.Printf("second non-match!\n")
++                */
++                idx = -1
++                break
++            }
+         } else {
+-            if chars[l + 1] == chars[l2] {
++            //fmt.Printf("first non-match!\n")
++            //fmt.Printf("l: [%v] %v, l2: [%v] %v\n", l, chars[l], l2, chars[l2])
++            if chars[l + 1] == chars[l2] && chars[l] == chars[l2 - 1] {
++                // both paths work! take first and add marker to second path
++                options = append(options, []int{l2, l, l2 - 1})
++                idx = l
++                l++
++            } else if chars[l + 1] == chars[l2] {
+                 idx = l
+                 l++
+             } else if chars[l] == chars[l2 - 1] {
+@@ -83,4 +107,3 @@ func checkError(err error) {
+         panic(err)
+     }
+ }
+-
+-- 
+2.25.0
+
