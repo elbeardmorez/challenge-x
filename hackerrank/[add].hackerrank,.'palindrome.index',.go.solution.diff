@@ -1,0 +1,56 @@
+From 5b02e652add431a08a96f64bf2144328719f415b Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 7 Feb 2020 19:59:59 +0000
+Subject: [add] hackerrank, 'palindrome index', go solution
+
+---
+ .../palindrome.index.go                       | 33 +++++++++++++++++--
+ 1 file changed, 31 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.palindrome.index/palindrome.index.go b/hackerrank/algorithms.-.strings.-.easy.-.palindrome.index/palindrome.index.go
+index bab6d8e..c1618b9 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.palindrome.index/palindrome.index.go
++++ b/hackerrank/algorithms.-.strings.-.easy.-.palindrome.index/palindrome.index.go
+@@ -11,8 +11,37 @@ import (
+ 
+ // Complete the palindromeIndex function below.
+ func palindromeIndex(s string) int32 {
+-
+-
++    // abcddcba | -1
++    // abcdedcba | -1
++    // axbccba | 1
++    // abxccbxa | -1
++
++    chars := []rune(s)
++    idx := -1
++    l := 0
++    l2 := len(s) - 1
++    for l < l2 {
++        if chars[l] == chars[l2] {
++            l++
++            l2--
++        } else if idx != -1 {
++            // second non match
++            idx = -1
++            break
++        } else {
++            if chars[l + 1] == chars[l2] {
++                idx = l
++                l++
++            } else if chars[l] == chars[l2 - 1] {
++                idx = l2
++                l2--
++            } else {
++                // multiple non-matching
++                break
++            }
++        }
++    }
++    return int32(idx)
+ }
+ 
+ func main() {
+-- 
+2.25.0
+
