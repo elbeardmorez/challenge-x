@@ -1,0 +1,83 @@
+From 0aa8a5b17edf6843d8978f6be6952a303122022c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 8 Feb 2020 22:50:04 +0000
+Subject: [add] hackerrank, 'palindrome index', c++ port
+
+---
+ .../palindrome.index.cpp                      | 59 ++++++++++++++++++-
+ 1 file changed, 58 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.palindrome.index/palindrome.index.cpp b/hackerrank/algorithms.-.strings.-.easy.-.palindrome.index/palindrome.index.cpp
+index 2c2a761..9db48f2 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.palindrome.index/palindrome.index.cpp
++++ b/hackerrank/algorithms.-.strings.-.easy.-.palindrome.index/palindrome.index.cpp
+@@ -4,8 +4,65 @@ using namespace std;
+ 
+ // Complete the palindromeIndex function below.
+ int palindromeIndex(string s) {
++    // abcddcba | -1
++    // abcdedcba | -1
++    // axbccba | 1
++    // abxccbxa | -1
+ 
+-
++    auto chars = s.data();
++    auto idx = -1;
++    int l = 0;
++    int l2 = s.size() - 1;
++    deque<vector<int>> options;
++    while (l < l2) {
++        if (chars[l] == chars[l2]) {
++            l++;
++            l2--;
++        } else if (idx != -1) {
++            // second non match
++            if (options.size() > 0) {
++                //cout << "second non-match, but we've got options!" << endl;
++                auto option = options.front();
++                idx = option[0];
++                l = option[1];
++                l2 = option[2];
++                options.pop_front();
++                //cout << "idx: " << idx << ", l: " << l <<  ", l2: " << l2 << endl;
++            } else {
++                /*
++                cout << "idx: " << idx << ", l: " << l << "., l2: " << l2 << endl;
++                cout << "lss:  [ "; for (int x = l - 4; x < l; x++) cout << chars[x] << " ";
++                cout << "|" << chars[l] << "| "; for (int x = l + 1; x < l + 5; x++) cout << chars[x] << " ";
++                cout << "]  ...  [ ";
++                for (int x = l2 - 4; x < l2; x++) cout << chars[x] << " ";
++                cout << "|" << chars[l2] << "| "; for (int x = l2 + 1; x < l2 + 5; x++) cout << chars[x] << " ";
++                cout << "]  : l2ss" << endl;
++                cout << "second non-match!" << endl;
++                */
++                idx = -1;
++                break;
++            }
++        } else {
++            //cout << "first non-match!" << endl;
++            //cout << "l: [" << l << "] " << chars[l] << ", l2 [" << l2 << "] " << chars[l2] << endl;
++            if (chars[l + 1] == chars[l2] && chars[l] == chars[l2 - 1]) {
++                // both paths work! take first and add marker to second path
++                options.push_back(vector<int>{l2, l, l2 - 1});
++                idx = l;
++                l++;
++            } else if (chars[l + 1] == chars[l2]) {
++                idx = l;
++                l++;
++            } else if (chars[l] == chars[l2 - 1]) {
++                idx = l2;
++                l2--;
++            } else {
++                // multiple non-matching
++                break;
++            }
++        }
++    }
++    return idx;
+ }
+ 
+ int main()
+-- 
+2.25.0
+
