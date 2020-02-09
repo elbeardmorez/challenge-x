@@ -1,0 +1,84 @@
+From 0cba5879e076475eaaa782971e340709d998e056 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 9 Feb 2020 16:22:13 +0000
+Subject: [add] hackerrank, 'palindrome index', javascript port
+
+---
+ .../palindrome.index.js                       | 57 ++++++++++++++++++-
+ 1 file changed, 54 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.palindrome.index/palindrome.index.js b/hackerrank/algorithms.-.strings.-.easy.-.palindrome.index/palindrome.index.js
+index e6b9a09..fe7bcc8 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.palindrome.index/palindrome.index.js
++++ b/hackerrank/algorithms.-.strings.-.easy.-.palindrome.index/palindrome.index.js
+@@ -26,8 +26,60 @@ function readLine() {
+ 
+ // Complete the palindromeIndex function below.
+ function palindromeIndex(s) {
+-
+-
++    // abcddcba | -1
++    // abcdedcba | -1
++    // axbccba | 1
++    // abxccbxa | -1
++
++    let chars = s.split('');
++    let idx = -1;
++    let l = 0;
++    let l2 = s.length - 1;
++    let options = [];
++    while (l < l2) {
++        if (chars[l] === chars[l2]) {
++            l++;
++            l2--;
++        } else if (idx !== -1) {
++            // second non-match
++            if (options.length > 0) {
++                //console.log(`second non-match, but we've got options!`);
++                let option = options.pop();
++                idx = option[0];
++                l = option[1];
++                l2 = option[2];
++                //console.log(`idx: ${idx}, l: ${l}, l2: ${l2}`);
++            } else {
++                /*
++                console.log(`idx: ${idx}, l: ${l}, l2: ${l2}`);
++                console.log(`lss:  ${chars.slice(l-4, l)} |${chars[l]}| ${chars.slice(l + 1, l + 5)} ... ` +
++                            `${chars.slice(l2-4, l2)} |${chars[l2]}| ${chars.slice(l2 + 1, l2 + 5)}  : l2ss`);
++                console.log(`second non-match!`);
++                */
++                idx = -1;
++                break;
++            }
++        } else {
++            //console.log(`first non-match!`);
++            //console.log(`l: [${l}] ${chars[l]}, l2: [${l2}] ${chars[l2]}`);
++            if (chars[l + 1] === chars[l2] && chars[l] === chars[l2 - 1]) {
++                // both paths work! take first and add marker to second path
++                options.push([l2, l, l2 - 1]);
++                idx = l;
++                l++;
++            } else if (chars[l + 1] === chars[l2]) {
++                idx = l;
++                l++;
++            } else if (chars[l] === chars[l2 - 1]) {
++                idx = l2;
++                l2--;
++            } else {
++                // multiple non-matching
++                break;
++            }
++        }
++    }
++    return idx;
+ }
+ 
+ function main() {
+@@ -45,4 +97,3 @@ function main() {
+ 
+     ws.end();
+ }
+-
+-- 
+2.25.0
+
