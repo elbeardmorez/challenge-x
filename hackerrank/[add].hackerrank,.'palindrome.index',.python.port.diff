@@ -1,0 +1,84 @@
+From e43b876129ac1cb0e284ebfda32615d88822fabe Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 10 Feb 2020 08:40:12 +0000
+Subject: [add] hackerrank, 'palindrome index', python port
+
+---
+ .../palindrome.index.py                       | 55 ++++++++++++++++++-
+ 1 file changed, 54 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.palindrome.index/palindrome.index.py b/hackerrank/algorithms.-.strings.-.easy.-.palindrome.index/palindrome.index.py
+index 31c7056..3445f8e 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.palindrome.index/palindrome.index.py
++++ b/hackerrank/algorithms.-.strings.-.easy.-.palindrome.index/palindrome.index.py
+@@ -6,8 +6,62 @@ import random
+ import re
+ import sys
+ 
++
+ # Complete the palindromeIndex function below.
+ def palindromeIndex(s):
++    # abcddcba | -1
++    # abcdedcba | -1
++    # axbccba | 1
++    # abxccbxa | -1
++
++    chars = list(s)
++    idx = -1
++    l = 0
++    l2 = len(s) - 1
++    options = []
++    while l < l2:
++        if chars[l] == chars[l2]:
++            l += 1
++            l2 -= 1
++        elif idx != -1:
++            # second non-match
++            if len(options) > 0:
++                #print(f"second non-match, but we've got options!")
++                option = options.pop()
++                idx = option[0]
++                l = option[1]
++                l2 = option[2]
++                #print(f"idx: {idx}, l: {l}, l2: {l2}")
++            else:
++                """
++                print(f"idx: {idx}, l: {l}, l2: {l2}")
++                print(f"lss:  {chars[l-4:l]} |{chars[l]}| {chars[l + 1:l + 5]} ... " +
++                           f"{chars[l2-4:l2]} |{chars[l2]}| {chars[l2 + 1:l2 + 5]}  : l2ss")
++                print(f"second non-matchnot ")
++                """
++                idx = -1
++                break
++
++        else:
++            #print(f"first non-match!")
++            #print(f"l: [{l}] {chars[l]}, l2: [{l2}] {chars[l2]}")
++            if chars[l + 1] == chars[l2] and chars[l] == chars[l2 - 1]:
++                # both paths worknot  take first and add marker to second path
++                options.append([l2, l, l2 - 1])
++                idx = l
++                l += 1
++            elif chars[l + 1] == chars[l2]:
++                idx = l
++                l += 1
++            elif chars[l] == chars[l2 - 1]:
++                idx = l2
++                l2 -= 1
++            else:
++                # multiple non-matching
++                break
++
++    return idx;
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+@@ -22,4 +76,3 @@ if __name__ == '__main__':
+         fptr.write(str(result) + '\n')
+ 
+     fptr.close()
+-
+-- 
+2.25.0
+
