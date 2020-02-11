@@ -1,0 +1,91 @@
+From 55748d74a01f77de056ef18014afce8ae0ac2b24 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 11 Feb 2020 19:18:39 +0000
+Subject: [add] hackerrank, 'palindrome index', c# port
+
+---
+ .../palindrome.index.cs                       | 59 ++++++++++++++++++-
+ 1 file changed, 57 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.palindrome.index/palindrome.index.cs b/hackerrank/algorithms.-.strings.-.easy.-.palindrome.index/palindrome.index.cs
+index 6f1630e..a944d7e 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.palindrome.index/palindrome.index.cs
++++ b/hackerrank/algorithms.-.strings.-.easy.-.palindrome.index/palindrome.index.cs
+@@ -12,12 +12,68 @@ using System.Text.RegularExpressions;
+ using System.Text;
+ using System;
+ 
++using static System.Console;
++
+ class Solution {
+ 
+     // Complete the palindromeIndex function below.
+     static int palindromeIndex(string s) {
++        // abcddcba | -1
++        // abcdedcba | -1
++        // axbccba | 1
++        // abxccbxa | -1
+ 
+-
++        var chars = s.ToCharArray();
++        var idx = -1;
++        var l = 0;
++        var l2 = s.Length - 1;
++        var options = new Stack<int[]>();
++        while (l < l2) {
++            if (chars[l] == chars[l2]) {
++                l++;
++                l2--;
++            } else if (idx != -1) {
++                // second non-match
++                if (options.Count > 0) {
++                    //WriteLine($"second non-match, but we've got options!");
++                    var option = options.Pop();
++                    idx = option[0];
++                    l = option[1];
++                    l2 = option[2];
++                    //WriteLine($"idx: {idx}, l: {l}, l2: {l2}");
++                } else {
++                    /*
++                    WriteLine($"idx: {idx}, l: {l}, l2: {l2}");
++                    WriteLine($"lss:  {String.Join(" ", chars.Skip(l - 4).Take(4).Select(x => x.ToString()))} |{chars[l]}| " +
++                                    $"{String.Join(" ", chars.Skip(l + 1).Take(4).Select(x => x.ToString()))} ... " +
++                                    $"{String.Join(" ", chars.Skip(l2 - 4).Take(4).Select(x => x.ToString()))} |{chars[l2]}| " +
++                                    $"{String.Join(" ", chars.Skip(l2 + 1).Take(4).Select(x => x.ToString()))}  : l2ss");
++                    WriteLine($"second non-match!");
++                    */
++                    idx = -1;
++                    break;
++                }
++            } else {
++                //WriteLine($"first non-match!");
++                //WriteLine($"l: [{l}] {chars[l]}, l2: [{l2}] {chars[l2]}");
++                if (chars[l + 1] == chars[l2] && chars[l] == chars[l2 - 1]) {
++                    // both paths work! take first and add marker to second path
++                    options.Push(new int[3]{l2, l, l2 - 1});
++                    idx = l;
++                    l++;
++                } else if (chars[l + 1] == chars[l2]) {
++                    idx = l;
++                    l++;
++                } else if (chars[l] == chars[l2 - 1]) {
++                    idx = l2;
++                    l2--;
++                } else {
++                    // multiple non-matching
++                    break;
++                }
++            }
++        }
++        return idx;
+     }
+ 
+     static void Main(string[] args) {
+@@ -37,4 +93,3 @@ class Solution {
+         textWriter.Close();
+     }
+ }
+-
+-- 
+2.25.0
+
