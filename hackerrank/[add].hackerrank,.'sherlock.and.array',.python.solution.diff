@@ -1,0 +1,48 @@
+From 96573524148ffa7f4eca5442d7bc60f8d88e115f Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 13 Feb 2020 21:52:15 +0000
+Subject: [add] hackerrank, 'sherlock and array', python solution
+
+---
+ .../sherlock.and.array.py                     | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.search.-.easy.-.sherlock.and.array/sherlock.and.array.py b/hackerrank/algorithms.-.search.-.easy.-.sherlock.and.array/sherlock.and.array.py
+index 64f4184..249338b 100644
+--- a/hackerrank/algorithms.-.search.-.easy.-.sherlock.and.array/sherlock.and.array.py
++++ b/hackerrank/algorithms.-.search.-.easy.-.sherlock.and.array/sherlock.and.array.py
+@@ -6,8 +6,26 @@ import random
+ import re
+ import sys
+ 
++
+ # Complete the balancedSums function below.
+ def balancedSums(arr):
++    l_a = len(arr)
++    if l_a < 3:
++        return "NO"
++    lsum = 0
++    rsum = sum(arr[1:])
++    if lsum == rsum:
++        return "YES"
++    idx = 0
++    while idx < l_a - 2:
++      lsum += arr[idx]
++      idx += 1
++      rsum -= arr[idx]
++      if lsum == rsum:
++          return "YES"
++
++    return "NO"
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+@@ -24,4 +42,3 @@ if __name__ == '__main__':
+         fptr.write(result + '\n')
+ 
+     fptr.close()
+-
+-- 
+2.25.0
+
