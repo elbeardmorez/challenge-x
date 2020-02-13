@@ -1,0 +1,26 @@
+From c874a50e0a3b8601ebbe51ea673a16e566af7287 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 13 Feb 2020 22:12:14 +0000
+Subject: [fix] hackerrank, 'sherlock and array', python solution
+
+-off-by-one bug, fix mistake in previous fix
+---
+ .../sherlock.and.array.py                                       | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.search.-.easy.-.sherlock.and.array/sherlock.and.array.py b/hackerrank/algorithms.-.search.-.easy.-.sherlock.and.array/sherlock.and.array.py
+index 0ac54d0..b05375d 100644
+--- a/hackerrank/algorithms.-.search.-.easy.-.sherlock.and.array/sherlock.and.array.py
++++ b/hackerrank/algorithms.-.search.-.easy.-.sherlock.and.array/sherlock.and.array.py
+@@ -17,7 +17,7 @@ def balancedSums(arr):
+     if lsum == rsum:
+         return "YES"
+     idx = 0
+-    while idx < l_a:
++    while idx < l_a - 1:
+       lsum += arr[idx]
+       idx += 1
+       rsum -= arr[idx]
+-- 
+2.25.0
+
