@@ -1,0 +1,46 @@
+From 92f0b6e438be35dd5722275a590e5bf8f4182be4 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 15 Feb 2020 08:43:29 +0000
+Subject: [add] hackerrank, 'sherlock and array', c# port
+
+---
+ .../sherlock.and.array.cs                     | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.search.-.easy.-.sherlock.and.array/sherlock.and.array.cs b/hackerrank/algorithms.-.search.-.easy.-.sherlock.and.array/sherlock.and.array.cs
+index 073f601..5ef9d89 100644
+--- a/hackerrank/algorithms.-.search.-.easy.-.sherlock.and.array/sherlock.and.array.cs
++++ b/hackerrank/algorithms.-.search.-.easy.-.sherlock.and.array/sherlock.and.array.cs
+@@ -16,8 +16,22 @@ class Solution {
+ 
+     // Complete the balancedSums function below.
+     static string balancedSums(List<int> arr) {
+-
+-
++        var l_a = arr.Count;
++        if (l_a < 1)
++            return "NO";
++        var lsum = 0;
++        var rsum = arr.Skip(1).Sum();
++        if (lsum == rsum)
++            return "YES";
++        var idx = 0;
++        while (idx < l_a - 1) {
++          lsum += arr[idx];
++          idx += 1;
++          rsum -= arr[idx];
++          if (lsum == rsum)
++              return "YES";
++        }
++        return "NO";
+     }
+ 
+     static void Main(string[] args) {
+@@ -39,4 +53,3 @@ class Solution {
+         textWriter.Close();
+     }
+ }
+-
+-- 
+2.25.0
+
