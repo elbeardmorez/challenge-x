@@ -1,0 +1,33 @@
+From b0dab6fa6878a01fda074a0cdbb575d077eafc9e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 19 Feb 2020 23:26:20 +0000
+Subject: [add] hackerrank, 'marc's cakewalk', python solution
+
+---
+ .../marc's.cakewalk.py                                        | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.marc's.cakewalk/marc's.cakewalk.py b/hackerrank/algorithms.-.greedy.-.easy.-.marc's.cakewalk/marc's.cakewalk.py
+index 3203a2b..1eec8e4 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.marc's.cakewalk/marc's.cakewalk.py
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.marc's.cakewalk/marc's.cakewalk.py
+@@ -7,8 +7,11 @@ import re
+ import sys
+ import itertools
+ 
++
+ # Complete the marcsCakewalk function below.
+ def marcsCakewalk(calorie):
++    return sum([(2 ** j) * c for (j, c) in zip(range(0, len(calorie)), reversed(sorted(calorie)))])
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+@@ -22,4 +25,3 @@ if __name__ == '__main__':
+     fptr.write(str(result) + '\n')
+ 
+     fptr.close()
+-
+-- 
+2.25.0
+
