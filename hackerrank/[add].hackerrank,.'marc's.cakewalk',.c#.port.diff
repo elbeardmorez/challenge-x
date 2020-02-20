@@ -1,0 +1,32 @@
+From e0be9e7634e803c8ef9f19438af976e787505525 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 20 Feb 2020 21:44:51 +0000
+Subject: [add] hackerrank, 'marc's cakewalk', c# port
+
+---
+ .../marc's.cakewalk.cs                                       | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.marc's.cakewalk/marc's.cakewalk.cs b/hackerrank/algorithms.-.greedy.-.easy.-.marc's.cakewalk/marc's.cakewalk.cs
+index 6958cb0..0e051f6 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.marc's.cakewalk/marc's.cakewalk.cs
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.marc's.cakewalk/marc's.cakewalk.cs
+@@ -16,8 +16,8 @@ class Solution {
+ 
+     // Complete the marcsCakewalk function below.
+     static long marcsCakewalk(int[] calorie) {
+-
+-
++        return Convert.ToInt64(Enumerable.Range(0, calorie.Length).Zip(calorie.OrderBy(x => x).Reverse(), (j, c) => Math.Pow(2, j) * c).Sum());
++        //return sum([(2 ** j) * c for (j, c) in zip(range(0, len(calorie)), reversed(sorted(calorie)))])
+     }
+ 
+     static void Main(string[] args) {
+@@ -35,4 +35,3 @@ class Solution {
+         textWriter.Close();
+     }
+ }
+-
+-- 
+2.25.0
+
