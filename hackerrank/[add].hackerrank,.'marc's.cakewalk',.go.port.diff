@@ -1,0 +1,43 @@
+From 5aad7a1d6a1661a949a97043ecf45f7df782d6f6 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 21 Feb 2020 19:18:45 +0000
+Subject: [add] hackerrank, 'marc's cakewalk', go port
+
+---
+ .../marc's.cakewalk.go                               | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.marc's.cakewalk/marc's.cakewalk.go b/hackerrank/algorithms.-.greedy.-.easy.-.marc's.cakewalk/marc's.cakewalk.go
+index 09d89bc..89f3ac4 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.marc's.cakewalk/marc's.cakewalk.go
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.marc's.cakewalk/marc's.cakewalk.go
+@@ -7,12 +7,19 @@ import (
+     "os"
+     "strconv"
+     "strings"
++    "sort"
++    "math"
+ )
+ 
+ // Complete the marcsCakewalk function below.
+ func marcsCakewalk(calorie []int32) int64 {
+-
+-
++    count := float64(0)
++    sort.Slice(calorie, func(i1, i2 int) bool { return calorie[i1] > calorie[i2] })
++    for idx, cal := range(calorie) {
++        count += (math.Pow(2, float64(idx)) * float64(cal))
++        //fmt.Printf("count: '%v'\n", count)
++    }
++    return int64(count)
+ }
+ 
+ func main() {
+@@ -61,4 +68,3 @@ func checkError(err error) {
+         panic(err)
+     }
+ }
+-
+-- 
+2.25.0
+
