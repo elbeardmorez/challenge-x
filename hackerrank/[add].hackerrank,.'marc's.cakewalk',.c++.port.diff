@@ -1,0 +1,39 @@
+From 11c7e8e46450482738df61fecccb392f3972d3d0 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 22 Feb 2020 07:54:06 +0000
+Subject: [add] hackerrank, 'marc's cakewalk', c++ port
+
+---
+ .../marc's.cakewalk.cpp                              | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.marc's.cakewalk/marc's.cakewalk.cpp b/hackerrank/algorithms.-.greedy.-.easy.-.marc's.cakewalk/marc's.cakewalk.cpp
+index 1b8059c..8737506 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.marc's.cakewalk/marc's.cakewalk.cpp
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.marc's.cakewalk/marc's.cakewalk.cpp
+@@ -6,7 +6,16 @@ vector<string> split_string(string);
+ 
+ // Complete the marcsCakewalk function below.
+ long marcsCakewalk(vector<int> calorie) {
+-
++    auto count = 0;
++    sort(calorie.begin(), calorie.end(), [](int i1, int i2) -> int { return i1 > i2; });
++    auto idx = 0;
++    for (auto cal : calorie) {
++        //cout << "idx: " << idx << ", cal: " << cal << endl;
++        count += pow(2, idx) * cal;
++        idx++;
++        //cout << "count: '" << count << "'" << endl;
++    }
++    return count;
+ }
+ 
+ int main()
+@@ -67,4 +76,3 @@ vector<string> split_string(string input_string) {
+ 
+     return splits;
+ }
+-
+-- 
+2.25.0
+
