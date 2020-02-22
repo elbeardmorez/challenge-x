@@ -1,0 +1,26 @@
+From 183c97ade13447c83a342240378c7099ef5d1a95 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 22 Feb 2020 07:58:11 +0000
+Subject: [fix] hackerrank, 'marc's cakewalk', c++ port
+
+-int overflow, use long int as was a given by the function prototype!
+---
+ .../marc's.cakewalk.cpp                                         | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.marc's.cakewalk/marc's.cakewalk.cpp b/hackerrank/algorithms.-.greedy.-.easy.-.marc's.cakewalk/marc's.cakewalk.cpp
+index 8737506..6fe9159 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.marc's.cakewalk/marc's.cakewalk.cpp
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.marc's.cakewalk/marc's.cakewalk.cpp
+@@ -6,7 +6,7 @@ vector<string> split_string(string);
+ 
+ // Complete the marcsCakewalk function below.
+ long marcsCakewalk(vector<int> calorie) {
+-    auto count = 0;
++    auto count = 0L;
+     sort(calorie.begin(), calorie.end(), [](int i1, int i2) -> int { return i1 > i2; });
+     auto idx = 0;
+     for (auto cal : calorie) {
+-- 
+2.25.0
+
