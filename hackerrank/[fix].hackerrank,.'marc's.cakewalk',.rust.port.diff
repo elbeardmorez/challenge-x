@@ -1,0 +1,30 @@
+From 6327bd24fc987b56379061c3b49e6dbf2129bee8 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 23 Feb 2020 13:11:23 +0000
+Subject: [fix] hackerrank, 'marc's cakewalk', rust port
+
+-bad use of i32 -> i64 cast allowing overflow in multiplication
+---
+ .../marc's.cakewalk.rs                                        | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.marc's.cakewalk/marc's.cakewalk.rs b/hackerrank/algorithms.-.greedy.-.easy.-.marc's.cakewalk/marc's.cakewalk.rs
+index a9eaa22..035d73a 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.marc's.cakewalk/marc's.cakewalk.rs
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.marc's.cakewalk/marc's.cakewalk.rs
+@@ -10,10 +10,10 @@ fn marcs_cakewalk(calorie: &mut Vec<i32>) -> i64 {
+     calorie.sort();
+     calorie.reverse();
+     let mut idx = 0;
+-    let base: i32 = 2;
++    let base: i64 = 2;
+     for cal in calorie {
+         //println!("idx: {:?} , cal: {:?}", idx, cal);
+-        count += base.pow(idx) as i64 * (*cal as i64);
++        count += base.pow(idx) * (*cal as i64);
+         idx += 1;
+         //println!("count: '{:?}'", count);
+     }
+-- 
+2.25.0
+
