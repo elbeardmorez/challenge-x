@@ -1,0 +1,36 @@
+From a00586f1033ed8d977a7a8f4d310147dc80ff452 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 24 Feb 2020 07:55:32 +0000
+Subject: [add] hackerrank, 'marc's cakewalk', javascript port
+
+---
+ .../marc's.cakewalk.js                              | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.marc's.cakewalk/marc's.cakewalk.js b/hackerrank/algorithms.-.greedy.-.easy.-.marc's.cakewalk/marc's.cakewalk.js
+index 8bc7706..19dca4d 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.marc's.cakewalk/marc's.cakewalk.js
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.marc's.cakewalk/marc's.cakewalk.js
+@@ -26,8 +26,17 @@ function readLine() {
+ 
+ // Complete the marcsCakewalk function below.
+ function marcsCakewalk(calorie) {
+-
+-
++    let count = 0;
++    calorie.sort((i1, i2) => { return i1 === i2 ? 0 : (parseInt(i1) < parseInt(i2) ? -1 : 1); });
++    calorie.reverse();
++    let idx = 0;
++    calorie.forEach(cal => {
++        //console.log(`idx: ${idx}, cal: ${cal}`);
++        count += Math.pow(2, idx) * cal;
++        idx++;
++        //console.log(`count: '${count}'`);
++    });
++    return count;
+ }
+ 
+ function main() {
+-- 
+2.25.0
+
