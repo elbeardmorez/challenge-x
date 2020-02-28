@@ -1,0 +1,79 @@
+From 426459de352e336e6829c0d67dbdefee8b2ecd2d Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 28 Feb 2020 07:32:04 +0000
+Subject: [add] hackerrank, 'hackerland radio transmitters', c++ port
+
+---
+ .../hackerland.radio.transmitters.cpp         | 56 ++++++++++++++++++-
+ 1 file changed, 55 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.search.-.medium.-.hackerland.radio.transmitters/hackerland.radio.transmitters.cpp b/hackerrank/algorithms.-.search.-.medium.-.hackerland.radio.transmitters/hackerland.radio.transmitters.cpp
+index 59cfa3e..06397df 100644
+--- a/hackerrank/algorithms.-.search.-.medium.-.hackerland.radio.transmitters/hackerland.radio.transmitters.cpp
++++ b/hackerrank/algorithms.-.search.-.medium.-.hackerland.radio.transmitters/hackerland.radio.transmitters.cpp
+@@ -7,7 +7,61 @@ vector<string> split_string(string);
+ // Complete the hackerlandRadioTransmitters function below.
+ int hackerlandRadioTransmitters(vector<int> x, int k) {
+ 
+-
++    /*
++    x       x x                 x
++    ?       O c
++
++    account for non-contiguous ranges
++    */
++
++    sort(x.begin(), x.end());
++    map<int, int> map_;
++
++    auto count = 0;
++    auto left_house = -1;
++    auto last_house = -1;
++    auto last_antenna = -1;
++
++    for (auto v: x) {
++        if (map_.find(v) != map_.end())
++            continue;
++        map_[v] = 1;
++
++        //cout << "house @: " << v << ", left_house @: " << left_house << ", last antenna @: " << last_antenna << ", range: " << k << ", count: " << count << endl;
++        if (left_house == -1) {
++            // first house in next antenna range
++            left_house = v;
++        } else {
++            if (last_antenna == -1) {
++                // we've gone out of range of the last antenna
++                if (v - left_house > k) {
++                    //cout << "setting transmitter on last house: " << last_house << endl;
++                    last_antenna = last_house;
++                    count++;
++                } else if (v - left_house == k) {
++                    //cout << "setting transmitter on current house: " << v << endl;
++                    last_antenna = v;
++                    count++;
++               }
++            }
++            if (last_antenna != -1) {
++                // antenna set, are we still in range?
++                if (v - last_antenna > k) {
++                    left_house = v;
++                    last_antenna = -1;
++                } else if (v - last_antenna == k) {
++                    // edge of antenna range
++                    left_house = -1;
++                    last_antenna = -1;
++                }
++            }
++        }
++        last_house = v;
++    }
++    if (last_antenna == -1) {
++        count++;
++    }
++    return count;
+ }
+ 
+ int main()
+-- 
+2.25.0
+
