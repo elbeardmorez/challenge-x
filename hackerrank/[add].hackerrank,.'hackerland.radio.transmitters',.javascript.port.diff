@@ -1,0 +1,85 @@
+From d0c21e9821106b3748dc9be9c0e62ff147f82a33 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 29 Feb 2020 07:08:00 +0000
+Subject: [add] hackerrank, 'hackerland radio transmitters', javascript port
+
+---
+ .../hackerland.radio.transmitters.js          | 58 ++++++++++++++++++-
+ 1 file changed, 56 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.search.-.medium.-.hackerland.radio.transmitters/hackerland.radio.transmitters.js b/hackerrank/algorithms.-.search.-.medium.-.hackerland.radio.transmitters/hackerland.radio.transmitters.js
+index 9e01e1c..b566dfa 100644
+--- a/hackerrank/algorithms.-.search.-.medium.-.hackerland.radio.transmitters/hackerland.radio.transmitters.js
++++ b/hackerrank/algorithms.-.search.-.medium.-.hackerland.radio.transmitters/hackerland.radio.transmitters.js
+@@ -27,7 +27,62 @@ function readLine() {
+ // Complete the hackerlandRadioTransmitters function below.
+ function hackerlandRadioTransmitters(x, k) {
+ 
+-
++    /*
++    x       x x                 x
++    ?       O c
++
++    account for non-contiguous ranges
++    */
++
++    x.sort((x1, x2) => { return x1 === x2 ? 0 : (parseInt(x1) > parseInt(x2) ? 1 : -1) });
++    let map_ = new Map();
++
++    let count = 0;
++    let left_house = -1;
++    let last_house = -1;
++    let last_antenna = -1;
++
++    let v = undefined;
++    for (let idx = 0; idx < x.length; idx++) {
++        v = x[idx];
++        if (map_.has(v))
++            continue;
++        map_.set(v, 1);
++
++        //console.log(`house @: ${v}, left_house @: ${left_house}, last antenna @: ${last_antenna}, range: ${k}, count: ${count}`);
++        if ((left_house === -1)) {
++            // first house in next antenna range
++            left_house = v;
++        } else {
++            if ((last_antenna === -1)) {
++                // we've gone out of range of the last antenna
++                if ((v - left_house > k)) {
++                    //console.log(`setting transmitter on last house: ${last_house}`);
++                    last_antenna = last_house;
++                    count++;
++                } else if ((v - left_house === k)) {
++                    //console.log(`setting transmitter on current house: ${v}`);
++                    last_antenna = v;
++                    count++;
++               }
++            }
++            if ((last_antenna !== -1)) {
++                // antenna set, are we still in range?
++                if ((v - last_antenna > k)) {
++                    left_house = v;
++                    last_antenna = -1;
++                } else if ((v - last_antenna === k)) {
++                    // edge of antenna range
++                    left_house = -1;
++                    last_antenna = -1;
++                }
++            }
++        }
++        last_house = v;
++    }
++    if ((last_antenna === -1))
++        count++;
++    return count;
+ }
+ 
+ function main() {
+@@ -47,4 +102,3 @@ function main() {
+ 
+     ws.end();
+ }
+-
+-- 
+2.25.0
+
