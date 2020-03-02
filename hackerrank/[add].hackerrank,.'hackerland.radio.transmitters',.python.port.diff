@@ -1,0 +1,79 @@
+From fa1892ebbd312d3b94860e989ca9d0b104eb9014 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 2 Mar 2020 19:22:22 +0000
+Subject: [add] hackerrank, 'hackerland radio transmitters', python port
+
+---
+ .../hackerland.radio.transmitters.py          | 49 ++++++++++++++++++-
+ 1 file changed, 48 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.search.-.medium.-.hackerland.radio.transmitters/hackerland.radio.transmitters.py b/hackerrank/algorithms.-.search.-.medium.-.hackerland.radio.transmitters/hackerland.radio.transmitters.py
+index c7d86ba..288a1c1 100644
+--- a/hackerrank/algorithms.-.search.-.medium.-.hackerland.radio.transmitters/hackerland.radio.transmitters.py
++++ b/hackerrank/algorithms.-.search.-.medium.-.hackerland.radio.transmitters/hackerland.radio.transmitters.py
+@@ -6,9 +6,57 @@ import random
+ import re
+ import sys
+ 
++
+ # Complete the hackerlandRadioTransmitters function below.
+ def hackerlandRadioTransmitters(x, k):
+ 
++    """
++    x       x x                 x
++    ?       O c
++
++    account for non-contiguous ranges:
++    """
++
++    count = 0
++    left_house = -1
++    last_house = -1
++    last_antenna = -1
++
++    for v in sorted(set(x)):
++
++        #print(f"house @: {v}, left_house @: {left_house}, last antenna @: {last_antenna}, range: {k}, count: {count}")
++        if left_house == -1:
++            # first house in next antenna range
++            left_house = v
++        else:
++            if last_antenna == -1:
++                # we've gone out of range of the last antenna
++                if v - left_house > k:
++                    #print(f"setting transmitter on last house: {last_house}")
++                    last_antenna = last_house
++                    count += 1
++                elif v - left_house == k:
++                    #print(f"setting transmitter on current house: {v}")
++                    last_antenna = v
++                    count += 1
++
++            if last_antenna != -1:
++                # antenna set, are we still in range?
++                if v - last_antenna > k:
++                    left_house = v
++                    last_antenna = -1
++                elif v - last_antenna == k:
++                    # edge of antenna range
++                    left_house = -1
++                    last_antenna = -1
++
++        last_house = v
++
++    if last_antenna == -1:
++        count += 1
++    return count
++
++
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+ 
+@@ -25,4 +73,3 @@ if __name__ == '__main__':
+     fptr.write(str(result) + '\n')
+ 
+     fptr.close()
+-
+-- 
+2.26.0
+
