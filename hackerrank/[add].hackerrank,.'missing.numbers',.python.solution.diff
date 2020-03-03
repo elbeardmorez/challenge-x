@@ -1,0 +1,43 @@
+From 39dbe42753c178bae585fd3243a4c8978173569e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 3 Mar 2020 23:01:19 +0000
+Subject: [add] hackerrank, 'missing numbers', python solution
+
+---
+ .../missing.numbers.py                              | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.search.-.easy.-.missing.numbers/missing.numbers.py b/hackerrank/algorithms.-.search.-.easy.-.missing.numbers/missing.numbers.py
+index 6c40cad..6fa5840 100644
+--- a/hackerrank/algorithms.-.search.-.easy.-.missing.numbers/missing.numbers.py
++++ b/hackerrank/algorithms.-.search.-.easy.-.missing.numbers/missing.numbers.py
+@@ -5,9 +5,21 @@ import os
+ import random
+ import re
+ import sys
++from itertools import groupby
++
+ 
+ # Complete the missingNumbers function below.
+ def missingNumbers(arr, brr):
++    groups_a = { k: len(list(vals)) for (k, vals) in groupby(sorted(arr)) }
++    groups_b = { k: len(list(vals)) for (k, vals) in groupby(sorted(brr)) }
++    missing = []
++    for (k, count) in groups_b.items():
++        #print(f"k: {k}, count: {count}")
++        if k not in groups_a or groups_a[k] < count:
++            missing.append(k)
++
++    return missing
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+@@ -26,4 +38,3 @@ if __name__ == '__main__':
+     fptr.write('\n')
+ 
+     fptr.close()
+-
+-- 
+2.26.0
+
