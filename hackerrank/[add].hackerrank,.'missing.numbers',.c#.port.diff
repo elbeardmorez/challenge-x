@@ -1,0 +1,41 @@
+From 16c9fbc901c8010fd9f0bf2cb54b9cc0629ea0f5 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 4 Mar 2020 18:22:53 +0000
+Subject: [add] hackerrank, 'missing numbers', c# port
+
+---
+ .../missing.numbers.cs                             | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.search.-.easy.-.missing.numbers/missing.numbers.cs b/hackerrank/algorithms.-.search.-.easy.-.missing.numbers/missing.numbers.cs
+index d1f2966..8a68fb3 100644
+--- a/hackerrank/algorithms.-.search.-.easy.-.missing.numbers/missing.numbers.cs
++++ b/hackerrank/algorithms.-.search.-.easy.-.missing.numbers/missing.numbers.cs
+@@ -18,7 +18,18 @@ class Solution {
+ 
+     // Complete the missingNumbers function below.
+     static int[] missingNumbers(int[] arr, int[] brr) {
+-
++        var groups_a = arr.OrderBy(x => x).GroupBy(x => x).ToDictionary(g => g.Key, g => g.Count());
++        var groups_b = brr.OrderBy(x => x).GroupBy(x => x).ToDictionary(g => g.Key, g => g.Count());
++        var missing = new List<int>();
++        int k, count;
++        foreach (var kvp in groups_b) {
++            k = kvp.Key;
++            count = kvp.Value;
++            //WriteLine($"k: {k}, count: {count}");
++            if (!groups_a.ContainsKey(k) || groups_a[k] < count)
++                missing.Add(k);
++        }
++        return missing.ToArray();
+     }
+ 
+     static void Main(string[] args) {
+@@ -40,4 +51,3 @@ class Solution {
+         textWriter.Close();
+     }
+ }
+-
+-- 
+2.26.0
+
