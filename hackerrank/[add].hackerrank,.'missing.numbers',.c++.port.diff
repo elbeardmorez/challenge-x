@@ -1,0 +1,63 @@
+From c3cb89fb0ad4c952673ae6caf2ffdfef4c59388e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 5 Mar 2020 07:29:13 +0000
+Subject: [add] hackerrank, 'missing numbers', c++ port
+
+---
+ .../missing.numbers.cpp                       | 34 +++++++++++++++++--
+ 1 file changed, 32 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.search.-.easy.-.missing.numbers/missing.numbers.cpp b/hackerrank/algorithms.-.search.-.easy.-.missing.numbers/missing.numbers.cpp
+index 3d54b28..907cacf 100644
+--- a/hackerrank/algorithms.-.search.-.easy.-.missing.numbers/missing.numbers.cpp
++++ b/hackerrank/algorithms.-.search.-.easy.-.missing.numbers/missing.numbers.cpp
+@@ -4,9 +4,40 @@ using namespace std;
+ 
+ vector<string> split_string(string);
+ 
++template <typename I, typename K, typename V, typename... Mx>
++void groupby(I input, map<K, vector<V>, Mx...> &groups, K (*f)(V&) = [](V& x) -> K { return x; }) {
++    for (auto itr = input.begin(); itr != input.end(); ++itr) {
++        K k = f(*itr);
++        auto itr2 = groups.find(k);
++        if (itr2 == groups.end()) {
++            //cout << "adding new key: '" << k << "'" << endl;
++            groups[k] = vector<V> {*itr};
++        } else {
++            //cout << "searched for k: " << k << ", found: " << itr2->first << endl;
++            //cout << "appending to existing key: '" << k << "'" << endl;
++            itr2->second.emplace_back(*itr);
++        }
++    }
++}
++
+ // Complete the missingNumbers function below.
+ vector<int> missingNumbers(vector<int> arr, vector<int> brr) {
+-
++    sort(arr.begin(), arr.end());
++    sort(brr.begin(), brr.end());
++    map<int, vector<int>> groups_a;
++    groupby<vector<int>, int, int>(arr, groups_a);
++    map<int, vector<int>> groups_b;
++    groupby<vector<int>, int, int>(brr, groups_b);
++    vector<int> missing;
++    int k, count;
++    for (auto kvp : groups_b) {
++        k = kvp.first;
++        count = kvp.second.size();
++        //cout << "k: " << k << ", count: " << count << endl;
++        if (groups_a.find(k) == groups_a.end() || groups_a[k].size() < count)
++            missing.push_back(k);
++    }
++    return missing;
+ }
+ 
+ int main()
+@@ -92,4 +123,3 @@ vector<string> split_string(string input_string) {
+ 
+     return splits;
+ }
+-
+-- 
+2.26.0
+
