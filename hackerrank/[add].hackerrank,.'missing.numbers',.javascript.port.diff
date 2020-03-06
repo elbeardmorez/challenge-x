@@ -1,0 +1,56 @@
+From 8d28e92ffcd4a8527b2e239f00da99efb175b8a4 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 6 Mar 2020 07:13:12 +0000
+Subject: [add] hackerrank, 'missing numbers', javascript port
+
+---
+ .../missing.numbers.js                        | 29 +++++++++++++++++--
+ 1 file changed, 27 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.search.-.easy.-.missing.numbers/missing.numbers.js b/hackerrank/algorithms.-.search.-.easy.-.missing.numbers/missing.numbers.js
+index e949921..9ccc236 100644
+--- a/hackerrank/algorithms.-.search.-.easy.-.missing.numbers/missing.numbers.js
++++ b/hackerrank/algorithms.-.search.-.easy.-.missing.numbers/missing.numbers.js
+@@ -27,7 +27,33 @@ function readLine() {
+ // Complete the missingNumbers function below.
+ function missingNumbers(arr, brr) {
+ 
+-
++    let groupby = (input, key = x => { return x; }) => {
++        let k = undefined;
++        let groups = new Map();
++        input.forEach(x => {
++            let k = key(x);
++            if (!groups.has(k))
++                groups.set(k, [x]);
++            else
++                groups.get(k).push(x);
++        });
++        return groups;
++    };
++
++    let balanced_sort_predicate = (x1, x2) => { return x1 == x2 ? 0 : (parseInt(x1) > parseInt(x2) ? 1 : -1); };
++    arr.sort(balanced_sort_predicate);
++    brr.sort(balanced_sort_predicate);
++    let groups_a = groupby(arr);
++    let groups_b = groupby(brr);
++    let missing = [];
++    let k = undefined, items = undefined, count = undefined;
++    for ([k, items] of groups_b.entries()) {
++        count = items.length;
++        //console.log(`k: ${k}, count: ${count}`);
++        if (!groups_a.has(k) || groups_a.get(k).length < count)
++            missing.push(k);
++    }
++    return missing;
+ }
+ 
+ function main() {
+@@ -47,4 +73,3 @@ function main() {
+ 
+     ws.end();
+ }
+-
+-- 
+2.26.0
+
