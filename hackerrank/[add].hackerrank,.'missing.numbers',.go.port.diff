@@ -1,0 +1,68 @@
+From b0854812fa4370685ebd0cc1ed580503e9a535e1 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 7 Mar 2020 22:05:06 +0000
+Subject: [add] hackerrank, 'missing numbers', go port
+
+---
+ .../missing.numbers.go                        | 39 +++++++++++++++++++
+ 1 file changed, 39 insertions(+)
+
+diff --git a/hackerrank/algorithms.-.search.-.easy.-.missing.numbers/missing.numbers.go b/hackerrank/algorithms.-.search.-.easy.-.missing.numbers/missing.numbers.go
+index 1d48da3..3407eba 100644
+--- a/hackerrank/algorithms.-.search.-.easy.-.missing.numbers/missing.numbers.go
++++ b/hackerrank/algorithms.-.search.-.easy.-.missing.numbers/missing.numbers.go
+@@ -7,12 +7,51 @@ import (
+     "os"
+     "strconv"
+     "strings"
++    "sort"
+ )
+ 
+ // Complete the missingNumbers function below.
+ func missingNumbers(arr []int32, brr []int32) []int32 {
+ 
++    groupby := func(input []int32, groups map[int32][]int32,
++                    f_key func(int32) int32) {
++      for _, x := range input {
++            k := f_key(x)
++            if _, ok := groups[k]; !ok {
++                //fmt.Printf("adding new key: %v\n", k)
++                groups[k] = []int32{x}
++            } else {
++                //fmt.Printf("searched for k: '%v', appending to existing value: '%v'\n", k, v)
++                groups[k] = append(groups[k], x)
++            }
++        }
++    }
++    groupby_ := func(input []int32, groups map[int32][]int32) {
++        identity := func(x int32) int32 { return x }
++        groupby(input, groups, identity)
++    }
+ 
++    sort.Slice(arr, func(i1, i2 int) bool { return arr[i1] < arr[i2] })
++    //fmt.Printf("arr: %v\n", arr)
++    sort.Slice(brr, func(i1, i2 int) bool { return brr[i1] < brr[i2] })
++    //fmt.Printf("brr: %v\n", brr)
++    groups_a := make(map[int32][]int32, 0)
++    groupby_(arr, groups_a)
++    //fmt.Printf("groups_a: %v\n", groups_a)
++    groups_b := make(map[int32][]int32, 0)
++    groupby_(brr, groups_b)
++    //fmt.Printf("groups_b: %v\n", groups_b)
++    missing := make([]int32, 0)
++    var count int
++    for k, v := range(groups_b) {
++        count = len(v)
++        //fmt.Printf("groups_b, k: %v, counts, groups_b '%v' | '%v' groups_a\n", k, count, len(groups_a[k]))
++        if _, ok := groups_a[k]; !ok || len(groups_a[k]) < count {
++            missing = append(missing, k)
++        }
++    }
++    sort.Slice(missing, func(i1, i2 int) bool { return missing[i1] < missing[i2] })
++    return missing
+ }
+ 
+ func main() {
+-- 
+2.26.0
+
