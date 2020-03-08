@@ -1,0 +1,40 @@
+From 63893b7b5c9482aa880cffe794fafe2ab8fdc6fb Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 8 Mar 2020 22:56:38 +0000
+Subject: [add] hackerrank, 'mark and toys', python solution
+
+---
+ .../mark.and.toys.py                                  | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.mark.and.toys/mark.and.toys.py b/hackerrank/algorithms.-.greedy.-.easy.-.mark.and.toys/mark.and.toys.py
+index 41540e9..aa1715f 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.mark.and.toys/mark.and.toys.py
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.mark.and.toys/mark.and.toys.py
+@@ -6,8 +6,18 @@ import random
+ import re
+ import sys
+ 
++
+ # Complete the maximumToys function below.
+ def maximumToys(prices, k):
++    count = 0
++    cost = 0
++    for price in sorted(prices):
++        if cost + price > k:
++            break
++        count += 1
++        cost += price
++    return count
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+@@ -25,4 +35,3 @@ if __name__ == '__main__':
+     fptr.write(str(result) + '\n')
+ 
+     fptr.close()
+-
+-- 
+2.26.0
+
