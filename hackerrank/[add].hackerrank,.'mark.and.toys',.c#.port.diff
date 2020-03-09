@@ -1,0 +1,39 @@
+From 6ae01528599e0c087d38445767dbaf478554c031 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 9 Mar 2020 07:23:43 +0000
+Subject: [add] hackerrank, 'mark and toys', c# port
+
+---
+ .../mark.and.toys.cs                                 | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.mark.and.toys/mark.and.toys.cs b/hackerrank/algorithms.-.greedy.-.easy.-.mark.and.toys/mark.and.toys.cs
+index 9b69295..811cae3 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.mark.and.toys/mark.and.toys.cs
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.mark.and.toys/mark.and.toys.cs
+@@ -16,8 +16,15 @@ class Solution {
+ 
+     // Complete the maximumToys function below.
+     static int maximumToys(int[] prices, int k) {
+-
+-
++        var count = 0;
++        var cost = 0;
++        foreach (var price in prices.OrderBy(x => x)) {
++            if (cost + price > k)
++                break;
++            count += 1;
++            cost += price;
++        }
++        return count;
+     }
+ 
+     static void Main(string[] args) {
+@@ -39,4 +46,3 @@ class Solution {
+         textWriter.Close();
+     }
+ }
+-
+-- 
+2.26.0
+
