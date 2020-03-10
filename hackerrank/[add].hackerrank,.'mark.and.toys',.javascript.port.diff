@@ -1,0 +1,43 @@
+From 89a2991c41c3e48d36e0e13af040a9229d967369 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 10 Mar 2020 19:38:57 +0000
+Subject: [add] hackerrank, 'mark and toys', javascript port
+
+---
+ .../mark.and.toys.js                             | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.mark.and.toys/mark.and.toys.js b/hackerrank/algorithms.-.greedy.-.easy.-.mark.and.toys/mark.and.toys.js
+index 1ada94c..f62e24c 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.mark.and.toys/mark.and.toys.js
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.mark.and.toys/mark.and.toys.js
+@@ -26,8 +26,19 @@ function readLine() {
+ 
+ // Complete the maximumToys function below.
+ function maximumToys(prices, k) {
+-
+-
++    let count = 0;
++    let cost = 0;
++    let price = undefined;
++    let l_prices = prices.length;
++    prices.sort((i1, i2) => { return i1 === i2 ? 0 : (i1 > i2 ? 1 : -1)});
++    for(let idx = 0; idx < l_prices; idx++) {
++        price = prices[idx];
++        if (cost + price > k)
++            break;
++        count += 1;
++        cost += price;
++    }
++    return count;
+ }
+ 
+ function main() {
+@@ -47,4 +58,3 @@ function main() {
+ 
+     ws.end();
+ }
+-
+-- 
+2.26.0
+
