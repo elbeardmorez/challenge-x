@@ -1,0 +1,41 @@
+From 3414282e27012f0af42671ad79d2bf36acf02440 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 11 Mar 2020 20:00:57 +0000
+Subject: [add] hackerrank, 'mark and toys', c++ port
+
+---
+ .../mark.and.toys.cpp                              | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.mark.and.toys/mark.and.toys.cpp b/hackerrank/algorithms.-.greedy.-.easy.-.mark.and.toys/mark.and.toys.cpp
+index b96ae24..71b6d0f 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.mark.and.toys/mark.and.toys.cpp
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.mark.and.toys/mark.and.toys.cpp
+@@ -6,8 +6,17 @@ vector<string> split_string(string);
+ 
+ // Complete the maximumToys function below.
+ int maximumToys(vector<int> prices, int k) {
+-
+-
++    auto count = 0;
++    auto cost = 0;
++    int price;
++    sort(prices.begin(), prices.end());
++    for (auto price : prices) {
++        if (cost + price > k)
++            break;
++        count += 1;
++        cost += price;
++    }
++    return count;
+ }
+ 
+ int main()
+@@ -73,4 +82,3 @@ vector<string> split_string(string input_string) {
+ 
+     return splits;
+ }
+-
+-- 
+2.26.0
+
