@@ -1,0 +1,46 @@
+From 9746cbb403a2161c571e9842ecdb6c4ee34ebd77 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 12 Mar 2020 08:06:36 +0000
+Subject: [add] hackerrank, 'mark and toys', go port
+
+---
+ .../mark.and.toys.go                              | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.mark.and.toys/mark.and.toys.go b/hackerrank/algorithms.-.greedy.-.easy.-.mark.and.toys/mark.and.toys.go
+index 255d24c..91c6619 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.mark.and.toys/mark.and.toys.go
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.mark.and.toys/mark.and.toys.go
+@@ -7,12 +7,22 @@ import (
+     "os"
+     "strconv"
+     "strings"
++    "sort"
+ )
+ 
+ // Complete the maximumToys function below.
+ func maximumToys(prices []int32, k int32) int32 {
+-
+-
++    var count int32 = 0
++    var cost int32 = 0
++    sort.Slice(prices, func(i1, i2 int) bool { return prices[i1] < prices[i2] })
++    for _, price := range(prices) {
++        if cost + price > k {
++            break
++        }
++        count += 1
++        cost += price
++    }
++    return count
+ }
+ 
+ func main() {
+@@ -67,4 +77,3 @@ func checkError(err error) {
+         panic(err)
+     }
+ }
+-
+-- 
+2.26.0
+
