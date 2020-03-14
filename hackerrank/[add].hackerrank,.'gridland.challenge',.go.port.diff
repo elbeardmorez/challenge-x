@@ -1,0 +1,53 @@
+From a7ec99575ee3eb199df1aed61a12c4bc30734871 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 14 Mar 2020 21:11:28 +0000
+Subject: [add] hackerrank, 'gridland challenge', go port
+
+---
+ .../grid.challenge.go                         | 23 +++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.grid.challenge/grid.challenge.go b/hackerrank/algorithms.-.greedy.-.easy.-.grid.challenge/grid.challenge.go
+index b67ca61..aeadc12 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.grid.challenge/grid.challenge.go
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.grid.challenge/grid.challenge.go
+@@ -7,12 +7,28 @@ import (
+     "os"
+     "strconv"
+     "strings"
++    "sort"
+ )
+ 
+-// Complete the gridChallenge function below.
++ // Complete the gridChallenge function below.
+ func gridChallenge(grid []string) string {
+-
+-
++    n1 := len(grid[0])  // width
++    n2 := len(grid)  // height
++    grid_ := make([][]rune, n2)
++    for idx, s := range(grid) {
++        grid_[idx] = []rune(s)
++        sort.Slice(grid_[idx], func(i1, i2 int) bool { return grid_[idx][i1] < grid_[idx][i2]; })
++    }
++    for l1 := 0; l1 < n1; l1++ {
++        last := grid_[0][l1]
++        for l2 := 1; l2 < n2; l2++ {
++            if grid_[l2][l1] < last {
++                return "NO"
++            }
++            last = grid_[l2][l1]
++        }
++    }
++    return "YES"
+ }
+ 
+ func main() {
+@@ -63,4 +79,3 @@ func checkError(err error) {
+         panic(err)
+     }
+ }
+-
+-- 
+2.26.0
+
