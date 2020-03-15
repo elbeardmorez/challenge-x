@@ -1,0 +1,51 @@
+From 51238105ed4489847b1952a7b0fee3465530a0a0 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 15 Mar 2020 13:18:47 +0000
+Subject: [add] hackerrank, 'gridland challenge', c++ port
+
+---
+ .../grid.challenge.cpp                        | 24 ++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.grid.challenge/grid.challenge.cpp b/hackerrank/algorithms.-.greedy.-.easy.-.grid.challenge/grid.challenge.cpp
+index 07ce2d2..5d64a7f 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.grid.challenge/grid.challenge.cpp
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.grid.challenge/grid.challenge.cpp
+@@ -4,8 +4,27 @@ using namespace std;
+ 
+ // Complete the gridChallenge function below.
+ string gridChallenge(vector<string> grid) {
+-
+-
++    auto n1 = grid[0].size();  // width
++    auto n2 = grid.size();  // height
++    vector<vector<char>> grid_;
++    int idx = 0;
++    for (auto s : grid) {
++        grid_.push_back(vector<char>(s.begin(), s.end()));
++        sort(grid_[idx].begin(), grid_[idx].end());
++        idx++;
++    }
++    int l1, l2;
++    char last;
++    for (l1 = 0; l1 < n1; l1++) {
++        last = grid_[0][l1];
++        for (l2 = 1; l2 < n2; l2++) {
++            if (grid_[l2][l1] < last) {
++                return "NO";
++            }
++            last = grid_[l2][l1];
++        }
++    }
++    return "YES";
+ }
+ 
+ int main()
+@@ -39,4 +58,3 @@ int main()
+ 
+     return 0;
+ }
+-
+-- 
+2.26.0
+
