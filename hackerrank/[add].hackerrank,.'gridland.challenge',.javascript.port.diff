@@ -1,0 +1,49 @@
+From 1a3c89b11e4586ff3e265f82d2a6a486f8649048 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 16 Mar 2020 07:56:06 +0000
+Subject: [add] hackerrank, 'gridland challenge', javascript port
+
+---
+ .../grid.challenge.js                         | 22 ++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.grid.challenge/grid.challenge.js b/hackerrank/algorithms.-.greedy.-.easy.-.grid.challenge/grid.challenge.js
+index 5a92695..1ba2398 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.grid.challenge/grid.challenge.js
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.grid.challenge/grid.challenge.js
+@@ -26,8 +26,25 @@ function readLine() {
+ 
+ // Complete the gridChallenge function below.
+ function gridChallenge(grid) {
+-
+-
++    let n1 = grid[0].length;  // width
++    let n2 = grid.length;  // height
++    let grid_ = [];
++    let idx = 0;
++    grid.forEach(s => {
++        grid_[idx] = s.split("");
++        grid_[idx].sort((c1, c2) => { return c1 === c2 ? 0 : ( c1 > c2 ? 1 : -1 ) });
++        idx++;
++    });
++    for (let l1 = 0; l1 < n1; l1++) {
++        let last = grid_[0][l1];
++        for (let l2 = 1; l2 < n2; l2++) {
++            if (grid_[l2][l1] < last) {
++                return "NO";
++            }
++            last = grid_[l2][l1];
++        }
++    }
++    return "YES";
+ }
+ 
+ function main() {
+@@ -52,4 +69,3 @@ function main() {
+ 
+     ws.end();
+ }
+-
+-- 
+2.26.0
+
