@@ -1,0 +1,43 @@
+From 70a49e16ef5d8d0c7d4f9d32ffcda115bdc0c873 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 17 Mar 2020 07:53:33 +0000
+Subject: [add] hackerrank, 'gridland challenge', python port
+
+---
+ .../grid.challenge.py                              | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.grid.challenge/grid.challenge.py b/hackerrank/algorithms.-.greedy.-.easy.-.grid.challenge/grid.challenge.py
+index e46d611..54dfc89 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.grid.challenge/grid.challenge.py
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.grid.challenge/grid.challenge.py
+@@ -6,8 +6,21 @@ import random
+ import re
+ import sys
+ 
++
+ # Complete the gridChallenge function below.
+ def gridChallenge(grid):
++    n1 = len(grid[0])  # width
++    n2 = len(grid)  # height
++    grid_ = [sorted(list(s)) for s in grid]
++    last = None
++    for l1 in range(0, n1):
++        last = grid_[0][l1]
++        for l2 in range(1, n2):
++            if grid_[l2][l1] < last:
++                return "NO"
++            last = grid_[l2][l1]
++    return "YES"
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+@@ -28,4 +41,3 @@ if __name__ == '__main__':
+         fptr.write(result + '\n')
+ 
+     fptr.close()
+-
+-- 
+2.26.0
+
