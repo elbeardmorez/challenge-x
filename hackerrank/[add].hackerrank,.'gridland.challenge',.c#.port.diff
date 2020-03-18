@@ -1,0 +1,47 @@
+From aee617b2c3d8678851e7940e7e2c160fe53e32e8 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 18 Mar 2020 07:35:17 +0000
+Subject: [add] hackerrank, 'gridland challenge', c# port
+
+---
+ .../grid.challenge.cs                         | 20 ++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.grid.challenge/grid.challenge.cs b/hackerrank/algorithms.-.greedy.-.easy.-.grid.challenge/grid.challenge.cs
+index 23489a5..ade789c 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.grid.challenge/grid.challenge.cs
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.grid.challenge/grid.challenge.cs
+@@ -16,8 +16,23 @@ class Solution {
+ 
+     // Complete the gridChallenge function below.
+     static string gridChallenge(string[] grid) {
+-
+-
++        var n1 = grid[0].Length;  // width;
++        var n2 = grid.Length;  // height;
++        var grid_ = new List<List<char>>();
++        foreach (var s in grid) {
++            grid_.Add(s.ToCharArray().OrderBy(x => x).ToList());
++        }
++        int last;
++        for (var l1 = 0; l1 < n1; l1++) {
++            last = grid_[0][l1];
++            for (var l2 = 1; l2 < n2; l2++) {
++                if (grid_[l2][l1] < last) {
++                    return "NO";
++                }
++                last = grid_[l2][l1];
++            }
++        }
++        return "YES";
+     }
+ 
+     static void Main(string[] args) {
+@@ -44,4 +59,3 @@ class Solution {
+         textWriter.Close();
+     }
+ }
+-
+-- 
+2.26.0
+
