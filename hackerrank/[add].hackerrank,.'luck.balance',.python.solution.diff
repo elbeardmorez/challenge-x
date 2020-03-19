@@ -1,0 +1,47 @@
+From 477fcd015a449811cfd758aa27b8bd952ad667d8 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 19 Mar 2020 13:35:35 +0000
+Subject: [add] hackerrank, 'luck balance', python solution
+
+---
+ .../luck.balance.py                            | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.luck.balance/luck.balance.py b/hackerrank/algorithms.-.greedy.-.easy.-.luck.balance/luck.balance.py
+index e53d046..e08fbea 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.luck.balance/luck.balance.py
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.luck.balance/luck.balance.py
+@@ -6,8 +6,25 @@ import random
+ import re
+ import sys
+ 
++
+ # Complete the luckBalance function below.
+ def luckBalance(k, contests):
++    state = 0
++    loses = 0
++    important = []
++    unimportant = []
++    for [l, t] in contests:
++        if t == 1:
++            important.append(l)
++        else:
++            unimportant.append(l)
++    important.sort()
++    unimportant.sort()
++    #print(f"k: {k}, important: {important}, unimportant: {unimportant}")
++
++    l_important = len(important)
++    return -1 * sum(important[0:l_important - k]) + sum(important[l_important - k:]) + sum(unimportant)
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+@@ -28,4 +45,3 @@ if __name__ == '__main__':
+     fptr.write(str(result) + '\n')
+ 
+     fptr.close()
+-
+-- 
+2.26.0
+
