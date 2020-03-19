@@ -1,0 +1,35 @@
+From f60762aa92f79416fba8a7d2486055646c53c9c0 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 19 Mar 2020 13:47:04 +0000
+Subject: [fix] hackerrank, 'luck balance', python solution
+
+-add floor to the index calculation determining the subset of
+important games to lose, this cannot (obviously) be less than 0
+---
+ .../luck.balance.py                                       | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.luck.balance/luck.balance.py b/hackerrank/algorithms.-.greedy.-.easy.-.luck.balance/luck.balance.py
+index e08fbea..fc3b81f 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.luck.balance/luck.balance.py
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.luck.balance/luck.balance.py
+@@ -19,11 +19,13 @@ def luckBalance(k, contests):
+         else:
+             unimportant.append(l)
+     important.sort()
++    l_important = len(important)
+     unimportant.sort()
+-    #print(f"k: {k}, important: {important}, unimportant: {unimportant}")
++    #l_unimportant = len(unimportant)
+ 
+-    l_important = len(important)
+-    return -1 * sum(important[0:l_important - k]) + sum(important[l_important - k:]) + sum(unimportant)
++    #print(f"k: {k}, important [{l_important}]: {important}, unimportant[{l_unimportant}]: {unimportant}")
++
++    return -1 * sum(important[0:max(0, l_important - k)]) + sum(important[max(0, l_important - k):]) + sum(unimportant)
+ 
+ 
+ if __name__ == '__main__':
+-- 
+2.26.0
+
