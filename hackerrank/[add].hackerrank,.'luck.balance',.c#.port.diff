@@ -1,0 +1,47 @@
+From d1d902067a1a25895281c57b4bcf69f50307d817 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 20 Mar 2020 20:23:14 +0000
+Subject: [add] hackerrank, 'luck balance', c# port
+
+---
+ .../luck.balance.cs                            | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.luck.balance/luck.balance.cs b/hackerrank/algorithms.-.greedy.-.easy.-.luck.balance/luck.balance.cs
+index 8455a54..9f652a5 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.luck.balance/luck.balance.cs
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.luck.balance/luck.balance.cs
+@@ -16,8 +16,25 @@ class Solution {
+ 
+     // Complete the luckBalance function below.
+     static int luckBalance(int k, int[][] contests) {
++        var important = new List<int>();
++        var unimportant = new List<int>();
++        int l, t;
++        foreach (var contest in contests) {
++            l = contest[0];
++            t = contest[1];
++            if (t == 1)
++                important.Add(l);
++            else
++                unimportant.Add(l);
++        }
++        important = important.OrderBy(x => x).ToList();
++        var l_important = important.Count;
++        unimportant = unimportant.OrderBy(x => x).ToList();
++        //var l_unimportant = unimportant.Count;
+ 
++        //Console.WriteLine($"k: {k}, important [{l_important}]: {String.Join(" ", important.Select(x => x.ToString()))}, unimportant[{l_unimportant}]: {String.Join(" ", unimportant.Select(x => x.ToString()))}");
+ 
++        return -1 * important.Take(Math.Max(0, l_important - k)).Sum() + important.Skip(Math.Max(0, l_important - k)).Sum() + unimportant.Sum();
+     }
+ 
+     static void Main(string[] args) {
+@@ -43,4 +60,3 @@ class Solution {
+         textWriter.Close();
+     }
+ }
+-
+-- 
+2.26.0
+
