@@ -1,0 +1,70 @@
+From 3a0a6355f6ca41fcaae30dc6919cbf2ec85f455c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 21 Mar 2020 07:41:53 +0000
+Subject: [add] hackerrank, 'luck balance', go port
+
+---
+ .../luck.balance.go                           | 37 ++++++++++++++++++-
+ 1 file changed, 36 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.luck.balance/luck.balance.go b/hackerrank/algorithms.-.greedy.-.easy.-.luck.balance/luck.balance.go
+index d273472..d1260f2 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.luck.balance/luck.balance.go
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.luck.balance/luck.balance.go
+@@ -7,12 +7,48 @@ import (
+     "os"
+     "strconv"
+     "strings"
++    "sort"
+ )
+ 
++func max(x int32, y int32) int32 {
++    if x > y {
++        return x
++    } else {
++        return y
++    }
++}
++
++func sum(numbers []int32) int32 {
++    len_ := int32(len(numbers))
++    sum_ := int32(0)
++    for l := int32(0); l < len_; l++ {
++        sum_ += numbers[l]
++    }
++    return sum_
++}
++
+ // Complete the luckBalance function below.
+ func luckBalance(k int32, contests [][]int32) int32 {
++    var important = make([]int32, 0)
++    var unimportant = make([]int32, 0)
++    var l, t int32
++    for _, contest := range(contests) {
++        l = contest[0]
++        t = contest[1]
++        if t == 1 {
++            important = append(important, l)
++        } else {
++            unimportant = append(unimportant, l)
++        }
++    }
++    sort.Slice(important, func(l1, l2 int) bool { return important[l1] < important[l2]; })
++    var l_important = int32(len(important))
++    sort.Slice(unimportant, func(l1, l2 int) bool { return unimportant[l1] < unimportant[l2]; })
++    //var l_unimportant = int32(len(unimportant))
+ 
++    //fmt.Printf("k: %v, important [%v]: %v, unimportant[%v]: %v\n", k, l_important, important, l_unimportant, unimportant)
+ 
++    return -1 * sum(important[0:max(0, l_important - k)]) + sum(important[max(0, l_important - k):]) + sum(unimportant)
+ }
+ 
+ func main() {
+@@ -75,4 +111,3 @@ func checkError(err error) {
+         panic(err)
+     }
+ }
+-
+-- 
+2.26.0
+
