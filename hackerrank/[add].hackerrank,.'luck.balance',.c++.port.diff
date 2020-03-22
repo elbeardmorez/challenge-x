@@ -1,0 +1,64 @@
+From 488de836597d697562e576e390a98201c8cc680c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 22 Mar 2020 11:31:37 +0000
+Subject: [add] hackerrank, 'luck balance', c++ port
+
+---
+ .../luck.balance.cpp                          | 37 +++++++++++++++++--
+ 1 file changed, 34 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.luck.balance/luck.balance.cpp b/hackerrank/algorithms.-.greedy.-.easy.-.luck.balance/luck.balance.cpp
+index f4fa764..eeba26f 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.luck.balance/luck.balance.cpp
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.luck.balance/luck.balance.cpp
+@@ -6,8 +6,40 @@ vector<string> split_string(string);
+ 
+ // Complete the luckBalance function below.
+ int luckBalance(int k, vector<vector<int>> contests) {
+-
+-
++    vector<int> important;
++    vector<int> unimportant;
++    int l, t;
++    for (auto contest : contests) {
++        l = contest[0];
++        t = contest[1];
++        if (t == 1) {
++            important.push_back(l);
++        } else {
++            unimportant.push_back(l);
++        }
++    }
++    sort(important.begin(), important.end(), [](int l1, int l2) -> bool { return l1 < l2; });
++    auto l_important = important.size();
++    sort(unimportant.begin(), unimportant.end(), [](int l1, int l2) -> bool { return l1 < l2; });
++    //auto l_unimportant = unimportant.size();
++
++    /*
++    cout << "k: " << k << ", important [" << l_important << "]:";
++    for (auto l : important) cout << " " << l;
++    cout << ", unimportant[" << l_unimportant << "]:";
++    for (auto l : unimportant) cout << " " << l;
++    cout << endl;
++    */
++
++    int important_wins_of_necessity_cost = accumulate(important.begin(), important.begin() + max(0, int(l_important - k)), 0); //[0:max(0, l_important - k)]
++    int important_losses_cost = accumulate(important.begin() + max(0, int(l_important - k)), important.end(), 0); // [max(0, l_important - k):]
++    int unimportant_losses_cost = accumulate(unimportant.begin(), unimportant.end(), 0);
++    /*
++    cout << "important_wins_of_necessity_cost: " << -1 * important_wins_of_necessity_cost << endl;
++    cout << "important_losses_cost: " << important_losses_cost << endl;
++    cout << "unimportant_losses_cost: " << unimportant_losses_cost << endl;
++    */
++    return -1 * important_wins_of_necessity_cost + important_losses_cost + unimportant_losses_cost;
+ }
+ 
+ int main()
+@@ -71,4 +103,3 @@ vector<string> split_string(string input_string) {
+ 
+     return splits;
+ }
+-
+-- 
+2.26.0
+
