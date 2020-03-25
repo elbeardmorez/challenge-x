@@ -1,0 +1,43 @@
+From 89157baf53fdd802a673a6bf1319903ef1d2eb97 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 25 Mar 2020 08:09:10 +0000
+Subject: [fix] hackerrank, 'beautiful pairs', python solution
+
+-max vs min logic fail
+---
+ .../beautiful.pairs.py                                       | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.beautiful.pairs/beautiful.pairs.py b/hackerrank/algorithms.-.greedy.-.easy.-.beautiful.pairs/beautiful.pairs.py
+index 73987c1..4d4a13f 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.beautiful.pairs/beautiful.pairs.py
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.beautiful.pairs/beautiful.pairs.py
+@@ -19,7 +19,7 @@ def beautifulPairs(A, B):
+ 
+     search for common pairs
+     return #common (+1 if #common isn't maximal as one can always modify an unmatched B[i] -> some unmatched A[i]
+-    thus return max(#common + 1, n)
++    thus return min(#common + 1, n)
+     """
+ 
+     common=0
+@@ -28,6 +28,7 @@ def beautifulPairs(A, B):
+     n = len(A)
+     idx1 = 0
+     idx2 = 0
++    print(f"n: {n}")
+     while idx1 < n and idx2 < n:
+         if A[idx1] == B[idx2]:
+             common += 1
+@@ -38,7 +39,7 @@ def beautifulPairs(A, B):
+         elif B[idx2] < A[idx1]:
+             idx2 += 1
+ 
+-    return max(common + 1, n)
++    return min(common + 1, n)
+ 
+ 
+ if __name__ == '__main__':
+-- 
+2.26.0
+
