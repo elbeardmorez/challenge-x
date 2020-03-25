@@ -1,0 +1,44 @@
+From fd385532a6251377ce9255c5d6cff860416e08ba Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 25 Mar 2020 08:24:47 +0000
+Subject: [fix] hackerrank, 'beautiful pairs', python solution
+
+-ensure 'must change one element of B' problem constraint is considered
+---
+ .../beautiful.pairs.py                                      | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.beautiful.pairs/beautiful.pairs.py b/hackerrank/algorithms.-.greedy.-.easy.-.beautiful.pairs/beautiful.pairs.py
+index 4d4a13f..8531020 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.beautiful.pairs/beautiful.pairs.py
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.beautiful.pairs/beautiful.pairs.py
+@@ -19,7 +19,8 @@ def beautifulPairs(A, B):
+ 
+     search for common pairs
+     return #common (+1 if #common isn't maximal as one can always modify an unmatched B[i] -> some unmatched A[i]
+-    thus return min(#common + 1, n)
++                       else (common == n) - 1 if maximal, as 1 element in B MUST be changed as per the problem constraints)
++    thus return n - 1 if #common == n else #common + 1
+     """
+ 
+     common=0
+@@ -28,7 +29,6 @@ def beautifulPairs(A, B):
+     n = len(A)
+     idx1 = 0
+     idx2 = 0
+-    print(f"n: {n}")
+     while idx1 < n and idx2 < n:
+         if A[idx1] == B[idx2]:
+             common += 1
+@@ -39,7 +39,7 @@ def beautifulPairs(A, B):
+         elif B[idx2] < A[idx1]:
+             idx2 += 1
+ 
+-    return min(common + 1, n)
++    return n - 1 if common == n else common + 1
+ 
+ 
+ if __name__ == '__main__':
+-- 
+2.26.0
+
