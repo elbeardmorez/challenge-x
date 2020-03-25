@@ -1,0 +1,62 @@
+From 51ede0043131993ed7b95825b90ccc546429914e Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 25 Mar 2020 08:04:28 +0000
+Subject: [add] hackerrank, 'beautiful pairs', python solution
+
+---
+ .../beautiful.pairs.py                        | 33 ++++++++++++++++++-
+ 1 file changed, 32 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.beautiful.pairs/beautiful.pairs.py b/hackerrank/algorithms.-.greedy.-.easy.-.beautiful.pairs/beautiful.pairs.py
+index a2fe53c..73987c1 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.beautiful.pairs/beautiful.pairs.py
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.beautiful.pairs/beautiful.pairs.py
+@@ -6,8 +6,40 @@ import random
+ import re
+ import sys
+ 
++
+ # Complete the beautifulPairs function below.
+ def beautifulPairs(A, B):
++    """
++    List[int], List[int] -> int
++
++    A|                  3 5  7 11 5 8
++    B| 5 7 11 10 5 8 -> 5 7 11  3 5 8
++    beautiful pair indices -> (0,3),(1,0),(2,1),(3,2),(4,4),(5,5)
++    beautiful set is the maximal 6 pairs as no l[i] or r[i] is duplicated above
++
++    search for common pairs
++    return #common (+1 if #common isn't maximal as one can always modify an unmatched B[i] -> some unmatched A[i]
++    thus return max(#common + 1, n)
++    """
++
++    common=0
++    A.sort()
++    B.sort()
++    n = len(A)
++    idx1 = 0
++    idx2 = 0
++    while idx1 < n and idx2 < n:
++        if A[idx1] == B[idx2]:
++            common += 1
++            idx1 += 1
++            idx2 += 1
++        elif A[idx1] < B[idx2]:
++            idx1 += 1
++        elif B[idx2] < A[idx1]:
++            idx2 += 1
++
++    return max(common + 1, n)
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+@@ -23,4 +55,3 @@ if __name__ == '__main__':
+     fptr.write(str(result) + '\n')
+ 
+     fptr.close()
+-
+-- 
+2.26.0
+
