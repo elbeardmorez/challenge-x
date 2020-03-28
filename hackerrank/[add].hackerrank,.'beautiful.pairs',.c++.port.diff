@@ -1,0 +1,54 @@
+From b31a9f0472ee5f7a77a9d15dd11735f3cf3dfb72 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 28 Mar 2020 07:58:47 +0000
+Subject: [add] hackerrank, 'beautiful pairs', c++ port
+
+---
+ .../beautiful.pairs.cpp                       | 31 +++++++++++++++++--
+ 1 file changed, 29 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.beautiful.pairs/beautiful.pairs.cpp b/hackerrank/algorithms.-.greedy.-.easy.-.beautiful.pairs/beautiful.pairs.cpp
+index 1ee8b57..18206c2 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.beautiful.pairs/beautiful.pairs.cpp
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.beautiful.pairs/beautiful.pairs.cpp
+@@ -6,8 +6,35 @@ vector<string> split_string(string);
+ 
+ // Complete the beautifulPairs function below.
+ int beautifulPairs(vector<int> A, vector<int> B) {
+-
+-
++    /*
++    A|                  3 5  7 11 5 8
++    B| 5 7 11 10 5 8 -> 5 7 11  3 5 8
++    beautiful pair indices -> (0,3),(1,0),(2,1),(3,2),(4,4),(5,5)
++    beautiful set is the maximal 6 pairs as no l[i] or r[i] is duplicated above
++
++    search for common pairs
++    return #common (+1 if #common isn't maximal as one can always modify an unmatched B[i] -> some unmatched A[i]
++                       else (common == n) - 1 if maximal, as 1 element in B MUST be changed as per the problem constraints)
++    thus return n - 1 if #common == n else #common + 1
++    */
++    int common = 0;
++    sort(A.begin(), A.end());
++    sort(B.begin(), B.end());
++    int n = A.size();
++    int idx1 = 0;
++    int idx2 = 0;
++    while (idx1 < n && idx2 < n) {
++        if (A[idx1] == B[idx2]) {
++            common++;
++            idx1++;
++            idx2++;
++        } else if (A[idx1] < B[idx2]) {
++            idx1++;
++        } else if (B[idx2] < A[idx1]) {
++            idx2++;
++        }
++    }
++    return common == n ? n - 1 : common + 1;
+ }
+ 
+ int main()
+-- 
+2.26.0
+
