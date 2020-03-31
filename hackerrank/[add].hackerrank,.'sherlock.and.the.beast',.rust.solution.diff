@@ -1,0 +1,80 @@
+From 98d28c427591a90cff019b7e63a9a810e797a9da Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 31 Mar 2020 19:08:37 +0100
+Subject: [add] hackerrank, 'sherlock and the beast', rust solution
+
+---
+ .../sherlock.and.the.beast.rs                 | 61 ++++++++++++++++++-
+ 1 file changed, 60 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.sherlock.and.the.beast/sherlock.and.the.beast.rs b/hackerrank/algorithms.-.greedy.-.easy.-.sherlock.and.the.beast/sherlock.and.the.beast.rs
+index 75b9783..7313036 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.sherlock.and.the.beast/sherlock.and.the.beast.rs
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.sherlock.and.the.beast/sherlock.and.the.beast.rs
+@@ -1,3 +1,62 @@
+-// Enter your code here 
++// Enter your code here
+ 
++use std::io;
++use std::env;
++use std::fs::File;
++use std::io::Write;
+ 
++fn sherlock_beast(mut n: i32) -> String {
++    let mut left = String::new();
++    let mut right = String::new();
++    while n % 3 != 0 {
++        if n < 5 {
++            return String::from("-1");
++        }
++        right.push_str("33333");
++        n -= 5;
++    }
++    if n == 0 {
++        return right;
++    } else {
++        for _ in 0..n / 3 {
++            left.push_str("555");
++        }
++        left.push_str(right.as_str());
++        return left;
++    }
++}
++
++fn next_line(s: &mut String) {
++    s.clear();
++    let mut buf = String::new();
++    let res = io::stdin().read_line(&mut buf);
++    if res.is_ok() && res.unwrap() != 0 {
++        s.push_str(buf.trim_end_matches('\n'));
++    }
++}
++
++fn main() {
++    let key = "OUTPUT_PATH";
++    let mut target = String::new();
++    match env::var_os(key) {
++        Some(val) => target.push_str(val.to_str().unwrap()),
++        None => panic!("{} is not defined in the environment.", key),
++    }
++    let mut f = match File::create(target) {
++        Ok(f) => f,
++        Err(e) => panic!("file io error: {}", e),
++    };
++
++    let mut line = String::new();
++    let mut data: i32;
++    let mut res: String;
++    next_line(&mut line);  // ignore count
++    next_line(&mut line);
++    while line != "" {
++        data = line.parse::<i32>().unwrap();
++        res = sherlock_beast(data);
++        f.write_all(res.to_string().as_bytes()).expect("file io error");
++        f.write_all(b"\n").expect("file io error");
++        next_line(&mut line);
++    }
++}
+-- 
+2.26.0
+
