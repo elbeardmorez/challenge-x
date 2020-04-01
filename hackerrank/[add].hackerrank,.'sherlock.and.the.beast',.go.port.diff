@@ -1,0 +1,49 @@
+From ab0dd6b5205df8d1ee3cc5a352e03141ce52ab3c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 1 Apr 2020 22:00:13 +0100
+Subject: [add] hackerrank, 'sherlock and the beast', go port
+
+---
+ .../sherlock.and.the.beast.go                 | 22 ++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.sherlock.and.the.beast/sherlock.and.the.beast.go b/hackerrank/algorithms.-.greedy.-.easy.-.sherlock.and.the.beast/sherlock.and.the.beast.go
+index 614afd2..92df90c 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.sherlock.and.the.beast/sherlock.and.the.beast.go
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.sherlock.and.the.beast/sherlock.and.the.beast.go
+@@ -11,8 +11,25 @@ import (
+ 
+ // Complete the decentNumber function below.
+ func decentNumber(n int32) {
+-
+-
++    left := ""
++    right := ""
++    for n % 3 != 0 {
++        if n < 5 {
++            fmt.Printf("%d\n", -1)
++            return
++        }
++        right += "33333"
++        n -= 5
++    }
++    if n == 0 {
++        fmt.Printf("%s\n", right)
++    } else {
++        for l := 0; l < int(n / 3); l++ {
++            left += "555"
++        }
++        fmt.Printf("%s\n", left + right)
++    }
++    return
+ }
+ 
+ func main() {
+@@ -45,4 +62,3 @@ func checkError(err error) {
+         panic(err)
+     }
+ }
+-
+-- 
+2.26.0
+
