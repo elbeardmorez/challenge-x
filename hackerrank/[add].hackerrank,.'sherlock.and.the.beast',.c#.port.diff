@@ -1,0 +1,55 @@
+From fa6c3684fcf7e57893cf07fdbad79260bb4506e3 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 2 Apr 2020 08:09:11 +0100
+Subject: [add] hackerrank, 'sherlock and the beast', c# port
+
+---
+ .../sherlock.and.the.beast.cs                 | 24 ++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.sherlock.and.the.beast/sherlock.and.the.beast.cs b/hackerrank/algorithms.-.greedy.-.easy.-.sherlock.and.the.beast/sherlock.and.the.beast.cs
+index f4e8c03..87ef24b 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.sherlock.and.the.beast/sherlock.and.the.beast.cs
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.sherlock.and.the.beast/sherlock.and.the.beast.cs
+@@ -12,12 +12,31 @@ using System.Text.RegularExpressions;
+ using System.Text;
+ using System;
+ 
++using static System.Console;
++
+ class Solution {
+ 
+     // Complete the decentNumber function below.
+     static void decentNumber(int n) {
+-
+-
++        var left = "";
++        var right = "";
++        while (n % 3 != 0) {
++            if (n < 5) {
++                WriteLine($"{-1}");
++                return;
++            }
++            right += "33333";
++            n -= 5;
++        }
++        if (n == 0) {
++            WriteLine($"{right}");
++        } else {
++            for (var l = 0; l < n / 3; l++) {
++                left += "555";
++            }
++            WriteLine($"{left + right}");
++        }
++        return;
+     }
+ 
+     static void Main(string[] args) {
+@@ -30,4 +49,3 @@ class Solution {
+         }
+     }
+ }
+-
+-- 
+2.26.0
+
