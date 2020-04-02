@@ -1,0 +1,45 @@
+From c6ddc50b726dde8a448fed74113b8340808aefc0 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 2 Apr 2020 08:20:09 +0100
+Subject: [mod] hackerrank, 'sherlock and the beast', c# port
+
+-speed-up, avoid string concatenation
+---
+ .../sherlock.and.the.beast.cs                             | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.sherlock.and.the.beast/sherlock.and.the.beast.cs b/hackerrank/algorithms.-.greedy.-.easy.-.sherlock.and.the.beast/sherlock.and.the.beast.cs
+index 87ef24b..d31df66 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.sherlock.and.the.beast/sherlock.and.the.beast.cs
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.sherlock.and.the.beast/sherlock.and.the.beast.cs
+@@ -19,21 +19,25 @@ class Solution {
+     // Complete the decentNumber function below.
+     static void decentNumber(int n) {
+         var left = "";
++        var l_left = 0;
+         var right = "";
++        var l_right = 0;
+         while (n % 3 != 0) {
+             if (n < 5) {
+                 WriteLine($"{-1}");
+                 return;
+             }
+-            right += "33333";
++            l_right += 5;
+             n -= 5;
+         }
++        right = new String('3', l_right);
+         if (n == 0) {
+             WriteLine($"{right}");
+         } else {
+             for (var l = 0; l < n / 3; l++) {
+-                left += "555";
++                l_left += 3;
+             }
++            left = new String('5', l_left);
+             WriteLine($"{left + right}");
+         }
+         return;
+-- 
+2.26.0
+
