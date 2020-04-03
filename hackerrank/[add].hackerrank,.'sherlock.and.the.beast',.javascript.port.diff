@@ -1,0 +1,48 @@
+From 005e48250593d72a02d8fba973082e50f08e6880 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 3 Apr 2020 08:38:14 +0100
+Subject: [add] hackerrank, 'sherlock and the beast', javascript port
+
+---
+ .../sherlock.and.the.beast.js                 | 25 +++++++++++++++++--
+ 1 file changed, 23 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.sherlock.and.the.beast/sherlock.and.the.beast.js b/hackerrank/algorithms.-.greedy.-.easy.-.sherlock.and.the.beast/sherlock.and.the.beast.js
+index e56b36c..f243452 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.sherlock.and.the.beast/sherlock.and.the.beast.js
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.sherlock.and.the.beast/sherlock.and.the.beast.js
+@@ -22,8 +22,29 @@ function readLine() {
+ 
+ // Complete the decentNumber function below.
+ function decentNumber(n) {
+-
+-
++    let left = "";
++    let l_left = 0;
++    let right = "";
++    let l_right = 0;
++    while (n % 3 !== 0) {
++        if (n < 5) {
++            console.log(`${-1}`);
++            return;
++        }
++        l_right += 5;
++        n -= 5;
++    }
++    right = '3'.repeat(l_right);
++    if (n === 0) {
++        console.log(`${right}`);
++    } else {
++        for (let l = 0; l < n / 3; l++) {
++            l_left += 3;
++        }
++        left = '5'.repeat(l_left);
++        console.log(`${left + right}`);
++    }
++    return;
+ }
+ 
+ function main() {
+-- 
+2.26.0
+
