@@ -1,0 +1,53 @@
+From 4b9b613aa1f59da9f6c217f41ccbe406583ee94a Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 4 Apr 2020 19:17:12 +0100
+Subject: [add] hackerrank, 'sherlock and the beast', python port
+
+---
+ .../sherlock.and.the.beast.py                 | 24 ++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.sherlock.and.the.beast/sherlock.and.the.beast.py b/hackerrank/algorithms.-.greedy.-.easy.-.sherlock.and.the.beast/sherlock.and.the.beast.py
+index ba05dc0..27e6167 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.sherlock.and.the.beast/sherlock.and.the.beast.py
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.sherlock.and.the.beast/sherlock.and.the.beast.py
+@@ -6,8 +6,31 @@ import random
+ import re
+ import sys
+ 
++
+ # Complete the decentNumber function below.
+ def decentNumber(n):
++    left = ""
++    l_left = 0
++    right = ""
++    l_right = 0
++    while n % 3 != 0:
++        if n < 5:
++            print(-1)
++            return
++        l_right += 5
++        n -= 5
++
++    right = '3' * l_right
++    if n == 0:
++        print(f"{right}")
++    else:
++        for l in range(int(n / 3)):
++            l_left += 3
++        left = '5' * l_left
++        print(f"{left}{right}")
++
++    return
++
+ 
+ if __name__ == '__main__':
+     t = int(input().strip())
+@@ -16,4 +39,3 @@ if __name__ == '__main__':
+         n = int(input().strip())
+ 
+         decentNumber(n)
+-
+-- 
+2.26.0
+
