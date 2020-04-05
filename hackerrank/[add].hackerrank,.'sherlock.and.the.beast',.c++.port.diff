@@ -1,0 +1,51 @@
+From c2294f3581dc0741707e67bdd4e14c155140be89 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 5 Apr 2020 12:04:14 +0100
+Subject: [add] hackerrank, 'sherlock and the beast', c++ port
+
+---
+ .../sherlock.and.the.beast.cpp                | 24 ++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.greedy.-.easy.-.sherlock.and.the.beast/sherlock.and.the.beast.cpp b/hackerrank/algorithms.-.greedy.-.easy.-.sherlock.and.the.beast/sherlock.and.the.beast.cpp
+index 36a6ab6..015e678 100644
+--- a/hackerrank/algorithms.-.greedy.-.easy.-.sherlock.and.the.beast/sherlock.and.the.beast.cpp
++++ b/hackerrank/algorithms.-.greedy.-.easy.-.sherlock.and.the.beast/sherlock.and.the.beast.cpp
+@@ -7,8 +7,27 @@ string rtrim(const string &);
+ 
+ // Complete the decentNumber function below.
+ void decentNumber(int n) {
+-
+-
++    string left;
++    auto l_left = 0;
++    string right;
++    auto l_right = 0;
++    while (n % 3 != 0) {
++        if (n < 5) {
++            cout << -1 << endl;
++            return;
++        }
++        l_right += 5;
++        n -= 5;
++    }
++    right = string(l_right, '3');
++    if (n == 0)
++        cout << right << endl;
++    else {
++        for (int l = 0; l < int(n / 3); l++)
++            l_left += 3;
++        left = string(l_left, '5');
++        cout << left << right << endl;
++    }
+ }
+ 
+ int main()
+@@ -51,4 +70,3 @@ string rtrim(const string &str) {
+ 
+     return s;
+ }
+-
+-- 
+2.26.0
+
