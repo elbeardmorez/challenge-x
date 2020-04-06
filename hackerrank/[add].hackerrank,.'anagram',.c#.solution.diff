@@ -1,0 +1,54 @@
+From 01a12ed7adb6ff51964c1f0b30c6d8cc1022cda7 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 6 Apr 2020 20:33:24 +0100
+Subject: [add] hackerrank, 'anagram', c# solution
+
+---
+ .../anagram.cs                                | 23 ++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.anagram/anagram.cs b/hackerrank/algorithms.-.strings.-.easy.-.anagram/anagram.cs
+index 8447ee5..293d614 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.anagram/anagram.cs
++++ b/hackerrank/algorithms.-.strings.-.easy.-.anagram/anagram.cs
+@@ -12,12 +12,30 @@ using System.Text.RegularExpressions;
+ using System.Text;
+ using System;
+ 
++using static System.Console;
++
+ class Solution {
+ 
+     // Complete the anagram function below.
+     static int anagram(string s) {
+-
+-
++        if (s.Length % 2 == 1)
++            return -1;
++        var s1 = s.Substring(0, s.Length / 2);
++        var s2 = s.Substring(s.Length / 2);
++        //WriteLine($"{s1}");
++        //WriteLine($"{s2}");
++        var map = new Dictionary<char, int>();
++        foreach (var c in s1.ToCharArray()) {
++            if (!map.ContainsKey(c))
++                map[c] = 0;
++            map[c] += 1;
++        }
++        foreach (var c in s2.ToCharArray()) {
++            if (!map.ContainsKey(c))
++                map[c] = 0;
++            map[c] -= 1;
++        }
++        return map.Where(x => x.Value != 0).Select(kvp => Math.Abs(kvp.Value)).Sum() / 2;
+     }
+ 
+     static void Main(string[] args) {
+@@ -37,4 +55,3 @@ class Solution {
+         textWriter.Close();
+     }
+ }
+-
+-- 
+2.26.0
+
