@@ -1,0 +1,55 @@
+From 4968104a05abcff97d86be05eec05fd562eb1120 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Tue, 7 Apr 2020 21:09:24 +0100
+Subject: [add] hackerrank, 'anagram', javascript port
+
+---
+ .../anagram.js                                | 28 +++++++++++++++++--
+ 1 file changed, 25 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.anagram/anagram.js b/hackerrank/algorithms.-.strings.-.easy.-.anagram/anagram.js
+index 8eba628..7b685b3 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.anagram/anagram.js
++++ b/hackerrank/algorithms.-.strings.-.easy.-.anagram/anagram.js
+@@ -26,8 +26,31 @@ function readLine() {
+ 
+ // Complete the anagram function below.
+ function anagram(s) {
+-
+-
++    if (s.length % 2 === 1)
++        return -1;
++    let s1 = s.substring(0, s.length / 2);
++    let s2 = s.substring(s.length / 2);
++    //console.log(`${s1}`);
++    //console.log(`${s2}`);
++    let map = new Map();
++    s1.split('').forEach(c => {
++        if (!map.has(c))
++            map.set(c, 0);
++        map.set(c, map.get(c) + 1);
++    });
++    s2.split('').forEach(c => {
++        if (!map.has(c))
++            map.set(c, 0);
++        map.set(c, map.get(c) - 1);
++    });
++    let count = 0;
++    for (let [c, l] of map.entries()) {
++        //console.log(`c: ${c}, l: ${l}`);
++        if (l === 0)
++            continue;
++        count += Math.abs(l);
++    }
++    return count / 2;
+ }
+ 
+ function main() {
+@@ -45,4 +68,3 @@ function main() {
+ 
+     ws.end();
+ }
+-
+-- 
+2.26.0
+
