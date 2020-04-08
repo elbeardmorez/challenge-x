@@ -1,0 +1,59 @@
+From 817dae6d9b5a411b5da9d8247d46424139d2dcea Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Wed, 8 Apr 2020 07:08:06 +0100
+Subject: [add] hackerrank, 'anagram', c++ port
+
+---
+ .../anagram.cpp                               | 32 +++++++++++++++++--
+ 1 file changed, 29 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.anagram/anagram.cpp b/hackerrank/algorithms.-.strings.-.easy.-.anagram/anagram.cpp
+index 999796b..f97f1db 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.anagram/anagram.cpp
++++ b/hackerrank/algorithms.-.strings.-.easy.-.anagram/anagram.cpp
+@@ -4,8 +4,35 @@ using namespace std;
+ 
+ // Complete the anagram function below.
+ int anagram(string s) {
+-
+-
++    if (s.length() % 2 == 1)
++        return -1;
++    auto s1 = s.substr(0, s.length() / 2);
++    auto s2 = s.substr(s.length() / 2);
++    //cout << s1 << endl;
++    //cout << s2 << endl;
++    map<char, int> map_;
++    for (auto c : s1) {
++        if (map_.find(c) == map_.end())
++            map_[c] = 0;
++        map_[c]++;
++    }
++    for (auto c : s2) {
++        if (map_.find(c) == map_.end())
++            map_[c] = 0;
++        map_[c]--;
++    }
++    auto count = 0;
++    char c;
++    int l;
++    for (auto kvp : map_) {
++        c = kvp.first;
++        l = kvp.second;
++        //cout << "c: " << c << ", l: " << l << endl;
++        if (l == 0)
++            continue;
++        count += abs(l);
++    }
++    return count / 2;
+ }
+ 
+ int main()
+@@ -29,4 +56,3 @@ int main()
+ 
+     return 0;
+ }
+-
+-- 
+2.26.0
+
