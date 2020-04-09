@@ -1,0 +1,66 @@
+From 67db986c2d60bc3e8ac6d1e4a86fd4cf4fd16d35 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Thu, 9 Apr 2020 23:01:07 +0100
+Subject: [add] hackerrank, 'anagram', go port
+
+---
+ .../anagram.go                                | 35 +++++++++++++++++--
+ 1 file changed, 32 insertions(+), 3 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.anagram/anagram.go b/hackerrank/algorithms.-.strings.-.easy.-.anagram/anagram.go
+index f3e46d8..c7b19ad 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.anagram/anagram.go
++++ b/hackerrank/algorithms.-.strings.-.easy.-.anagram/anagram.go
+@@ -7,12 +7,42 @@ import (
+     "os"
+     "strconv"
+     "strings"
++    "math"
+ )
+ 
+ // Complete the anagram function below.
+ func anagram(s string) int32 {
+-
+-
++    if len(s) % 2 == 1 {
++        return -1
++    }
++    s1 := s[0:len(s) / 2]
++    s2 := s[len(s) / 2:]
++    //fmt.Printf("%v\n", s1)
++    //fmt.Printf("%v\n", s2)
++    map_ := make(map[rune]int32, 0)
++    chars1 := []rune(s1)
++    chars2 := []rune(s2)
++    for _, c := range(chars1) {
++        if _, ok := map_[c]; !ok {
++            map_[c] = 0
++        }
++        map_[c]++
++    }
++    for _, c := range(chars2) {
++        if _, ok := map_[c]; !ok {
++            map_[c] = 0
++        }
++        map_[c]--
++    }
++    count := int32(0)
++    for _, l := range(map_) {
++        //fmt.Printf("c: %v , l: %v\n", c , l)
++        if l == 0 {
++            continue
++        }
++        count += int32(math.Abs(float64(l)))
++    }
++    return count / 2
+ }
+ 
+ func main() {
+@@ -54,4 +84,3 @@ func checkError(err error) {
+         panic(err)
+     }
+ }
+-
+-- 
+2.26.0
+
