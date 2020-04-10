@@ -1,0 +1,60 @@
+From 1883861a8865487d82954f635d9ede3993661df8 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Fri, 10 Apr 2020 07:40:33 +0100
+Subject: [add] hackerrank, 'anagram', python port
+
+---
+ .../anagram.py                                | 31 ++++++++++++++++++-
+ 1 file changed, 30 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.strings.-.easy.-.anagram/anagram.py b/hackerrank/algorithms.-.strings.-.easy.-.anagram/anagram.py
+index 21ab33a..aafa76f 100644
+--- a/hackerrank/algorithms.-.strings.-.easy.-.anagram/anagram.py
++++ b/hackerrank/algorithms.-.strings.-.easy.-.anagram/anagram.py
+@@ -6,8 +6,38 @@ import random
+ import re
+ import sys
+ 
++
+ # Complete the anagram function below.
+ def anagram(s):
++    if len(s) % 2 == 1:
++        return -1
++
++    s1 = s[0:int(len(s) / 2)]
++    s2 = s[int(len(s) / 2):]
++    #print(f"{s1}")
++    #print(f"{s2}")
++    map_ = {}
++    for c in s1:
++        if c not in map_:
++            map_[c] = 0
++
++        map_[c] += 1
++
++    for c in s2:
++        if c not in map_:
++            map_[c] = 0
++
++        map_[c] -= 1
++
++    count = 0
++    for [c, l] in map_.items():
++        #print(f"c: {c } , l: {l}")
++        if l == 0:
++            continue
++        count += abs(l)
++
++    return int(count / 2)
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+@@ -22,4 +52,3 @@ if __name__ == '__main__':
+         fptr.write(str(result) + '\n')
+ 
+     fptr.close()
+-
+-- 
+2.26.0
+
