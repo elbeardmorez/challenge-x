@@ -1,0 +1,124 @@
+From a792aa7d10aa5622ad612684565a876b0184b5c1 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sat, 11 Apr 2020 15:58:28 +0100
+Subject: [add] hackerrank, 'gridland metro', javascript solution
+
+---
+ .../gridland.metro.js                         | 97 ++++++++++++++++++-
+ 1 file changed, 95 insertions(+), 2 deletions(-)
+
+diff --git a/hackerrank/algorithms.-.search.-.medium.-.gridland.metro/gridland.metro.js b/hackerrank/algorithms.-.search.-.medium.-.gridland.metro/gridland.metro.js
+index 7557272..b90ae29 100644
+--- a/hackerrank/algorithms.-.search.-.medium.-.gridland.metro/gridland.metro.js
++++ b/hackerrank/algorithms.-.search.-.medium.-.gridland.metro/gridland.metro.js
+@@ -27,7 +27,101 @@ function readLine() {
+ // Complete the gridlandMetro function below.
+ function gridlandMetro(n, m, k, track) {
+ 
+-
++    /*
++    grid size too big for simple cell map, cannot use xor for a bit array as
++    the numbers are just too large
++
++    10^9^2 = 10^18, 64 bits is 20 digits, first isn't of full decimal range
++    (max 1), so 19. but javascript's int is ony 53 bits, so BigInt required
++    (at worst ..but let's assume the worst)
++
++    horizontal lines only!
++
++    there are only <= k (1000) lines, so maintain an ordered list of
++    ranges per row, meaning worst case O(n) search for x non-overlapping lines
++
++    for each line, add to empty row's range set, add to row's range set where
++    no existing ranges in the row overlap, else merge where partially
++    overlapping, else discard if
++    */
++
++    let map_rows = new Map();
++    track.forEach(line => {
++        let [r, n1, n2] = line;
++        //console.log(`processing line @ row: ${r}, cols ${n1}-${n2}`);
++        if (map_rows.has(r)) {
++            let row_col_ranges = map_rows.get(r);
++            let row_col_ranges_ = [];
++            let idx = 0;
++            let next_col_range = undefined;
++            let idx_max = row_col_ranges.length;
++            let consumed = false;
++            while (idx < idx_max) {
++                let [o1, o2] = row_col_ranges[idx];
++                if (n2 < o1 || n1 > o2) {
++                    // no overlap
++                    next_col_range = [o1, o2];
++                    //console.log(` pushing original row: ${r}, range: ${next_col_range.join('-')}`);
++                } else {
++                    // overlap
++                    //console.log(`merging new line [${n1},${n2}] with old line [${o1},${o2}]`);
++                    next_col_range = [-1, -1];
++                    if (n1 <= o1) {
++                        next_col_range[0] = n1;
++                    } else {
++                        next_col_range[0] = o1;
++                    }
++                    if (n2 <= o2) {
++                        next_col_range[1] = o2;
++                        consumed = true;
++                    } else if (idx + 1 == idx_max) {
++                        consumed = true;
++                        next_col_range[1] = n2;
++                    } else  {
++                        // new line potentially consuming other existing lines
++                        while (idx + 1 < idx_max) {
++                            idx += 1;
++                            let [o1, o2] = row_col_ranges[idx];
++                            if (n2 > o1) {
++                                //console.log(`merging new line [${n1},${n2}] with old line [${o1},${o2}]`);
++                                if (o2 >= n2) {
++                                    next_col_range[1] = o2;
++                                    consumed = true;
++                                    break;
++                                }
++                            }
++                        }
++                        if (!consumed) {
++                            next_col_range[1] = n2;
++                            consumed = true;
++                        }
++                    }
++                    //console.log(` pushing merged row: ${r}, range: ${next_col_range.join('-')}`);
++                }
++                row_col_ranges_.push(next_col_range);
++                if (!consumed) {
++                    //console.log(` pushing new non-overlapping item, row: ${r}, range: ${[n1, n2].join('-')}`);
++                    row_col_ranges_.push([n1, n2]);
++                    consumed = true;
++                }
++                idx += 1;
++            }
++            map_rows.set(r, row_col_ranges_);
++        } else {
++            //console.log(` pushing first item row: ${r}, range: ${[n1, n2].join('-')}`);
++            map_rows.set(r, [[n1, n2]]);
++        }
++    });
++
++    //console.log(`${Array.from(map_rows.entries()).join('\n')}`);
++    let occupied = 0n;
++    for (let [r, row_col_ranges] of map_rows.entries()) {
++        row_col_ranges.forEach(line => {
++            let [c1, c2] = line;
++            occupied += BigInt(c2 - c1 + 1);
++        });
++    }
++    return BigInt(n) * BigInt(m) - occupied;
+ }
+ 
+ function main() {
+@@ -53,4 +147,3 @@ function main() {
+ 
+     ws.end();
+ }
+-
+-- 
+2.26.0
+
