@@ -1,0 +1,120 @@
+From c63d135ca6b7f550c903298ffa414f8d23e3169c Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Sun, 12 Apr 2020 20:33:38 +0100
+Subject: [add] hackerrank, 'gridland metro', python port
+
+---
+ .../gridland.metro.py                         | 91 ++++++++++++++++++-
+ 1 file changed, 90 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.search.-.medium.-.gridland.metro/gridland.metro.py b/hackerrank/algorithms.-.search.-.medium.-.gridland.metro/gridland.metro.py
+index 1d27d40..3331ab5 100644
+--- a/hackerrank/algorithms.-.search.-.medium.-.gridland.metro/gridland.metro.py
++++ b/hackerrank/algorithms.-.search.-.medium.-.gridland.metro/gridland.metro.py
+@@ -6,8 +6,98 @@ import random
+ import re
+ import sys
+ 
++
+ # Complete the gridlandMetro function below.
+ def gridlandMetro(n, m, k, track):
++    """
++    grid size too big for simple cell map, cannot use xor for a bit array as
++    the numbers are just too large
++
++    10^9^2 = 10^18, 64 bits is 20 digits, first isn't of full decimal range
++    (max 1), so 19..
++
++    horizontal lines only!
++
++    there are only <= k (1000) lines, so maintain an ordered list of
++    ranges per row, meaning worst case O(n) search for x non-overlapping lines
++
++    for each line, add to empty row's range set, add to row's range set where
++    no existing ranges in the row overlap, else merge where partially
++    overlapping, else discard if
++    """
++
++    map_rows = {}
++    for line in track:
++        [r, n1, n2] = line
++        #print(f"processing line @ row: {r}, cols [{n1}-{n2}]")
++        if r in map_rows:
++            row_col_ranges = map_rows[r]
++            row_col_ranges_ = []
++            idx = 0
++            next_col_range = None
++            idx_max = len(row_col_ranges)
++            consumed = False
++            while idx < idx_max:
++                [o1, o2] = row_col_ranges[idx]
++                if n2 < o1 or n1 > o2:
++                    # no overlap
++                    next_col_range = [o1, o2]
++                    #print(f" appending original row: {r}, range: [{next_col_range[0]}-{next_col_range[1]}")
++                else:
++                    # overlap
++                    #print(f"merging line [{n1}-{n2}] with old line [{o1}-{o2}]")
++                    next_col_range = [-1, -1]
++                    if n1 <= o1:
++                        next_col_range[0] = n1
++                    else:
++                        next_col_range[0] = o1
++
++                    if n2 <= o2:
++                        next_col_range[1] = o2
++                        consumed = True
++                    elif idx + 1 == idx_max:
++                        consumed = True
++                        next_col_range[1] = n2
++                    else:
++                        # line potentially consuming other existing lines
++                        while idx + 1 < idx_max:
++                            idx += 1
++                            [o1, o2] = row_col_ranges[idx]
++                            if n2 > o1:
++                                #print(f"merging line [{n1}-{n2}] with old line [{o1}-{o2}]")
++                                if o2 >= n2:
++                                    next_col_range[1] = o2
++                                    consumed = True
++                                    break
++
++                        if not consumed:
++                            next_col_range[1] = n2
++                            consumed = True
++
++                    #print(f" appending merged row: {r}, range: [{next_col_range[0]}-{next_col_range[1]}]")
++
++                row_col_ranges_.append(next_col_range)
++                if not consumed:
++                    #print(f" appending non-overlapping item, row: {r}, range: [{n1}-{n2}]")
++                    row_col_ranges_.append([n1, n2])
++                    consumed = True
++
++                idx += 1
++
++            map_rows[r] = row_col_ranges_
++        else:
++            #print(f" appending first item row: {r}, range: [{n1}-{n2}]")
++            map_rows[r] = [[n1, n2]]
++
++    #print(f"{map_rows}")
++    occupied = 0
++    for [r, row_col_ranges] in map_rows.items():
++        for line in row_col_ranges:
++            [c1, c2] = line
++            occupied += c2 - c1 + 1
++
++    return n * m - occupied
++
+ 
+ if __name__ == '__main__':
+     fptr = open(os.environ['OUTPUT_PATH'], 'w')
+@@ -30,4 +120,3 @@ if __name__ == '__main__':
+     fptr.write(str(result) + '\n')
+ 
+     fptr.close()
+-
+-- 
+2.26.0
+
