@@ -1,0 +1,161 @@
+From cc4fd99df509c65d20ba7b18bbb477fe0c8bf4f8 Mon Sep 17 00:00:00 2001
+From: Pete Beardmore <pete.beardmore@msn.com>
+Date: Mon, 13 Apr 2020 09:58:40 +0100
+Subject: [add] hackerrank, 'gridland metro', rust port
+
+---
+ .../gridland.metro.rs                         | 142 +++++++++++++++++-
+ 1 file changed, 141 insertions(+), 1 deletion(-)
+
+diff --git a/hackerrank/algorithms.-.search.-.medium.-.gridland.metro/gridland.metro.rs b/hackerrank/algorithms.-.search.-.medium.-.gridland.metro/gridland.metro.rs
+index 75b9783..080790a 100644
+--- a/hackerrank/algorithms.-.search.-.medium.-.gridland.metro/gridland.metro.rs
++++ b/hackerrank/algorithms.-.search.-.medium.-.gridland.metro/gridland.metro.rs
+@@ -1,3 +1,143 @@
+-// Enter your code here 
++// Enter your code here
+ 
++use std::io;
++use std::env;
++use std::fs::File;
++use std::io::Write;
++use std::collections::HashMap;
+ 
++fn gridland_metro(n: i32, m: i32, track: &Vec<Vec<i32>>) -> i64 {
++    /*
++    grid size too big for simple cell map, cannot use xor for a bit array as
++    the numbers are just too large
++
++    10^9^2 = 10^18, 64 bits is 20 digits, first isn't of full decimal range
++    (max 1), so 19..
++
++    horizontal lines only!
++
++    there are only <= k (1000) lines, so maintain an ordered list of
++    ranges per row, meaning worst case O(n) search for x non-overlapping lines
++
++    for each line, add to empty row's range set, add to row's range set where
++    no existing ranges in the row overlap, else merge where partially
++    overlapping, else discard if
++    */
++
++    let mut map_rows: HashMap<i32, Vec<[i32;2]>> = HashMap::new();
++    for line in track {
++        let [r, n1, n2] = [line[0], line[1], line[2]];
++        //println!("processing line @ row: {:?}, cols [{:?}-{:?}]", r, n1, n2);
++        if map_rows.contains_key(&r) {
++            let row_col_ranges = &map_rows[&r];
++            let mut row_col_ranges_: Vec<[i32;2]> = vec!();
++            let mut idx = 0;
++            let mut next_col_range: [i32;2];
++            let idx_max = row_col_ranges.len();
++            let mut consumed = false;
++            while idx < idx_max {
++                let [o1, o2] = row_col_ranges[idx];
++                if n2 < o1 || n1 > o2 {
++                    // no overlap;
++                    next_col_range = [o1, o2];
++                    //println!(" appending ||iginal row: {:?}, range: [{:?}-{:?}", r, next_col_range[0], next_col_range[1]);
++                } else {
++                    // overlap;
++                    //println!("merging line [{:?}-{:?}] with old line [{:?}-{:?}]", n1, n2, o1, o2);
++                    next_col_range = [-1, -1];
++                    if n1 <= o1 {
++                        next_col_range[0] = n1;
++                    } else {
++                        next_col_range[0] = o1;
++                    }
++                    if n2 <= o2 {
++                        next_col_range[1] = o2;
++                        consumed = true;
++                    } else if idx + 1 == idx_max {
++                        consumed = true;
++                        next_col_range[1] = n2;
++                    } else {
++                        // line potentially consuming other existing lines;
++                        while idx + 1 < idx_max {
++                            idx += 1;
++                            let [o1, o2] = row_col_ranges[idx];
++                            if n2 > o1 {
++                                //println!("merging line [{:?}-{:?}] with old line [{:?}-{:?}]", n1, n2, o1, o2);
++                                if o2 >= n2 {
++                                    next_col_range[1] = o2;
++                                    consumed = true;
++                                    break;
++                                }
++                            }
++                        }
++                        if !consumed {
++                            next_col_range[1] = n2;
++                            consumed = true;
++                        }
++                    }
++                    //println!(" appending merged row: {:?}, range: [{:?}-{:?}]", r, next_col_range[0], next_col_range[1]);
++                }
++                row_col_ranges_.push(next_col_range);
++                if !consumed {
++                    //println!(" appending non-overlapping item, row: {:?}, range: [{:?}-{:?}]", r, n1, n2);
++                    row_col_ranges_.push([n1, n2]);
++                    consumed = true;
++                }
++                idx += 1;
++            }
++            *map_rows.get_mut(&r).unwrap() = row_col_ranges_;
++        } else {
++            //println!(" appending first item row: {:?}, range: [{:?}-{:?}]", r, n1, n2);
++            map_rows.insert(r, vec![[n1, n2]]);
++        }
++    }
++
++    //println!("{:?}", map_rows);
++    let mut occupied: i64 = 0;
++    for (_, row_col_ranges) in map_rows {
++        for line in row_col_ranges {
++            let [c1, c2] = line;
++            occupied += (c2 - c1 + 1) as i64;
++        }
++    }
++    return (n as i64) * (m as i64) - occupied;
++}
++
++fn next_line(s: &mut String) {
++    s.clear();
++    let mut buf = String::new();
++    let res = io::stdin().read_line(&mut buf);
++    if res.is_ok() && res.unwrap() != 0 {
++        s.push_str(buf.trim_end_matches('\n'));
++    }
++}
++
++fn main() {
++    let key = "OUTPUT_PATH";
++    let mut target = String::new();
++    match env::var_os(key) {
++        Some(val) => target.push_str(val.to_str().unwrap()),
++        None => panic!("{} is not defined in the environment.", key),
++    }
++    let mut f = match File::create(target) {
++        Ok(f) => f,
++        Err(e) => panic!("file io error: {}", e),
++    };
++
++    let mut line = String::new();
++    next_line(&mut line);  // n m k
++    let data = line.split_whitespace().map(|x| x.parse::<i32>().unwrap()).collect::<Vec<i32>>();
++    let n = data[0];
++    let m = data[1];
++    let mut data: Vec<Vec<i32>> = vec!();
++    let mut data2: Vec<i32>;
++    next_line(&mut line);
++    while line != "" {
++        data2 = line.split_whitespace().map(|x| x.parse::<i32>().unwrap()).collect::<Vec<i32>>();
++        data.push(data2.clone());
++        next_line(&mut line);
++    }
++    let res: i64 = gridland_metro(n, m, &data);
++    f.write_all(res.to_string().as_bytes()).expect("file io error");
++    f.write_all(b"\n").expect("file io error");
++}
+-- 
+2.26.0
+
